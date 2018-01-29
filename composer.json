@@ -1,0 +1,44 @@
+{
+  "name": "eoneopay/external",
+  "description": "External libraries shared between Eoneo Pay applications",
+  "keywords": ["external"],
+  "license": "MIT",
+  "type": "library",
+  "require": {
+    "php": ">=7.1",
+    "eoneopay/utils": "dev-master",
+    "roave/security-advisories": "dev-master"
+  },
+  "require-dev": {
+    "guzzlehttp/guzzle": "^6.0.0",
+    "indigophp/doctrine-annotation-autoload": "^0.1.0",
+    "laravel-doctrine/orm": "1.4.*",
+    "monolog/monolog": "^1.23",
+    "phpunit/phpunit": "~6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "EoneoPay\\External\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\EoneoPay\\External\\": "tests/"
+    }
+  },
+  "suggest": {
+    "guzzlehttp/guzzle": "Required to use the http client class",
+    "laravel-doctrine/orm": "Required to use the ORM class",
+    "monolog/monolog": "Required to use the logger class"
+  },
+  "minimum-stability": "stable",
+  "config": {
+    "optimize-autoloader": true
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@bitbucket.org:eoneopay/utils.git"
+    }
+  ]
+}
