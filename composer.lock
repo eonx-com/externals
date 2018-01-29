@@ -4,14 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "402e95ef1eded6c2ef823ce3181ad1ce",
+    "content-hash": "41f68ed12a22d859cdf855f235f7e423",
     "packages": [
         {
             "name": "eoneopay/utils",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@bitbucket.org:eoneopay/utils.git",
+                "url": "https://git@bitbucket.org/eoneopay/utils.git",
                 "reference": "5e4069bc5d4331ceb62b8a82666b72457a47ef2e"
             },
             "require": {
@@ -49,7 +49,7 @@
                 "helpers",
                 "utilities"
             ],
-            "time": "2018-01-29T03:44:36+00:00"
+            "time": "2018-01-29 03:44:36"
         },
         {
             "name": "roave/security-advisories",

@@ -38,7 +38,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "git@bitbucket.org:eoneopay/utils.git"
+      "url": "https://git@bitbucket.org/eoneopay/utils.git"
     }
   ]
 }
