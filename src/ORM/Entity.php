@@ -225,7 +225,7 @@ abstract class Entity implements EntityInterface, JsonSerializable
      */
     private function invokeEntityMethod(string $method, ?array $default = null): array
     {
-        return method_exists($this, $method) && \is_array($this->{$method}()) ? $this->{$method}() : $default ?? [];
+        return \method_exists($this, $method) && \is_array($this->{$method}()) ? $this->{$method}() : $default ?? [];
     }
 
     /**
