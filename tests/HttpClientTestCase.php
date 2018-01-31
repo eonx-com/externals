@@ -52,12 +52,16 @@ abstract class HttpClientTestCase extends TestCase
      * @param string $contents
      * @param int|null $statusCode
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \EoneoPay\External\HttpClient\Interfaces\ResponseInterface
+     *
+     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException Inherited, for non-200 responses
      */
     protected function clientRequest(string $contents, int $statusCode = null): ResponseInterface
     {
-        return (new Client($this->mockGuzzleClientForResponse($this->mockStreamForContents($contents), $statusCode)))
-            ->request(self::METHOD, self::URI);
+        /** @var \GuzzleHttp\Client $mockedClient */
+        $mockedClient = $this->mockGuzzleClientForResponse($this->mockStreamForContents($contents), $statusCode);
+
+        return (new Client($mockedClient))->request(self::METHOD, self::URI);
     }
 
     /**

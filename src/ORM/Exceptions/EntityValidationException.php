@@ -5,7 +5,7 @@ namespace EoneoPay\External\ORM\Exceptions;
 
 use RuntimeException;
 
-class ORMException extends RuntimeException
+class EntityValidationException extends RuntimeException
 {
     //
 }

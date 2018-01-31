@@ -85,23 +85,6 @@ class EntityTest extends DatabaseTestCase
     }
 
     /**
-     * Test __call finds properties via annotations
-     *
-     * @return void
-     */
-    public function testMagicCallCanGetAndSetEntityPropertiesViaAnnotations(): void
-    {
-        $entity = new EntityStub();
-
-        // Set 'annotationName' which is based off the column 'annotation_name' for the 'string' attribute
-        $entity->setAnnotationName('test');
-
-        // The value should be fetched via annotationName and string directly
-        self::assertSame('test', $entity->getAnnotationName());
-        self::assertSame('test', $entity->getString());
-    }
-
-    /**
      * Test __call with invalid accessor throws exception
      *
      * @return void
@@ -143,6 +126,25 @@ class EntityTest extends DatabaseTestCase
         ];
 
         self::assertSame($expected, $entity->getPropertyAnnotations());
+    }
+
+    /**
+     * Test __call finds properties via annotations
+     *
+     * @return void
+     *
+     * @depends testPropertyAnnotationsContainsInvalidClassAndAttribute
+     */
+    public function testPropertyAnnotationsSetAndGetViaMagicMethods(): void
+    {
+        $entity = new EntityStub();
+
+        // Set 'annotationName' which is based off the column 'annotation_name' for the 'string' attribute
+        $entity->setAnnotationName('test');
+
+        // The value should be fetched via annotationName and string directly
+        self::assertSame('test', $entity->getAnnotationName());
+        self::assertSame('test', $entity->getString());
     }
 
     /**

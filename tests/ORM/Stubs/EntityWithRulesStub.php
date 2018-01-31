@@ -5,7 +5,7 @@ namespace Tests\EoneoPay\External\ORM\Stubs;
 
 use EoneoPay\External\ORM\Entity;
 
-class InterfaceAndGetRulesStub extends Entity
+class EntityWithRulesStub extends Entity
 {
     /**
      * @var array
@@ -25,7 +25,7 @@ class InterfaceAndGetRulesStub extends Entity
     /**
      * Initialise validation rules.
      *
-     * @return \Tests\EoneoPay\External\ORM\Stubs\InterfaceAndGetRulesStub
+     * @return \Tests\EoneoPay\External\ORM\Stubs\EntityWithRulesStub
      */
     public function setRules(): self
     {

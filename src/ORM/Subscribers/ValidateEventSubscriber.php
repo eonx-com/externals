@@ -6,7 +6,9 @@ namespace EoneoPay\External\ORM\Subscribers;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use EoneoPay\External\ORM\Exceptions\EntityValidationException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 
 class ValidateEventSubscriber implements EventSubscriber
@@ -46,7 +48,7 @@ class ValidateEventSubscriber implements EventSubscriber
      *
      * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationException Inherited, if validation fails
      */
     public function prePersist(LifecycleEventArgs $eventArgs): void
     {
@@ -60,7 +62,7 @@ class ValidateEventSubscriber implements EventSubscriber
      *
      * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationException Inherited, if validation fails
      */
     public function preUpdate(LifecycleEventArgs $eventArgs): void
     {
@@ -74,7 +76,7 @@ class ValidateEventSubscriber implements EventSubscriber
      *
      * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationException If validation fails
      */
     private function callValidator(LifecycleEventArgs $eventArgs): void
     {
@@ -86,9 +88,14 @@ class ValidateEventSubscriber implements EventSubscriber
             return;
         }
 
-        $this->validator
-            ->setRules($entity->getRules())
-            ->setData($entity->toArray())
-            ->validate();
+        try {
+            $this->validator
+                ->setRules($entity->getRules())
+                ->setData($entity->toArray())
+                ->validate();
+        } catch (ValidationException $exception) {
+            // Rethrow an wrapped exception
+            throw new EntityValidationException($exception->getMessage(), $exception->getCode(), $exception);
+        }
     }
 }

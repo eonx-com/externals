@@ -7,6 +7,8 @@ use EoneoPay\External\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
 use EoneoPay\Utils\Arr;
+use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
+use EoneoPay\Utils\XmlConverter;
 use Exception;
 use JsonSerializable;
 
@@ -104,10 +106,7 @@ abstract class Entity implements EntityInterface, JsonSerializable
      *
      * @return array
      */
-    public function toArray(): array
-    {
-        return \get_object_vars($this);
-    }
+    abstract public function toArray(): array;
 
     /**
      * Serialize entity as json
@@ -117,6 +116,23 @@ abstract class Entity implements EntityInterface, JsonSerializable
     public function toJson(): string
     {
         return \json_encode($this->toArray());
+    }
+
+    /**
+     * Serialize entity as xml
+     *
+     * @param string|null $rootNode The name of the root node
+     *
+     * @return string|null
+     */
+    public function toXml(string $rootNode = null): ?string
+    {
+        try {
+            return (new XmlConverter())->arrayToXml($this->toArray(), $rootNode);
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidXmlTagException $exception) {
+            // If entity can't be serialised due to an invalid tag ignore error and return null
+            return null;
+        }
     }
 
     /**
@@ -174,18 +190,6 @@ abstract class Entity implements EntityInterface, JsonSerializable
     }
 
     /**
-     * Determine if a property exists on an entity
-     *
-     * @param string $property The property to test
-     *
-     * @return bool
-     */
-    private function has(string $property): bool
-    {
-        return $this->resolveProperty($property) !== null;
-    }
-
-    /**
      * Get a list of attributes or keys which are able to be filled, by default all fields can be set
      *
      * @return array
@@ -213,6 +217,18 @@ abstract class Entity implements EntityInterface, JsonSerializable
     private function getResolvableAnnotations(): array
     {
         return $this->invokeEntityMethod('getPropertyAnnotations');
+    }
+
+    /**
+     * Determine if a property exists on an entity
+     *
+     * @param string $property The property to test
+     *
+     * @return bool
+     */
+    private function has(string $property): bool
+    {
+        return $this->resolveProperty($property) !== null;
     }
 
     /**

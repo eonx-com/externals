@@ -19,10 +19,14 @@
     "mockery/mockery": "^1.0"
   },
   "autoload": {
-    "psr-4": { "EoneoPay\\External\\": "src/" }
+    "psr-4": {
+      "EoneoPay\\External\\": "src/"
+    }
   },
   "autoload-dev": {
-    "psr-4": { "Tests\\EoneoPay\\External\\": "tests/" }
+    "psr-4": {
+      "Tests\\EoneoPay\\External\\": "tests/"
+    }
   },
   "suggest": {
     "guzzlehttp/guzzle": "Required to use the http client class",
@@ -37,7 +41,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://git@bitbucket.org/eoneopay/utils.git"
+      "url": "git@bitbucket.org:eoneopay/utils.git"
     }
   ]
 }
