@@ -5,8 +5,9 @@ namespace Tests\EoneoPay\External;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use EoneoPay\External\ORM\Subscribers\ValidateEventSubscriber;
-use Illuminate\Validation\Validator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Validator;
 use Mockery;
 use Mockery\MockInterface;
 
@@ -25,6 +26,19 @@ abstract class SubscribersTestCase extends TestCase
         $event->shouldReceive('getObject')->once()->withNoArgs()->andReturn($object);
 
         return $event;
+    }
+
+    /**
+     * Mock Illuminate validation exception.
+     *
+     * @return \Mockery\MockInterface
+     */
+    protected function mockValidationException(): MockInterface
+    {
+        $exception = Mockery::mock(ValidationException::class);
+        $exception->shouldReceive('errors')->once()->withNoArgs()->andReturn([]);
+
+        return $exception;
     }
 
     /**

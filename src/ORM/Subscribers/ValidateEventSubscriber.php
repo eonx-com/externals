@@ -95,7 +95,12 @@ class ValidateEventSubscriber implements EventSubscriber
             $validator->validate();
         } catch (ValidationException $exception) {
             // Rethrow an wrapped exception
-            throw new EntityValidationException($exception->getMessage(), $exception->getCode(), $exception);
+            throw new EntityValidationException(
+                $exception->getMessage(),
+                $exception->getCode(),
+                $exception,
+                $exception->errors()
+            );
         }
     }
 }
