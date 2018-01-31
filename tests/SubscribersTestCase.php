@@ -6,6 +6,7 @@ namespace Tests\EoneoPay\External;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use EoneoPay\External\ORM\Subscribers\ValidateEventSubscriber;
 use Illuminate\Validation\Validator;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Mockery;
 use Mockery\MockInterface;
 
@@ -27,6 +28,16 @@ abstract class SubscribersTestCase extends TestCase
     }
 
     /**
+     * Mock Illuminate validation factory.
+     *
+     * @return \Mockery\MockInterface
+     */
+    protected function mockValidationFactory(): MockInterface
+    {
+        return Mockery::mock(ValidationFactory::class);
+    }
+
+    /**
      * Mock Illuminate validator.
      *
      * @return \Mockery\MockInterface
@@ -43,9 +54,9 @@ abstract class SubscribersTestCase extends TestCase
      */
     protected function processNotValidateTest($object): void
     {
-        $validator = $this->mockValidator();
-        $validator->shouldNotReceive(['setRules', 'setData', 'validate']);
+        $factory = $this->mockValidationFactory();
+        $factory->shouldNotReceive('make');
 
-        self::assertNull((new ValidateEventSubscriber($validator))->prePersist($this->mockLifeCycleEvent($object)));
+        self::assertNull((new ValidateEventSubscriber($factory))->prePersist($this->mockLifeCycleEvent($object)));
     }
 }

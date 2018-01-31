@@ -8,24 +8,25 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use EoneoPay\External\ORM\Exceptions\EntityValidationException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 
 class ValidateEventSubscriber implements EventSubscriber
 {
     /**
-     * @var \Illuminate\Validation\Validator
+     * @var ValidationFactory
      */
-    private $validator;
+    private $validationFactory;
 
     /**
      * ValidateEventSubscriber constructor.
      *
-     * @param \Illuminate\Validation\Validator $validator
+     * @param \Illuminate\Contracts\Validation\Factory $validationFactory
      */
-    public function __construct(Validator $validator)
+    public function __construct(ValidationFactory $validationFactory)
     {
-        $this->validator = $validator;
+        $this->validationFactory = $validationFactory;
     }
 
     /**
@@ -89,10 +90,9 @@ class ValidateEventSubscriber implements EventSubscriber
         }
 
         try {
-            $this->validator
-                ->setRules($entity->getRules())
-                ->setData($entity->toArray())
-                ->validate();
+            /** @var Validator $validator */
+            $validator = $this->validationFactory->make($entity->toArray(), $entity->getRules());
+            $validator->validate();
         } catch (ValidationException $exception) {
             // Rethrow an wrapped exception
             throw new EntityValidationException($exception->getMessage(), $exception->getCode(), $exception);
