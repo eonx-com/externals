@@ -92,7 +92,7 @@ class EntityManager implements EntityManagerInterface
         } catch (Exception $exception) {
             throw new ORMException(
                 \sprintf('Database Error: %s', $exception->getMessage()),
-                null,
+                0,
                 $exception
             );
         }
