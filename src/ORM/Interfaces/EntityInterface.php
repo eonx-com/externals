@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM\Interfaces;
 
-interface EntityInterface
+use EoneoPay\Utils\Interfaces\SerializableInterface;
+
+interface EntityInterface extends SerializableInterface
 {
     /**
      * Create a new entity
@@ -32,18 +34,4 @@ interface EntityInterface
      * @return void
      */
     public function fill(array $data): void;
-
-    /**
-     * Serialize entity as an array
-     *
-     * @return array
-     */
-    public function toArray(): array;
-
-    /**
-     * Serialize entity as json
-     *
-     * @return string
-     */
-    public function toJson(): string;
 }

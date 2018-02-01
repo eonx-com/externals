@@ -10,9 +10,8 @@ use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\XmlConverter;
 use Exception;
-use JsonSerializable;
 
-abstract class Entity implements EntityInterface, JsonSerializable
+abstract class Entity implements EntityInterface
 {
     /**
      * Create a new entity
@@ -293,7 +292,7 @@ abstract class Entity implements EntityInterface, JsonSerializable
             return (new Arr())->search(\array_keys(\get_object_vars($this)), $property) ??
                 $this->resolvePropertyFromAnnotations($property);
         } /** @noinspection BadExceptionsProcessingInspection */ catch (Exception $exception) {
-            // Ignore error intentionally, this prevents endless bulbbing of exceptions
+            // Ignore error intentionally, this prevents endless bubbling of exceptions
             return null;
         }
     }
