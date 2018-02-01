@@ -8,10 +8,11 @@ use EoneoPay\External\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
 use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
+use EoneoPay\Utils\Interfaces\SerializableInterface;
 use EoneoPay\Utils\XmlConverter;
 use Exception;
 
-abstract class Entity implements EntityInterface
+abstract class Entity implements EntityInterface, SerializableInterface
 {
     /**
      * Create a new entity
@@ -43,14 +44,14 @@ abstract class Entity implements EntityInterface
         // Break calling method into type (get, has, is, set) and attribute
         \preg_match('/^(' . \implode('|', $types) . ')([a-zA-Z][\w]+)$/i', $method, $matches);
 
-        $type = mb_strtolower($matches[1] ?? '');
+        $type = \mb_strtolower($matches[1] ?? '');
         $property = $this->resolveProperty($matches[2] ?? '');
 
         // The property being accessed must exist and the type must be valid if one of these things
         // aren't true throw an exception
         if ($type === '' || $property === null || ($type === 'set' && !$this->isFillable($property))) {
             throw new InvalidMethodCallException(
-                sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
+                \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
             );
         }
 
@@ -68,7 +69,7 @@ abstract class Entity implements EntityInterface
 
             case 'set':
                 // Return original instance for fluency
-                $this->set($property, reset($parameters));
+                $this->set($property, \reset($parameters));
                 break;
         }
 
@@ -146,7 +147,7 @@ abstract class Entity implements EntityInterface
     protected function associate(string $attribute, Entity $parent, string $association)
     {
         // Determine collection method
-        $collection = sprintf('get%s', $association);
+        $collection = \sprintf('get%s', $association);
 
         // Check if this is already in collection
         $exists = $parent->{$collection}()->contains($this);
@@ -369,8 +370,8 @@ abstract class Entity implements EntityInterface
         $this->{$resolved} = $value;
 
         // Run transformer if applicable
-        $method = sprintf('transform%s', ucfirst($resolved));
-        if (method_exists($this, $method)) {
+        $method = \sprintf('transform%s', \ucfirst($resolved));
+        if (\method_exists($this, $method)) {
             $this->{$method}();
         }
 

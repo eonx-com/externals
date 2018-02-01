@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM\Interfaces;
 
-use EoneoPay\Utils\Interfaces\SerializableInterface;
-
-interface EntityInterface extends SerializableInterface
+interface EntityInterface
 {
     /**
      * Create a new entity
