@@ -90,11 +90,13 @@ class EntityManager implements EntityManagerInterface
         try {
             return \call_user_func_array([$this->entityManager, $method], $parameters ?? []);
         } catch (Exception $exception) {
-            throw new ORMException(
-                \sprintf('Database Error: %s', $exception->getMessage()),
-                0,
-                $exception
-            );
+            // Throw directly exceptions from this package
+            if ($exception instanceof ORMException) {
+                throw $exception;
+            }
+
+            // Wrap others in ORMException
+            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), 0, $exception);
         }
     }
 }
