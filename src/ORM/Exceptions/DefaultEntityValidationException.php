@@ -12,7 +12,7 @@ class DefaultEntityValidationException extends EntityValidationException
      */
     public function getErrorCode(): int
     {
-        return 1000;
+        return self::DEFAULT_ERROR_CODE_VALIDATION;
     }
 
     /**
@@ -22,6 +22,6 @@ class DefaultEntityValidationException extends EntityValidationException
      */
     public function getErrorSubCode(): int
     {
-        return 0;
+        return self::DEFAULT_ERROR_SUB_CODE;
     }
 }

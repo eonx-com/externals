@@ -14,7 +14,7 @@ class ORMException extends RuntimeException
      */
     public function getErrorCode(): int
     {
-        return 1100;
+        return self::DEFAULT_ERROR_CODE_RUNTIME;
     }
 
     /**
@@ -24,6 +24,6 @@ class ORMException extends RuntimeException
      */
     public function getErrorSubCode(): int
     {
-        return 0;
+        return self::DEFAULT_ERROR_SUB_CODE;
     }
 }
