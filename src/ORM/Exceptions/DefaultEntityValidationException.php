@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM\Exceptions;
 
-use EoneoPay\Utils\Exceptions\RuntimeException;
-
-class InvalidMethodCallException extends RuntimeException
+class DefaultEntityValidationException extends EntityValidationException
 {
     /**
      * Get Error code.
@@ -14,7 +12,7 @@ class InvalidMethodCallException extends RuntimeException
      */
     public function getErrorCode(): int
     {
-        return 1100;
+        return 1000;
     }
 
     /**

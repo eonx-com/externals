@@ -6,7 +6,7 @@ namespace EoneoPay\External\ORM\Subscribers;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use EoneoPay\External\ORM\Exceptions\EntityValidationException;
+use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\ValidationException;
@@ -94,8 +94,11 @@ class ValidateEventSubscriber implements EventSubscriber
             $validator = $this->validationFactory->make($entity->toArray(), $entity->getRules());
             $validator->validate();
         } catch (ValidationException $exception) {
-            // Rethrow an wrapped exception
-            throw new EntityValidationException(
+            $exceptionClass = \method_exists($entity, 'getValidationException')
+                ? $entity->getValidationException()
+                : DefaultEntityValidationException::class;
+
+            throw new $exceptionClass(
                 $exception->getMessage(),
                 $exception->getCode(),
                 $exception,

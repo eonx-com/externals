@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:eoneopay/utils.git",
-                "reference": "d75a714d7b6355f7948f572f77f3bb1c8ab567b9"
+                "reference": "916f9b09ac7e4992e0c55bb9cca217f476cbd387"
             },
             "require": {
                 "php": ">=7.1",
@@ -49,7 +49,7 @@
                 "helpers",
                 "utilities"
             ],
-            "time": "2018-02-01 21:56:27"
+            "time": "2018-02-02 04:32:29"
         },
         {
             "name": "roave/security-advisories",

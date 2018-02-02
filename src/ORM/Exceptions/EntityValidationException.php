@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace EoneoPay\External\ORM\Exceptions;
 
 use EoneoPay\External\ORM\Interfaces\EntityValidationExceptionInterface;
+use EoneoPay\Utils\Exceptions\ValidationException;
 use Throwable;
 
-class EntityValidationException extends ORMException implements EntityValidationExceptionInterface
+abstract class EntityValidationException extends ValidationException implements EntityValidationExceptionInterface
 {
     /**
      * Validation errors.
