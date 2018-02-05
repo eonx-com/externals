@@ -41,4 +41,13 @@ interface EntityManagerInterface
      * @return void
      */
     public function persist(Entity $entity): void;
+
+    /**
+     * Remove entity from the database.
+     *
+     * @param \EoneoPay\External\ORM\Entity $entity The entity to remove from the database
+     *
+     * @return void
+     */
+    public function remove(Entity $entity): void;
 }

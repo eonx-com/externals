@@ -80,6 +80,21 @@ class EntityManager implements EntityManagerInterface
     }
 
     /**
+     * Remove entity from the database.
+     *
+     * @param \EoneoPay\External\ORM\Entity $entity The entity to remove from the database
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationException If entity validation fails
+     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If database returns an error
+     */
+    public function remove(Entity $entity): void
+    {
+        $this->callMethod('remove', $entity);
+    }
+
+    /**
      * Call a method on the entity manager and catch any exception
      *
      * @param string $method The method to call
