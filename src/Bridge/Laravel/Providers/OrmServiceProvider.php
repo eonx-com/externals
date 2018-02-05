@@ -5,9 +5,10 @@ namespace EoneoPay\External\Bridge\Laravel\Providers;
 
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use EoneoPay\External\ORM\EntityManager;
+use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Validation\Factory as  ValidationFactory;
 
 class OrmServiceProvider extends ServiceProvider
 {
@@ -23,9 +24,12 @@ class OrmServiceProvider extends ServiceProvider
             return new EntityManager($entityManager);
         });
 
+        // Create alias to the package interface for DI purposes
+        $this->app->alias('em', EntityManagerInterface::class);
+
         // Bind validation factory interface to current instance for DI purposes
         $this->app->bind(ValidationFactory::class, function (Container $container) {
-             return $container->make('validator');
+            return $container->make('validator');
         });
     }
 }
