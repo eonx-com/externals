@@ -6,7 +6,7 @@
   "type": "library",
   "require": {
     "php": ">=7.1",
-    "eoneopay/utils": "dev-master",
+    "eoneopay/utils": "dev-master@dev",
     "roave/security-advisories": "dev-master"
   },
   "require-dev": {
@@ -37,11 +37,5 @@
   "minimum-stability": "stable",
   "config": {
     "optimize-autoloader": true
-  },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@bitbucket.org:eoneopay/utils.git"
-    }
-  ]
+  }
 }
