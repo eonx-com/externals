@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM;
 
+use Doctrine\ORM\Mapping\Id;
 use EoneoPay\External\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
@@ -376,5 +377,52 @@ abstract class Entity implements EntityInterface, SerializableInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Get id property name for current entity.
+     *
+     * @return string
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
+     */
+    protected function getIdProperty(): string
+    {
+        $ids = (new AnnotationReader())->getClassPropertyAnnotation(\get_class($this), Id::class);
+
+        return \key($ids) ?? 'id';
+    }
+
+    /**
+     * Get unique rule string for given target property and optional where clauses.
+     *
+     * @param string $target
+     * @param array|null $wheres
+     *
+     * @return string
+     *
+     * @throws \ReflectionException
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     */
+    protected function uniqueRuleAsString(string $target, ?array $wheres = null): string
+    {
+        $idProperty = $this->getIdProperty();
+
+        $additional = '';
+        foreach ($wheres ?? [] as $column => $value) {
+            $additional .= \sprintf(',%s,%s', $column, $value);
+        }
+
+        $rule = \sprintf(
+            'unique:%s,%s,%s,%s%s',
+            \get_class($this),
+            $target,
+            $this->{$idProperty},
+            $idProperty,
+            $additional
+        );
+
+        return $rule;
     }
 }
