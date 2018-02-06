@@ -32,9 +32,9 @@ class ValidateEventSubscriber implements EventSubscriber
      * ValidateEventSubscriber constructor.
      *
      * @param \Illuminate\Contracts\Validation\Factory $validationFactory
-     * @param \EoneoPay\External\Logger\Interfaces\LoggerInterface $logger
+     * @param null|\EoneoPay\External\Logger\Interfaces\LoggerInterface $logger
      */
-    public function __construct(ValidationFactory $validationFactory, LoggerInterface $logger)
+    public function __construct(ValidationFactory $validationFactory, ?LoggerInterface $logger = null)
     {
         $this->validationFactory = $validationFactory;
         $this->logger = $logger ?? new Logger();
