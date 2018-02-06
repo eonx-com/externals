@@ -6,7 +6,9 @@ namespace EoneoPay\External\ORM;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use EoneoPay\External\ORM\Exceptions\EntityValidationException;
 use EoneoPay\External\ORM\Exceptions\ORMException;
+use EoneoPay\External\ORM\Interfaces\EntityInterface;
 use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
+use EoneoPay\External\ORM\Interfaces\RepositoryInterface;
 use Exception;
 
 class EntityManager implements EntityManagerInterface
@@ -46,9 +48,9 @@ class EntityManager implements EntityManagerInterface
      *
      * @param string $class The class name of the entity to generate a repository for
      *
-     * @return \EoneoPay\External\ORM\Repository
+     * @return \EoneoPay\External\ORM\Interfaces\RepositoryInterface
      */
-    public function getRepository(string $class): Repository
+    public function getRepository(string $class): RepositoryInterface
     {
         return new Repository($this->entityManager->getRepository($class));
     }
@@ -56,12 +58,12 @@ class EntityManager implements EntityManagerInterface
     /**
      * Merge entity to the database, similar to REPLACE in SQL
      *
-     * @param \EoneoPay\External\ORM\Entity $entity The entity to merge to the database
+     * @param \EoneoPay\External\ORM\Interfaces\EntityInterface $entity The entity to merge to the database
      *
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException If database returns an error
      * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationException If entity validation fails
      */
-    public function merge(Entity $entity): void
+    public function merge(EntityInterface $entity): void
     {
         $this->callMethod('merge', $entity);
     }
@@ -69,12 +71,12 @@ class EntityManager implements EntityManagerInterface
     /**
      * Persist entity to the database
      *
-     * @param \EoneoPay\External\ORM\Entity $entity The entity to persist to the database
+     * @param \EoneoPay\External\ORM\Interfaces\EntityInterface $entity The entity to persist to the database
      *
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException If database returns an error
      * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationException If entity validation fails
      */
-    public function persist(Entity $entity): void
+    public function persist(EntityInterface $entity): void
     {
         $this->callMethod('persist', $entity);
     }
@@ -82,14 +84,14 @@ class EntityManager implements EntityManagerInterface
     /**
      * Remove entity from the database.
      *
-     * @param \EoneoPay\External\ORM\Entity $entity The entity to remove from the database
+     * @param \EoneoPay\External\ORM\Interfaces\EntityInterface $entity The entity to remove from the database
      *
      * @return void
      *
      * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationException If entity validation fails
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException If database returns an error
      */
-    public function remove(Entity $entity): void
+    public function remove(EntityInterface $entity): void
     {
         $this->callMethod('remove', $entity);
     }
