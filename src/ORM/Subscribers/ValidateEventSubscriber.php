@@ -6,15 +6,15 @@ namespace EoneoPay\External\ORM\Subscribers;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\Mapping\Column;
 use EoneoPay\External\Logger\Interfaces\LoggerInterface;
 use EoneoPay\External\Logger\Logger;
 use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
+use EoneoPay\Utils\AnnotationReader;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
-use ReflectionClass;
-use ReflectionException;
 
 class ValidateEventSubscriber implements EventSubscriber
 {
@@ -128,23 +128,20 @@ class ValidateEventSubscriber implements EventSubscriber
      */
     private function getEntityContents(EntityInterface $entity): array
     {
-        // Get properties available for this model
         try {
-            $reflection = new ReflectionClass(\get_class($entity));
-        } catch (ReflectionException $exception) {
+            $columns = (new AnnotationReader())->getClassPropertyAnnotation(\get_class($entity), Column::class);
+        } catch (\Exception $exception) {
             $this->logger->exception($exception);
 
-            // If an exception occurred, return no contents
             return [];
         }
 
-        $properties = $reflection->getProperties();
-
-        // Get property values
         $contents = [];
-        foreach ($properties as $property) {
-            $property->setAccessible(true);
-            $contents[$property->name] = $property->getValue($entity);
+        foreach ($columns as $property => $column) {
+            $getter = \sprintf('get%s', \ucfirst($property));
+
+            /** @var Column $column */
+            $contents[$column->name ?? $property] = $entity->$getter();
         }
 
         return $contents;
