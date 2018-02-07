@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM\Interfaces;
 
-interface EntityValidationExceptionInterface
+interface EntityValidationFailedExceptionInterface
 {
     /**
      * Get validation errors.

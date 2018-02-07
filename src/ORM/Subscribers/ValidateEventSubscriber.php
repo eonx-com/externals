@@ -9,7 +9,7 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Column;
 use EoneoPay\External\Logger\Interfaces\LoggerInterface;
 use EoneoPay\External\Logger\Logger;
-use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationException;
+use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationFailedException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
@@ -60,7 +60,7 @@ class ValidateEventSubscriber implements EventSubscriber
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationException Inherited, if validation fails
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException Inherited, if validation fails
      */
     public function prePersist(LifecycleEventArgs $eventArgs): void
     {
@@ -74,7 +74,7 @@ class ValidateEventSubscriber implements EventSubscriber
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationException Inherited, if validation fails
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException Inherited, if validation fails
      */
     public function preUpdate(LifecycleEventArgs $eventArgs): void
     {
@@ -88,7 +88,7 @@ class ValidateEventSubscriber implements EventSubscriber
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationException If validation fails
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
     private function callValidator(LifecycleEventArgs $eventArgs): void
     {
@@ -105,9 +105,9 @@ class ValidateEventSubscriber implements EventSubscriber
             $validator = $this->validationFactory->make($this->getEntityContents($entity), $entity->getRules());
             $validator->validate();
         } catch (ValidationException $exception) {
-            $exceptionClass = \method_exists($entity, 'getValidationException')
-                ? $entity->getValidationException()
-                : DefaultEntityValidationException::class;
+            $exceptionClass = \method_exists($entity, 'getValidationFailedException')
+                ? $entity->getValidationFailedException()
+                : DefaultEntityValidationFailedException::class;
 
             throw new $exceptionClass(
                 $exception->getMessage(),

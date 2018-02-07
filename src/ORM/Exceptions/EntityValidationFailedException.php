@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM\Exceptions;
 
-use EoneoPay\External\ORM\Interfaces\EntityValidationExceptionInterface;
+use EoneoPay\External\ORM\Interfaces\EntityValidationFailedExceptionInterface;
 use EoneoPay\Utils\Exceptions\ValidationException;
 use Throwable;
 
-abstract class EntityValidationException extends ValidationException implements EntityValidationExceptionInterface
+abstract class EntityValidationFailedException extends ValidationException implements EntityValidationFailedExceptionInterface
 {
     /**
      * Validation errors.

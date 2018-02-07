@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM\Exceptions;
 
-class DefaultEntityValidationException extends EntityValidationException
+class DefaultEntityValidationFailedException extends EntityValidationFailedException
 {
     /**
      * Get Error code.
