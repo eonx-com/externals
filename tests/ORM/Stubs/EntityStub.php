@@ -20,7 +20,7 @@ use EoneoPay\External\ORM\Entity;
  * @method self setAnnotationName(string $name)
  * @method null whenString()
  *
- * @ORM\Entity;
+ * @ORM\Entity();
  */
 class EntityStub extends Entity
 {

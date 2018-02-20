@@ -32,4 +32,14 @@ interface EntityInterface
      * @return void
      */
     public function fill(array $data): void;
+
+    /**
+     * Get entity id.
+     *
+     * @return null|string|int
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
+     */
+    public function getId();
 }

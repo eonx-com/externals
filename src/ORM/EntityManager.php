@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM;
 
-use Doctrine\ORM\EntityManager as DoctrineEntityManager;
+use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
 use EoneoPay\External\ORM\Exceptions\EntityValidationFailedException;
 use EoneoPay\External\ORM\Exceptions\ORMException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
@@ -23,9 +23,9 @@ class EntityManager implements EntityManagerInterface
     /**
      * Create an internal entity manager
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      */
-    public function __construct(DoctrineEntityManager $entityManager)
+    public function __construct(DoctrineEntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }

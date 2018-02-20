@@ -54,6 +54,24 @@ class EntityTest extends DatabaseTestCase
     }
 
     /**
+     * Test entity has a generic getId method which return id value based on Id doctrine annotation.
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
+     */
+    public function testGetIdReturnsRightValueBasedOnIdAnnotation(): void
+    {
+        $entity = new EntityStub();
+        $entityId = 'my-entity-id';
+
+        self::assertNull($entity->getId());
+
+        $entity->setEntityId($entityId);
+
+        self::assertSame($entityId, $entity->getId());
+    }
+
+    /**
      * Test entity can be json serialized
      *
      * @return void
