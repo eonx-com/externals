@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM\Interfaces;
 
+use EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface;
+
 interface EntityManagerInterface
 {
     /**
@@ -11,6 +13,13 @@ interface EntityManagerInterface
      * @return void
      */
     public function flush(): void;
+
+    /**
+     * Gets the filters attached to the entity manager.
+     *
+     * @return \EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface
+     */
+    public function getFilters(): FilterCollectionInterface;
 
     /**
      * Gets the repository from a entity class

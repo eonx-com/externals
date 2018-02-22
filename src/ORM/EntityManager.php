@@ -8,7 +8,9 @@ use EoneoPay\External\ORM\Exceptions\EntityValidationFailedException;
 use EoneoPay\External\ORM\Exceptions\ORMException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
 use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
+use EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface;
 use EoneoPay\External\ORM\Interfaces\RepositoryInterface;
+use EoneoPay\External\ORM\Query\FilterCollection;
 use Exception;
 
 class EntityManager implements EntityManagerInterface
@@ -41,6 +43,16 @@ class EntityManager implements EntityManagerInterface
     public function flush(): void
     {
         $this->callMethod('flush');
+    }
+
+    /**
+     * Gets the filters attached to the entity manager.
+     *
+     * @return \EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface
+     */
+    public function getFilters(): FilterCollectionInterface
+    {
+        return new FilterCollection($this->entityManager->getFilters());
     }
 
     /**
@@ -118,7 +130,7 @@ class EntityManager implements EntityManagerInterface
             }
 
             // Wrap others in ORMException
-            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), 0, $exception);
+            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, $exception);
         }
     }
 }
