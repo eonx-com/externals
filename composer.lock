@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eoneopay/utils.git",
-                "reference": "c304c3bc14b81b58a45074d64309a8aedc33cc46"
+                "reference": "5099f499ca98c447c0ac60960a62a923c8289e94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eoneopay/utils/get/c304c3bc14b81b58a45074d64309a8aedc33cc46.zip",
-                "reference": "c304c3bc14b81b58a45074d64309a8aedc33cc46",
+                "url": "https://bitbucket.org/eoneopay/utils/get/5099f499ca98c447c0ac60960a62a923c8289e94.zip",
+                "reference": "5099f499ca98c447c0ac60960a62a923c8289e94",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "helpers",
                 "utilities"
             ],
-            "time": "2018-02-14 01:30:53"
+            "time": "2018-02-22 05:21:18"
         },
         {
             "name": "roave/security-advisories",

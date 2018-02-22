@@ -7,6 +7,10 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
 use EoneoPay\External\Logger\Interfaces\LoggerInterface;
 use EoneoPay\External\Logger\Logger;
 use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationFailedException;
@@ -119,6 +123,22 @@ class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
+     * Get list of doctrine annotations classes we are looking for to get entity contents.
+     *
+     * @return array
+     */
+    private function getDoctrineAnnotations(): array
+    {
+        return [
+            Column::class,
+            OneToOne::class,
+            OneToMany::class,
+            ManyToOne::class,
+            ManyToMany::class
+        ];
+    }
+
+    /**
      * Get entity contents via reflection, this is used so there's no reliance
      * on entity methods such as toArray().
      *
@@ -129,7 +149,10 @@ class ValidateEventSubscriber implements EventSubscriber
     private function getEntityContents(EntityInterface $entity): array
     {
         try {
-            $columns = (new AnnotationReader())->getClassPropertyAnnotation(\get_class($entity), Column::class);
+            $mapping = (new AnnotationReader())->getClassPropertyAnnotations(
+                \get_class($entity),
+                $this->getDoctrineAnnotations()
+            );
         } catch (\Exception $exception) {
             $this->logger->exception($exception);
 
@@ -137,11 +160,11 @@ class ValidateEventSubscriber implements EventSubscriber
         }
 
         $contents = [];
-        foreach ($columns as $property => $column) {
+        foreach ($mapping as $property => $annotations) {
             $getter = \sprintf('get%s', \ucfirst($property));
+            $annotation = \reset($annotations);
 
-            /** @var Column $column */
-            $contents[$column->name ?? $property] = $entity->$getter();
+            $contents[$annotation->name ?? $property] = $entity->$getter();
         }
 
         return $contents;
