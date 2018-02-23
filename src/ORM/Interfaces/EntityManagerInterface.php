@@ -11,6 +11,9 @@ interface EntityManagerInterface
      * Flush unit of work to the database
      *
      * @return void
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If entity validation fails
+     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If database returns an error
      */
     public function flush(): void;
 
@@ -36,6 +39,9 @@ interface EntityManagerInterface
      * @param \EoneoPay\External\ORM\Interfaces\EntityInterface $entity The entity to merge into the database
      *
      * @return void
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If entity validation fails
+     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If database returns an error
      */
     public function merge(EntityInterface $entity): void;
 
@@ -45,6 +51,9 @@ interface EntityManagerInterface
      * @param \EoneoPay\External\ORM\Interfaces\EntityInterface $entity The entity to persist to the database
      *
      * @return void
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If entity validation fails
+     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If database returns an error
      */
     public function persist(EntityInterface $entity): void;
 
@@ -54,6 +63,9 @@ interface EntityManagerInterface
      * @param \EoneoPay\External\ORM\Interfaces\EntityInterface $entity The entity to remove from the database
      *
      * @return void
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If entity validation fails
+     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If database returns an error
      */
     public function remove(EntityInterface $entity): void;
 }
