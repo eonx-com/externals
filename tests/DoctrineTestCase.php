@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\External;
 
 use Doctrine\Common\EventManager;
+use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -11,6 +12,7 @@ use Doctrine\ORM\Tools\Setup as DoctrineSetup;
 use EoneoPay\External\ORM\EntityManager;
 use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
 use EoneoPay\External\ORM\Subscribers\ValidateEventSubscriber;
+use Gedmo\DoctrineExtensions;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
@@ -111,6 +113,39 @@ abstract class DoctrineTestCase extends TestCase
         $config = DoctrineSetup::createAnnotationMetadataConfiguration(static::$paths, true, null, null, false);
         $this->doctrineEM = DoctrineEntityManager::create(static::$connection, $config, $eventManager);
 
+        $driverChain = new MappingDriverChain();
+        $driverChain->addDriver($config->getMetadataDriverImpl(), 'Entity');
+        $reader = $config->getMetadataDriverImpl()->getReader();
+
+        DoctrineExtensions::registerMappingIntoDriverChainORM(
+            $driverChain,
+            $reader
+        );
+
+        $config->setMetadataDriverImpl($driverChain);
+
+        foreach ($this->getLaravelDoctrineExtensions() as $extension) {
+            /** @var \LaravelDoctrine\ORM\Extensions\Extension $extension*/
+            $extension->addSubscribers($eventManager, $this->doctrineEM, $reader);
+
+            foreach ($extension->getFilters() as $name => $filter) {
+                $config->addFilter($name, $filter);
+                $this->doctrineEM->getFilters()->enable($name);
+            }
+        }
+
         return $this->doctrineEM;
+    }
+
+    /**
+     * Get enabled laravel doctrine extensions.
+     *
+     * @return array
+     */
+    private function getLaravelDoctrineExtensions(): array
+    {
+        return [
+
+        ];
     }
 }

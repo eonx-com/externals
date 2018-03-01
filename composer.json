@@ -16,7 +16,9 @@
     "monolog/monolog": "^1.23",
     "phpunit/phpunit": "~6.0",
     "illuminate/validation": "^5.5",
-    "mockery/mockery": "^1.0"
+    "mockery/mockery": "^1.0",
+    "laravel-doctrine/extensions": "^1.0",
+    "gedmo/doctrine-extensions": "^2.4"
   },
   "autoload": {
     "psr-4": {
