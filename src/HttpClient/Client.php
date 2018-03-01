@@ -30,12 +30,12 @@ class Client implements ClientInterface
     /**
      * Client constructor.
      *
-     * @param \GuzzleHttp\Client $client
+     * @param \GuzzleHttp\Client|null $client
      * @param \EoneoPay\External\Logger\Interfaces\LoggerInterface|null $logger
      */
-    public function __construct(Guzzle $client, LoggerInterface $logger = null)
+    public function __construct(?Guzzle $client = null, LoggerInterface $logger = null)
     {
-        $this->client = $client;
+        $this->client = $client ?? new Guzzle();
         $this->logger = $logger;
     }
 
