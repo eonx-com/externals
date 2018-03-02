@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\HttpClient\Interfaces;
 
+use EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException;
+
 interface ClientInterface
 {
     /**
@@ -13,6 +15,8 @@ interface ClientInterface
      * @param array|null $options The options to send with the request
      *
      * @return \EoneoPay\External\HttpClient\Interfaces\ResponseInterface A constructed api response
+     *
+     * @throws InvalidApiResponseException If response is not successful
      */
     public function request(string $method, string $uri, ?array $options = null): ResponseInterface;
 }
