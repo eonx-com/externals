@@ -15,6 +15,8 @@ class OrmServiceProvider extends ServiceProvider
     /**
      * Register ORM services.
      *
+     * @return void
+     *
      * @throws \InvalidArgumentException
      */
     public function register(): void
