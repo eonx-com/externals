@@ -6,13 +6,13 @@ namespace Tests\EoneoPay\External\ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use EoneoPay\External\ORM\Exceptions\InvalidMethodCallException;
-use Tests\EoneoPay\External\DatabaseTestCase;
+use Tests\EoneoPay\External\DoctrineTestCase;
 use Tests\EoneoPay\External\ORM\Stubs\EntityStub;
 
 /**
  * @covers \EoneoPay\External\ORM\Entity
  */
-class EntityTest extends DatabaseTestCase
+class EntityTest extends DoctrineTestCase
 {
     /**
      * Data to populate the entity with for testing

@@ -5,8 +5,8 @@ namespace EoneoPay\External\Bridge\Laravel\Providers;
 
 use EoneoPay\External\Bridge\Laravel\Interfaces\ValidatorInterface;
 use EoneoPay\External\Bridge\Laravel\Validator;
+use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Translation\Translator;
 
 /**
  * @codeCoverageIgnore Service provider only provides service registration

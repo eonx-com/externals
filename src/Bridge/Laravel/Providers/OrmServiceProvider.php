@@ -28,10 +28,5 @@ class OrmServiceProvider extends ServiceProvider
 
         // Create alias to the package interface for DI purposes
         $this->app->alias('em', EntityManagerInterface::class);
-
-        // Bind validation factory interface to current instance for DI purposes
-        $this->app->bind(ValidationFactory::class, function (Container $container) {
-            return $container->make('validator');
-        });
     }
 }
