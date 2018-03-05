@@ -6,13 +6,6 @@ namespace EoneoPay\External\ORM\Interfaces;
 interface EntityInterface
 {
     /**
-     * Create a new entity
-     *
-     * @param array|null $data The data to populate the entity with
-     */
-    public function __construct(?array $data = null);
-
-    /**
      * Allow getX() and setX($value) to get and set column values
      *
      * This method searches case insensitive
@@ -32,4 +25,14 @@ interface EntityInterface
      * @return void
      */
     public function fill(array $data): void;
+
+    /**
+     * Get entity id.
+     *
+     * @return null|string|int
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
+     */
+    public function getId();
 }

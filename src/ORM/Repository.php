@@ -4,19 +4,10 @@ declare(strict_types=1);
 namespace EoneoPay\External\ORM;
 
 use Doctrine\ORM\EntityRepository;
-use EoneoPay\External\ORM\Exceptions\ORMException;
 use EoneoPay\External\ORM\Interfaces\RepositoryInterface;
-use Exception;
 
-class Repository implements RepositoryInterface
+class Repository extends SimpleOrmDecorator implements RepositoryInterface
 {
-    /**
-     * The Doctrine Entity Repository
-     *
-     * @var \Doctrine\ORM\EntityRepository
-     */
-    private $repository;
-
     /**
      * Create a new repository from a Doctrine Repository
      *
@@ -24,7 +15,7 @@ class Repository implements RepositoryInterface
      */
     public function __construct(EntityRepository $repository)
     {
-        $this->repository = $repository;
+        $this->decorated = $repository;
     }
 
     /**
@@ -67,28 +58,5 @@ class Repository implements RepositoryInterface
     public function findOneBy(array $criteria)
     {
         return $this->callMethod('findOneBy', $criteria);
-    }
-
-    /**
-     * Call a method on the repository and catch any exception
-     *
-     * @param string $method The method to call
-     * @param mixed $parameters The parameters to pass to the method
-     *
-     * @return mixed
-     *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If database returns an error
-     */
-    private function callMethod(string $method, ...$parameters)
-    {
-        try {
-            return \call_user_func_array([$this->repository, $method], $parameters ?? []);
-        } catch (Exception $exception) {
-            throw new ORMException(
-                \sprintf('Database Error: %s', $exception->getMessage()),
-                null,
-                $exception
-            );
-        }
     }
 }

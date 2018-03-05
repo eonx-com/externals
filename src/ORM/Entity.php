@@ -93,6 +93,19 @@ abstract class Entity implements EntityInterface, SerializableInterface
     }
 
     /**
+     * Get entity id.
+     *
+     * @return null|string|int
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
+     */
+    public function getId()
+    {
+        return $this->get($this->getIdProperty());
+    }
+
+    /**
      * Return contents for serializing as json
      *
      * @return array

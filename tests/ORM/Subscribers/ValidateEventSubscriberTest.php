@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\External\ORM\Subscribers;
 
 use Doctrine\ORM\Events;
-use EoneoPay\External\ORM\Exceptions\EntityValidationException;
+use EoneoPay\External\ORM\Exceptions\EntityValidationFailedException;
 use EoneoPay\External\ORM\Subscribers\ValidateEventSubscriber;
 use Illuminate\Validation\ValidationException;
 use Tests\EoneoPay\External\ORM\Stubs\EntityStub;
@@ -64,7 +64,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
      */
     public function testShouldThrowEntityValidationExceptionIfValidationFails(): void
     {
-        $this->expectException(EntityValidationException::class);
+        $this->expectException(EntityValidationFailedException::class);
 
         $factory = $this->mockValidationFactory();
         $validator = $this->mockValidator();
