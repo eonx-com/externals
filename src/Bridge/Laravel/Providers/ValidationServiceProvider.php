@@ -8,9 +8,6 @@ use EoneoPay\External\Bridge\Laravel\Validator;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Support\ServiceProvider;
 
-/**
- * @codeCoverageIgnore Service provider only provides service registration
- */
 class ValidationServiceProvider extends ServiceProvider
 {
     /**
@@ -20,7 +17,7 @@ class ValidationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Tranlator is required for error messages
+        // Translator is required for error messages
         $this->app->bind(Translator::class, function () {
             return $this->app->make('translator');
         });

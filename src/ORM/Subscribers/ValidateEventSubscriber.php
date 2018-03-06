@@ -153,11 +153,14 @@ class ValidateEventSubscriber implements EventSubscriber
                 \get_class($entity),
                 $this->getDoctrineAnnotations()
             );
+        // Can't test exception since opcache config can only be set in php.ini
+        // @codeCoverageIgnoreStart
         } catch (\Exception $exception) {
             $this->logger->exception($exception);
 
             return [];
         }
+        // @codeCoverageIgnoreEnd
 
         $contents = [];
         foreach ($mapping as $property => $annotations) {

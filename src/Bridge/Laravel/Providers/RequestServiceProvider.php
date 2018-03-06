@@ -7,9 +7,6 @@ use EoneoPay\External\Bridge\Laravel\Interfaces\RequestInterface;
 use EoneoPay\External\Bridge\Laravel\Request;
 use Illuminate\Support\ServiceProvider;
 
-/**
- * @codeCoverageIgnore Service provider only provides service registration
- */
 class RequestServiceProvider extends ServiceProvider
 {
     /**

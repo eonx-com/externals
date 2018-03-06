@@ -10,6 +10,8 @@ use EoneoPay\External\ORM\Entity;
  * @method int getInteger()
  * @method string getEntityId()
  * @method string getString()
+ * @method bool hasString()
+ * @method bool isString()
  * @method self setInteger(int $integer)
  * @method self setEntityId(string $entityId)
  * @method self setString(string $string)
@@ -54,6 +56,21 @@ class EntityStub extends Entity
     protected $string;
 
     /**
+     * Function exclusively for test purposes to test uniqueRuleAsString.
+     *
+     * @param array|null $wheres
+     *
+     * @return string
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
+     */
+    public function getEmailUniqueRuleForTest(?array $wheres = null): string
+    {
+        return $this->uniqueRuleAsString('email', $wheres ?? []);
+    }
+
+    /**
      * Return an array of annotation/attribute pairs to search for properties in
      *
      * Note: Changing this array will cause the test testPropertyAnnotationsContainsInvalidClassAndAttribute() to fail
@@ -80,5 +97,15 @@ class EntityStub extends Entity
     public function toArray(): array
     {
         return \get_object_vars($this);
+    }
+
+    /**
+     * Make sure that string is a string.
+     *
+     * @return void
+     */
+    public function transformString(): void
+    {
+        $this->string = (string) $this->string;
     }
 }

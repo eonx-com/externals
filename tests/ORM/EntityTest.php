@@ -5,9 +5,12 @@ namespace Tests\EoneoPay\External\ORM;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
+use EoneoPay\External\ORM\Entity;
 use EoneoPay\External\ORM\Exceptions\InvalidMethodCallException;
 use Tests\EoneoPay\External\DoctrineTestCase;
+use Tests\EoneoPay\External\ORM\Stubs\ChildEntityStub;
 use Tests\EoneoPay\External\ORM\Stubs\EntityStub;
+use Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub;
 
 /**
  * @covers \EoneoPay\External\ORM\Entity
@@ -94,9 +97,18 @@ class EntityTest extends DoctrineTestCase
         $entity = new EntityStub();
         self::assertEmpty(array_filter($this->getEntityContents($entity)));
 
+        // Test check entity has properties
+        self::assertTrue($entity->hasString());
+
+        // Test string is not set
+        self::assertFalse($entity->isString());
+
         // Test setting email returns entity instance
         $return = $entity->setString(self::$data['string']);
         self::assertInstanceOf(EntityStub::class, $return);
+
+        // Test string is set
+        self::assertTrue($entity->isString());
 
         // Attempt to grab value
         self::assertSame(self::$data['string'], $entity->getString());
@@ -189,5 +201,76 @@ class EntityTest extends DoctrineTestCase
     {
         $entity = new EntityStub(self::$data);
         self::assertSame(json_encode($this->getEntityContents($entity)), $entity->toJson());
+    }
+
+    /**
+     * Test toXml() returns the expected xml string representation of the entity.
+     *
+     * @return void
+     */
+    public function testToXmlReturnsRightString(): void
+    {
+        $expected = function (?string $rootNode = null) {
+            return \sprintf('<?xml version="1.0" encoding="UTF-8"?>
+                <%s>
+                    <entityId></entityId>
+                    <integer>%d</integer>
+                    <string>%s</string>
+                </%s>', $rootNode ?? 'data', self::$data['integer'], self::$data['string'], $rootNode ?? 'data'
+            );
+        };
+
+        $entity = new EntityStub(self::$data);
+        self::assertXmlStringEqualsXmlString($expected(), $entity->toXml());
+        self::assertXmlStringEqualsXmlString($expected('my-entity'), $entity->toXml('my-entity'));
+    }
+
+    /**
+     * Test toXml() returns null when entity cannot be serialised as xml.
+     *
+     * @return void
+     */
+    public function testToXmlWithInvalidRootNodeReturnsNull(): void
+    {
+        self::assertNull((new EntityStub())->toXml('@invalid'));
+    }
+
+    /**
+     * Test uniqueRuleAsString build correctly the string representation of the validation rule.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
+     */
+    public function testUniqueRuleAsStringMethod(): void
+    {
+        self::assertEquals(
+            'unique:Tests\EoneoPay\External\ORM\Stubs\EntityStub,email,,entityId,where1,value1',
+            (new EntityStub())->getEmailUniqueRuleForTest(['where1' => 'value1'])
+        );
+    }
+
+    /**
+     * Test associate function. Stubs used for it are made to provide full coverage.
+     *
+     * @return void
+     */
+    public function testAssociateParentWithChildren(): void
+    {
+        $parent = new ParentEntityStub();
+        $child = new ChildEntityStub(['annotation_name' => 'string']);
+
+        $child->setParent($parent);
+
+        // Test parent is parent class
+        self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
+        // Test parent contains child
+        self::assertTrue($parent->getChildren()->contains($child));
+
+        $child->setParent($parent);
+
+        // Test parent contains child only once
+        self::assertEquals(1, $parent->getChildren()->count());
     }
 }

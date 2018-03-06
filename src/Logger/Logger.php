@@ -122,8 +122,7 @@ class Logger implements LoggerInterface
         try {
             return $this->monolog->{$type}($message, $context ?? []);
         } catch (Exception $exception) {
-            /** @noinspection ForgottenDebugOutputInspection */
-            \error_log($exception);
+            \error_log($exception->getMessage());
         }
 
         // Log wasn't written

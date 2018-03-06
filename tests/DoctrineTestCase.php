@@ -22,6 +22,8 @@ use Gedmo\DoctrineExtensions;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
+use LaravelDoctrine\Extensions\SoftDeletes\SoftDeleteableExtension;
+use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
 use ReflectionClass;
 use ReflectionException;
 
@@ -139,74 +141,57 @@ abstract class DoctrineTestCase extends TestCase
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      */
-    private function getDoctrineEntityManager(): DoctrineEntityManagerInterface
+    protected function getDoctrineEntityManager(): DoctrineEntityManagerInterface
     {
         if (null !== $this->doctrine) {
             return $this->doctrine;
         }
 
         $cache = new ArrayCache();
-        // standard annotation reader
+        // Standard annotation reader
         $annotationReader = new AnnotationReader();
 
-        // create a driver chain for metadata reading
+        // Create a driver chain for metadata reading
         $driverChain = new MappingDriverChain();
 
-        // now we want to register our application entities,
+        // Now we want to register our application entities,
         // for that we need another metadata driver used for Entity namespace
         $annotationDriver = new AnnotationDriver(
             $annotationReader, // our cached annotation reader
             self::$paths // paths to look in
         );
-// NOTE: driver for application Entity can be different, Yaml, Xml or whatever
-// register annotation driver for our application Entity fully qualified namespace
+        // NOTE: driver for application Entity can be different, Yaml, Xml or whatever
+        // register annotation driver for our application Entity fully qualified namespace
         $driverChain->addDriver($annotationDriver, 'Tests\\EoneoPay\\External\\ORM\\Stubs');
 
-// general ORM configuration
+        // General ORM configuration
         $config = new Configuration();
         $config->setProxyDir(sys_get_temp_dir());
         $config->setProxyNamespace('Proxy');
         $config->setAutoGenerateProxyClasses(true); // this can be based on production config.
-// register metadata driver
+        // Register metadata driver
         $config->setMetadataDriverImpl($driverChain);
-// use our allready initialized cache driver
+        // Use our already initialized cache driver
         $config->setMetadataCacheImpl($cache);
         $config->setQueryCacheImpl($cache);
+        // Create validator
+        $validationFactory = new Factory(new Translator(new ArrayLoader(), 'en'));
+        // Instantiate event manager with validation subscriber
+        $eventManager = new EventManager();
+        $eventManager->addEventSubscriber(new ValidateEventSubscriber($validationFactory));
 
         // Finally, create entity manager
-        $this->doctrine = DoctrineEntityManager::create(self::$connection, $config);
+        $this->doctrine = DoctrineEntityManager::create(self::$connection, $config, $eventManager);
 
+        foreach ($this->getLaravelDoctrineExtensions() as $extension) {
+            /** @var \LaravelDoctrine\ORM\Extensions\Extension $extension */
+            $extension->addSubscribers($eventManager, $this->doctrine, $annotationReader);
 
-//        $validationFactory = new Factory(new Translator(new ArrayLoader(), 'en'));
-//        $eventManager = new EventManager();
-//        $eventManager->addEventSubscriber(new ValidateEventSubscriber($validationFactory));
-
-        //$config = DoctrineSetup::createAnnotationMetadataConfiguration(static::$paths, true);
-//        $config = DoctrineSetup::createConfiguration(true);
-//
-//        $driverChain = new MappingDriverChain();
-//        $driverChain->addDriver($config->getMetadataDriverImpl(), 'Entity');//\Doctrine\ORM\Mapping\Entity::class);
-//        $reader = $config->getMetadataDriverImpl()->getReader();
-//
-//        DoctrineExtensions::registerMappingIntoDriverChainORM(
-//            $driverChain,
-//            $reader
-//        );
-//
-//        $config->setMetadataDriverImpl($driverChain);
-//
-//        $this->doctrine = DoctrineEntityManager::create(static::$connection, $config);//, $eventManager);
-
-//
-//        foreach ($this->getLaravelDoctrineExtensions() as $extension) {
-//            /** @var \LaravelDoctrine\ORM\Extensions\Extension $extension */
-//            $extension->addSubscribers($eventManager, $this->doctrine, $reader);
-//
-//            foreach ($extension->getFilters() as $name => $filter) {
-//                $config->addFilter($name, $filter);
-//                $this->doctrine->getFilters()->enable($name);
-//            }
-//        }
+            foreach ($extension->getFilters() as $name => $filter) {
+                $config->addFilter($name, $filter);
+                $this->doctrine->getFilters()->enable($name);
+            }
+        }
 
         return $this->doctrine;
     }
@@ -219,7 +204,7 @@ abstract class DoctrineTestCase extends TestCase
     private function getLaravelDoctrineExtensions(): array
     {
         return [
-
+            new SoftDeleteableExtension()
         ];
     }
 }
