@@ -31,8 +31,29 @@ class TranslatorTest extends TestCase
 
         // Test default, english, french and unknown
         self::assertSame($english['message'], $translator->get('test.message'));
-        self::assertSame($english['message'], $translator->get('test.message', 'en'));
-        self::assertSame($french['message'], $translator->get('test.message', 'fr'));
-        self::assertSame('test.message', $translator->get('test.message', 'invalid'));
+        self::assertSame($english['message'], $translator->get('test.message', [], 'en'));
+        self::assertSame($french['message'], $translator->get('test.message', [], 'fr'));
+        self::assertSame('test.message', $translator->get('test.message', [], 'invalid'));
+    }
+
+    /**
+     * Test translator handles replacements
+     *
+     * @return void
+     */
+    public function testTranslatorReplacesVariablesInMessages(): void
+    {
+        $language = ['message' => 'message received: :variable'];
+
+        $loader = new ArrayLoader();
+        $loader->addMessages('en', 'test', $language);
+
+        $translator = new Translator(new ContractedTranslator($loader, 'en'));
+
+        self::assertSame($language['message'], $translator->get('test.message'));
+        self::assertSame(
+            \str_replace(':variable', 'replacement', $language['message']),
+            $translator->get('test.message', ['variable' => 'replacement'])
+        );
     }
 }
