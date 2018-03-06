@@ -16,4 +16,3 @@ interface TranslatorInterface
      */
     public function get(string $key, ?array $replace = null, ?string $locale = null);
 }
-
