@@ -15,6 +15,8 @@ class ThrowExceptionHandlerStub extends AbstractProcessingHandler
      * @return void
      *
      * @throws \RuntimeException
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter) Throw exception directly for test purposes
      */
     protected function write(array $record): void
     {

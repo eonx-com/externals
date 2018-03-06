@@ -13,6 +13,9 @@ use EoneoPay\Utils\Interfaces\SerializableInterface;
 use EoneoPay\Utils\XmlConverter;
 use Exception;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity covered by unit tests
+ */
 abstract class Entity implements EntityInterface, SerializableInterface
 {
     /**

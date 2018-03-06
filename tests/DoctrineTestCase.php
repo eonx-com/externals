@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\External;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\EventManager;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
@@ -13,20 +12,21 @@ use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\ORM\Tools\Setup as DoctrineSetup;
 use EoneoPay\External\ORM\Entity;
 use EoneoPay\External\ORM\EntityManager;
 use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
 use EoneoPay\External\ORM\Subscribers\ValidateEventSubscriber;
-use Gedmo\DoctrineExtensions;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
 use LaravelDoctrine\Extensions\SoftDeletes\SoftDeleteableExtension;
-use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
 use ReflectionClass;
 use ReflectionException;
 
+/** @noinspection EfferentObjectCouplingInspection */
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) To handle magic of Doctrine configuration
+ */
 abstract class DoctrineTestCase extends TestCase
 {
     /**
@@ -56,90 +56,14 @@ abstract class DoctrineTestCase extends TestCase
     private $entityManager;
 
     /**
-     * Get entity contents via reflection, this is used so there's no reliance
-     * on entity methods such as toArray for tests to work
-     *
-     * @param \EoneoPay\External\ORM\Entity $entity The entity to get data from
-     *
-     * @return array
-     */
-    protected function getEntityContents(Entity $entity): array
-    {
-        // Get properties available for this entity
-        try {
-            $reflection = new ReflectionClass(\get_class($entity));
-        } /** @noinspection BadExceptionsProcessingInspection */ catch (ReflectionException $exception) {
-            // Ignore error and return no values
-            return [];
-        }
-
-        $properties = $reflection->getProperties();
-
-        // Get property values
-        $contents = [];
-        foreach ($properties as $property) {
-            $property->setAccessible(true);
-            $contents[$property->name] = $property->getValue($entity);
-        }
-
-        return $contents;
-    }
-
-    /**
-     * Get entity manager.
-     *
-     * @return \EoneoPay\External\ORM\Interfaces\EntityManagerInterface
-     *
-     * @throws \Doctrine\ORM\ORMException
-     */
-    protected function getEntityManager(): EntityManagerInterface
-    {
-        if (null !== $this->entityManager) {
-            return $this->entityManager;
-        }
-
-        $this->entityManager = new EntityManager($this->getDoctrineEntityManager());
-
-        return $this->entityManager;
-    }
-
-    /**
-     * Create database.
-     *
-     * @return void
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\Tools\ToolsException
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        (new SchemaTool($this->getDoctrineEntityManager()))
-            ->createSchema($this->getDoctrineEntityManager()->getMetadataFactory()->getAllMetadata());
-    }
-
-    /**
-     * Drop database.
-     *
-     * @return void
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    protected function tearDown(): void
-    {
-        (new SchemaTool($this->getDoctrineEntityManager()))->dropDatabase();
-
-        parent::tearDown();
-    }
-
-    /**
      * Get doctrine entity manager.
      *
      * @return \Doctrine\ORM\EntityManagerInterface
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Inherited from Doctrine
      */
     protected function getDoctrineEntityManager(): DoctrineEntityManagerInterface
     {
@@ -194,6 +118,87 @@ abstract class DoctrineTestCase extends TestCase
         }
 
         return $this->doctrine;
+    }
+
+    /**
+     * Get entity contents via reflection, this is used so there's no reliance
+     * on entity methods such as toArray for tests to work
+     *
+     * @param \EoneoPay\External\ORM\Entity $entity The entity to get data from
+     *
+     * @return array
+     */
+    protected function getEntityContents(Entity $entity): array
+    {
+        // Get properties available for this entity
+        try {
+            $reflection = new ReflectionClass(\get_class($entity));
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (ReflectionException $exception) {
+            // Ignore error and return no values
+            return [];
+        }
+
+        $properties = $reflection->getProperties();
+
+        // Get property values
+        $contents = [];
+        foreach ($properties as $property) {
+            $property->setAccessible(true);
+            $contents[$property->name] = $property->getValue($entity);
+        }
+
+        return $contents;
+    }
+
+    /**
+     * Get entity manager.
+     *
+     * @return \EoneoPay\External\ORM\Interfaces\EntityManagerInterface
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     */
+    protected function getEntityManager(): EntityManagerInterface
+    {
+        if (null !== $this->entityManager) {
+            return $this->entityManager;
+        }
+
+        $this->entityManager = new EntityManager($this->getDoctrineEntityManager());
+
+        return $this->entityManager;
+    }
+
+    /**
+     * Create database.
+     *
+     * @return void
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\Tools\ToolsException
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        (new SchemaTool($this->getDoctrineEntityManager()))
+            ->createSchema($this->getDoctrineEntityManager()->getMetadataFactory()->getAllMetadata());
+    }
+
+    /**
+     * Drop database.
+     *
+     * @return void
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    protected function tearDown(): void
+    {
+        (new SchemaTool($this->getDoctrineEntityManager()))->dropDatabase();
+
+        parent::tearDown();
     }
 
     /**

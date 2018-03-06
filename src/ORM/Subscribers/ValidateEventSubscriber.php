@@ -20,6 +20,9 @@ use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) High coupling to cover decoupling between subscriber and application
+ */
 class ValidateEventSubscriber implements EventSubscriber
 {
     /**
@@ -60,7 +63,7 @@ class ValidateEventSubscriber implements EventSubscriber
     /**
      * Validate entity against rule set on insert
      *
-     * @param \Doctrine\ORM\Event\LifeCycleEventArgs $eventArgs
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs
      *
      * @return void
      *
@@ -74,7 +77,7 @@ class ValidateEventSubscriber implements EventSubscriber
     /**
      * Validate entity against rule set on update
      *
-     * @param \Doctrine\ORM\Event\LifeCycleEventArgs $eventArgs
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs
      *
      * @return void
      *
@@ -85,10 +88,11 @@ class ValidateEventSubscriber implements EventSubscriber
         $this->callValidator($eventArgs);
     }
 
+    /** @noinspection PhpDocRedundantThrowsInspection Exception thrown dynamically */
     /**
      * Call validator on an object
      *
-     * @param \Doctrine\ORM\Event\LifeCycleEventArgs $eventArgs
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs
      *
      * @return void
      *

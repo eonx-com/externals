@@ -23,7 +23,7 @@ class Client implements ClientInterface
     private $client;
 
     /**
-     * @var LoggerInterface
+     * @var null|LoggerInterface
      */
     private $logger;
 
@@ -188,7 +188,7 @@ class Client implements ClientInterface
     /**
      * Log the received response
      *
-     * @param \EoneoPay\External\HttpClient\Interfaces\ResponseInterface The received response
+     * @param \EoneoPay\External\HttpClient\Interfaces\ResponseInterface $response The received response
      *
      * @return void
      */

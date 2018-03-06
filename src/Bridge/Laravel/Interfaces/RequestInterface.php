@@ -24,4 +24,3 @@ interface RequestInterface
      */
     public function input(?string $key = null, $default = null);
 }
-

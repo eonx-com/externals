@@ -18,7 +18,7 @@ class EntityManager implements EntityManagerInterface
     /**
      * Doctrine entity manager
      *
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $entityManager;
 

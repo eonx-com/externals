@@ -12,6 +12,10 @@ class ClientTest extends HttpClientTestCase
 {
     /**
      * Client should fallback content to empty string if runtime exception is thrown when getting body contents.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testContentEmptyWhenRuntimeExceptionOnBody(): void
     {
@@ -24,6 +28,10 @@ class ClientTest extends HttpClientTestCase
 
     /**
      * Client should throw invalid api response exception if status code if different than 200 range.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testInvalidApiResponseExceptionWhenResponseNotSuccessful(): void
     {
@@ -34,6 +42,10 @@ class ClientTest extends HttpClientTestCase
 
     /**
      * Client should decode json content from response and response should return each field on demand.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testJsonContentSuccessfullyDecoded(): void
     {
@@ -48,6 +60,10 @@ class ClientTest extends HttpClientTestCase
 
     /**
      * Client should return response interface successfully when no exceptions.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testShouldReturnResponseInterface(): void
     {
@@ -63,6 +79,10 @@ class ClientTest extends HttpClientTestCase
 
     /**
      * Client should return response interface based on exception response when set.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testShouldReturnResponseInterfaceBasedOnRequestExceptionResponse(): void
     {
@@ -76,12 +96,14 @@ class ClientTest extends HttpClientTestCase
 
     /**
      * Client should return response interface based on exception itself when no response set.
+     *
+     * @return void
      */
     public function testShouldThrowExceptionWithResponseInterfaceBasedOnRequestException(): void
     {
         try {
-            (new Client($this->mockGuzzleClientForRequestException(),
-                $this->mockLoggerForException()))->request(self::METHOD, self::URI);
+            (new Client($this->mockGuzzleClientForRequestException(), $this->mockLoggerForException()))
+                ->request(self::METHOD, self::URI);
         } catch (InvalidApiResponseExceptionInterface $exception) {
             $response = $exception->getResponse();
         }
@@ -93,6 +115,10 @@ class ClientTest extends HttpClientTestCase
 
     /**
      * Client should decode xml content from response and response should return each field on demand.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testXmlContentSuccessfullyDecoded(): void
     {

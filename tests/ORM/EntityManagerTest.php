@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\External\ORM;
 
+use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationFailedException;
 use EoneoPay\External\ORM\Exceptions\ORMException;
 use EoneoPay\External\ORM\Interfaces\EntityValidationFailedExceptionInterface;
 use EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface;
@@ -136,7 +137,7 @@ class EntityManagerTest extends DoctrineTestCase
      */
     public function testPersistWithValidationFailedException(): void
     {
-        $this->expectException(EntityValidationFailedExceptionInterface::class);
+        $this->expectException(DefaultEntityValidationFailedException::class);
 
         $this->getEntityManager()->persist(new EntityWithValidationStub());
         $this->getEntityManager()->flush();

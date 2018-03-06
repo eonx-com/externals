@@ -14,6 +14,8 @@ use Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub;
 
 /**
  * @covers \EoneoPay\External\ORM\Entity
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) Entity itself is complex so lot of tests to perform
  */
 class EntityTest extends DoctrineTestCase
 {
@@ -216,8 +218,7 @@ class EntityTest extends DoctrineTestCase
                     <entityId></entityId>
                     <integer>%d</integer>
                     <string>%s</string>
-                </%s>', $rootNode ?? 'data', self::$data['integer'], self::$data['string'], $rootNode ?? 'data'
-            );
+                </%s>', $rootNode ?? 'data', self::$data['integer'], self::$data['string'], $rootNode ?? 'data');
         };
 
         $entity = new EntityStub(self::$data);

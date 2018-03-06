@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM;
 
-use Doctrine\ORM\EntityRepository;
 use EoneoPay\External\ORM\Interfaces\RepositoryInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 class Repository extends SimpleOrmDecorator implements RepositoryInterface
 {
     /**
      * Create a new repository from a Doctrine Repository
      *
-     * @param \Doctrine\ORM\EntityRepository $repository
+     * @param \Doctrine\Common\Persistence\ObjectRepository $repository
      */
-    public function __construct(EntityRepository $repository)
+    public function __construct(ObjectRepository $repository)
     {
         $this->decorated = $repository;
     }

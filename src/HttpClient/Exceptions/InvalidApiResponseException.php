@@ -18,8 +18,6 @@ class InvalidApiResponseException extends Exception implements InvalidApiRespons
     /**
      * InvalidApiResponseException constructor.
      *
-     * @param string|null $message
-     * @param int $code
      * @param \Throwable|null $previous
      * @param \EoneoPay\External\HttpClient\Interfaces\ResponseInterface $response
      */

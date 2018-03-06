@@ -16,9 +16,11 @@ abstract class SubscribersTestCase extends TestCase
     /**
      * Mock Doctrine life cycle event with getObject expectation returning given object.
      *
-     * @param $object
+     * @param mixed $object
      *
      * @return \Mockery\MockInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Inherited from Mockery
      */
     protected function mockLifeCycleEvent($object): MockInterface
     {
@@ -32,6 +34,8 @@ abstract class SubscribersTestCase extends TestCase
      * Mock Illuminate validation exception.
      *
      * @return \Mockery\MockInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Inherited from Mockery
      */
     protected function mockValidationException(): MockInterface
     {
@@ -45,6 +49,8 @@ abstract class SubscribersTestCase extends TestCase
      * Mock Illuminate validation factory.
      *
      * @return \Mockery\MockInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Inherited from Mockery
      */
     protected function mockValidationFactory(): MockInterface
     {
@@ -55,6 +61,8 @@ abstract class SubscribersTestCase extends TestCase
      * Mock Illuminate validator.
      *
      * @return \Mockery\MockInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Inherited from Mockery
      */
     protected function mockValidator(): MockInterface
     {
@@ -64,13 +72,22 @@ abstract class SubscribersTestCase extends TestCase
     /**
      * Process test when subscriber should not validate.
      *
-     * @param $object
+     * @param mixed $object
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
      */
     protected function processNotValidateTest($object): void
     {
         $factory = $this->mockValidationFactory();
         $factory->shouldNotReceive('make');
 
-        self::assertNull((new ValidateEventSubscriber($factory))->prePersist($this->mockLifeCycleEvent($object)));
+        /** @var LifecycleEventArgs $event */
+        $event = $this->mockLifeCycleEvent($object);
+        /** @var \Illuminate\Validation\Factory $factory */
+        (new ValidateEventSubscriber($factory))->prePersist($event);
+
+        self::assertTrue(true);
     }
 }
