@@ -6,8 +6,6 @@ namespace EoneoPay\External\Bridge\Laravel\Providers;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use EoneoPay\External\ORM\EntityManager;
 use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Support\ServiceProvider;
 
 class OrmServiceProvider extends ServiceProvider

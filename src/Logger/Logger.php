@@ -122,6 +122,8 @@ class Logger implements LoggerInterface
         try {
             return $this->monolog->{$type}($message, $context ?? []);
         } catch (Exception $exception) {
+            // Logger is unavailable, write to php error log
+            /** @noinspection ForgottenDebugOutputInspection */
             \error_log($exception->getMessage());
         }
 

@@ -57,6 +57,11 @@ class LoggerTest extends TestCase
         self::assertEquals(\sprintf('Exception caught: %s', $message), $log['message']);
     }
 
+    /**
+     * Test logger returns false if Monolog throws an exception
+     *
+     * @return void
+     */
     public function testLoggerReturnsFalseWhenMonologExceptionThrown(): void
     {
         self::assertFalse(

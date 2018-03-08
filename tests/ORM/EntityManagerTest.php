@@ -5,7 +5,6 @@ namespace Tests\EoneoPay\External\ORM;
 
 use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationFailedException;
 use EoneoPay\External\ORM\Exceptions\ORMException;
-use EoneoPay\External\ORM\Interfaces\EntityValidationFailedExceptionInterface;
 use EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface;
 use Tests\EoneoPay\External\DoctrineTestCase;
 use Tests\EoneoPay\External\ORM\Stubs\EntityStub;
@@ -22,6 +21,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @return void
      *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException
@@ -39,6 +39,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @return void
      *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException
      */
@@ -57,6 +58,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @return void
      *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      */
     public function testGetFiltersReturnRightCollection(): void
@@ -70,6 +72,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @return void
      *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException
@@ -95,6 +98,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @return void
      *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException
@@ -131,6 +135,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @return void
      *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException
@@ -148,6 +153,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @return void
      *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException
@@ -168,6 +174,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @return void
      *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException
      */

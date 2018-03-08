@@ -102,7 +102,7 @@ class ClientTest extends HttpClientTestCase
     public function testShouldThrowExceptionWithResponseInterfaceBasedOnRequestException(): void
     {
         try {
-            (new Client($this->mockGuzzleClientForRequestException(), $this->mockLoggerForException()))
+            $response = (new Client($this->mockGuzzleClientForRequestException(), $this->mockLoggerForException()))
                 ->request(self::METHOD, self::URI);
         } catch (InvalidApiResponseExceptionInterface $exception) {
             $response = $exception->getResponse();

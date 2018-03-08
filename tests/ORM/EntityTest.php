@@ -5,7 +5,6 @@ namespace Tests\EoneoPay\External\ORM;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
-use EoneoPay\External\ORM\Entity;
 use EoneoPay\External\ORM\Exceptions\InvalidMethodCallException;
 use Tests\EoneoPay\External\DoctrineTestCase;
 use Tests\EoneoPay\External\ORM\Stubs\ChildEntityStub;
@@ -213,6 +212,7 @@ class EntityTest extends DoctrineTestCase
     public function testToXmlReturnsRightString(): void
     {
         $expected = function (?string $rootNode = null) {
+            /** @noinspection SyntaxError Closing tag name added from sprintf */
             return \sprintf('<?xml version="1.0" encoding="UTF-8"?>
                 <%s>
                     <entityId></entityId>

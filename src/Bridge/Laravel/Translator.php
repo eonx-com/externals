@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EoneoPay\External\Bridge\Laravel;
 
 use EoneoPay\External\Bridge\Laravel\Interfaces\TranslatorInterface;
-use Illuminate\Contracts\Translation\Translator as ContractedTranslator;
+use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 
 class Translator implements TranslatorInterface
 {
@@ -16,13 +16,13 @@ class Translator implements TranslatorInterface
     private $translator;
 
     /**
-     * Create new validation instance
+     * Create new translation instance
      *
-     * @param \Illuminate\Contracts\Translation\Translator $translator Contracted translator instance
+     * @param \Illuminate\Contracts\Translation\Translator $contract Contracted translator instance
      */
-    public function __construct(ContractedTranslator $translator)
+    public function __construct(TranslatorContract $contract)
     {
-        $this->translator = $translator;
+        $this->translator = $contract;
     }
 
     /**
