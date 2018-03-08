@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Container\Container;
+use EoneoPay\External\Bridge\Laravel\Container;
 use EoneoPay\External\Container\Interfaces\ContainerInterface;
 use Illuminate\Support\ServiceProvider;
 

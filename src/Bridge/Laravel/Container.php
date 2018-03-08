@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel\Container;
+namespace EoneoPay\External\Bridge\Laravel;
 
 use EoneoPay\External\Container\Interfaces\ContainerInterface;
 use Illuminate\Contracts\Container\Container as IlluminateContainer;

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel\Container;
+namespace Tests\EoneoPay\External\Bridge\Laravel;
 
-use EoneoPay\External\Bridge\Laravel\Container\Container;
+use EoneoPay\External\Bridge\Laravel\Container;
 use Illuminate\Container\Container as IlluminateContainer;
 use Psr\Container\NotFoundExceptionInterface;
 use Tests\EoneoPay\External\Bridge\Laravel\Stubs\ServiceStub;

@@ -5,9 +5,9 @@ namespace Tests\EoneoPay\External\Bridge\Laravel\Providers;
 
 use EoneoPay\External\Bridge\Laravel\Providers\ContainerServiceProvider;
 use EoneoPay\External\Container\Interfaces\ContainerInterface;
-use Tests\EoneoPay\External\BridgeProvidersTestCase;
+use Tests\EoneoPay\External\LaravelBridgeProvidersTestCase;
 
-class ContainerServiceProviderTest extends BridgeProvidersTestCase
+class ContainerServiceProviderTest extends LaravelBridgeProvidersTestCase
 {
     /**
      * Test provider register container.

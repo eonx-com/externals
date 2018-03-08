@@ -8,9 +8,9 @@ use EoneoPay\External\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
-use Tests\EoneoPay\External\BridgeProvidersTestCase;
+use Tests\EoneoPay\External\LaravelBridgeProvidersTestCase;
 
-class ValidatorServiceProviderTest extends BridgeProvidersTestCase
+class ValidatorServiceProviderTest extends LaravelBridgeProvidersTestCase
 {
     /**
      * Test provider bind translator and validator into container.

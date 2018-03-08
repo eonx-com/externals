@@ -8,9 +8,6 @@ use EoneoPay\External\Translator\Interfaces\TranslatorInterface;
 use Illuminate\Contracts\Translation\Translator as ContractedTranslator;
 use Illuminate\Support\ServiceProvider;
 
-/**
- * @codeCoverageIgnore Service provider only provides service registration
- */
 class TranslatorServiceProvider extends ServiceProvider
 {
     /**
@@ -20,7 +17,7 @@ class TranslatorServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Tranlator is required for error messages
+        // Translator is required for error messages
         $this->app->bind(ContractedTranslator::class, function () {
             return $this->app->make('translator');
         });

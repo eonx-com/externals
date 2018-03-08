@@ -5,9 +5,9 @@ namespace Tests\EoneoPay\External\Bridge\Laravel\Providers;
 
 use EoneoPay\External\Bridge\Laravel\Providers\OrmServiceProvider;
 use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
-use Tests\EoneoPay\External\BridgeProvidersTestCase;
+use Tests\EoneoPay\External\LaravelBridgeProvidersTestCase;
 
-class OrmServiceProviderTest extends BridgeProvidersTestCase
+class OrmServiceProviderTest extends LaravelBridgeProvidersTestCase
 {
     /**
      * Test provider extend entity manager in container using our entity manager.
