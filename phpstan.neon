@@ -5,7 +5,6 @@ parameters:
         - '#Property Tests\\EoneoPay\\External\\BridgeProvidersTestCase::\$app \(Illuminate\\Contracts\\Foundation\\Application\) does not accept Illuminate\\Container\\Container.#'
         - '#Method Tests\\EoneoPay\\External\\BridgeProvidersTestCase::getApplication\(\) should return Illuminate\\Contracts\\Foundation\\Application but returns Illuminate\\Container\\Container.#'
         - '#Parameter \#1 \$client of class EoneoPay\\External\\HttpClient\\Client constructor expects GuzzleHttp\\Client\|null, Mockery\\MockInterface given.#'
-        - '#Variable \$response might not be defined.#'
         - '#Parameter \#2 $logger of class EoneoPay\\External\\HttpClient\\Client constructor expects EoneoPay\\External\\Logger\\Interfaces\\LoggerInterface|null, Mockery\\MockInterface given.#'
         - '#Parameter \#3 $response of class GuzzleHttp\\Exception\\RequestException constructor expects Psr\\Http\\Message\\ResponseInterface\|null, Mockery\\MockInterface|null given.#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\External\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Interfaces\ValidatorInterface;
 use EoneoPay\External\Bridge\Laravel\Providers\ValidationServiceProvider;
+use EoneoPay\External\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\External\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Interfaces\RequestInterface;
 use EoneoPay\External\Bridge\Laravel\Providers\RequestServiceProvider;
+use EoneoPay\External\Request\Interfaces\RequestInterface;
 use Tests\EoneoPay\External\BridgeProvidersTestCase;
 
 class RequestServiceProviderTest extends BridgeProvidersTestCase

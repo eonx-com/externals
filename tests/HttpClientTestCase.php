@@ -16,6 +16,9 @@ use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Test case needs high cohesion to mock container
+ */
 abstract class HttpClientTestCase extends TestCase
 {
     /**

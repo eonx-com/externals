@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\Bridge\Laravel;
 
-use EoneoPay\External\Bridge\Laravel\Interfaces\ValidatorInterface;
+use EoneoPay\External\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Validation\Factory;
 
 class Validator implements ValidatorInterface

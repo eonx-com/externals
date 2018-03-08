@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\Bridge\Laravel;
 
-use EoneoPay\External\Bridge\Laravel\Interfaces\TranslatorInterface;
+use EoneoPay\External\Translator\Interfaces\TranslatorInterface;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 
 class Translator implements TranslatorInterface

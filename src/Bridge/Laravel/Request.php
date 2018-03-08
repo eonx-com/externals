@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\Bridge\Laravel;
 
-use EoneoPay\External\Bridge\Laravel\Interfaces\RequestInterface;
+use EoneoPay\External\Request\Interfaces\RequestInterface;
 use Illuminate\Http\Request as HttpRequest;
 
 class Request implements RequestInterface
