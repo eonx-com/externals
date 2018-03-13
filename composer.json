@@ -17,6 +17,9 @@
     "indigophp/doctrine-annotation-autoload": "^0.1.0",
     "laravel-doctrine/extensions": "^1.0",
     "laravel-doctrine/orm": "1.4.*",
+    "league/flysystem": "^1.0",
+    "league/flysystem-aws-s3-v3": "^1.0",
+    "mikey179/vfsStream": "^1.6",
     "mockery/mockery": "^1.0",
     "monolog/monolog": "^1.23",
     "phpunit/phpunit": "~6.0"

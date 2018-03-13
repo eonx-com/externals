@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\External;
 
+use Illuminate\Config\Repository as IlluminateConfig;
+use Illuminate\Container\Container as IlluminateContainer;
+use Illuminate\Contracts\Container\Container as IlluminateContainerContract;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Container\Container as IlluminateContainerContract;
-use Illuminate\Container\Container as IlluminateContainer;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
@@ -37,10 +38,35 @@ abstract class LaravelBridgeProvidersTestCase extends DoctrineTestCase
         $app->bind(IlluminateContainerContract::class, function () use ($app) {
             return $app;
         });
+
         // Bind event dispatcher
         $app->bind(IlluminateDispatcherContract::class, function () use ($app) {
             return new Dispatcher($app);
         });
+
+        $app->bind('config', function () {
+            return new IlluminateConfig([
+                'filesystems' => [
+                    'default' => 'local',
+                    'cloud' => 's3',
+                    'disks' => [
+                        'local' => [
+                            'driver' => 'local',
+                            'root' => sys_get_temp_dir()
+                        ],
+                        's3' => [
+                            'driver' => 's3',
+                            'key' => null,
+                            'secret' => null,
+                            'region' => 'us-west-2',
+                            'bucket' => null,
+                            'url' => null
+                        ]
+                    ]
+                ]
+            ]);
+        });
+
         // Bind translator
         $app->bind('translator', function () {
             return new Translator(new ArrayLoader(), 'en');
