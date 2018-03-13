@@ -30,6 +30,7 @@ class FilesystemTest extends TestCase
         $contents = 'contents';
 
         self::assertTrue($filesystem->write($filename, $contents));
+        self::assertSame(\sprintf('vfs://root/%s', $filename), $filesystem->path($filename));
         self::assertTrue($filesystem->exists($filename));
         self::assertSame($contents, $filesystem->read($filename));
     }

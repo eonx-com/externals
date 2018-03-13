@@ -8,30 +8,39 @@ interface FilesystemInterface
     /**
      * Check whether a file exists
      *
-     * @param string $path
+     * @param string $filename The file to check
      *
      * @return bool
      */
-    public function exists(string $path): bool;
+    public function exists(string $filename): bool;
+
+    /**
+     * Get the full path to a file
+     *
+     * @param string|null $filename The filename to append to the path
+     *
+     * @return string
+     */
+    public function path(?string $filename = null): string;
 
     /**
      * Get contents of a file
      *
-     * @param string $path The path to the file
+     * @param string $filename The filename to read from
      *
      * @return string
      *
      * @throws \EoneoPay\External\Filesystem\Exceptions\FileNotFoundException If file is not found
      */
-    public function read(string $path): string;
+    public function read(string $filename): string;
 
     /**
      * Write a file to the filesystem
      *
-     * @param string $path The path to write to
+     * @param string $filename The filename to write to
      * @param string $contents The contents to write to the file
      *
      * @return bool
      */
-    public function write(string $path, string $contents): bool;
+    public function write(string $filename, string $contents): bool;
 }

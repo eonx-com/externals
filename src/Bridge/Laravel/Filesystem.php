@@ -31,28 +31,43 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
     /**
      * Check whether a file exists
      *
-     * @param string $path
+     * @param string $filename The file to check
      *
      * @return bool
      */
-    public function exists(string $path): bool
+    public function exists(string $filename): bool
     {
-        return $this->filesystem->exists($path);
+        return $this->filesystem->exists($filename);
+    }
+
+    /**
+     * Get the full path to a file
+     *
+     * @param string|null $filename The filename to append to the path
+     *
+     * @return string
+     */
+    public function path(?string $filename = null): string
+    {
+        /** @noinspection PhpUndefinedMethodInspection */
+        // Method is in \Illuminate\Filesystem\FilesystemAdapter
+        // @see: https://github.com/illuminate/contracts/pull/6
+        return $this->filesystem->path((string)$filename);
     }
 
     /**
      * Get contents of a file
      *
-     * @param string $path The path to the file
+     * @param string $filename The filename to read from
      *
      * @return string
      *
      * @throws \EoneoPay\External\Filesystem\Exceptions\FileNotFoundException If file is not found
      */
-    public function read(string $path): string
+    public function read(string $filename): string
     {
         try {
-            return $this->filesystem->get($path);
+            return $this->filesystem->get($filename);
         } catch (ContractedFileNotFoundException $exception) {
             // Wrap exception
             throw new FileNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
@@ -62,13 +77,13 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
     /**
      * Write a file to the filesystem
      *
-     * @param string $path The path to write to
+     * @param string $filename The filename to write to
      * @param string $contents The contents to write to the file
      *
      * @return bool
      */
-    public function write(string $path, string $contents): bool
+    public function write(string $filename, string $contents): bool
     {
-        return $this->filesystem->put($path, $contents);
+        return $this->filesystem->put($filename, $contents);
     }
 }
