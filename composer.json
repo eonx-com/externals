@@ -39,6 +39,7 @@
     "illuminate/http": "Required to use the laravel request bridge",
     "illuminate/validation": "Required to use the validate subscriber and laravel validate bridge",
     "laravel-doctrine/orm": "Required to use the ORM class",
+    "league/flysystem": "Required to use the Filesystem class",
     "monolog/monolog": "Required to use the logger class"
   },
   "minimum-stability": "stable",
