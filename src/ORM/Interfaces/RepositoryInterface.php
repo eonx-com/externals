@@ -15,6 +15,13 @@ interface RepositoryInterface
     public function find($entityId);
 
     /**
+     * Get all records from a repository
+     *
+     * @return array|null
+     */
+    public function findAll(): ?array;
+
+    /**
      * Finds entitys which match a set of criteria
      *
      * @param array $criteria Array of criteria to find by

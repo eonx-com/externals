@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EoneoPay\External\ORM;
 
-use EoneoPay\External\ORM\Interfaces\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use EoneoPay\External\ORM\Interfaces\RepositoryInterface;
 
 class Repository extends SimpleOrmDecorator implements RepositoryInterface
 {
@@ -30,6 +30,18 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
     public function find($entityId)
     {
         return $this->callMethod('find', $entityId);
+    }
+
+    /**
+     * Get all records from a repository
+     *
+     * @return array|null
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If EntityManager has an error
+     */
+    public function findAll(): ?array
+    {
+        return $this->callMethod('findAll') ?? [];
     }
 
     /**
