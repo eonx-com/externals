@@ -96,6 +96,16 @@ abstract class Entity implements EntityInterface, SerializableInterface
     }
 
     /**
+     * Get a list of attributes or keys which are able to be filled, by default all fields can be set
+     *
+     * @return array
+     */
+    public function getFillableProperties(): array
+    {
+        return $this->invokeEntityMethod('getFillable', ['*']);
+    }
+
+    /**
      * Get entity id.
      *
      * @return null|string|int
@@ -251,16 +261,6 @@ abstract class Entity implements EntityInterface, SerializableInterface
         $resolved = $this->resolveProperty($property);
 
         return $resolved ? $this->{$resolved} : null;
-    }
-
-    /**
-     * Get a list of attributes or keys which are able to be filled, by default all fields can be set
-     *
-     * @return array
-     */
-    private function getFillableProperties(): array
-    {
-        return $this->invokeEntityMethod('getFillable', ['*']);
     }
 
     /**

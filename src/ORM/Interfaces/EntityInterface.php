@@ -27,6 +27,13 @@ interface EntityInterface
     public function fill(array $data): void;
 
     /**
+     * Get a list of attributes or keys which are able to be filled, by default all fields can be set
+     *
+     * @return array
+     */
+    public function getFillableProperties(): array;
+
+    /**
      * Get entity id.
      *
      * @return null|string|int
