@@ -6,6 +6,7 @@ namespace EoneoPay\External\ORM;
 use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
 use EoneoPay\External\ORM\Exceptions\EntityValidationFailedException;
 use EoneoPay\External\ORM\Exceptions\ORMException;
+use EoneoPay\External\ORM\Exceptions\RepositoryClassNotFoundException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
 use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
 use EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface;
@@ -64,6 +65,24 @@ class EntityManager implements EntityManagerInterface
      */
     public function getRepository(string $class): RepositoryInterface
     {
+        $metaDataClass = $this->entityManager->getClassMetadata($class);
+        $customRepositoryClassName = $metaDataClass->customRepositoryClassName;
+
+        //Enable query builder in custom repository.
+        if ($metaDataClass->customRepositoryClassName) {
+            if (!\class_exists($customRepositoryClassName)) {
+                throw new RepositoryClassNotFoundException(sprintf('%s not found', $customRepositoryClassName));
+            }
+
+            $defaultRepositoryClassName = $this->entityManager->getConfiguration()->getDefaultRepositoryClassName();
+
+            return new $metaDataClass->customRepositoryClassName(
+                new $defaultRepositoryClassName($this->entityManager,
+                    $metaDataClass
+                )
+            );
+        }
+
         return new Repository($this->entityManager->getRepository($class));
     }
 
