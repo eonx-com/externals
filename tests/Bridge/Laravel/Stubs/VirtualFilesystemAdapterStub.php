@@ -17,6 +17,11 @@ use RecursiveIteratorIterator;
 use RuntimeException;
 use SplFileInfo;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Class is a copy of the flysystem default
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Class is a copy of the flysystem default
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) Methods are dictated by the flysystem interface
+ */
 class VirtualFilesystemAdapterStub extends AbstractAdapter
 {
     /**
@@ -42,6 +47,8 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      * @param string $root The optional root directly to use
      *
      * @throws \org\bovigo\vfs\vfsStreamException If root directory contains an invalid character
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) vfsStream requires methods to be statically accessed
      */
     public function __construct(string $root = null)
     {
@@ -118,6 +125,8 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
 
     /**
      * @inheritdoc
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Flysystem requires Util methods to be statically accessed
      */
     public function getMimetype($path)
     {
@@ -178,7 +187,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     /**
      * @inheritdoc
      */
-    public function listContents($directory = '', $recursive = false): array
+    public function listContents($directory = '', $recursive = null): array
     {
         $result = [];
         $location = $this->applyPathPrefix($directory);
@@ -187,7 +196,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
             return [];
         }
 
-        $iterator = $recursive ?
+        $iterator = $recursive === true ?
             $this->getRecursiveDirectoryIterator($location) :
             $this->getDirectoryIterator($location);
 
@@ -232,6 +241,8 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
 
     /**
      * @inheritdoc
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Flysystem requires Util methods to be statically accessed
      */
     public function rename($path, $newpath): bool
     {
@@ -261,6 +272,8 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
 
     /**
      * @inheritdoc
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Flysystem requires Util methods to be statically accessed
      */
     public function update($path, $contents, Config $config)
     {
@@ -371,7 +384,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         // @see: https://github.com/kalessil/phpinspectionsea/blob/master/docs/probable-bugs.md#mkdir-race-condition
         /** @noinspection NotOptimalIfConditionsInspection */
         if (\is_dir($folder) === false &&
-            \mkdir($folder, $permissions = self::$permissions['dir']['public'], true) === false &&
+            \mkdir($folder, self::$permissions['dir']['public'], true) === false &&
             \is_dir($folder) === false
         ) {
             throw new RuntimeException(sprintf('Unable to create the directory "%s".', $folder));
@@ -425,6 +438,8 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      * @param SplFileInfo $file
      *
      * @throws \League\Flysystem\UnreadableFileException
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Flysystem requires UnreadableFileException method to be statically accessed
      */
     protected function guardAgainstUnreadableFileInfo(SplFileInfo $file): void
     {
