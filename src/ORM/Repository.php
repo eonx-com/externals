@@ -77,9 +77,11 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
      * Creates a new QueryBuilder instance that is prepopulated for this entity name.
      *
      * @param string $alias
-     * @param string $indexBy The index for the from.
+     * @param string|null $indexBy
      *
      * @return \Doctrine\ORM\QueryBuilder
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
      */
     protected function createQueryBuilder(string $alias, string $indexBy = null): QueryBuilder
     {

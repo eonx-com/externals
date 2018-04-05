@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\External\ORM;
 
+use Doctrine\ORM\QueryBuilder;
 use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationFailedException;
 use EoneoPay\External\ORM\Exceptions\ORMException;
 use EoneoPay\External\ORM\Exceptions\RepositoryClassNotFoundException;
@@ -28,9 +29,11 @@ class EntityManagerTest extends DoctrineTestCase
     public function testCustomRepository(): void
     {
         $repository = $this->getEntityManager()->getRepository(EntityStubWithCustomRepository::class);
+        $queryBuilder = $repository->getQueryBuilder();
 
         self::assertTrue(\method_exists($repository, 'createQueryBuilder'));
         self::assertEquals(false, \is_callable('createQueryBuilder', false, $repository));
+        self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
     }
 
     /**
