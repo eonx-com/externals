@@ -58,7 +58,7 @@ class EntityManager implements EntityManagerInterface
 
     /**
      * Gets the repository from an entity class. If custom repository is defined and annotation is set,
-     * the custom repository will be returned with ability to use query builder.
+     * the custom repository will be returned with the ability to use query builder.
      *
      * @param string $class The class name of the entity to generate a repository for
      *
