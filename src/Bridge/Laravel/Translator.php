@@ -38,4 +38,20 @@ class Translator implements TranslatorInterface
     {
         return $this->translator->trans($key, $replace ?? [], $locale);
     }
+
+    /**
+     * Get a value from the language file and ensure a string is always returned
+     *
+     * @param string $key The key to fetch the message for
+     * @param array|null $replace Attributes to replace within the message
+     * @param string|null $locale The locale to fetch the key from
+     *
+     * @return string|null
+     */
+    public function string(string $key, ?array $replace = null, ?string $locale = null): ?string
+    {
+        $tranlated = $this->get($key, $replace ?? [], $locale);
+
+        return \is_array($tranlated) ? \implode(', ', $tranlated) : $tranlated;
+    }
 }

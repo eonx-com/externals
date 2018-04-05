@@ -56,4 +56,27 @@ class TranslatorTest extends TestCase
             $translator->get('test.message', ['variable' => 'replacement'])
         );
     }
+
+    /**
+     * Test translator string method
+     *
+     * @return void
+     */
+    public function testTranslatorStringAlwaysReturnsString(): void
+    {
+        $language = [
+            'messages' => [
+                'one' => 'First message',
+                'two' => 'Second message'
+            ]
+        ];
+
+        $loader = new ArrayLoader();
+        $loader->addMessages('en', 'test', $language);
+
+        $translator = new Translator(new ContractedTranslator($loader, 'en'));
+
+        self::assertSame($language['messages']['one'], $translator->string('test.messages.one'));
+        self::assertSame(\implode(', ', $language['messages']), $translator->string('test.messages'));
+    }
 }

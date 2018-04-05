@@ -1,13 +1,14 @@
 parameters:
     ignoreErrors:
-        - '#PHPDoc tag @param for parameter \$\w+ with type mixed is not subtype of native type array<int, mixed>#'
         - '#Call to an undefined method EoneoPay\\External\\ORM\\Interfaces\\EntityInterface::(getRules|getValidationFailedException)\(\).#'
-        - '#Property Tests\\EoneoPay\\External\\BridgeProvidersTestCase::\$app \(Illuminate\\Contracts\\Foundation\\Application\) does not accept Illuminate\\Container\\Container.#'
-        - '#Method Tests\\EoneoPay\\External\\BridgeProvidersTestCase::getApplication\(\) should return Illuminate\\Contracts\\Foundation\\Application but returns Illuminate\\Container\\Container.#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Filesystem\\Filesystem::path\(\).#'
+        - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
+        - "#Casting to string something that's already string.#"
+        - '#Class Tests\\EoneoPay\\External\\ORM\\Stubs\\InvalidClass not found.#'
+        - '#Method Tests\\EoneoPay\\External\\LaravelBridgeProvidersTestCase::getApplication\(\) should return Illuminate\\Contracts\\Foundation\\Application but returns Illuminate\\Container\\Container.#'
         - '#Parameter \#1 \$client of class EoneoPay\\External\\HttpClient\\Client constructor expects GuzzleHttp\\Client\|null, Mockery\\MockInterface given.#'
+        - '#Parameter \#1 \$validationFactory of class EoneoPay\\External\\ORM\\Subscribers\\ValidateEventSubscriber constructor expects Illuminate\\Contracts\\Validation\\Factory, Mockery\\MockInterface given.#'
         - '#Parameter \#2 $logger of class EoneoPay\\External\\HttpClient\\Client constructor expects EoneoPay\\External\\Logger\\Interfaces\\LoggerInterface|null, Mockery\\MockInterface given.#'
         - '#Parameter \#3 $response of class GuzzleHttp\\Exception\\RequestException constructor expects Psr\\Http\\Message\\ResponseInterface\|null, Mockery\\MockInterface|null given.#'
-        - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
-        - '#Parameter \#1 \$validationFactory of class EoneoPay\\External\\ORM\\Subscribers\\ValidateEventSubscriber constructor expects Illuminate\\Contracts\\Validation\\Factory, Mockery\\MockInterface given.#'
-        - '#Class Tests\\EoneoPay\\External\\ORM\\Stubs\\InvalidClass not found.#'
-        - "#Casting to string something that's already string.#"
+        - '#PHPDoc tag @param for parameter \$\w+ with type mixed is not subtype of native type array<int, mixed>#'
+        - '#Property Tests\\EoneoPay\\External\\LaravelBridgeProvidersTestCase::\$app \(Illuminate\\Contracts\\Foundation\\Application\) does not accept Illuminate\\Container\\Container.#'
