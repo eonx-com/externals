@@ -22,6 +22,9 @@ class EntityStubWithCustomRepository extends Entity
      */
     protected $entityId;
 
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         return [

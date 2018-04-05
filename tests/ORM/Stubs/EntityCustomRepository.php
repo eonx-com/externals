@@ -12,6 +12,7 @@ class EntityCustomRepository extends Repository
      * Test only method in order to achieve 100% coverage.
      *
      * @return QueryBuilder
+     *
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException
      */
     public function getQueryBuilder(): QueryBuilder

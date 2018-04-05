@@ -23,6 +23,8 @@ class EntityManagerTest extends DoctrineTestCase
     /**
      * Custom repository should be able to call "createQueryBuilder" method and "createQueryBuilder" method is not public.
      *
+     * @return void
+     *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      */
@@ -38,6 +40,8 @@ class EntityManagerTest extends DoctrineTestCase
 
     /**
      * Test when custom repository is not found, a "RepositoryNotFoundException" will be thrown.
+     *
+     * @return void
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException

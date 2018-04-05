@@ -22,6 +22,9 @@ class EntityStubWithNotFoundRepository extends Entity
      */
     protected $entityId;
 
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         return [
