@@ -5,9 +5,12 @@ namespace Tests\EoneoPay\External\ORM;
 
 use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationFailedException;
 use EoneoPay\External\ORM\Exceptions\ORMException;
+use EoneoPay\External\ORM\Exceptions\RepositoryClassNotFoundException;
 use EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface;
 use Tests\EoneoPay\External\DoctrineTestCase;
 use Tests\EoneoPay\External\ORM\Stubs\EntityStub;
+use Tests\EoneoPay\External\ORM\Stubs\EntityStubWithCustomRepository;
+use Tests\EoneoPay\External\ORM\Stubs\EntityStubWithNotFoundRepository;
 use Tests\EoneoPay\External\ORM\Stubs\EntityWithValidationStub;
 use Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub;
 
@@ -16,6 +19,33 @@ use Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub;
  */
 class EntityManagerTest extends DoctrineTestCase
 {
+    /**
+     * Custom repository should be able to call "createQueryBuilder" method and "createQueryBuilder" method is not public.
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function testCustomRepository(): void
+    {
+        $repository = $this->getEntityManager()->getRepository(EntityStubWithCustomRepository::class);
+
+        self::assertTrue(\method_exists($repository, 'createQueryBuilder'));
+        self::assertEquals(false, \is_callable('createQueryBuilder', false, $repository));
+    }
+
+    /**
+     * Test when custom repository is not found, a "RepositoryNotFoundException" will be thrown.
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function testCustomRepositoryNotFoundException(): void
+    {
+        $this->expectException(RepositoryClassNotFoundException::class);
+
+        $this->getEntityManager()->getRepository(EntityStubWithNotFoundRepository::class);
+    }
+
     /**
      * Test entity manager should wrap Doctrine exceptions into its own ORMException.
      *

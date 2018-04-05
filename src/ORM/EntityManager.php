@@ -57,18 +57,20 @@ class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * Gets the repository from an entity class
+     * Gets the repository from an entity class. If custom repository is defined and annotation is set,
+     * the custom repository will be returned with ability to use query builder.
      *
      * @param string $class The class name of the entity to generate a repository for
      *
      * @return \EoneoPay\External\ORM\Interfaces\RepositoryInterface
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\RepositoryClassNotFoundException;
      */
     public function getRepository(string $class): RepositoryInterface
     {
         $metaDataClass = $this->entityManager->getClassMetadata($class);
         $customRepositoryClassName = $metaDataClass->customRepositoryClassName;
 
-        //Enable query builder in custom repository.
         if ($metaDataClass->customRepositoryClassName) {
             if (!\class_exists($customRepositoryClassName)) {
                 throw new RepositoryClassNotFoundException(sprintf('%s not found', $customRepositoryClassName));
