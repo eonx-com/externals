@@ -6,6 +6,7 @@ namespace EoneoPay\External\ORM;
 use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
 use EoneoPay\External\ORM\Exceptions\EntityValidationFailedException;
 use EoneoPay\External\ORM\Exceptions\ORMException;
+use EoneoPay\External\ORM\Exceptions\RepositoryClassNotFoundException;
 use EoneoPay\External\ORM\Interfaces\EntityInterface;
 use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
 use EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface;
@@ -56,15 +57,35 @@ class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * Gets the repository from an entity class
+     * Gets the repository from an entity class. If custom repository is defined and annotation is set,
+     * the custom repository will be returned with the ability to use query builder.
      *
      * @param string $class The class name of the entity to generate a repository for
      *
      * @return \EoneoPay\External\ORM\Interfaces\RepositoryInterface
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\RepositoryClassNotFoundException;
      */
     public function getRepository(string $class): RepositoryInterface
     {
-        return new Repository($this->entityManager->getRepository($class));
+        $metaDataClass = $this->entityManager->getClassMetadata($class);
+        $customRepositoryClassName = $metaDataClass->customRepositoryClassName;
+
+        if (!$metaDataClass->customRepositoryClassName) {
+            return new Repository($this->entityManager->getRepository($class));
+        }
+
+        if (!\class_exists($customRepositoryClassName)) {
+            throw new RepositoryClassNotFoundException(sprintf('%s not found', $customRepositoryClassName));
+        }
+
+        $defaultRepositoryClassName = $this->entityManager->getConfiguration()->getDefaultRepositoryClassName();
+
+        return new $metaDataClass->customRepositoryClassName(
+            new $defaultRepositoryClassName($this->entityManager,
+                $metaDataClass
+            )
+        );
     }
 
     /**
