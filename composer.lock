@@ -965,12 +965,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/loyaltycorp/standards.git",
-                "reference": "9b9cc0e26a53cad4d7125095a020dd1c6bef5134"
+                "reference": "c3248da255366016ec6ed54799a56cfc4560c32d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/loyaltycorp/standards/zipball/9b9cc0e26a53cad4d7125095a020dd1c6bef5134",
-                "reference": "9b9cc0e26a53cad4d7125095a020dd1c6bef5134",
+                "url": "https://api.github.com/repos/loyaltycorp/standards/zipball/c3248da255366016ec6ed54799a56cfc4560c32d",
+                "reference": "c3248da255366016ec6ed54799a56cfc4560c32d",
                 "shasum": ""
             },
             "require": {
@@ -998,7 +998,7 @@
                 "eoneopay",
                 "standards"
             ],
-            "time": "2018-04-04T07:50:42+00:00"
+            "time": "2018-04-06T02:18:06+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
