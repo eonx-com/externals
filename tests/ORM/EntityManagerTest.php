@@ -3,11 +3,16 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\External\ORM;
 
+use Doctrine\ORM\QueryBuilder;
 use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationFailedException;
 use EoneoPay\External\ORM\Exceptions\ORMException;
+use EoneoPay\External\ORM\Exceptions\RepositoryClassNotFoundException;
 use EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface;
 use Tests\EoneoPay\External\DoctrineTestCase;
+use Tests\EoneoPay\External\ORM\Stubs\EntityCustomRepository;
 use Tests\EoneoPay\External\ORM\Stubs\EntityStub;
+use Tests\EoneoPay\External\ORM\Stubs\EntityStubWithCustomRepository;
+use Tests\EoneoPay\External\ORM\Stubs\EntityStubWithNotFoundRepository;
 use Tests\EoneoPay\External\ORM\Stubs\EntityWithValidationStub;
 use Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub;
 
@@ -16,6 +21,41 @@ use Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub;
  */
 class EntityManagerTest extends DoctrineTestCase
 {
+    /**
+     * Custom repository should be able to call "createQueryBuilder" method and "createQueryBuilder" method is not public.
+     *
+     * @return void
+     *
+     * @throws ORMException
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function testCustomRepository(): void
+    {
+        /** @var EntityCustomRepository $repository */
+        $repository = $this->getEntityManager()->getRepository(EntityStubWithCustomRepository::class);
+        $queryBuilder = $repository->getQueryBuilder();
+
+        self::assertTrue(\method_exists($repository, 'createQueryBuilder'));
+        self::assertNotInternalType('callable', [$repository, 'createQueryBuilder']);
+        self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
+    }
+
+    /**
+     * Test when custom repository is not found, a "RepositoryNotFoundException" will be thrown.
+     *
+     * @return void
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function testCustomRepositoryNotFoundException(): void
+    {
+        $this->expectException(RepositoryClassNotFoundException::class);
+
+        $this->getEntityManager()->getRepository(EntityStubWithNotFoundRepository::class);
+    }
+
     /**
      * Test entity manager should wrap Doctrine exceptions into its own ORMException.
      *

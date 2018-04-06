@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EoneoPay\External\ORM;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\QueryBuilder;
 use EoneoPay\External\ORM\Interfaces\RepositoryInterface;
 
 class Repository extends SimpleOrmDecorator implements RepositoryInterface
@@ -70,5 +71,20 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
     public function findOneBy(array $criteria)
     {
         return $this->callMethod('findOneBy', $criteria);
+    }
+
+    /**
+     * Creates a new QueryBuilder instance that is prepopulated for this entity name.
+     *
+     * @param string $alias
+     * @param string|null $indexBy
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
+     */
+    protected function createQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilder
+    {
+        return $this->callMethod('createQueryBuilder', $alias, $indexBy);
     }
 }
