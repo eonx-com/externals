@@ -37,7 +37,7 @@ class EntityManagerTest extends DoctrineTestCase
         $queryBuilder = $repository->getQueryBuilder();
 
         self::assertTrue(\method_exists($repository, 'createQueryBuilder'));
-        self::assertEquals(false, \is_callable('createQueryBuilder', false, $repository));
+        self::assertFalse(\is_callable('createQueryBuilder', false, $repository));
         self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
     }
 

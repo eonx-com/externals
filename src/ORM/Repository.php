@@ -83,7 +83,7 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
      *
      * @throws \EoneoPay\External\ORM\Exceptions\ORMException
      */
-    protected function createQueryBuilder(string $alias, string $indexBy = null): QueryBuilder
+    protected function createQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilder
     {
         return $this->callMethod('createQueryBuilder', $alias, $indexBy);
     }
