@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "489b3bb4b2554024899174302f5bdd34",
+    "content-hash": "11a86bcaee8ffc5b20a172bb5a7011d2",
     "packages": [
         {
             "name": "eoneopay/utils",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/loyaltycorp/utils.git",
-                "reference": "d141216d449492fce76d742ebc4baec55cb54f2d"
+                "reference": "c6f35f12f17aba8c7bb50c5dfb0d81831632b029"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/loyaltycorp/utils/zipball/d141216d449492fce76d742ebc4baec55cb54f2d",
-                "reference": "d141216d449492fce76d742ebc4baec55cb54f2d",
+                "url": "https://api.github.com/repos/loyaltycorp/utils/zipball/c6f35f12f17aba8c7bb50c5dfb0d81831632b029",
+                "reference": "c6f35f12f17aba8c7bb50c5dfb0d81831632b029",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "BSD-3-Clause"
             ],
             "description": "Utility and helper classes",
             "keywords": [
@@ -57,7 +57,7 @@
                 "helpers",
                 "utilities"
             ],
-            "time": "2018-04-04T23:09:39+00:00"
+            "time": "2018-04-04T23:12:18+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -223,16 +223,16 @@
     "packages-dev": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.54.0",
+            "version": "3.54.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "86d1892b41381b77070acb199a57097c71b0f124"
+                "reference": "421118dc7a7d01520e13917a86179c9cbe6934b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/86d1892b41381b77070acb199a57097c71b0f124",
-                "reference": "86d1892b41381b77070acb199a57097c71b0f124",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/421118dc7a7d01520e13917a86179c9cbe6934b2",
+                "reference": "421118dc7a7d01520e13917a86179c9cbe6934b2",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +299,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-04-04T18:22:54+00:00"
+            "time": "2018-04-05T19:28:11+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -2356,16 +2356,16 @@
         },
         {
             "name": "laravel-doctrine/orm",
-            "version": "1.4.5",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-doctrine/orm.git",
-                "reference": "f5a7a622d67099df6941324c2283b6b63a5c240e"
+                "reference": "b9a21b848b8efa35c844e963d459259dda2bd8c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-doctrine/orm/zipball/f5a7a622d67099df6941324c2283b6b63a5c240e",
-                "reference": "f5a7a622d67099df6941324c2283b6b63a5c240e",
+                "url": "https://api.github.com/repos/laravel-doctrine/orm/zipball/b9a21b848b8efa35c844e963d459259dda2bd8c8",
+                "reference": "b9a21b848b8efa35c844e963d459259dda2bd8c8",
                 "shasum": ""
             },
             "require": {
@@ -2380,7 +2380,7 @@
                 "illuminate/validation": "5.5.*|5.6.*",
                 "illuminate/view": "5.5.*|5.6.*",
                 "php": ">=7.0",
-                "symfony/serializer": "^2.7|^3.0"
+                "symfony/serializer": "^2.7|~3.0|~4.0"
             },
             "require-dev": {
                 "barryvdh/laravel-debugbar": "~2.0",
@@ -2438,7 +2438,7 @@
                 "laravel",
                 "orm"
             ],
-            "time": "2018-02-27T12:53:16+00:00"
+            "time": "2018-03-20T14:30:21+00:00"
         },
         {
             "name": "league/flysystem",
@@ -6035,38 +6035,38 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v3.4.7",
+            "version": "v4.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "d4dc1551da627273230fe16511f4bb4844c02399"
+                "reference": "d0e9269101ccd978af971fd4d7a892848672bfa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/d4dc1551da627273230fe16511f4bb4844c02399",
-                "reference": "d4dc1551da627273230fe16511f4bb4844c02399",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/d0e9269101ccd978af971fd4d7a892848672bfa1",
+                "reference": "d0e9269101ccd978af971fd4d7a892848672bfa1",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8"
+                "php": "^7.1.3"
             },
             "conflict": {
                 "phpdocumentor/type-resolver": "<0.2.1",
-                "symfony/dependency-injection": "<3.2",
-                "symfony/property-access": ">=3.0,<3.0.4|>=2.8,<2.8.4",
-                "symfony/property-info": "<3.1",
+                "symfony/dependency-injection": "<3.4",
+                "symfony/property-access": "<3.4",
+                "symfony/property-info": "<3.4",
                 "symfony/yaml": "<3.4"
             },
             "require-dev": {
                 "doctrine/annotations": "~1.0",
                 "doctrine/cache": "~1.0",
                 "phpdocumentor/reflection-docblock": "^3.0|^4.0",
-                "symfony/cache": "~3.1|~4.0",
-                "symfony/config": "~2.8|~3.0|~4.0",
-                "symfony/dependency-injection": "~3.2|~4.0",
-                "symfony/http-foundation": "~2.8|~3.0|~4.0",
-                "symfony/property-access": "~2.8|~3.0|~4.0",
-                "symfony/property-info": "~3.1|~4.0",
+                "symfony/cache": "~3.4|~4.0",
+                "symfony/config": "~3.4|~4.0",
+                "symfony/dependency-injection": "~3.4|~4.0",
+                "symfony/http-foundation": "~3.4|~4.0",
+                "symfony/property-access": "~3.4|~4.0",
+                "symfony/property-info": "~3.4|~4.0",
                 "symfony/yaml": "~3.4|~4.0"
             },
             "suggest": {
@@ -6082,7 +6082,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4-dev"
+                    "dev-master": "4.0-dev"
                 }
             },
             "autoload": {
@@ -6109,7 +6109,7 @@
             ],
             "description": "Symfony Serializer Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-15T19:08:29+00:00"
+            "time": "2018-03-19T17:30:36+00:00"
         },
         {
             "name": "symfony/translation",
