@@ -74,6 +74,8 @@ abstract class HttpClientTestCase extends TestCase
      * @param int|null $statusCode
      *
      * @return \Mockery\MockInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
     protected function mockGuzzleClientForRequestException(
         MockInterface $body = null,
@@ -103,6 +105,8 @@ abstract class HttpClientTestCase extends TestCase
      * @param int|null $statusCode
      *
      * @return \Mockery\MockInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
     protected function mockGuzzleClientForResponse(MockInterface $body, int $statusCode = null): MockInterface
     {
@@ -124,6 +128,8 @@ abstract class HttpClientTestCase extends TestCase
      * @param int|null $statusCode
      *
      * @return \Mockery\MockInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
     protected function mockGuzzleResponse(MockInterface $body, int $statusCode = null): MockInterface
     {
@@ -140,6 +146,8 @@ abstract class HttpClientTestCase extends TestCase
      * Mock logger for the case that an exception is thrown.
      *
      * @return \Mockery\MockInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
     protected function mockLoggerForException(): MockInterface
     {
@@ -164,6 +172,8 @@ abstract class HttpClientTestCase extends TestCase
      * @param string $contents
      *
      * @return \Mockery\MockInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
     protected function mockStreamForContents(string $contents): MockInterface
     {
@@ -177,6 +187,8 @@ abstract class HttpClientTestCase extends TestCase
      * Mock stream interface to throw runtime exception when getting contents.
      *
      * @return \Mockery\MockInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
     protected function mockStreamForRuntimeException(): MockInterface
     {
