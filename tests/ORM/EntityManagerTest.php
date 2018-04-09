@@ -17,12 +17,12 @@ use Tests\EoneoPay\External\ORM\Stubs\EntityWithValidationStub;
 use Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub;
 
 /**
- * This TestCase also cover FiltersCollection and Repository.
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) This tests the full functionality of the EntityManager
  */
 class EntityManagerTest extends DoctrineTestCase
 {
     /**
-     * Custom repository should be able to call "createQueryBuilder" method and "createQueryBuilder" method is not public.
+     * Custom repository should be able to call createQueryBuilder() even though it's protected
      *
      * @return void
      *
