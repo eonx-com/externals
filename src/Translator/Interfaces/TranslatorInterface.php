@@ -25,5 +25,5 @@ interface TranslatorInterface
      *
      * @return string|null
      */
-    public function string(string $key, ?array $replace = null, ?string $locale = null): ?string;
+    public function trans(string $key, ?array $replace = null, ?string $locale = null): ?string;
 }

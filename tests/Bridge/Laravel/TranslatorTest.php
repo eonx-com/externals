@@ -76,7 +76,7 @@ class TranslatorTest extends TestCase
 
         $translator = new Translator(new ContractedTranslator($loader, 'en'));
 
-        self::assertSame($language['messages']['one'], $translator->string('test.messages.one'));
-        self::assertSame(\implode(', ', $language['messages']), $translator->string('test.messages'));
+        self::assertSame($language['messages']['one'], $translator->trans('test.messages.one'));
+        self::assertSame(\implode(', ', $language['messages']), $translator->trans('test.messages'));
     }
 }
