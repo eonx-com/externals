@@ -71,7 +71,7 @@ class Client implements ClientInterface
         $this->logResponse($response);
 
         // If response is unsuccessful, throw exception
-        if ($response->isSuccessful() === false) {
+        if (false === $response->isSuccessful()) {
             throw new InvalidApiResponseException($exception ?? null, $response);
         }
 
@@ -107,7 +107,7 @@ class Client implements ClientInterface
     {
         $this->logException($exception);
 
-        if ($exception->hasResponse() && $exception->getResponse() !== null) {
+        if ($exception->hasResponse() && null !== $exception->getResponse()) {
             $content = $this->getBodyContents($exception->getResponse()->getBody());
 
             return new Response(
@@ -211,12 +211,12 @@ class Client implements ClientInterface
     private function processResponseContent(string $content): ?array
     {
         // If contents is json, decode it
-        if ($this->isJson($content) === true) {
+        if (true === $this->isJson($content)) {
             return \json_decode($content, true);
         }
 
         // If content is xml, decode it
-        if ($this->isXml($content) === true) {
+        if (true === $this->isXml($content)) {
             try {
                 return (new XmlConverter())->xmlToArray($content);
                 // @codeCoverageIgnoreStart

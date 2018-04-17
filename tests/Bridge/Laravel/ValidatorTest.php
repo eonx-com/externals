@@ -15,16 +15,6 @@ use Tests\EoneoPay\External\TestCase;
 class ValidatorTest extends TestCase
 {
     /**
-     * Test validator can validate data
-     *
-     * @return void
-     */
-    public function testValidatorWithSuccessfulValidation(): void
-    {
-        self::assertTrue($this->createValidator()->validate(['key' => 'value'], ['key' => 'required|string']));
-    }
-
-    /**
      * Test error messages work as expected
      *
      * @return void
@@ -35,6 +25,16 @@ class ValidatorTest extends TestCase
 
         self::assertFalse($validator->validate(['key' => 'value'], ['missing' => 'required']));
         self::assertSame($validator->getFailures(), ['missing' => ['missing is required']]);
+    }
+
+    /**
+     * Test validator can validate data
+     *
+     * @return void
+     */
+    public function testValidatorWithSuccessfulValidation(): void
+    {
+        self::assertTrue($this->createValidator()->validate(['key' => 'value'], ['key' => 'required|string']));
     }
 
     /**

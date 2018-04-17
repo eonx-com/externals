@@ -6,6 +6,8 @@ namespace Tests\EoneoPay\External\ORM\Stubs;
 use Doctrine\ORM\Mapping as ORM;
 use EoneoPay\External\ORM\Entity;
 
+/** @noinspection RepositoryClassInspection Invalid repository intentionally used */
+
 /**
  * @ORM\Entity(repositoryClass="Tests\EoneoPay\External\ORM\Stubs\NotFoundRepository")
  */

@@ -8,9 +8,9 @@ interface EventDispatcherInterface
     /**
      * Fire an event and call the listeners.
      *
-     * @param  string|mixed  $event
-     * @param  mixed  $payload
-     * @param  bool  $halt
+     * @param  string|mixed $event
+     * @param  mixed $payload
+     * @param  bool $halt
      *
      * @return array|null
      */

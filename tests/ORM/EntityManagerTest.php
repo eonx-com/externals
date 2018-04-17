@@ -38,6 +38,7 @@ class EntityManagerTest extends DoctrineTestCase
 
         self::assertTrue(\method_exists($repository, 'createQueryBuilder'));
         self::assertNotInternalType('callable', [$repository, 'createQueryBuilder']);
+        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
         self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
     }
 
@@ -90,6 +91,7 @@ class EntityManagerTest extends DoctrineTestCase
         $filters->enable('soft-deleteable');
         $filters->disable('soft-deleteable');
 
+        /** @noinspection UnnecessaryAssertionInspection Test of actual returned instance */
         self::assertInstanceOf(FilterCollectionInterface::class, $filters);
     }
 
@@ -104,6 +106,8 @@ class EntityManagerTest extends DoctrineTestCase
     public function testGetFiltersReturnRightCollection(): void
     {
         $filters = $this->getEntityManager()->getFilters();
+
+        /** @noinspection UnnecessaryAssertionInspection Test of actual returned instance */
         self::assertInstanceOf(FilterCollectionInterface::class, $filters);
     }
 

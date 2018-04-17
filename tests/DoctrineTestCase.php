@@ -24,6 +24,7 @@ use ReflectionClass;
 use ReflectionException;
 
 /** @noinspection EfferentObjectCouplingInspection */
+
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) To handle magic of Doctrine configuration
  */

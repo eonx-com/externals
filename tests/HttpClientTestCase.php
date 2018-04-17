@@ -22,6 +22,13 @@ use RuntimeException;
 abstract class HttpClientTestCase extends TestCase
 {
     /**
+     * Request exception message.
+     *
+     * @var string
+     */
+    protected const EXCEPTION_MESSAGE = 'exception_message';
+
+    /**
      * Method used to mock guzzle client request.
      *
      * @var string
@@ -34,13 +41,6 @@ abstract class HttpClientTestCase extends TestCase
      * @var string
      */
     protected const URI = 'https://eoneopay.com.au';
-
-    /**
-     * Request exception message.
-     *
-     * @var string
-     */
-    protected const EXCEPTION_MESSAGE = 'exception_message';
 
     /**
      * Headers used to mock guzzle client response.

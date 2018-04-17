@@ -14,6 +14,27 @@ use Tests\EoneoPay\External\TestCase;
 class TranslatorTest extends TestCase
 {
     /**
+     * Test translator handles replacements
+     *
+     * @return void
+     */
+    public function testTranslatorReplacesVariablesInMessages(): void
+    {
+        $language = ['message' => 'message received: :variable'];
+
+        $loader = new ArrayLoader();
+        $loader->addMessages('en', 'test', $language);
+
+        $translator = new Translator(new ContractedTranslator($loader, 'en'));
+
+        self::assertSame($language['message'], $translator->get('test.message'));
+        self::assertSame(
+            \str_replace(':variable', 'replacement', $language['message']),
+            $translator->get('test.message', ['variable' => 'replacement'])
+        );
+    }
+
+    /**
      * Test translator can retrieve messages
      *
      * @return void
@@ -34,27 +55,6 @@ class TranslatorTest extends TestCase
         self::assertSame($english['message'], $translator->get('test.message', [], 'en'));
         self::assertSame($french['message'], $translator->get('test.message', [], 'fr'));
         self::assertSame('test.message', $translator->get('test.message', [], 'invalid'));
-    }
-
-    /**
-     * Test translator handles replacements
-     *
-     * @return void
-     */
-    public function testTranslatorReplacesVariablesInMessages(): void
-    {
-        $language = ['message' => 'message received: :variable'];
-
-        $loader = new ArrayLoader();
-        $loader->addMessages('en', 'test', $language);
-
-        $translator = new Translator(new ContractedTranslator($loader, 'en'));
-
-        self::assertSame($language['message'], $translator->get('test.message'));
-        self::assertSame(
-            \str_replace(':variable', 'replacement', $language['message']),
-            $translator->get('test.message', ['variable' => 'replacement'])
-        );
     }
 
     /**

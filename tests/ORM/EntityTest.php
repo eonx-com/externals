@@ -30,6 +30,31 @@ class EntityTest extends DoctrineTestCase
     ];
 
     /**
+     * Test associate function. Stubs used for it are made to provide full coverage.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     */
+    public function testAssociateParentWithChildren(): void
+    {
+        $parent = new ParentEntityStub();
+        $child = new ChildEntityStub(['annotation_name' => 'string']);
+
+        $child->setParent($parent);
+
+        // Test parent is parent class
+        self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
+        // Test parent contains child
+        self::assertTrue($parent->getChildren()->contains($child));
+
+        $child->setParent($parent);
+
+        // Test parent contains child only once
+        self::assertEquals(1, $parent->getChildren()->count());
+    }
+
+    /**
      * Test constructor fills entity with data
      *
      * @return void
@@ -250,28 +275,5 @@ class EntityTest extends DoctrineTestCase
             'unique:Tests\EoneoPay\External\ORM\Stubs\EntityStub,email,,entityId,where1,value1',
             (new EntityStub())->getEmailUniqueRuleForTest(['where1' => 'value1'])
         );
-    }
-
-    /**
-     * Test associate function. Stubs used for it are made to provide full coverage.
-     *
-     * @return void
-     */
-    public function testAssociateParentWithChildren(): void
-    {
-        $parent = new ParentEntityStub();
-        $child = new ChildEntityStub(['annotation_name' => 'string']);
-
-        $child->setParent($parent);
-
-        // Test parent is parent class
-        self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
-        // Test parent contains child
-        self::assertTrue($parent->getChildren()->contains($child));
-
-        $child->setParent($parent);
-
-        // Test parent contains child only once
-        self::assertEquals(1, $parent->getChildren()->count());
     }
 }

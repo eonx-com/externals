@@ -25,13 +25,6 @@ use SplFileInfo;
 class VirtualFilesystemAdapterStub extends AbstractAdapter
 {
     /**
-     * Virtual file system instance
-     *
-     * @var \org\bovigo\vfs\vfsStreamDirectory
-     */
-    private static $vfs;
-
-    /**
      * Default access permissions
      *
      * @var array
@@ -40,6 +33,13 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         'dir' => ['private' => 0700, 'public' => 0755],
         'file' => ['private' => 0600, 'public' => 0644]
     ];
+
+    /**
+     * Virtual file system instance
+     *
+     * @var \org\bovigo\vfs\vfsStreamDirectory
+     */
+    private static $vfs;
 
     /**
      * Create virtual file system
@@ -221,7 +221,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $location = $this->applyPathPrefix($path);
         $contents = \file_get_contents($location);
 
-        if ($contents === false) {
+        if (false === $contents) {
             return false;
         }
 
@@ -263,7 +263,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $type = \is_dir($location) ? 'dir' : 'file';
         $success = \chmod($location, self::$permissions[$type][$visibility]);
 
-        if ($success === false) {
+        if (false === $success) {
             return false;
         }
 
@@ -281,7 +281,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $mimetype = Util::guessMimeType($path, $contents);
         $size = \file_put_contents($location, $contents);
 
-        if ($size === false) {
+        if (false === $size) {
             return false;
         }
 
@@ -306,7 +306,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $location = $this->applyPathPrefix($path);
         $this->ensureDirectory(\dirname($location));
 
-        if (($size = \file_put_contents($location, $contents)) === false) {
+        if (false === ($size = \file_put_contents($location, $contents))) {
             return false;
         }
 
@@ -314,7 +314,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $result = compact('contents', 'type', 'size', 'path');
 
         $visibility = $config->get('visibility');
-        if ($visibility !== null) {
+        if (null !== $visibility) {
             $result['visibility'] = $visibility;
             $this->setVisibility($path, $visibility);
         }
@@ -331,18 +331,18 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $this->ensureDirectory(\dirname($location));
         $stream = \fopen($location, 'w+b');
 
-        if (!$stream) {
+        if (false === $stream) {
             return false;
         }
 
         \stream_copy_to_stream($resource, $stream);
 
-        if (!fclose($stream)) {
+        if (false === fclose($stream)) {
             return false;
         }
 
         $visibility = $config->get('visibility');
-        if ($visibility !== null) {
+        if (null !== $visibility) {
             $this->setVisibility($path, $visibility);
         }
 
@@ -383,9 +383,9 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     {
         // @see: https://github.com/kalessil/phpinspectionsea/blob/master/docs/probable-bugs.md#mkdir-race-condition
         /** @noinspection NotOptimalIfConditionsInspection */
-        if (\is_dir($folder) === false &&
-            \mkdir($folder, self::$permissions['dir']['public'], true) === false &&
-            \is_dir($folder) === false
+        if (false === \is_dir($folder) &&
+            false === \mkdir($folder, self::$permissions['dir']['public'], true) &&
+            false === \is_dir($folder)
         ) {
             throw new RuntimeException(sprintf('Unable to create the directory "%s".', $folder));
         }
@@ -437,8 +437,6 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     /**
      * @param SplFileInfo $file
      *
-     * @throws \League\Flysystem\UnreadableFileException
-     *
      * @SuppressWarnings(PHPMD.StaticAccess) Flysystem requires UnreadableFileException method to be statically accessed
      */
     protected function guardAgainstUnreadableFileInfo(SplFileInfo $file): void
@@ -462,7 +460,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
 
         $normalized['timestamp'] = $file->getMTime();
 
-        if ($normalized['type'] === 'file') {
+        if ('file' === $normalized['type']) {
             $normalized['size'] = $file->getSize();
         }
 

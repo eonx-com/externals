@@ -29,6 +29,13 @@ abstract class Entity implements EntityInterface, SerializableInterface
     }
 
     /**
+     * Serialize entity as an array
+     *
+     * @return array
+     */
+    abstract public function toArray(): array;
+
+    /**
      * Allow getX() and setX($value) to get and set column values
      *
      * This method searches case insensitive
@@ -38,7 +45,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
      *
      * @return mixed Value or null on getX(), self on setX(value)
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\InvalidMethodCallException If the prefix or property are invalid
+     * @throws \EoneoPay\External\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist or isn't mutable
      */
     public function __call(string $method, array $parameters)
     {
@@ -53,7 +60,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
 
         // The property being accessed must exist and the type must be valid if one of these things
         // aren't true throw an exception
-        if ($type === '' || $property === null || ($type === 'set' && !$this->isFillable($property))) {
+        if ('' === $type || null === $property || ('set' === $type && false === $this->isFillable($property))) {
             throw new InvalidMethodCallException(
                 \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
             );
@@ -69,7 +76,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
 
             case 'is':
                 // Always return a boolean
-                return (bool) $this->get($property);
+                return (bool)$this->get($property);
 
             case 'set':
                 // Return original instance for fluency
@@ -129,13 +136,6 @@ abstract class Entity implements EntityInterface, SerializableInterface
     }
 
     /**
-     * Serialize entity as an array
-     *
-     * @return array
-     */
-    abstract public function toArray(): array;
-
-    /**
      * Serialize entity as json
      *
      * @return string
@@ -170,6 +170,8 @@ abstract class Entity implements EntityInterface, SerializableInterface
      * @param string $association The attribute on the entity for the one to many collection
      *
      * @return mixed The original entity for fluency
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      */
     protected function associate(string $attribute, Entity $parent, string $association)
     {
@@ -185,8 +187,8 @@ abstract class Entity implements EntityInterface, SerializableInterface
         }
 
         // If attribute is not this, remove existing association
-        if ($this->{$attribute} !== null &&
-            $this->{$attribute} !== $this &&
+        if (null !== $this->{$attribute} &&
+            $this !== $this->{$attribute} &&
             $this->{$attribute}->{$collection}()->contains($this)) {
             $this->{$attribute}->{$collection}()->removeElement($this);
         }
@@ -305,7 +307,20 @@ abstract class Entity implements EntityInterface, SerializableInterface
      */
     private function invokeEntityMethod(string $method, ?array $default = null): array
     {
-        return \method_exists($this, $method) && \is_array($this->{$method}()) ? $this->{$method}() : $default ?? [];
+        try {
+            if (\method_exists($this, $method) && \is_array($this->{$method}())) {
+                return $this->{$method}();
+            }
+            // @codeCoverageIgnoreStart
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidMethodCallException $exception) {
+            // Exception intentionally ignored, it'll never be thrown due to only being used on methods
+            // which are confirmed to exist via method_exists()
+            // @todo: Investigate why this inspection is failing
+        }
+        // @codeCoverageIgnoreEnd
+
+        // Return default value or empty array
+        return $default ?? [];
     }
 
     /**
@@ -375,7 +390,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
     private function resolvePropertyFromAnnotations(string $property): ?string
     {
         // If there are no resolvable annotations, return
-        if (\count($this->getResolvableAnnotations()) === 0) {
+        if (0 === \count($this->getResolvableAnnotations())) {
             return null;
         }
 
@@ -412,7 +427,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
         // Property was not found
         return null;
     }
-
+    
     /**
      * Set the value for a property
      *
@@ -426,7 +441,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
         $resolved = $this->resolveProperty($property);
 
         // If property is not found or not fillable, return
-        if ($resolved === null || !$this->isFillable($resolved)) {
+        if (null === $resolved || false === $this->isFillable($resolved)) {
             return $this;
         }
 
@@ -434,10 +449,17 @@ abstract class Entity implements EntityInterface, SerializableInterface
         $this->{$resolved} = $value;
 
         // Run transformer if applicable
-        $method = \sprintf('transform%s', \ucfirst($resolved));
-        if (\method_exists($this, $method)) {
-            $this->{$method}();
+        try {
+            $method = \sprintf('transform%s', \ucfirst($resolved));
+            if (\method_exists($this, $method)) {
+                $this->{$method}();
+            }
+            // @codeCoverageIgnoreStart
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidMethodCallException $exception) {
+            // Exception will not be thrown so intentionally ignored
+            // @todo: Investigate why this inspection is failing
         }
+        // @codeCoverageIgnoreEnd
 
         return $this;
     }

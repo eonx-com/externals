@@ -52,6 +52,8 @@ class ChildEntityStub extends EntityStub
      * @param \Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub $parent
      *
      * @return \Tests\EoneoPay\External\ORM\Stubs\ChildEntityStub
+     *
+     * @throws \EoneoPay\External\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      */
     public function setParent(ParentEntityStub $parent): self
     {

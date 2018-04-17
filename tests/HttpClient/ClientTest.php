@@ -22,6 +22,7 @@ class ClientTest extends HttpClientTestCase
         $response = (new Client($this->mockGuzzleClientForResponse($this->mockStreamForRuntimeException())))
             ->request(self::METHOD, self::URI);
 
+        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
         self::assertInstanceOf(ResponseInterface::class, $response);
         self::assertEquals('', $response->getContent());
     }
@@ -53,6 +54,7 @@ class ClientTest extends HttpClientTestCase
         $contents = \sprintf('{"email":"%s"}', $email);
         $response = $this->clientRequest($contents);
 
+        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
         self::assertInstanceOf(ResponseInterface::class, $response);
         self::assertEquals($contents, $response->getContent());
         self::assertEquals($email, $response->get('email'));
@@ -70,6 +72,7 @@ class ClientTest extends HttpClientTestCase
         $contents = 'my contents';
         $response = $this->clientRequest($contents);
 
+        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
         self::assertInstanceOf(ResponseInterface::class, $response);
         self::assertEquals($contents, $response->getContent());
         self::assertEquals(200, $response->getStatusCode());
@@ -90,6 +93,7 @@ class ClientTest extends HttpClientTestCase
         $response = (new Client($this->mockGuzzleClientForRequestException($this->mockStreamForContents($contents))))
             ->request(self::METHOD, self::URI);
 
+        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
         self::assertInstanceOf(ResponseInterface::class, $response);
         self::assertEquals($contents, $response->getContent());
     }
@@ -126,6 +130,7 @@ class ClientTest extends HttpClientTestCase
         $contents = \sprintf('<data><email>%s</email></data>', $email);
         $response = $this->clientRequest($contents);
 
+        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
         self::assertInstanceOf(ResponseInterface::class, $response);
         self::assertEquals($contents, $response->getContent());
         self::assertEquals($email, $response->get('email'));

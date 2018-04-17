@@ -106,6 +106,6 @@ class EntityStub extends Entity
      */
     public function transformString(): void
     {
-        $this->string = (string) $this->string;
+        $this->string = (string)$this->string;
     }
 }

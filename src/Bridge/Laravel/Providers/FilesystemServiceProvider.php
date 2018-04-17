@@ -36,18 +36,23 @@ class FilesystemServiceProvider extends ServiceProvider
     }
 
     /**
-     * Determine if a driver is available
+     * Get the default cloud based file driver.
      *
-     * @param string $driver The driver to check
-     *
-     * @return bool
+     * @return string|null
      */
-    private function driverExists(string $driver): bool
+    protected function getCloudDriver(): ?string
     {
-        // Determine driver key from configuration
-        $key = $this->app->make('config')->get(\sprintf('filesystems.%s', $driver));
+        return $this->app->make('config')->get('filesystems.cloud');
+    }
 
-        return $key !== null && $this->app->make('config')->get(\sprintf('filesystems.disks.%s', $key)) !== null;
+    /**
+     * Get the default file driver.
+     *
+     * @return string|null
+     */
+    protected function getDefaultDriver(): ?string
+    {
+        return $this->app->make('config')->get('filesystems.default');
     }
 
     /**
@@ -63,22 +68,17 @@ class FilesystemServiceProvider extends ServiceProvider
     }
 
     /**
-     * Get the default file driver.
+     * Determine if a driver is available
      *
-     * @return string|null
+     * @param string $driver The driver to check
+     *
+     * @return bool
      */
-    protected function getDefaultDriver(): ?string
+    private function driverExists(string $driver): bool
     {
-        return $this->app->make('config')->get('filesystems.default');
-    }
+        // Determine driver key from configuration
+        $key = $this->app->make('config')->get(\sprintf('filesystems.%s', $driver));
 
-    /**
-     * Get the default cloud based file driver.
-     *
-     * @return string|null
-     */
-    protected function getCloudDriver(): ?string
-    {
-        return $this->app->make('config')->get('filesystems.cloud');
+        return $key !== null && $this->app->make('config')->get(\sprintf('filesystems.disks.%s', $key)) !== null;
     }
 }
