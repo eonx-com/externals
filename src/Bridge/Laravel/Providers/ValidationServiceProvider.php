@@ -8,7 +8,6 @@ use EoneoPay\External\Bridge\Laravel\Validator;
 use EoneoPay\External\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Validation\Factory;
 
 class ValidationServiceProvider extends ServiceProvider
 {
@@ -25,16 +24,6 @@ class ValidationServiceProvider extends ServiceProvider
         });
 
         // Interface for validating adhoc objects, depends on translator
-        $this->app->bind(ValidatorInterface::class, function () {
-            // Add custom rules
-            $factory = $this->app->make(Factory::class);
-            $factory->resolver(
-                function ($translator, $data, $rules, $messages, $attributes) {
-                    return new CustomRules($translator, $data, $rules, $messages, $attributes);
-                }
-            );
-
-            return new Validator($factory);
-        });
+        $this->app->bind(ValidatorInterface::class, Validator::class);
     }
 }

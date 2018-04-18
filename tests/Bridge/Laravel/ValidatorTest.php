@@ -11,9 +11,50 @@ use Tests\EoneoPay\External\TestCase;
 
 /**
  * @covers \EoneoPay\External\Bridge\Laravel\Validator
+ * @covers \EoneoPay\External\Bridge\Laravel\Validation\EmptyWithRule
  */
 class ValidatorTest extends TestCase
 {
+    /**
+     * Test custom rule to empty with
+     *
+     * @return void
+     */
+    public function testValidatorCustomRuleEmptyWith(): void
+    {
+        $validator = $this->createValidator();
+
+        // If both keys and value have values the rule should fail
+        self::assertFalse($validator->validate(
+            ['key1' => 'value1', 'key2' => 'value2'],
+            ['key2' => 'empty_with:key1|string']
+        ));
+
+        // If key1 has a value without key2 the rule should pass
+        self::assertTrue($validator->validate(
+            ['key1' => 'value1'],
+            ['key2' => 'empty_with:key1|string']
+        ));
+
+        // If neither key has a value the rule should pass
+        self::assertTrue($validator->validate(
+            [],
+            ['key2' => 'empty_with:key1|string']
+        ));
+
+        // If both keys are specified but only one has a value the rule should pass
+        self::assertTrue($validator->validate(
+            ['key1' => 'value1', 'key2' => ''],
+            ['key2' => 'empty_with:key1|string']
+        ));
+
+        // If just the tested key has a value the rule should pass
+        self::assertTrue($validator->validate(
+            ['key1' => '', 'key2' => 'value2'],
+            ['key2' => 'empty_with:key1|string']
+        ));
+    }
+
     /**
      * Test error messages work as expected
      *
