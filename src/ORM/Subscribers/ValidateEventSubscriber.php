@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\ORM\Subscribers;
+namespace EoneoPay\Externals\ORM\Subscribers;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -11,10 +11,10 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
-use EoneoPay\External\Logger\Interfaces\LoggerInterface;
-use EoneoPay\External\Logger\Logger;
-use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationFailedException;
-use EoneoPay\External\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
+use EoneoPay\Externals\Logger\Logger;
+use EoneoPay\Externals\ORM\Exceptions\DefaultEntityValidationFailedException;
+use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\ValidationException;
@@ -26,7 +26,7 @@ use Illuminate\Validation\Validator;
 class ValidateEventSubscriber implements EventSubscriber
 {
     /**
-     * @var \EoneoPay\External\Logger\Interfaces\LoggerInterface
+     * @var \EoneoPay\Externals\Logger\Interfaces\LoggerInterface
      */
     private $logger;
 
@@ -39,7 +39,7 @@ class ValidateEventSubscriber implements EventSubscriber
      * ValidateEventSubscriber constructor.
      *
      * @param \Illuminate\Contracts\Validation\Factory $validationFactory
-     * @param null|\EoneoPay\External\Logger\Interfaces\LoggerInterface $logger
+     * @param null|\EoneoPay\Externals\Logger\Interfaces\LoggerInterface $logger
      */
     public function __construct(ValidationFactory $validationFactory, ?LoggerInterface $logger = null)
     {
@@ -67,7 +67,7 @@ class ValidateEventSubscriber implements EventSubscriber
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException Inherited, if validation fails
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException Inherited, if validation fails
      */
     public function prePersist(LifecycleEventArgs $eventArgs): void
     {
@@ -81,7 +81,7 @@ class ValidateEventSubscriber implements EventSubscriber
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException Inherited, if validation fails
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException Inherited, if validation fails
      */
     public function preUpdate(LifecycleEventArgs $eventArgs): void
     {
@@ -96,7 +96,7 @@ class ValidateEventSubscriber implements EventSubscriber
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If validation fails
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
     private function callValidator(LifecycleEventArgs $eventArgs): void
     {
@@ -146,7 +146,7 @@ class ValidateEventSubscriber implements EventSubscriber
      * Get entity contents via reflection, this is used so there's no reliance
      * on entity methods such as toArray().
      *
-     * @param \EoneoPay\External\ORM\Interfaces\EntityInterface $entity
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity
      *
      * @return array
      */

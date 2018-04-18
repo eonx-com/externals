@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Logger;
+namespace Tests\EoneoPay\Externals\Logger;
 
-use EoneoPay\External\Logger\Logger;
+use EoneoPay\Externals\Logger\Logger;
 use Monolog\Logger as Monolog;
-use Tests\EoneoPay\External\Logger\Stubs\ArrayHandlerStub;
-use Tests\EoneoPay\External\Logger\Stubs\ThrowExceptionHandlerStub;
-use Tests\EoneoPay\External\TestCase;
+use Tests\EoneoPay\Externals\Logger\Stubs\ArrayHandlerStub;
+use Tests\EoneoPay\Externals\Logger\Stubs\ThrowExceptionHandlerStub;
+use Tests\EoneoPay\Externals\TestCase;
 
 class LoggerTest extends TestCase
 {

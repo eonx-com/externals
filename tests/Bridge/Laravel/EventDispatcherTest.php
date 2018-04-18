@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel;
+namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\Bridge\Laravel\EventDispatcher;
+use EoneoPay\Externals\Bridge\Laravel\EventDispatcher;
 use Illuminate\Events\Dispatcher as IlluminateDispatcher;
-use Tests\EoneoPay\External\TestCase;
+use Tests\EoneoPay\Externals\TestCase;
 
 class EventDispatcherTest extends TestCase
 {

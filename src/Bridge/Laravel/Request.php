@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel;
+namespace EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\Request\Interfaces\RequestInterface;
+use EoneoPay\Externals\Request\Interfaces\RequestInterface;
 use Illuminate\Http\Request as HttpRequest;
 
 class Request implements RequestInterface

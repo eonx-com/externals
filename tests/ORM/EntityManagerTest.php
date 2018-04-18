@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\ORM;
+namespace Tests\EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationFailedException;
-use EoneoPay\External\ORM\Exceptions\ORMException;
-use EoneoPay\External\ORM\Exceptions\RepositoryClassNotFoundException;
-use EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface;
-use Tests\EoneoPay\External\DoctrineTestCase;
-use Tests\EoneoPay\External\ORM\Stubs\EntityCustomRepository;
-use Tests\EoneoPay\External\ORM\Stubs\EntityStub;
-use Tests\EoneoPay\External\ORM\Stubs\EntityStubWithCustomRepository;
-use Tests\EoneoPay\External\ORM\Stubs\EntityStubWithNotFoundRepository;
-use Tests\EoneoPay\External\ORM\Stubs\EntityWithValidationStub;
-use Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub;
+use EoneoPay\Externals\ORM\Exceptions\DefaultEntityValidationFailedException;
+use EoneoPay\Externals\ORM\Exceptions\ORMException;
+use EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException;
+use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
+use Tests\EoneoPay\Externals\DoctrineTestCase;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityCustomRepository;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithCustomRepository;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithNotFoundRepository;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithValidationStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) This tests the full functionality of the EntityManager
@@ -64,8 +64,8 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testEntityManagerWrapsExceptionIntoORMException(): void
     {
@@ -82,7 +82,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testFiltersCollectionMethodsSuccessful(): void
     {
@@ -118,8 +118,8 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
@@ -144,8 +144,8 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
@@ -181,8 +181,8 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testPersistWithValidationFailedException(): void
     {
@@ -199,8 +199,8 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testRepositoryMethods(): void
     {
@@ -221,7 +221,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testSimpleOrmDecoratorExceptionWrapsExceptions(): void
     {

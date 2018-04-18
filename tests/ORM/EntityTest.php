@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\ORM;
+namespace Tests\EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
-use EoneoPay\External\ORM\Exceptions\InvalidMethodCallException;
-use Tests\EoneoPay\External\DoctrineTestCase;
-use Tests\EoneoPay\External\ORM\Stubs\ChildEntityStub;
-use Tests\EoneoPay\External\ORM\Stubs\EntityStub;
-use Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub;
+use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
+use Tests\EoneoPay\Externals\DoctrineTestCase;
+use Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
 
 /**
- * @covers \EoneoPay\External\ORM\Entity
+ * @covers \EoneoPay\Externals\ORM\Entity
  *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) Entity itself is complex so lot of tests to perform
  */
@@ -34,7 +34,7 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      */
     public function testAssociateParentWithChildren(): void
     {
@@ -176,7 +176,7 @@ class EntityTest extends DoctrineTestCase
         $entity = new EntityStub();
 
         $expected = [
-            'Tests\EoneoPay\External\ORM\Stubs\InvalidClass' => 'name', // This class is invalid
+            'Tests\EoneoPay\Externals\ORM\Stubs\InvalidClass' => 'name', // This class is invalid
             Column::class => 'name',
             Id::class => 'invalid' // This attribute is invalid
         ];
@@ -272,7 +272,7 @@ class EntityTest extends DoctrineTestCase
     public function testUniqueRuleAsStringMethod(): void
     {
         self::assertEquals(
-            'unique:Tests\EoneoPay\External\ORM\Stubs\EntityStub,email,,entityId,where1,value1',
+            'unique:Tests\EoneoPay\Externals\ORM\Stubs\EntityStub,email,,entityId,where1,value1',
             (new EntityStub())->getEmailUniqueRuleForTest(['where1' => 'value1'])
         );
     }

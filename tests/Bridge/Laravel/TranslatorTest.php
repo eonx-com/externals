@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel;
+namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\Bridge\Laravel\Translator;
+use EoneoPay\Externals\Bridge\Laravel\Translator;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator as ContractedTranslator;
-use Tests\EoneoPay\External\TestCase;
+use Tests\EoneoPay\Externals\TestCase;
 
 /**
- * @covers \EoneoPay\External\Bridge\Laravel\Translator
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Translator
  */
 class TranslatorTest extends TestCase
 {

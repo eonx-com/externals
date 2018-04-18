@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\HttpClient\Interfaces;
+namespace EoneoPay\Externals\HttpClient\Interfaces;
 
 use EoneoPay\Utils\Interfaces\RepositoryInterface;
 

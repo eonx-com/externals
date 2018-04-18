@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\ORM;
+namespace EoneoPay\Externals\ORM;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
-use EoneoPay\External\ORM\Interfaces\RepositoryInterface;
+use EoneoPay\Externals\ORM\Interfaces\RepositoryInterface;
 
 class Repository extends SimpleOrmDecorator implements RepositoryInterface
 {
@@ -26,7 +26,7 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
      *
      * @return mixed Associated entity on success, null if not found
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If EntityManager has an error
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function find($entityId)
     {
@@ -38,7 +38,7 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
      *
      * @return array|null
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If EntityManager has an error
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function findAll(): ?array
     {
@@ -52,7 +52,7 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
      *
      * @return array
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If EntityManager has an error
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function findBy(array $criteria): array
     {
@@ -66,7 +66,7 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
      *
      * @return mixed Associated entity on success, null if not found
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If EntityManager has an error
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function findOneBy(array $criteria)
     {
@@ -81,7 +81,7 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
      *
      * @return \Doctrine\ORM\QueryBuilder
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     protected function createQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilder
     {

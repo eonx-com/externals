@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\ORM\Stubs;
+namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\ORM\QueryBuilder;
-use EoneoPay\External\ORM\Repository;
+use EoneoPay\Externals\ORM\Repository;
 
 class EntityCustomRepository extends Repository
 {
@@ -13,7 +13,7 @@ class EntityCustomRepository extends Repository
      *
      * @return QueryBuilder
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function getQueryBuilder(): QueryBuilder
     {

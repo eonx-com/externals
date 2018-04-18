@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Logger\Stubs;
+namespace Tests\EoneoPay\Externals\Logger\Stubs;
 
 use Monolog\Handler\AbstractProcessingHandler;
 

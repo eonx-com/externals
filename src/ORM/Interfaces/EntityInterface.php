@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\ORM\Interfaces;
+namespace EoneoPay\Externals\ORM\Interfaces;
 
 interface EntityInterface
 {

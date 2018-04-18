@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel\Providers;
+namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\EventDispatcher;
-use EoneoPay\External\EventDispatcher\Interfaces\EventDispatcherInterface;
+use EoneoPay\Externals\Bridge\Laravel\EventDispatcher;
+use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
 use Illuminate\Support\ServiceProvider;
 
 class EventDispatcherServiceProvider extends ServiceProvider

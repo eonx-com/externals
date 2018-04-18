@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\ORM\Stubs;
+namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,9 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 class ChildEntityStub extends EntityStub
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub", inversedBy="children")
      *
-     * @var \Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub
+     * @var \Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub
      */
     protected $parent;
 
@@ -37,7 +37,7 @@ class ChildEntityStub extends EntityStub
      *
      * @return array
      *
-     * @see \Tests\EoneoPay\External\ORM\EntityTest::testPropertyAnnotationsContainsInvalidClassAndAttribute
+     * @see \Tests\EoneoPay\Externals\ORM\EntityTest::testPropertyAnnotationsContainsInvalidClassAndAttribute
      */
     public function getPropertyAnnotations(): array
     {
@@ -49,11 +49,11 @@ class ChildEntityStub extends EntityStub
     /**
      * Set parent.
      *
-     * @param \Tests\EoneoPay\External\ORM\Stubs\ParentEntityStub $parent
+     * @param \Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub $parent
      *
-     * @return \Tests\EoneoPay\External\ORM\Stubs\ChildEntityStub
+     * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      */
     public function setParent(ParentEntityStub $parent): self
     {

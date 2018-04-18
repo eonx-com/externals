@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel;
+namespace EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\Bridge\Laravel\Interfaces\ValidationRuleInterface;
-use EoneoPay\External\Bridge\Laravel\Validation\EmptyWithRule;
-use EoneoPay\External\Validator\Interfaces\ValidatorInterface;
+use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
+use EoneoPay\Externals\Bridge\Laravel\Validation\EmptyWithRule;
+use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Validation\Factory;
 
 class Validator implements ValidatorInterface
@@ -92,7 +92,7 @@ class Validator implements ValidatorInterface
      *
      * @param string $className The class this rule uses
      *
-     * @return \EoneoPay\External\Bridge\Laravel\Interfaces\ValidationRuleInterface|null
+     * @return \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface|null
      */
     private function addRule(string $className): ?ValidationRuleInterface
     {
@@ -104,7 +104,7 @@ class Validator implements ValidatorInterface
         }
 
         // Instantiate class
-        /** @var \EoneoPay\External\Bridge\Laravel\Interfaces\ValidationRuleInterface $rule */
+        /** @var \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface $rule */
         $rule = new $className();
 
         // If class isn't a valid rule, skip, this is only here for safety since method is private

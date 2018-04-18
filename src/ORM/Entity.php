@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\ORM;
+namespace EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\Mapping\Id;
-use EoneoPay\External\ORM\Exceptions\InvalidMethodCallException;
-use EoneoPay\External\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
+use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
 use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
@@ -45,7 +45,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
      *
      * @return mixed Value or null on getX(), self on setX(value)
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist or isn't mutable
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist or is immutable
      */
     public function __call(string $method, array $parameters)
     {
@@ -166,12 +166,12 @@ abstract class Entity implements EntityInterface, SerializableInterface
      * Associate an entity in a bidirectional way from the owning side
      *
      * @param string $attribute The attribute on the entity for the many to one association
-     * @param \EoneoPay\External\ORM\Entity $parent The entity to associate
+     * @param \EoneoPay\Externals\ORM\Entity $parent The entity to associate
      * @param string $association The attribute on the entity for the one to many collection
      *
      * @return mixed The original entity for fluency
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      */
     protected function associate(string $attribute, Entity $parent, string $association)
     {

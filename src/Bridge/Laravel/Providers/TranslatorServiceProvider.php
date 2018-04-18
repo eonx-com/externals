@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel\Providers;
+namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Translator;
-use EoneoPay\External\Translator\Interfaces\TranslatorInterface;
+use EoneoPay\Externals\Bridge\Laravel\Translator;
+use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 use Illuminate\Contracts\Translation\Translator as ContractedTranslator;
 use Illuminate\Support\ServiceProvider;
 

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel;
+namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\Bridge\Laravel\Request;
+use EoneoPay\Externals\Bridge\Laravel\Request;
 use Illuminate\Http\Request as HttpRequest;
-use Tests\EoneoPay\External\TestCase;
+use Tests\EoneoPay\Externals\TestCase;
 
 /**
- * @covers \EoneoPay\External\Bridge\Laravel\Request
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Request
  */
 class RequestTest extends TestCase
 {

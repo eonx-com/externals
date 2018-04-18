@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External;
+namespace Tests\EoneoPay\Externals;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\ArrayCache;
@@ -12,10 +12,10 @@ use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\SchemaTool;
-use EoneoPay\External\ORM\Entity;
-use EoneoPay\External\ORM\EntityManager;
-use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
-use EoneoPay\External\ORM\Subscribers\ValidateEventSubscriber;
+use EoneoPay\Externals\ORM\Entity;
+use EoneoPay\Externals\ORM\EntityManager;
+use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
+use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
@@ -52,7 +52,7 @@ abstract class DoctrineTestCase extends TestCase
     private $doctrine;
 
     /**
-     * @var \EoneoPay\External\ORM\Interfaces\EntityManagerInterface
+     * @var \EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface
      */
     private $entityManager;
 
@@ -87,7 +87,7 @@ abstract class DoctrineTestCase extends TestCase
         );
         // NOTE: driver for application Entity can be different, Yaml, Xml or whatever
         // register annotation driver for our application Entity fully qualified namespace
-        $driverChain->addDriver($annotationDriver, 'Tests\\EoneoPay\\External\\ORM\\Stubs');
+        $driverChain->addDriver($annotationDriver, 'Tests\\EoneoPay\\Externals\\ORM\\Stubs');
 
         // General ORM configuration
         $config = new Configuration();
@@ -125,7 +125,7 @@ abstract class DoctrineTestCase extends TestCase
      * Get entity contents via reflection, this is used so there's no reliance
      * on entity methods such as toArray for tests to work
      *
-     * @param \EoneoPay\External\ORM\Entity $entity The entity to get data from
+     * @param \EoneoPay\Externals\ORM\Entity $entity The entity to get data from
      *
      * @return array
      */
@@ -154,7 +154,7 @@ abstract class DoctrineTestCase extends TestCase
     /**
      * Get entity manager.
      *
-     * @return \EoneoPay\External\ORM\Interfaces\EntityManagerInterface
+     * @return \EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\Common\Annotations\AnnotationException

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel;
+namespace EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\Translator\Interfaces\TranslatorInterface;
+use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 
 class Translator implements TranslatorInterface

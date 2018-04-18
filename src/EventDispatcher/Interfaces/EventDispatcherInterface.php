@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\EventDispatcher\Interfaces;
+namespace EoneoPay\Externals\EventDispatcher\Interfaces;
 
 interface EventDispatcherInterface
 {

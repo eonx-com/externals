@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\HttpClient\Exceptions;
+namespace EoneoPay\Externals\HttpClient\Exceptions;
 
-use EoneoPay\External\HttpClient\Interfaces\InvalidApiResponseExceptionInterface;
-use EoneoPay\External\HttpClient\Interfaces\ResponseInterface;
+use EoneoPay\Externals\HttpClient\Interfaces\InvalidApiResponseExceptionInterface;
+use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
 use Exception;
 use Throwable;
 
@@ -19,7 +19,7 @@ class InvalidApiResponseException extends Exception implements InvalidApiRespons
      * InvalidApiResponseException constructor.
      *
      * @param \Throwable|null $previous
-     * @param \EoneoPay\External\HttpClient\Interfaces\ResponseInterface $response
+     * @param \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface $response
      */
     public function __construct(
         Throwable $previous = null,
@@ -33,7 +33,7 @@ class InvalidApiResponseException extends Exception implements InvalidApiRespons
     /**
      * Get response.
      *
-     * @return \EoneoPay\External\HttpClient\Interfaces\ResponseInterface
+     * @return \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface
      */
     public function getResponse(): ResponseInterface
     {

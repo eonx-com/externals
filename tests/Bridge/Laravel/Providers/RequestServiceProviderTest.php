@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel\Providers;
+namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Providers\RequestServiceProvider;
-use EoneoPay\External\Request\Interfaces\RequestInterface;
-use Tests\EoneoPay\External\LaravelBridgeProvidersTestCase;
+use EoneoPay\Externals\Bridge\Laravel\Providers\RequestServiceProvider;
+use EoneoPay\Externals\Request\Interfaces\RequestInterface;
+use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
 
 class RequestServiceProviderTest extends LaravelBridgeProvidersTestCase
 {

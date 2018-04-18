@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\ORM;
+namespace EoneoPay\Externals\ORM;
 
-use EoneoPay\External\ORM\Exceptions\ORMException;
+use EoneoPay\Externals\ORM\Exceptions\ORMException;
 use Exception;
 
 abstract class SimpleOrmDecorator
@@ -23,7 +23,7 @@ abstract class SimpleOrmDecorator
      *
      * @return mixed
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If database returns an error
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      */
     protected function callMethod(string $method, ...$parameters)
     {

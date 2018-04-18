@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Request\Interfaces;
+namespace EoneoPay\Externals\Request\Interfaces;
 
 interface RequestInterface
 {

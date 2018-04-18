@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\ORM\Query;
+namespace EoneoPay\Externals\ORM\Query;
 
 use Doctrine\ORM\Query\FilterCollection as DoctrineFilterCollection;
-use EoneoPay\External\ORM\Interfaces\Query\FilterCollectionInterface;
-use EoneoPay\External\ORM\SimpleOrmDecorator;
+use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
+use EoneoPay\Externals\ORM\SimpleOrmDecorator;
 
 class FilterCollection extends SimpleOrmDecorator implements FilterCollectionInterface
 {
@@ -26,7 +26,7 @@ class FilterCollection extends SimpleOrmDecorator implements FilterCollectionInt
      *
      * @return void.
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If the filter does not exist.
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
      */
     public function disable($name): void
     {
@@ -40,7 +40,7 @@ class FilterCollection extends SimpleOrmDecorator implements FilterCollectionInt
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If the filter does not exist.
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
      */
     public function enable($name): void
     {

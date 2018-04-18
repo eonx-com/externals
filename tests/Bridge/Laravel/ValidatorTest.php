@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel;
+namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\Bridge\Laravel\Validator;
+use EoneoPay\Externals\Bridge\Laravel\Validator;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
-use Tests\EoneoPay\External\TestCase;
+use Tests\EoneoPay\Externals\TestCase;
 
 /**
- * @covers \EoneoPay\External\Bridge\Laravel\Validator
- * @covers \EoneoPay\External\Bridge\Laravel\Validation\EmptyWithRule
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Validator
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Validation\EmptyWithRule
  */
 class ValidatorTest extends TestCase
 {
@@ -81,7 +81,7 @@ class ValidatorTest extends TestCase
     /**
      * Create validation instance
      *
-     * @return \EoneoPay\External\Bridge\Laravel\Validator
+     * @return \EoneoPay\Externals\Bridge\Laravel\Validator
      */
     private function createValidator(): Validator
     {

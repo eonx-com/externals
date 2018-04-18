@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel;
+namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\Bridge\Laravel\Filesystem;
-use EoneoPay\External\Filesystem\Exceptions\FileNotFoundException;
+use EoneoPay\Externals\Bridge\Laravel\Filesystem;
+use EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException;
 use Illuminate\Filesystem\FilesystemAdapter as ContractedFilesystem;
 use League\Flysystem\Filesystem as Flysystem;
-use Tests\EoneoPay\External\Bridge\Laravel\Stubs\VirtualFilesystemAdapterStub;
-use Tests\EoneoPay\External\TestCase;
+use Tests\EoneoPay\Externals\Bridge\Laravel\Stubs\VirtualFilesystemAdapterStub;
+use Tests\EoneoPay\Externals\TestCase;
 
 /**
- * @covers \EoneoPay\External\Bridge\Laravel\Filesystem
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Filesystem
  */
 class FilesystemTest extends TestCase
 {
@@ -54,7 +54,7 @@ class FilesystemTest extends TestCase
     /**
      * Create a filesystem instance for testing
      *
-     * @return \EoneoPay\External\Bridge\Laravel\Filesystem
+     * @return \EoneoPay\Externals\Bridge\Laravel\Filesystem
      *
      * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */

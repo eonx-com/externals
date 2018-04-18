@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Logger\Interfaces;
+namespace EoneoPay\Externals\Logger\Interfaces;
 
 use Exception;
 

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel\Validation;
+namespace EoneoPay\Externals\Bridge\Laravel\Validation;
 
 use Closure;
-use EoneoPay\External\Bridge\Laravel\Interfaces\ValidationRuleInterface;
+use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
 use EoneoPay\Utils\Arr;
 use Illuminate\Validation\Validator;
 

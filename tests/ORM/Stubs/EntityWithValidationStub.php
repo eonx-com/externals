@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\ORM\Stubs;
+namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\ORM\Mapping as ORM;
-use EoneoPay\External\ORM\Exceptions\DefaultEntityValidationFailedException;
+use EoneoPay\Externals\ORM\Exceptions\DefaultEntityValidationFailedException;
 
 /**
  * @ORM\Entity()

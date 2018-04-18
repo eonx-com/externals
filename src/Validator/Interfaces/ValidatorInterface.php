@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Validator\Interfaces;
+namespace EoneoPay\Externals\Validator\Interfaces;
 
 interface ValidatorInterface
 {

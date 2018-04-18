@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Filesystem\Interfaces;
+namespace EoneoPay\Externals\Filesystem\Interfaces;
 
 interface DiskFilesystemInterface extends FilesystemInterface
 {

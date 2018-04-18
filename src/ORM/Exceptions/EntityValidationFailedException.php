@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\ORM\Exceptions;
+namespace EoneoPay\Externals\ORM\Exceptions;
 
 use EoneoPay\Utils\Exceptions\ValidationException;
 

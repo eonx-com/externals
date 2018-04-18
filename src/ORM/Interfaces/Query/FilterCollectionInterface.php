@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\ORM\Interfaces\Query;
+namespace EoneoPay\Externals\ORM\Interfaces\Query;
 
 interface FilterCollectionInterface
 {
@@ -12,7 +12,7 @@ interface FilterCollectionInterface
      *
      * @return void.
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If the filter does not exist.
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
      */
     public function disable($name): void;
 
@@ -23,7 +23,7 @@ interface FilterCollectionInterface
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\ORMException If the filter does not exist.
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
      */
     public function enable($name): void;
 }

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel\Providers;
+namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Validation\CustomRules;
-use EoneoPay\External\Bridge\Laravel\Validator;
-use EoneoPay\External\Validator\Interfaces\ValidatorInterface;
+use EoneoPay\Externals\Bridge\Laravel\Validation\CustomRules;
+use EoneoPay\Externals\Bridge\Laravel\Validator;
+use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Support\ServiceProvider;
 

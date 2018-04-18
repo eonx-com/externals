@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\HttpClient;
+namespace EoneoPay\Externals\HttpClient;
 
-use EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException;
-use EoneoPay\External\HttpClient\Interfaces\ClientInterface;
-use EoneoPay\External\HttpClient\Interfaces\ResponseInterface;
-use EoneoPay\External\Logger\Interfaces\LoggerInterface;
+use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
+use EoneoPay\Externals\HttpClient\Interfaces\ClientInterface;
+use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
+use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
 use EoneoPay\Utils\Exceptions\InvalidXmlException;
 use EoneoPay\Utils\XmlConverter;
 use Exception;
@@ -31,7 +31,7 @@ class Client implements ClientInterface
      * Client constructor.
      *
      * @param \GuzzleHttp\Client|null $client
-     * @param \EoneoPay\External\Logger\Interfaces\LoggerInterface|null $logger
+     * @param \EoneoPay\Externals\Logger\Interfaces\LoggerInterface|null $logger
      */
     public function __construct(?Guzzle $client = null, LoggerInterface $logger = null)
     {
@@ -46,9 +46,9 @@ class Client implements ClientInterface
      * @param string $uri The uri to send the request to
      * @param array|null $options The options to send with the request
      *
-     * @return \EoneoPay\External\HttpClient\Interfaces\ResponseInterface A constructed api response
+     * @return \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface A constructed api response
      *
-     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function request(string $method, string $uri, ?array $options = null): ResponseInterface
     {
@@ -101,7 +101,7 @@ class Client implements ClientInterface
      *
      * @param \GuzzleHttp\Exception\RequestException $exception The exception thrown
      *
-     * @return \EoneoPay\External\HttpClient\Interfaces\ResponseInterface
+     * @return \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface
      */
     private function handleRequestException(RequestException $exception): ResponseInterface
     {
@@ -188,7 +188,7 @@ class Client implements ClientInterface
     /**
      * Log the received response
      *
-     * @param \EoneoPay\External\HttpClient\Interfaces\ResponseInterface $response The received response
+     * @param \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface $response The received response
      *
      * @return void
      */

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel;
+namespace EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\Filesystem\Exceptions\FileNotFoundException;
-use EoneoPay\External\Filesystem\Interfaces\CloudFilesystemInterface;
-use EoneoPay\External\Filesystem\Interfaces\DiskFilesystemInterface;
+use EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException;
+use EoneoPay\Externals\Filesystem\Interfaces\CloudFilesystemInterface;
+use EoneoPay\Externals\Filesystem\Interfaces\DiskFilesystemInterface;
 use Illuminate\Contracts\Filesystem\FileNotFoundException as ContractedFileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 
@@ -62,7 +62,7 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
      *
      * @return string
      *
-     * @throws \EoneoPay\External\Filesystem\Exceptions\FileNotFoundException If file is not found
+     * @throws \EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException If file is not found
      */
     public function read(string $filename): string
     {

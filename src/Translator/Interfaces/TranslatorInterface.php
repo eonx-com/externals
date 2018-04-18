@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Translator\Interfaces;
+namespace EoneoPay\Externals\Translator\Interfaces;
 
 interface TranslatorInterface
 {

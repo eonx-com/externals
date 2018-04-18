@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel\Providers;
+namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Filesystem;
-use EoneoPay\External\Filesystem\Interfaces\CloudFilesystemInterface;
-use EoneoPay\External\Filesystem\Interfaces\DiskFilesystemInterface;
+use EoneoPay\Externals\Bridge\Laravel\Filesystem;
+use EoneoPay\Externals\Filesystem\Interfaces\CloudFilesystemInterface;
+use EoneoPay\Externals\Filesystem\Interfaces\DiskFilesystemInterface;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Support\ServiceProvider;
 

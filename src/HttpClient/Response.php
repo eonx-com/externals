@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\HttpClient;
+namespace EoneoPay\Externals\HttpClient;
 
-use EoneoPay\External\HttpClient\Interfaces\ResponseInterface;
+use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
 use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Repository;
 

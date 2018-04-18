@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel;
+namespace EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\EventDispatcher\Interfaces\EventDispatcherInterface;
+use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcher;
 
 class EventDispatcher implements EventDispatcherInterface

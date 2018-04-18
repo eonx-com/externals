@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External;
+namespace Tests\EoneoPay\Externals;
 
-use EoneoPay\External\HttpClient\Client;
-use EoneoPay\External\HttpClient\Interfaces\ResponseInterface;
-use EoneoPay\External\Logger\Interfaces\LoggerInterface;
+use EoneoPay\Externals\HttpClient\Client;
+use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
+use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
 use Exception;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
@@ -55,9 +55,9 @@ abstract class HttpClientTestCase extends TestCase
      * @param string $contents
      * @param int|null $statusCode
      *
-     * @return \EoneoPay\External\HttpClient\Interfaces\ResponseInterface
+     * @return \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface
      *
-     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException Inherited, for non-200 responses
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException Inherited, for non-200 responses
      */
     protected function clientRequest(string $contents, int $statusCode = null): ResponseInterface
     {

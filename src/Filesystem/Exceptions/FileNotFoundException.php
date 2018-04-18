@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Filesystem\Exceptions;
+namespace EoneoPay\Externals\Filesystem\Exceptions;
 
 use RuntimeException;
 

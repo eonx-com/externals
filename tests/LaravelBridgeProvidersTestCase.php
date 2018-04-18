@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External;
+namespace Tests\EoneoPay\Externals;
 
 use Illuminate\Config\Repository as IlluminateConfig;
 use Illuminate\Container\Container as IlluminateContainer;

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\ORM\Stubs;
+namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\ORM\Mapping as ORM;
-use EoneoPay\External\ORM\Entity;
+use EoneoPay\Externals\ORM\Entity;
 
 /**
- * @ORM\Entity(repositoryClass="Tests\EoneoPay\External\ORM\Stubs\EntityCustomRepository")
+ * @ORM\Entity(repositoryClass="Tests\EoneoPay\Externals\ORM\Stubs\EntityCustomRepository")
  */
 class EntityStubWithCustomRepository extends Entity
 {

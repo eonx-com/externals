@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel;
+namespace EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\External\Container\Interfaces\ContainerInterface;
+use EoneoPay\Externals\Container\Interfaces\ContainerInterface;
 use Illuminate\Contracts\Container\Container as IlluminateContainer;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

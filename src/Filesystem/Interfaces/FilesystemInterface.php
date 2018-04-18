@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Filesystem\Interfaces;
+namespace EoneoPay\Externals\Filesystem\Interfaces;
 
 interface FilesystemInterface
 {
@@ -30,7 +30,7 @@ interface FilesystemInterface
      *
      * @return string
      *
-     * @throws \EoneoPay\External\Filesystem\Exceptions\FileNotFoundException If file is not found
+     * @throws \EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException If file is not found
      */
     public function read(string $filename): string;
 

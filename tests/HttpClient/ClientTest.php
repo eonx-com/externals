@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\HttpClient;
+namespace Tests\EoneoPay\Externals\HttpClient;
 
-use EoneoPay\External\HttpClient\Client;
-use EoneoPay\External\HttpClient\Interfaces\InvalidApiResponseExceptionInterface;
-use EoneoPay\External\HttpClient\Interfaces\ResponseInterface;
-use Tests\EoneoPay\External\HttpClientTestCase;
+use EoneoPay\Externals\HttpClient\Client;
+use EoneoPay\Externals\HttpClient\Interfaces\InvalidApiResponseExceptionInterface;
+use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
+use Tests\EoneoPay\Externals\HttpClientTestCase;
 
 class ClientTest extends HttpClientTestCase
 {
@@ -15,7 +15,7 @@ class ClientTest extends HttpClientTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testContentEmptyWhenRuntimeExceptionOnBody(): void
     {
@@ -32,7 +32,7 @@ class ClientTest extends HttpClientTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testInvalidApiResponseExceptionWhenResponseNotSuccessful(): void
     {
@@ -46,7 +46,7 @@ class ClientTest extends HttpClientTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testJsonContentSuccessfullyDecoded(): void
     {
@@ -65,7 +65,7 @@ class ClientTest extends HttpClientTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testShouldReturnResponseInterface(): void
     {
@@ -85,7 +85,7 @@ class ClientTest extends HttpClientTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testShouldReturnResponseInterfaceBasedOnRequestExceptionResponse(): void
     {
@@ -122,7 +122,7 @@ class ClientTest extends HttpClientTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\HttpClient\Exceptions\InvalidApiResponseException
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testXmlContentSuccessfullyDecoded(): void
     {

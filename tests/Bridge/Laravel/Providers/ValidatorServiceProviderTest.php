@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel\Providers;
+namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Providers\ValidationServiceProvider;
-use EoneoPay\External\Validator\Interfaces\ValidatorInterface;
+use EoneoPay\Externals\Bridge\Laravel\Providers\ValidationServiceProvider;
+use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
-use Tests\EoneoPay\External\LaravelBridgeProvidersTestCase;
+use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
 
 /**
- * @covers \EoneoPay\External\Bridge\Laravel\Providers\ValidationServiceProvider
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Providers\ValidationServiceProvider
  */
 class ValidatorServiceProviderTest extends LaravelBridgeProvidersTestCase
 {

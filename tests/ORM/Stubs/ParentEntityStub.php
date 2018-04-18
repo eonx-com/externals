@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\ORM\Stubs;
+namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ParentEntityStub extends EntityStub
 {
     /**
-     * @ORM\OneToMany(targetEntity="Tests\EoneoPay\External\ORM\Stubs\ChildEntityStub", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub", mappedBy="parent")
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
      */

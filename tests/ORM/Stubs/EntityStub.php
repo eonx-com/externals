@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\ORM\Stubs;
+namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\ORM\Mapping as ORM;
-use EoneoPay\External\ORM\Entity;
+use EoneoPay\Externals\ORM\Entity;
 
 /**
  * @method int getInteger()
@@ -77,7 +77,7 @@ class EntityStub extends Entity
      *
      * @return array
      *
-     * @see \Tests\EoneoPay\External\ORM\EntityTest::testPropertyAnnotationsContainsInvalidClassAndAttribute
+     * @see \Tests\EoneoPay\Externals\ORM\EntityTest::testPropertyAnnotationsContainsInvalidClassAndAttribute
      */
     public function getPropertyAnnotations(): array
     {

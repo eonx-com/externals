@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel\Providers;
+namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Providers\FilesystemServiceProvider;
-use EoneoPay\External\Filesystem\Interfaces\CloudFilesystemInterface;
-use EoneoPay\External\Filesystem\Interfaces\DiskFilesystemInterface;
-use Tests\EoneoPay\External\LaravelBridgeProvidersTestCase;
+use EoneoPay\Externals\Bridge\Laravel\Providers\FilesystemServiceProvider;
+use EoneoPay\Externals\Filesystem\Interfaces\CloudFilesystemInterface;
+use EoneoPay\Externals\Filesystem\Interfaces\DiskFilesystemInterface;
+use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
 
 class FilesystemServiceProviderTest extends LaravelBridgeProvidersTestCase
 {

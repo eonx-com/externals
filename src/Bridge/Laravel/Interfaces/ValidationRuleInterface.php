@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel\Interfaces;
+namespace EoneoPay\Externals\Bridge\Laravel\Interfaces;
 
 use Closure;
 

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External;
+namespace Tests\EoneoPay\Externals;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use EoneoPay\External\ORM\Subscribers\ValidateEventSubscriber;
+use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
@@ -76,7 +76,7 @@ abstract class SubscribersTestCase extends TestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      */
     protected function processNotValidateTest($object): void
     {

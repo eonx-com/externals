@@ -34,12 +34,12 @@
   },
   "autoload": {
     "psr-4": {
-      "EoneoPay\\External\\": "src/"
+      "EoneoPay\\Externals\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\EoneoPay\\External\\": "tests/"
+      "Tests\\EoneoPay\\Externals\\": "tests/"
     }
   },
   "suggest": {

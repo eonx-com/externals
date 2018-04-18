@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel\Providers;
+namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Container;
-use EoneoPay\External\Container\Interfaces\ContainerInterface;
+use EoneoPay\Externals\Bridge\Laravel\Container;
+use EoneoPay\Externals\Container\Interfaces\ContainerInterface;
 use Illuminate\Support\ServiceProvider;
 
 class ContainerServiceProvider extends ServiceProvider

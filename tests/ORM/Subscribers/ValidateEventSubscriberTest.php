@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\ORM\Subscribers;
+namespace Tests\EoneoPay\Externals\ORM\Subscribers;
 
 use Doctrine\ORM\Events;
-use EoneoPay\External\ORM\Exceptions\EntityValidationFailedException;
-use EoneoPay\External\ORM\Subscribers\ValidateEventSubscriber;
-use Tests\EoneoPay\External\ORM\Stubs\EntityStub;
-use Tests\EoneoPay\External\ORM\Stubs\EntityWithRulesStub;
-use Tests\EoneoPay\External\SubscribersTestCase;
+use EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException;
+use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithRulesStub;
+use Tests\EoneoPay\Externals\SubscribersTestCase;
 
 class ValidateEventSubscriberTest extends SubscribersTestCase
 {
@@ -31,7 +31,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If validation fails
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
     public function testShouldNotValidateIfGetRulesNotArray(): void
     {
@@ -43,7 +43,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If validation fails
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
     public function testShouldNotValidateIfNoGetRulesMethod(): void
     {
@@ -55,7 +55,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If validation fails
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
     public function testShouldNotValidateIfNotEntityInterface(): void
     {
@@ -67,7 +67,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If validation fails
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
     public function testShouldThrowEntityValidationExceptionIfValidationFails(): void
     {
@@ -93,7 +93,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\External\ORM\Exceptions\EntityValidationFailedException If validation fails
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
     public function testShouldValidateIfInterfaceAndGetRulesIsArray(): void
     {

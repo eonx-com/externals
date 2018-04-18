@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel\Providers;
+namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Providers\OrmServiceProvider;
-use EoneoPay\External\ORM\Interfaces\EntityManagerInterface;
-use Tests\EoneoPay\External\LaravelBridgeProvidersTestCase;
+use EoneoPay\Externals\Bridge\Laravel\Providers\OrmServiceProvider;
+use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
+use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
 
 class OrmServiceProviderTest extends LaravelBridgeProvidersTestCase
 {

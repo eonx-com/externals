@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Logger;
+namespace EoneoPay\Externals\Logger;
 
-use EoneoPay\External\Logger\Interfaces\LoggerInterface;
+use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
 use Exception;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\SyslogHandler;

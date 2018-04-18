@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\External\Bridge\Laravel\Providers;
+namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Request;
-use EoneoPay\External\Request\Interfaces\RequestInterface;
+use EoneoPay\Externals\Bridge\Laravel\Request;
+use EoneoPay\Externals\Request\Interfaces\RequestInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RequestServiceProvider extends ServiceProvider

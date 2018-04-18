@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\ORM\Stubs;
+namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
-use EoneoPay\External\ORM\Entity;
+use EoneoPay\Externals\ORM\Entity;
 
 class EntityWithRulesStub extends Entity
 {
@@ -25,7 +25,7 @@ class EntityWithRulesStub extends Entity
     /**
      * Initialise validation rules.
      *
-     * @return \Tests\EoneoPay\External\ORM\Stubs\EntityWithRulesStub
+     * @return \Tests\EoneoPay\Externals\ORM\Stubs\EntityWithRulesStub
      */
     public function setRules(): self
     {

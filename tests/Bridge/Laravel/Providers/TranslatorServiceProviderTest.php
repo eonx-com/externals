@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\External\Bridge\Laravel\Providers;
+namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\External\Bridge\Laravel\Providers\TranslatorServiceProvider;
-use EoneoPay\External\Translator\Interfaces\TranslatorInterface;
+use EoneoPay\Externals\Bridge\Laravel\Providers\TranslatorServiceProvider;
+use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 use Illuminate\Contracts\Translation\Translator as IlluminateTranslatorContract;
-use Tests\EoneoPay\External\LaravelBridgeProvidersTestCase;
+use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
 
 class TranslatorServiceProviderTest extends LaravelBridgeProvidersTestCase
 {
