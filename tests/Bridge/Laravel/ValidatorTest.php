@@ -22,13 +22,9 @@ class ValidatorTest extends TestCase
      */
     public function testValidatorCustomRuleEmptyWith(): void
     {
-        $validator = $this->createValidator();
-
-        // If both keys and value have values the rule should fail
-        self::assertFalse($validator->validate(
-            ['key1' => 'value1', 'key2' => 'value2'],
-            ['key2' => 'empty_with:key1|string']
-        ));
+        $validator = $this->createValidator(
+            ['empty_with' => ':attribute must be empty when :values is present']
+        );
 
         // If key1 has a value without key2 the rule should pass
         self::assertTrue($validator->validate(
@@ -53,6 +49,15 @@ class ValidatorTest extends TestCase
             ['key1' => '', 'key2' => 'value2'],
             ['key2' => 'empty_with:key1|string']
         ));
+
+        // If both keys and value have values the rule should fail
+        self::assertFalse($validator->validate(
+            ['key1' => 'value1', 'key2' => 'value2'],
+            ['key2' => 'empty_with:key1,key3|string']
+        ));
+
+        // Test failure message
+        self::assertSame($validator->getFailures(), ['key2' => ['key2 must be empty when key1 / key3 is present']]);
     }
 
     /**
@@ -81,16 +86,14 @@ class ValidatorTest extends TestCase
     /**
      * Create validation instance
      *
+     * @param array|null $messages Validation messages
+     *
      * @return \EoneoPay\Externals\Bridge\Laravel\Validator
      */
-    private function createValidator(): Validator
+    private function createValidator(?array $messages = null): Validator
     {
-        $messages = [
-            'required' => ':attribute is required'
-        ];
-
         $loader = new ArrayLoader();
-        $loader->addMessages('en', 'validation', $messages);
+        $loader->addMessages('en', 'validation', $messages ?? ['required' => ':attribute is required']);
 
         return new Validator(new Factory(new Translator($loader, 'en')));
     }

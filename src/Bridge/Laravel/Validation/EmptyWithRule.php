@@ -31,7 +31,7 @@ class EmptyWithRule implements ValidationRuleInterface
     {
         // Create replacement for message to include parameters
         return function (string $message, string $attribute, string $rule, array $parameters) {
-            return \str_replace([':attribute', ':parameters'], [$attribute, implode(', ', $parameters)], $message);
+            return \str_replace([':attribute', ':values'], [$attribute, implode(' / ', $parameters)], $message);
         };
     }
 
