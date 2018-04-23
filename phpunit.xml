@@ -17,4 +17,16 @@
             </exclude>
         </whitelist>
     </filter>
+    <php>
+        <env name="ENV_TEST1" value="testing"/>
+        <env name="ENV_TEST2" value='"testing"'/>
+        <env name="ENV_EMPTY1" value='"empty"'/>
+        <env name="ENV_EMPTY2" value="(empty)"/>
+        <env name="ENV_FALSE1" value='"false"'/>
+        <env name="ENV_FALSE2" value="(false)"/>
+        <env name="ENV_NULL1" value='"null"'/>
+        <env name="ENV_NULL2" value="(null)"/>
+        <env name="ENV_TRUE1" value='"true"'/>
+        <env name="ENV_TRUE2" value="(true)"/>
+    </php>
 </phpunit>
