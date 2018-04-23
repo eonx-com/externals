@@ -221,7 +221,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $location = $this->applyPathPrefix($path);
         $contents = \file_get_contents($location);
 
-        if (false === $contents) {
+        if ($contents === false) {
             return false;
         }
 
@@ -263,7 +263,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $type = \is_dir($location) ? 'dir' : 'file';
         $success = \chmod($location, self::$permissions[$type][$visibility]);
 
-        if (false === $success) {
+        if ($success === false) {
             return false;
         }
 
@@ -281,7 +281,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $mimetype = Util::guessMimeType($path, $contents);
         $size = \file_put_contents($location, $contents);
 
-        if (false === $size) {
+        if ($size === false) {
             return false;
         }
 
@@ -306,7 +306,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $location = $this->applyPathPrefix($path);
         $this->ensureDirectory(\dirname($location));
 
-        if (false === ($size = \file_put_contents($location, $contents))) {
+        if (($size = \file_put_contents($location, $contents)) === false) {
             return false;
         }
 
@@ -314,7 +314,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $result = compact('contents', 'type', 'size', 'path');
 
         $visibility = $config->get('visibility');
-        if (null !== $visibility) {
+        if ($visibility !== null) {
             $result['visibility'] = $visibility;
             $this->setVisibility($path, $visibility);
         }
@@ -331,18 +331,18 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $this->ensureDirectory(\dirname($location));
         $stream = \fopen($location, 'w+b');
 
-        if (false === $stream) {
+        if ($stream === false) {
             return false;
         }
 
         \stream_copy_to_stream($resource, $stream);
 
-        if (false === fclose($stream)) {
+        if (fclose($stream) === false) {
             return false;
         }
 
         $visibility = $config->get('visibility');
-        if (null !== $visibility) {
+        if ($visibility !== null) {
             $this->setVisibility($path, $visibility);
         }
 
@@ -383,9 +383,9 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     {
         // @see: https://github.com/kalessil/phpinspectionsea/blob/master/docs/probable-bugs.md#mkdir-race-condition
         /** @noinspection NotOptimalIfConditionsInspection */
-        if (false === \is_dir($folder) &&
-            false === \mkdir($folder, self::$permissions['dir']['public'], true) &&
-            false === \is_dir($folder)
+        if (\is_dir($folder) === false &&
+            \mkdir($folder, self::$permissions['dir']['public'], true) === false &&
+            \is_dir($folder) === false
         ) {
             throw new RuntimeException(sprintf('Unable to create the directory "%s".', $folder));
         }
@@ -441,7 +441,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      */
     protected function guardAgainstUnreadableFileInfo(SplFileInfo $file): void
     {
-        if (!$file->isReadable()) {
+        if ($file->isReadable() === false) {
             throw UnreadableFileException::forFileInfo($file);
         }
     }
@@ -460,7 +460,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
 
         $normalized['timestamp'] = $file->getMTime();
 
-        if ('file' === $normalized['type']) {
+        if ($normalized['type'] === 'file') {
             $normalized['size'] = $file->getSize();
         }
 

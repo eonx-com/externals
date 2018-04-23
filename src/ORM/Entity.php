@@ -60,7 +60,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
 
         // The property being accessed must exist and the type must be valid if one of these things
         // aren't true throw an exception
-        if ('' === $type || null === $property || ('set' === $type && false === $this->isFillable($property))) {
+        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
             throw new InvalidMethodCallException(
                 \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
             );
@@ -187,8 +187,8 @@ abstract class Entity implements EntityInterface, SerializableInterface
         }
 
         // If attribute is not this, remove existing association
-        if (null !== $this->{$attribute} &&
-            $this !== $this->{$attribute} &&
+        if ($this->{$attribute} !== null &&
+            $this->{$attribute} !== $this &&
             $this->{$attribute}->{$collection}()->contains($this)) {
             $this->{$attribute}->{$collection}()->removeElement($this);
         }
@@ -197,7 +197,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
         $this->{$attribute} = $parent;
 
         // Add to collection if it doesn't already exist
-        if (!$exists) {
+        if ($exists === false) {
             $parent->{$collection}()->add($this);
         }
 
@@ -390,7 +390,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
     private function resolvePropertyFromAnnotations(string $property): ?string
     {
         // If there are no resolvable annotations, return
-        if (0 === \count($this->getResolvableAnnotations())) {
+        if (\count($this->getResolvableAnnotations()) === 0) {
             return null;
         }
 
@@ -403,7 +403,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
         // Attempt to resolve property from annotations
         foreach ($this->getResolvableAnnotations() as $class => $attribute) {
             // If the annotation class doesn't exist, skip
-            if (!\class_exists($class)) {
+            if (\class_exists($class) === false) {
                 continue;
             }
 
@@ -413,12 +413,12 @@ abstract class Entity implements EntityInterface, SerializableInterface
             // Search annotations for attribute
             foreach ($annotations as $realProperty => $annotation) {
                 // Only look in annotations which have the correct attribute
-                if (!\property_exists($annotation, $attribute)) {
+                if (\property_exists($annotation, $attribute) === false) {
                     continue;
                 }
 
                 // Fuzzy search the attribute
-                if (\mb_strtolower(\preg_replace('/[^\da-zA-Z]/', '', $annotation->{$attribute})) === $fuzzy) {
+                if ($fuzzy === \mb_strtolower(\preg_replace('/[^\da-zA-Z]/', '', $annotation->{$attribute}))) {
                     return $realProperty;
                 }
             }
@@ -441,7 +441,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
         $resolved = $this->resolveProperty($property);
 
         // If property is not found or not fillable, return
-        if (null === $resolved || false === $this->isFillable($resolved)) {
+        if ($resolved === null || $this->isFillable($resolved) === false) {
             return $this;
         }
 

@@ -28,7 +28,7 @@ abstract class LaravelBridgeProvidersTestCase extends DoctrineTestCase
      */
     protected function getApplication()
     {
-        if (null !== $this->app) {
+        if ($this->app !== null) {
             return $this->app;
         }
 

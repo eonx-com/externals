@@ -42,7 +42,7 @@ class Validator implements ValidatorInterface
     public function getFailures(): array
     {
         // If validator isn't set return empty array
-        return null === $this->validator ? [] : $this->validator->getMessageBag()->toArray();
+        return $this->validator === null ? [] : $this->validator->getMessageBag()->toArray();
     }
 
     /**
@@ -77,7 +77,7 @@ class Validator implements ValidatorInterface
         $rule = $this->addRule($className);
 
         // If rule doesn't exist skip, this is only here for safety since method is private
-        if (null === $rule) {
+        if ($rule === null) {
             // @codeCoverageIgnoreStart
             return;
             // @codeCoverageIgnoreEnd
@@ -97,7 +97,7 @@ class Validator implements ValidatorInterface
     private function addRule(string $className): ?ValidationRuleInterface
     {
         // If rule is invalid, skip, this is only here for safety since method is private
-        if (false === \class_exists($className)) {
+        if (\class_exists($className) === false) {
             // @codeCoverageIgnoreStart
             return null;
             // @codeCoverageIgnoreEnd

@@ -71,7 +71,7 @@ class Client implements ClientInterface
         $this->logResponse($response);
 
         // If response is unsuccessful, throw exception
-        if (false === $response->isSuccessful()) {
+        if ($response->isSuccessful() === false) {
             throw new InvalidApiResponseException($exception ?? null, $response);
         }
 
@@ -107,7 +107,7 @@ class Client implements ClientInterface
     {
         $this->logException($exception);
 
-        if ($exception->hasResponse() && null !== $exception->getResponse()) {
+        if ($exception->hasResponse() && $exception->getResponse() !== null) {
             $content = $this->getBodyContents($exception->getResponse()->getBody());
 
             return new Response(
@@ -160,7 +160,7 @@ class Client implements ClientInterface
      */
     private function logException(Exception $exception): void
     {
-        if (null === $this->logger) {
+        if ($this->logger === null) {
             return;
         }
 
@@ -178,7 +178,7 @@ class Client implements ClientInterface
      */
     private function logRequest(string $method, string $uri, ?array $options = null): void
     {
-        if (null === $this->logger) {
+        if ($this->logger === null) {
             return;
         }
 
@@ -194,7 +194,7 @@ class Client implements ClientInterface
      */
     private function logResponse(ResponseInterface $response): void
     {
-        if (null === $this->logger) {
+        if ($this->logger === null) {
             return;
         }
 
@@ -211,12 +211,12 @@ class Client implements ClientInterface
     private function processResponseContent(string $content): ?array
     {
         // If contents is json, decode it
-        if (true === $this->isJson($content)) {
+        if ($this->isJson($content) === true) {
             return \json_decode($content, true);
         }
 
         // If content is xml, decode it
-        if (true === $this->isXml($content)) {
+        if ($this->isXml($content) === true) {
             try {
                 return (new XmlConverter())->xmlToArray($content);
                 // @codeCoverageIgnoreStart

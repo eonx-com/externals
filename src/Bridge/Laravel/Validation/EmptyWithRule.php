@@ -53,7 +53,7 @@ class EmptyWithRule implements ValidationRuleInterface
             // Check each parameter isn't set
             foreach ($parameters as $parameter) {
                 // If parameter contains a value fail
-                if (true === $validator->validateRequired($parameter, $arr->get($validator->getData(), $parameter))) {
+                if ($validator->validateRequired($parameter, $arr->get($validator->getData(), $parameter)) === true) {
                     return false;
                 }
             }
