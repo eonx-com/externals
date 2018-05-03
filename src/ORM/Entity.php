@@ -176,7 +176,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
     protected function associate(string $attribute, Entity $parent, string $association)
     {
         // Determine collection method
-        $collection = \sprintf('get%s', $association);
+        $collection = \sprintf('get%s', \ucfirst($association));
 
         // Check if this is already in collection
         $exists = $parent->{$collection}()->contains($this);
@@ -312,10 +312,9 @@ abstract class Entity implements EntityInterface, SerializableInterface
                 return $this->{$method}();
             }
             // @codeCoverageIgnoreStart
-        } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidMethodCallException $exception) {
+        } catch (InvalidMethodCallException $exception) {
             // Exception intentionally ignored, it'll never be thrown due to only being used on methods
             // which are confirmed to exist via method_exists()
-            // @todo: Investigate why this inspection is failing
         }
         // @codeCoverageIgnoreEnd
 
