@@ -172,6 +172,8 @@ abstract class Entity implements EntityInterface, SerializableInterface
      * @return mixed The original entity for fluency
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
+     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     protected function associate(string $attribute, Entity $parent, string $association)
     {
@@ -199,6 +201,12 @@ abstract class Entity implements EntityInterface, SerializableInterface
         // Add to collection if it doesn't already exist
         if ($exists === false) {
             $parent->{$collection}()->add($this);
+
+            // If foreign key column explicitly defined assign parent id
+            $foreignKey = \sprintf('%sId', $attribute);
+            if (\property_exists($this, $foreignKey)) {
+                $this->{$foreignKey} = $parent->getId();
+            }
         }
 
         return $this;
@@ -209,8 +217,8 @@ abstract class Entity implements EntityInterface, SerializableInterface
      *
      * @return string
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
-     * @throws \ReflectionException
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
+     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     protected function getIdProperty(): string
     {

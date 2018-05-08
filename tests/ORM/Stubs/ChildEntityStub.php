@@ -18,6 +18,13 @@ class ChildEntityStub extends EntityStub
     protected $parent;
 
     /**
+     * @ORM\Column(name="parent_id", type="guid")
+     *
+     * @var string
+     */
+    protected $parentId;
+
+    /**
      * ChildEntityStub constructor.
      *
      * @param array|null $data
@@ -47,6 +54,7 @@ class ChildEntityStub extends EntityStub
     }
 
     /**
+     *
      * Set parent.
      *
      * @param \Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub $parent
@@ -54,6 +62,8 @@ class ChildEntityStub extends EntityStub
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
+     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     public function setParent(ParentEntityStub $parent): self
     {
