@@ -18,7 +18,6 @@ use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Validator;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) High coupling to cover decoupling between subscriber and application
@@ -31,7 +30,7 @@ class ValidateEventSubscriber implements EventSubscriber
     private $logger;
 
     /**
-     * @var ValidationFactory
+     * @var \Illuminate\Contracts\Validation\Factory
      */
     private $validationFactory;
 
@@ -50,7 +49,7 @@ class ValidateEventSubscriber implements EventSubscriber
     /**
      * Returns an array of events this subscriber wants to listen to.
      *
-     * @return array
+     * @return string[]
      */
     public function getSubscribedEvents(): array
     {
@@ -102,14 +101,14 @@ class ValidateEventSubscriber implements EventSubscriber
     {
         $entity = $eventArgs->getObject();
 
-        if (!$entity instanceof EntityInterface
-            || !\method_exists($entity, 'getRules')
-            || !\is_array($entity->getRules())) {
+        if (($entity instanceof EntityInterface) === false
+            || \method_exists($entity, 'getRules') === false
+            || \is_array($entity->getRules()) === false) {
             return;
         }
 
         try {
-            /** @var Validator $validator */
+            /** @var \Illuminate\Validation\Validator $validator */
             $validator = $this->validationFactory->make($this->getEntityContents($entity), $entity->getRules());
             $validator->validate();
         } catch (ValidationException $exception) {
@@ -129,7 +128,7 @@ class ValidateEventSubscriber implements EventSubscriber
     /**
      * Get list of doctrine annotations classes we are looking for to get entity contents.
      *
-     * @return array
+     * @return string[]
      */
     private function getDoctrineAnnotations(): array
     {
@@ -148,7 +147,7 @@ class ValidateEventSubscriber implements EventSubscriber
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity
      *
-     * @return array
+     * @return mixed[]
      */
     private function getEntityContents(EntityInterface $entity): array
     {

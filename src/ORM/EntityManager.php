@@ -71,12 +71,12 @@ class EntityManager implements EntityManagerInterface
         $metaDataClass = $this->entityManager->getClassMetadata($class);
         $customRepository = $metaDataClass->customRepositoryClassName;
 
-        if (!$metaDataClass->customRepositoryClassName) {
+        if (empty($metaDataClass->customRepositoryClassName)) {
             return new Repository($this->entityManager->getRepository($class));
         }
 
-        if (!\class_exists($customRepository)) {
-            throw new RepositoryClassNotFoundException(sprintf('%s not found', $customRepository));
+        if (\class_exists($customRepository) === false) {
+            throw new RepositoryClassNotFoundException(\sprintf('%s not found', $customRepository));
         }
 
         $repositoryClass = $this->entityManager->getConfiguration()->getDefaultRepositoryClassName();

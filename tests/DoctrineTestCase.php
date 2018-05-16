@@ -31,7 +31,7 @@ use ReflectionException;
 abstract class DoctrineTestCase extends TestCase
 {
     /**
-     * @var array
+     * @var string[]
      */
     public static $connection = [
         'driver' => 'pdo_sqlite',
@@ -39,7 +39,7 @@ abstract class DoctrineTestCase extends TestCase
     ];
 
     /**
-     * @var array
+     * @var string[]
      */
     public static $paths = [
         // Paths to your entities folder and stubs folder
@@ -91,7 +91,7 @@ abstract class DoctrineTestCase extends TestCase
 
         // General ORM configuration
         $config = new Configuration();
-        $config->setProxyDir(sys_get_temp_dir());
+        $config->setProxyDir(\sys_get_temp_dir());
         $config->setProxyNamespace('Proxy');
         $config->setAutoGenerateProxyClasses(true); // this can be based on production config.
         // Register metadata driver
@@ -127,7 +127,7 @@ abstract class DoctrineTestCase extends TestCase
      *
      * @param \EoneoPay\Externals\ORM\Entity $entity The entity to get data from
      *
-     * @return array
+     * @return mixed[]
      */
     protected function getEntityContents(Entity $entity): array
     {
@@ -207,7 +207,7 @@ abstract class DoctrineTestCase extends TestCase
     /**
      * Get enabled laravel doctrine extensions.
      *
-     * @return array
+     * @return \LaravelDoctrine\ORM\Extensions\Extension[]
      */
     private function getLaravelDoctrineExtensions(): array
     {

@@ -21,7 +21,7 @@ class ParentEntityStub extends EntityStub
     /**
      * ParentEntityStub constructor.
      *
-     * @param array|null $data
+     * @param mixed[]|null $data
      */
     public function __construct(?array $data = null)
     {

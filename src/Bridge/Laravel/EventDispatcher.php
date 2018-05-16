@@ -30,7 +30,7 @@ class EventDispatcher implements EventDispatcherInterface
      * @param  mixed $payload
      * @param  bool $halt
      *
-     * @return array|null
+     * @return mixed[]|null
      */
     public function dispatch($event, $payload = null, ?bool $halt = null): ?array
     {

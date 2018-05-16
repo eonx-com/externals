@@ -7,5 +7,5 @@ use RuntimeException;
 
 class InvalidEnvValueException extends RuntimeException
 {
-    //
+
 }

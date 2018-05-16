@@ -27,7 +27,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     /**
      * Default access permissions
      *
-     * @var array
+     * @var mixed[]
      */
     protected static $permissions = [
         'dir' => ['private' => 0700, 'public' => 0755],
@@ -50,7 +50,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      *
      * @SuppressWarnings(PHPMD.StaticAccess) vfsStream requires methods to be statically accessed
      */
-    public function __construct(string $root = null)
+    public function __construct(?string $root = null)
     {
         self::$vfs = vfsStream::setup($root ?? 'root');
 
@@ -97,7 +97,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     {
         $location = $this->applyPathPrefix($dirname);
 
-        if (!\is_dir($location)) {
+        if (\is_dir($location) === false) {
             return false;
         }
 
@@ -131,7 +131,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     public function getMimetype($path)
     {
         $location = $this->applyPathPrefix($path);
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $finfo = new finfo(\FILEINFO_MIME_TYPE);
         $mimetype = $finfo->file($location);
 
         if (\in_array($mimetype, ['application/octet-stream', 'inode/x-empty'], true)) {
@@ -165,13 +165,13 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     public function getVisibility($path)
     {
         $location = $this->applyPathPrefix($path);
-        clearstatcache(false, $location);
-        $permissions = octdec(substr(sprintf('%o', fileperms($location)), -4));
+        \clearstatcache(false, $location);
+        $permissions = \octdec(\substr(\sprintf('%o', \fileperms($location)), -4));
         $visibility = ($permissions & 0044) ?
             AdapterInterface::VISIBILITY_PUBLIC :
             AdapterInterface::VISIBILITY_PRIVATE;
 
-        return compact('path', 'visibility');
+        return \compact('path', 'visibility');
     }
 
     /**
@@ -192,7 +192,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $result = [];
         $location = $this->applyPathPrefix($directory);
 
-        if (!\is_dir($location)) {
+        if (\is_dir($location) === false) {
             return [];
         }
 
@@ -311,7 +311,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         }
 
         $type = 'file';
-        $result = compact('contents', 'type', 'size', 'path');
+        $result = \compact('contents', 'type', 'size', 'path');
 
         $visibility = $config->get('visibility');
         if ($visibility !== null) {
@@ -337,7 +337,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
 
         \stream_copy_to_stream($resource, $stream);
 
-        if (fclose($stream) === false) {
+        if (\fclose($stream) === false) {
             return false;
         }
 
@@ -348,11 +348,13 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
 
         $type = 'file';
 
-        return compact('type', 'path', 'visibility');
+        return \compact('type', 'path', 'visibility');
     }
 
     /**
-     * @param SplFileInfo $file
+     * Delete file or directory.
+     *
+     * @param \SplFileInfo $file
      */
     protected function deleteFileInfoObject(SplFileInfo $file): void
     {
@@ -379,7 +381,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      *
      * @throws \RuntimeException If the directory can not be created
      */
-    protected function ensureDirectory($folder): bool
+    protected function ensureDirectory(string $folder): bool
     {
         // @see: https://github.com/kalessil/phpinspectionsea/blob/master/docs/probable-bugs.md#mkdir-race-condition
         /** @noinspection NotOptimalIfConditionsInspection */
@@ -387,18 +389,20 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
             \mkdir($folder, self::$permissions['dir']['public'], true) === false &&
             \is_dir($folder) === false
         ) {
-            throw new RuntimeException(sprintf('Unable to create the directory "%s".', $folder));
+            throw new RuntimeException(\sprintf('Unable to create the directory "%s".', $folder));
         }
 
         return true;
     }
 
     /**
+     * Get an iterator for specified directory.
+     *
      * @param string $path
      *
-     * @return DirectoryIterator
+     * @return \DirectoryIterator
      */
-    protected function getDirectoryIterator($path): DirectoryIterator
+    protected function getDirectoryIterator(string $path): DirectoryIterator
     {
         return new DirectoryIterator($path);
     }
@@ -406,7 +410,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     /**
      * Get the normalized path from a SplFileInfo object.
      *
-     * @param SplFileInfo $file
+     * @param \SplFileInfo $file
      *
      * @return string
      */
@@ -419,12 +423,14 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
+     * Get a recursive iterator for specified directory.
+     *
      * @param string $path
      * @param int $mode
      *
-     * @return RecursiveIteratorIterator
+     * @return \RecursiveIteratorIterator
      */
-    protected function getRecursiveDirectoryIterator($path, $mode = null): RecursiveIteratorIterator
+    protected function getRecursiveDirectoryIterator(string $path, ?int $mode = null): RecursiveIteratorIterator
     {
         $mode = $mode ?? RecursiveIteratorIterator::SELF_FIRST;
 
@@ -435,7 +441,9 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @param SplFileInfo $file
+     * Check if file or directory is readable.
+     *
+     * @param \SplFileInfo $file
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Flysystem requires UnreadableFileException method to be statically accessed
      */
@@ -447,9 +455,11 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @param SplFileInfo $file
+     * Retrieve details about file or directory.
      *
-     * @return array
+     * @param \SplFileInfo $file
+     *
+     * @return mixed[]
      */
     protected function mapFileInfo(SplFileInfo $file): array
     {
@@ -470,9 +480,9 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     /**
      * Normalize the file info.
      *
-     * @param SplFileInfo $file
+     * @param \SplFileInfo $file
      *
-     * @return array|null
+     * @return mixed[]|null
      *
      * @throws \League\Flysystem\NotSupportedException
      */

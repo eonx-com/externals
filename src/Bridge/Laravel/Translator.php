@@ -29,10 +29,10 @@ class Translator implements TranslatorInterface
      * Get a value from the language file
      *
      * @param string $key The key to fetch the message for
-     * @param array|null $replace Attributes to replace within the message
+     * @param mixed[]|null $replace Attributes to replace within the message
      * @param string|null $locale The locale to fetch the key from
      *
-     * @return string|array|null
+     * @return string|string[]|null
      */
     public function get(string $key, ?array $replace = null, ?string $locale = null)
     {
@@ -43,15 +43,15 @@ class Translator implements TranslatorInterface
      * Get a value from the language file and ensure a string is always returned
      *
      * @param string $key The key to fetch the message for
-     * @param array|null $replace Attributes to replace within the message
+     * @param mixed[]|null $replace Attributes to replace within the message
      * @param string|null $locale The locale to fetch the key from
      *
      * @return string|null
      */
     public function trans(string $key, ?array $replace = null, ?string $locale = null): ?string
     {
-        $tranlated = $this->get($key, $replace ?? [], $locale);
+        $translated = $this->get($key, $replace ?? [], $locale);
 
-        return \is_array($tranlated) ? \implode(', ', $tranlated) : $tranlated;
+        return \is_array($translated) ? \implode(', ', $translated) : $translated;
     }
 }

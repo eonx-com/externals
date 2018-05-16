@@ -14,7 +14,7 @@ class EntityWithValidationStub extends EntityStub
     /**
      * Get validation rules.
      *
-     * @return array
+     * @return string[]
      */
     public function getRules(): array
     {

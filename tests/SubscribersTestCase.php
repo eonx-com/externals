@@ -83,7 +83,7 @@ abstract class SubscribersTestCase extends TestCase
         $factory = $this->mockValidationFactory();
         $factory->shouldNotReceive('make');
 
-        /** @var LifecycleEventArgs $event */
+        /** @var \Doctrine\ORM\Event\LifecycleEventArgs $event */
         $event = $this->mockLifeCycleEvent($object);
         /** @var \Illuminate\Validation\Factory $factory */
         (new ValidateEventSubscriber($factory))->prePersist($event);

@@ -23,7 +23,7 @@ class Env implements EnvInterface
         $env = \getenv();
 
         // Only return default if key legitimately doesn't exist
-        if (!\array_key_exists($key, $env)) {
+        if (\array_key_exists($key, $env) === false) {
             return $default instanceof Closure ? $default() : $default;
         }
 
@@ -64,7 +64,7 @@ class Env implements EnvInterface
     public function set(string $key, $value): bool
     {
         // If value isn't scalar or null return failure
-        if (!\is_scalar($value) && $value !== null) {
+        if (\is_scalar($value) === false && $value !== null) {
             return false;
         }
 

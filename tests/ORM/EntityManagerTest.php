@@ -9,7 +9,6 @@ use EoneoPay\Externals\ORM\Exceptions\ORMException;
 use EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException;
 use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
 use Tests\EoneoPay\Externals\DoctrineTestCase;
-use Tests\EoneoPay\Externals\ORM\Stubs\EntityCustomRepository;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithCustomRepository;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithNotFoundRepository;
@@ -26,13 +25,13 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
      */
     public function testCustomRepository(): void
     {
-        /** @var EntityCustomRepository $repository */
+        /** @var \Tests\EoneoPay\Externals\ORM\Stubs\EntityCustomRepository $repository */
         $repository = $this->getEntityManager()->getRepository(EntityStubWithCustomRepository::class);
         $queryBuilder = $repository->getQueryBuilder();
 

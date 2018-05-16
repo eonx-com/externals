@@ -8,14 +8,14 @@ use Monolog\Handler\AbstractProcessingHandler;
 class ArrayHandlerStub extends AbstractProcessingHandler
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     private $logs = [];
 
     /**
      * Get logs.
      *
-     * @return array
+     * @return mixed[]
      */
     public function getLogs(): array
     {
@@ -25,7 +25,7 @@ class ArrayHandlerStub extends AbstractProcessingHandler
     /**
      * Writes the record down to the log of the implementing handler
      *
-     * @param  array $record
+     * @param mixed[] $record
      *
      * @return void
      */

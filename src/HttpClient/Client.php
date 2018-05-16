@@ -23,7 +23,7 @@ class Client implements ClientInterface
     private $client;
 
     /**
-     * @var null|LoggerInterface
+     * @var null|\EoneoPay\Externals\Logger\Interfaces\LoggerInterface
      */
     private $logger;
 
@@ -33,7 +33,7 @@ class Client implements ClientInterface
      * @param \GuzzleHttp\Client|null $client
      * @param \EoneoPay\Externals\Logger\Interfaces\LoggerInterface|null $logger
      */
-    public function __construct(?Guzzle $client = null, LoggerInterface $logger = null)
+    public function __construct(?Guzzle $client = null, ?LoggerInterface $logger = null)
     {
         $this->client = $client ?? new Guzzle();
         $this->logger = $logger;
@@ -44,7 +44,7 @@ class Client implements ClientInterface
      *
      * @param string $method The method to use for the request
      * @param string $uri The uri to send the request to
-     * @param array|null $options The options to send with the request
+     * @param mixed[]|null $options The options to send with the request
      *
      * @return \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface A constructed api response
      *
@@ -134,7 +134,7 @@ class Client implements ClientInterface
     {
         \json_decode($string);
 
-        return \json_last_error() === JSON_ERROR_NONE;
+        return \json_last_error() === \JSON_ERROR_NONE;
     }
 
     /**
@@ -172,7 +172,7 @@ class Client implements ClientInterface
      *
      * @param string $method The method to use for the request
      * @param string $uri The uri to send the request to
-     * @param array|null $options The options to send with the request
+     * @param mixed[]|null $options The options to send with the request
      *
      * @return void
      */
@@ -206,7 +206,7 @@ class Client implements ClientInterface
      *
      * @param string $content
      *
-     * @return array|null
+     * @return mixed[]|null
      */
     private function processResponseContent(string $content): ?array
     {

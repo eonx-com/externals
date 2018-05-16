@@ -5,5 +5,5 @@ namespace EoneoPay\Externals\Filesystem\Interfaces;
 
 interface CloudFilesystemInterface extends FilesystemInterface
 {
-    //
+
 }

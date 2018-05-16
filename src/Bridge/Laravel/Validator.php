@@ -37,7 +37,7 @@ class Validator implements ValidatorInterface
     /**
      * Get messages from the last validation attempt
      *
-     * @return array
+     * @return mixed[]
      */
     public function getFailures(): array
     {
@@ -48,8 +48,8 @@ class Validator implements ValidatorInterface
     /**
      * Validate the given data against the provided rules
      *
-     * @param array $data Data to validate
-     * @param array $rules Rules to validate against
+     * @param mixed[] $data Data to validate
+     * @param mixed[] $rules Rules to validate against
      *
      * @return bool
      */
@@ -108,7 +108,7 @@ class Validator implements ValidatorInterface
         $rule = new $className();
 
         // If class isn't a valid rule, skip, this is only here for safety since method is private
-        if (!$rule instanceof ValidationRuleInterface) {
+        if (($rule instanceof ValidationRuleInterface) === false) {
             // @codeCoverageIgnoreStart
             return null;
             // @codeCoverageIgnoreEnd

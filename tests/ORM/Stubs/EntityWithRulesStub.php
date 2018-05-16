@@ -8,14 +8,14 @@ use EoneoPay\Externals\ORM\Entity;
 class EntityWithRulesStub extends Entity
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     private $rules;
 
     /**
      * Get validation rules.
      *
-     * @return array|null
+     * @return mixed[]|null
      */
     public function getRules(): ?array
     {
@@ -35,7 +35,7 @@ class EntityWithRulesStub extends Entity
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array
     {

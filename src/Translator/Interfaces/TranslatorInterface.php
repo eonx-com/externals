@@ -9,10 +9,12 @@ interface TranslatorInterface
      * Get a value from the language file
      *
      * @param string $key The key to fetch the message for
-     * @param array|null $replace Attributes to replace within the message
+     * @param mixed[]|null $replace Attributes to replace within the message
      * @param string|null $locale The locale to fetch the key from
      *
      * @return string|array|null
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification
      */
     public function get(string $key, ?array $replace = null, ?string $locale = null);
 
@@ -20,7 +22,7 @@ interface TranslatorInterface
      * Get a value from the language file and ensure a string is always returned
      *
      * @param string $key The key to fetch the message for
-     * @param array|null $replace Attributes to replace within the message
+     * @param mixed[]|null $replace Attributes to replace within the message
      * @param string|null $locale The locale to fetch the key from
      *
      * @return string|null

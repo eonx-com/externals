@@ -21,7 +21,7 @@ class EntityTest extends DoctrineTestCase
     /**
      * Data to populate the entity with for testing
      *
-     * @var array
+     * @var mixed[]
      */
     private static $data = [
         'entityId' => null,
@@ -73,7 +73,7 @@ class EntityTest extends DoctrineTestCase
     public function testFillMethodPopulatesDataInEntity(): void
     {
         $entity = new EntityStub();
-        self::assertEmpty(array_filter($this->getEntityContents($entity)));
+        self::assertEmpty(\array_filter($this->getEntityContents($entity)));
 
         // Add an invalid field to ensure only valid properties are set
         $data = self::$data;
@@ -110,7 +110,7 @@ class EntityTest extends DoctrineTestCase
     public function testJsonSerializeReturnsEntityContentsAsJson(): void
     {
         $entity = new EntityStub(self::$data);
-        self::assertSame(json_encode($this->getEntityContents($entity)), json_encode($entity));
+        self::assertSame(\json_encode($this->getEntityContents($entity)), \json_encode($entity));
     }
 
     /**
@@ -121,7 +121,7 @@ class EntityTest extends DoctrineTestCase
     public function testMagicCallCanGetAndSetAccessesEntityProperties(): void
     {
         $entity = new EntityStub();
-        self::assertEmpty(array_filter($this->getEntityContents($entity)));
+        self::assertEmpty(\array_filter($this->getEntityContents($entity)));
 
         // Test check entity has properties
         self::assertTrue($entity->hasString());
@@ -226,7 +226,7 @@ class EntityTest extends DoctrineTestCase
     public function testToJsonReturnsEntityContentsAsJson(): void
     {
         $entity = new EntityStub(self::$data);
-        self::assertSame(json_encode($this->getEntityContents($entity)), $entity->toJson());
+        self::assertSame(\json_encode($this->getEntityContents($entity)), $entity->toJson());
     }
 
     /**

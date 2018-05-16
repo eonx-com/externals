@@ -21,7 +21,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
     /**
      * Create a new entity
      *
-     * @param array|null $data The data to populate the entity with
+     * @param mixed[]|null $data The data to populate the entity with
      */
     public function __construct(?array $data = null)
     {
@@ -31,7 +31,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
     /**
      * Serialize entity as an array
      *
-     * @return array
+     * @return mixed[]
      */
     abstract public function toArray(): array;
 
@@ -41,7 +41,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
      * This method searches case insensitive
      *
      * @param string $method The method being called
-     * @param array $parameters Parameters passed to the method
+     * @param mixed[] $parameters Parameters passed to the method
      *
      * @return mixed Value or null on getX(), self on setX(value)
      *
@@ -90,7 +90,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
     /**
      * Populate a entity from an array of data
      *
-     * @param array $data The data to fill the entity with
+     * @param mixed[] $data The data to fill the entity with
      *
      * @return void
      */
@@ -105,7 +105,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
     /**
      * Get a list of attributes or keys which are able to be filled, by default all fields can be set
      *
-     * @return array
+     * @return string[]
      */
     public function getFillableProperties(): array
     {
@@ -128,7 +128,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
     /**
      * Return contents for serializing as json
      *
-     * @return array
+     * @return mixed[]
      */
     public function jsonSerialize(): array
     {
@@ -152,7 +152,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
      *
      * @return string|null
      */
-    public function toXml(string $rootNode = null): ?string
+    public function toXml(?string $rootNode = null): ?string
     {
         try {
             return (new XmlConverter())->arrayToXml($this->toArray(), $rootNode);
@@ -231,7 +231,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
      * Get unique rule string for given target property and optional where clauses.
      *
      * @param string $target
-     * @param array|null $wheres
+     * @param mixed[]|null $wheres
      *
      * @return string
      *
@@ -276,7 +276,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
     /**
      * Get a list of attributes or keys which can't be filled, by default nothing is guarded
      *
-     * @return array
+     * @return string[]
      */
     private function getGuardedProperties(): array
     {
@@ -286,7 +286,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
     /**
      * Get property annotations which can be used to resolve property names for this entity
      *
-     * @return array
+     * @return mixed[]
      */
     private function getResolvableAnnotations(): array
     {
@@ -309,9 +309,9 @@ abstract class Entity implements EntityInterface, SerializableInterface
      * Resolve a method on the entity which may or may not exist
      *
      * @param string $method The name of the method to invoke if it exists
-     * @param array|null $default The default to return if the method doesn't exist
+     * @param mixed[]|null $default The default to return if the method doesn't exist
      *
-     * @return array
+     * @return mixed[]
      */
     private function invokeEntityMethod(string $method, ?array $default = null): array
     {
@@ -357,7 +357,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
          *  - The model or property must be fillable
          */
         return $resolved !== null &&
-            !\in_array('*', $this->getGuardedProperties(), true) &&
+            \in_array('*', $this->getGuardedProperties(), true) === false &&
             $arr->search($guarded, $resolved) === null &&
             (\in_array('*', $this->getFillableProperties(), true) || $arr->search($fillable, $resolved) !== null);
     }
@@ -434,7 +434,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
         // Property was not found
         return null;
     }
-    
+
     /**
      * Set the value for a property
      *
@@ -466,6 +466,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
             // Exception will not be thrown so intentionally ignored
             // @todo: Investigate why this inspection is failing
         }
+
         // @codeCoverageIgnoreEnd
 
         return $this;

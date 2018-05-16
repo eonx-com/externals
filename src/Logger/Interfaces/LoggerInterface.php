@@ -11,7 +11,7 @@ interface LoggerInterface
      * Adds a debug message to the log
      *
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */
@@ -21,7 +21,7 @@ interface LoggerInterface
      * Adds an error message to the log
      *
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */
@@ -30,7 +30,7 @@ interface LoggerInterface
     /**
      * Record a caught exception with backtrace
      *
-     * @param Exception $exception The exception to handle
+     * @param \Exception $exception The exception to handle
      *
      * @return void
      */
@@ -40,7 +40,7 @@ interface LoggerInterface
      * Adds an informational message to the log
      *
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */
@@ -50,7 +50,7 @@ interface LoggerInterface
      * Adds a notice to the log
      *
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */
@@ -60,7 +60,7 @@ interface LoggerInterface
      * Adds a warning to the log
      *
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */

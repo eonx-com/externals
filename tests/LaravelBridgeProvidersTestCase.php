@@ -7,7 +7,6 @@ use Illuminate\Config\Repository as IlluminateConfig;
 use Illuminate\Container\Container as IlluminateContainer;
 use Illuminate\Contracts\Container\Container as IlluminateContainerContract;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
@@ -15,7 +14,7 @@ use Illuminate\Translation\Translator;
 abstract class LaravelBridgeProvidersTestCase extends DoctrineTestCase
 {
     /**
-     * @var Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     private $app;
 
@@ -25,6 +24,8 @@ abstract class LaravelBridgeProvidersTestCase extends DoctrineTestCase
      * Get Illuminate application.
      *
      * @return \Illuminate\Contracts\Foundation\Application
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      */
     protected function getApplication()
     {
@@ -52,7 +53,7 @@ abstract class LaravelBridgeProvidersTestCase extends DoctrineTestCase
                     'disks' => [
                         'local' => [
                             'driver' => 'local',
-                            'root' => sys_get_temp_dir()
+                            'root' => \sys_get_temp_dir()
                         ],
                         's3' => [
                             'driver' => 's3',
