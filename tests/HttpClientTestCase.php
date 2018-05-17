@@ -70,7 +70,7 @@ abstract class HttpClientTestCase extends TestCase
     /**
      * Mock guzzle client for request exception throwing.
      *
-     * @param \Mockery\MockInterface $body
+     * @param \Mockery\MockInterface|null $body
      * @param int|null $statusCode
      *
      * @return \Mockery\MockInterface

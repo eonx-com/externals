@@ -466,7 +466,6 @@ abstract class Entity implements EntityInterface, SerializableInterface
             // Exception will not be thrown so intentionally ignored
             // @todo: Investigate why this inspection is failing
         }
-
         // @codeCoverageIgnoreEnd
 
         return $this;
