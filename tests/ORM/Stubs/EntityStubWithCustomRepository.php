@@ -23,7 +23,7 @@ class EntityStubWithCustomRepository extends Entity
     protected $entityId;
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array
     {

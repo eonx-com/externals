@@ -35,7 +35,7 @@ class Logger implements LoggerInterface
      * Adds a debug message to the log
      *
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */
@@ -48,7 +48,7 @@ class Logger implements LoggerInterface
      * Adds an error message to the log
      *
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */
@@ -60,7 +60,7 @@ class Logger implements LoggerInterface
     /**
      * Record a caught exception with backtrace
      *
-     * @param Exception $exception The exception to handle
+     * @param \Exception $exception The exception to handle
      *
      * @return void
      */
@@ -73,7 +73,7 @@ class Logger implements LoggerInterface
      * Adds an informational message to the log
      *
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */
@@ -86,7 +86,7 @@ class Logger implements LoggerInterface
      * Adds a notice to the log
      *
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */
@@ -99,7 +99,7 @@ class Logger implements LoggerInterface
      * Adds a warning to the log
      *
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */
@@ -113,7 +113,7 @@ class Logger implements LoggerInterface
      *
      * @param string $type The log type
      * @param string $message The log message
-     * @param array $context Additional log context
+     * @param mixed[] $context Additional log context
      *
      * @return bool
      */

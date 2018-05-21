@@ -5,6 +5,8 @@ namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\ORM\Mapping as ORM;
 use EoneoPay\Externals\ORM\Entity;
+use Gedmo\Mapping\Annotation as Gedmo;
+use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
 
 /**
  * @method int getInteger()
@@ -23,9 +25,12 @@ use EoneoPay\Externals\ORM\Entity;
  * @method null whenString()
  *
  * @ORM\Entity
+ * @Gedmo\SoftDeleteable()
  */
 class EntityStub extends Entity
 {
+    use SoftDeletes;
+
     /**
      * Primary id
      *
@@ -58,7 +63,7 @@ class EntityStub extends Entity
     /**
      * Function exclusively for test purposes to test uniqueRuleAsString.
      *
-     * @param array|null $wheres
+     * @param string[]|null $wheres
      *
      * @return string
      *
@@ -75,7 +80,7 @@ class EntityStub extends Entity
      *
      * Note: Changing this array will cause the test testPropertyAnnotationsContainsInvalidClassAndAttribute() to fail
      *
-     * @return array
+     * @return string[]
      *
      * @see \Tests\EoneoPay\Externals\ORM\EntityTest::testPropertyAnnotationsContainsInvalidClassAndAttribute
      */
@@ -92,7 +97,7 @@ class EntityStub extends Entity
     /**
      * Get the contents of the entity as an array
      *
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array
     {

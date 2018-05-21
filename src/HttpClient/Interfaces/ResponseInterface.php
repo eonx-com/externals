@@ -26,7 +26,7 @@ interface ResponseInterface extends RepositoryInterface
     /**
      * Get response headers
      *
-     * @return array
+     * @return mixed[]
      */
     public function getHeaders(): array;
 

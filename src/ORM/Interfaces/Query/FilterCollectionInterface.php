@@ -13,6 +13,8 @@ interface FilterCollectionInterface
      * @return void.
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function disable($name): void;
 
@@ -24,6 +26,8 @@ interface FilterCollectionInterface
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function enable($name): void;
 }

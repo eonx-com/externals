@@ -11,7 +11,7 @@ use Throwable;
 class InvalidApiResponseException extends Exception implements InvalidApiResponseExceptionInterface
 {
     /**
-     * @var ResponseInterface
+     * @var \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface
      */
     private $response;
 
@@ -22,7 +22,7 @@ class InvalidApiResponseException extends Exception implements InvalidApiRespons
      * @param \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface $response
      */
     public function __construct(
-        Throwable $previous = null,
+        ?Throwable $previous = null,
         ResponseInterface $response
     ) {
         parent::__construct('', 0, $previous);

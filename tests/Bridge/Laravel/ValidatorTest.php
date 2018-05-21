@@ -86,7 +86,7 @@ class ValidatorTest extends TestCase
     /**
      * Create validation instance
      *
-     * @param array|null $messages Validation messages
+     * @param mixed[]|null $messages Validation messages
      *
      * @return \EoneoPay\Externals\Bridge\Laravel\Validator
      */

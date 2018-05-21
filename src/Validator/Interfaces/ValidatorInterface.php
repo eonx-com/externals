@@ -8,15 +8,15 @@ interface ValidatorInterface
     /**
      * Get messages from the last validation attempt
      *
-     * @return array
+     * @return mixed[]
      */
     public function getFailures(): array;
 
     /**
      * Validate the given data against the provided rules
      *
-     * @param array $data Data to validate
-     * @param array $rules Rules to validate against
+     * @param mixed[] $data Data to validate
+     * @param mixed[] $rules Rules to validate against
      *
      * @return bool
      */

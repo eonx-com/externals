@@ -15,7 +15,7 @@ class Response extends Repository implements ResponseInterface
     private $content;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $headers;
 
@@ -27,16 +27,16 @@ class Response extends Repository implements ResponseInterface
     /**
      * Response constructor.
      *
-     * @param array|null $data
+     * @param mixed[]|null $data
      * @param int|null $statusCode
-     * @param array|null $headers
+     * @param mixed[]|null $headers
      * @param string|null $content
      */
     public function __construct(
-        array $data = null,
-        int $statusCode = null,
-        array $headers = null,
-        string $content = null
+        ?array $data = null,
+        ?int $statusCode = null,
+        ?array $headers = null,
+        ?string $content = null
     ) {
         parent::__construct($data);
 
@@ -70,7 +70,7 @@ class Response extends Repository implements ResponseInterface
     /**
      * Get response headers
      *
-     * @return array
+     * @return string[]
      */
     public function getHeaders(): array
     {

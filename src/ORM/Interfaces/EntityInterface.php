@@ -11,7 +11,7 @@ interface EntityInterface
      * This method searches case insensitive
      *
      * @param string $method The method being called
-     * @param array $parameters Parameters passed to the method
+     * @param mixed[] $parameters Parameters passed to the method
      *
      * @return mixed Value or null on getX(), self on setX(value)
      */
@@ -20,7 +20,7 @@ interface EntityInterface
     /**
      * Fill an entity from an array
      *
-     * @param array $data The array to fill the entity from
+     * @param mixed[] $data The array to fill the entity from
      *
      * @return void
      */
@@ -29,7 +29,7 @@ interface EntityInterface
     /**
      * Get a list of attributes or keys which are able to be filled, by default all fields can be set
      *
-     * @return array
+     * @return string[]
      */
     public function getFillableProperties(): array;
 

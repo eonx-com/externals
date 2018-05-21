@@ -27,7 +27,7 @@ class ChildEntityStub extends EntityStub
     /**
      * ChildEntityStub constructor.
      *
-     * @param array|null $data
+     * @param mixed[]|null $data
      */
     public function __construct(?array $data = null)
     {
@@ -42,7 +42,7 @@ class ChildEntityStub extends EntityStub
      *
      * Note: Changing this array will cause the test testPropertyAnnotationsContainsInvalidClassAndAttribute() to fail
      *
-     * @return array
+     * @return mixed[]
      *
      * @see \Tests\EoneoPay\Externals\ORM\EntityTest::testPropertyAnnotationsContainsInvalidClassAndAttribute
      */

@@ -17,23 +17,23 @@ interface RepositoryInterface
     /**
      * Get all records from a repository
      *
-     * @return array|null
+     * @return mixed[]|null
      */
     public function findAll(): ?array;
 
     /**
      * Finds entitys which match a set of criteria
      *
-     * @param array $criteria Array of criteria to find by
+     * @param mixed[] $criteria Array of criteria to find by
      *
-     * @return array
+     * @return mixed[]
      */
     public function findBy(array $criteria): array;
 
     /**
      * Finds a single entity by a set of criteria
      *
-     * @param array $criteria Array of criteria
+     * @param mixed[] $criteria Array of criteria
      *
      * @return mixed Associated entity on success, null if not found
      */

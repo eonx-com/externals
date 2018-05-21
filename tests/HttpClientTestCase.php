@@ -45,7 +45,7 @@ abstract class HttpClientTestCase extends TestCase
     /**
      * Headers used to mock guzzle client response.
      *
-     * @var array
+     * @var string[]
      */
     protected static $headers = [];
 
@@ -59,7 +59,7 @@ abstract class HttpClientTestCase extends TestCase
      *
      * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException Inherited, for non-200 responses
      */
-    protected function clientRequest(string $contents, int $statusCode = null): ResponseInterface
+    protected function clientRequest(string $contents, ?int $statusCode = null): ResponseInterface
     {
         /** @var \GuzzleHttp\Client $mockedClient */
         $mockedClient = $this->mockGuzzleClientForResponse($this->mockStreamForContents($contents), $statusCode);
@@ -70,7 +70,7 @@ abstract class HttpClientTestCase extends TestCase
     /**
      * Mock guzzle client for request exception throwing.
      *
-     * @param \Mockery\MockInterface $body
+     * @param \Mockery\MockInterface|null $body
      * @param int|null $statusCode
      *
      * @return \Mockery\MockInterface
@@ -78,8 +78,8 @@ abstract class HttpClientTestCase extends TestCase
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
     protected function mockGuzzleClientForRequestException(
-        MockInterface $body = null,
-        int $statusCode = null
+        ?MockInterface $body = null,
+        ?int $statusCode = null
     ): MockInterface {
         $exception = new RequestException(
             self::EXCEPTION_MESSAGE,
@@ -108,7 +108,7 @@ abstract class HttpClientTestCase extends TestCase
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
-    protected function mockGuzzleClientForResponse(MockInterface $body, int $statusCode = null): MockInterface
+    protected function mockGuzzleClientForResponse(MockInterface $body, ?int $statusCode = null): MockInterface
     {
         $client = Mockery::mock(GuzzleClient::class);
 
@@ -131,7 +131,7 @@ abstract class HttpClientTestCase extends TestCase
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
-    protected function mockGuzzleResponse(MockInterface $body, int $statusCode = null): MockInterface
+    protected function mockGuzzleResponse(MockInterface $body, ?int $statusCode = null): MockInterface
     {
         $response = Mockery::mock(PsrResponseInterface::class);
 

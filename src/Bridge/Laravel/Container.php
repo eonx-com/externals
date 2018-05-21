@@ -5,8 +5,6 @@ namespace EoneoPay\Externals\Bridge\Laravel;
 
 use EoneoPay\Externals\Container\Interfaces\ContainerInterface;
 use Illuminate\Contracts\Container\Container as IlluminateContainer;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 class Container implements ContainerInterface
 {
@@ -30,10 +28,12 @@ class Container implements ContainerInterface
      *
      * @param string $serviceId Identifier of the entry to look for.
      *
-     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
-     * @throws ContainerExceptionInterface Error while retrieving the entry.
+     * @throws \Psr\Container\NotFoundExceptionInterface  No entry was found for **this** identifier.
+     * @throws \Psr\Container\ContainerExceptionInterface Error while retrieving the entry.
      *
      * @return mixed Entry.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function get($serviceId)
     {
@@ -50,6 +50,8 @@ class Container implements ContainerInterface
      * @param string $serviceId Identifier of the entry to look for.
      *
      * @return bool
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function has($serviceId): bool
     {
