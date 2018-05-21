@@ -14,12 +14,12 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EoneoPay\Externals\ORM\Entity;
 use EoneoPay\Externals\ORM\EntityManager;
+use EoneoPay\Externals\ORM\Extensions\SoftDeleteExtension;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
 use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
-use LaravelDoctrine\Extensions\SoftDeletes\SoftDeleteableExtension;
 use ReflectionClass;
 use ReflectionException;
 
@@ -212,7 +212,7 @@ abstract class DoctrineTestCase extends TestCase
     private function getLaravelDoctrineExtensions(): array
     {
         return [
-            new SoftDeleteableExtension()
+            new SoftDeleteExtension()
         ];
     }
 }

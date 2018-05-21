@@ -26,7 +26,8 @@ class EntityTest extends DoctrineTestCase
     private static $data = [
         'entityId' => null,
         'integer' => 1,
-        'string' => 'test@test.com'
+        'string' => 'test@test.com',
+        'deletedAt' => null
     ];
 
     /**
@@ -243,6 +244,7 @@ class EntityTest extends DoctrineTestCase
                     <entityId></entityId>
                     <integer>%d</integer>
                     <string>%s</string>
+                    <deletedat/>
                 </%s>', $rootNode ?? 'data', self::$data['integer'], self::$data['string'], $rootNode ?? 'data');
         };
 

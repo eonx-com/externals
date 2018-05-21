@@ -12,3 +12,4 @@ parameters:
         - '#Parameter \#3 $response of class GuzzleHttp\\Exception\\RequestException constructor expects Psr\\Http\\Message\\ResponseInterface\|null, Mockery\\MockInterface|null given.#'
         - '#PHPDoc tag @param for parameter \$\w+ with type mixed is not subtype of native type array<int, mixed>#'
         - '#Property Tests\\EoneoPay\\Externals\\LaravelBridgeProvidersTestCase::\$app \(Illuminate\\Contracts\\Foundation\\Application\) does not accept Illuminate\\Container\\Container.#'
+        - '#Parameter \#1 \$manager of method EoneoPay\\Externals\\ORM\\Extensions\\SoftDeleteExtension::addSubscribers\(\) expects Doctrine\\Common\\EventManager, Mockery\\MockInterface given.#'

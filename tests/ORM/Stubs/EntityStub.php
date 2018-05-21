@@ -5,6 +5,8 @@ namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\ORM\Mapping as ORM;
 use EoneoPay\Externals\ORM\Entity;
+use Gedmo\Mapping\Annotation as Gedmo;
+use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
 
 /**
  * @method int getInteger()
@@ -23,9 +25,12 @@ use EoneoPay\Externals\ORM\Entity;
  * @method null whenString()
  *
  * @ORM\Entity
+ * @Gedmo\SoftDeleteable()
  */
 class EntityStub extends Entity
 {
+    use SoftDeletes;
+
     /**
      * Primary id
      *
