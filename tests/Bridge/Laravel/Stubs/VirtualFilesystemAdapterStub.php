@@ -426,7 +426,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      * Get a recursive iterator for specified directory.
      *
      * @param string $path
-     * @param int $mode
+     * @param null|int $mode
      *
      * @return \RecursiveIteratorIterator
      */
