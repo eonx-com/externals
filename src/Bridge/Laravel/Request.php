@@ -64,6 +64,20 @@ class Request implements RequestInterface
     }
 
     /**
+     * Replace request with a new set of data
+     *
+     * @param mixed[] $data The data to replace in the request
+     *
+     * @return static
+     */
+    public function replace(array $data): self
+    {
+        $this->request->replace($data);
+
+        return $this;
+    }
+
+    /**
      * Set a header on the request
      *
      * @param string $key The key to set
