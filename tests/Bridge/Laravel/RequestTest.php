@@ -25,5 +25,6 @@ class RequestTest extends TestCase
         self::assertFalse($request->has('invalid'));
         self::assertSame('value', $request->input('key'));
         self::assertNull($request->input('invalid'));
+        self::assertSame(['key' => 'value'], $request->toArray());
     }
 }
