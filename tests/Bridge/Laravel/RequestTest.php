@@ -40,5 +40,9 @@ class RequestTest extends TestCase
         self::assertSame('text/test', $request->getHeader('accept'));
         self::assertSame('text/test', $request->getHeader('Accept'));
         self::assertSame('default', $request->getHeader('invalid', 'default'));
+
+        self::assertNull($request->getHeader('empty'));
+        $request->setHeader('empty', 'notempty');
+        self::assertSame('notempty', $request->getHeader('empty'));
     }
 }

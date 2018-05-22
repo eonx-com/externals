@@ -35,6 +35,16 @@ interface RequestInterface
     public function input(?string $key = null, $default = null);
 
     /**
+     * Set a header on the request
+     *
+     * @param string $key The key to set
+     * @param mixed $value The value to set against the header
+     *
+     * @return static
+     */
+    public function setHeader(string $key, $value);
+
+    /**
      * Retrieve the entire request as an array
      *
      * @return mixed[]

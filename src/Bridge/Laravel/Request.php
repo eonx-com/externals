@@ -64,6 +64,21 @@ class Request implements RequestInterface
     }
 
     /**
+     * Set a header on the request
+     *
+     * @param string $key The key to set
+     * @param mixed $value The value to set against the header
+     *
+     * @return static
+     */
+    public function setHeader(string $key, $value): self
+    {
+        $this->request->headers->set($key, $value);
+
+        return $this;
+    }
+
+    /**
      * Retrieve the entire request as an array
      *
      * @return mixed[]
