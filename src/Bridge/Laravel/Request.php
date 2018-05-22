@@ -26,6 +26,19 @@ class Request implements RequestInterface
     }
 
     /**
+     * Get a header by name
+     *
+     * @param string $key The key to find
+     * @param mixed $default The default to return if key isn't found
+     *
+     * @return mixed
+     */
+    public function getHeader(string $key, $default = null)
+    {
+        return $this->request->headers->get($key, $default);
+    }
+
+    /**
      * Determine if the request contains a given input item key
      *
      * @param string $key The key to find
@@ -48,6 +61,21 @@ class Request implements RequestInterface
     public function input(?string $key = null, $default = null)
     {
         return $this->request->input($key);
+    }
+
+    /**
+     * Set a header on the request
+     *
+     * @param string $key The key to set
+     * @param mixed $value The value to set against the header
+     *
+     * @return static
+     */
+    public function setHeader(string $key, $value): self
+    {
+        $this->request->headers->set($key, $value);
+
+        return $this;
     }
 
     /**
