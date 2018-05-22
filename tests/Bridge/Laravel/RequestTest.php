@@ -27,4 +27,18 @@ class RequestTest extends TestCase
         self::assertNull($request->input('invalid'));
         self::assertSame(['key' => 'value'], $request->toArray());
     }
+
+    /**
+     * Test request can retrieve headers as expected
+     *
+     * @return void
+     */
+    public function testRequestReadsHeaderInformationFromServer(): void
+    {
+        $request = new Request(new HttpRequest([], [], [], [], [], ['HTTP_ACCEPT' => 'text/test']));
+
+        self::assertSame('text/test', $request->getHeader('accept'));
+        self::assertSame('text/test', $request->getHeader('Accept'));
+        self::assertSame('default', $request->getHeader('invalid', 'default'));
+    }
 }

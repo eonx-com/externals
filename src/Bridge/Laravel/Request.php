@@ -26,6 +26,19 @@ class Request implements RequestInterface
     }
 
     /**
+     * Get a header by name
+     *
+     * @param string $key The key to find
+     * @param mixed $default The default to return if key isn't found
+     *
+     * @return mixed
+     */
+    public function getHeader(string $key, $default = null)
+    {
+        return $this->request->headers->get($key, $default);
+    }
+
+    /**
      * Determine if the request contains a given input item key
      *
      * @param string $key The key to find

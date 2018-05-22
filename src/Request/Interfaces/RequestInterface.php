@@ -6,6 +6,16 @@ namespace EoneoPay\Externals\Request\Interfaces;
 interface RequestInterface
 {
     /**
+     * Get a header by name
+     *
+     * @param string $key The key to find
+     * @param mixed $default The default to return if key isn't found
+     *
+     * @return mixed
+     */
+    public function getHeader(string $key, $default = null);
+
+    /**
      * Determine if the request contains a given input item key
      *
      * @param string $key The key to find
