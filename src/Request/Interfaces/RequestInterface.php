@@ -35,6 +35,15 @@ interface RequestInterface
     public function input(?string $key = null, $default = null);
 
     /**
+     * Replace request with a new set of data
+     *
+     * @param mixed[] $data The data to replace in the request
+     *
+     * @return static
+     */
+    public function replace(array $data);
+
+    /**
      * Set a header on the request
      *
      * @param string $key The key to set
