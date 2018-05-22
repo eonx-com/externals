@@ -53,7 +53,7 @@ class Request implements RequestInterface
     /**
      * Retrieve the entire request as an array
      *
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array
     {
