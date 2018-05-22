@@ -49,4 +49,14 @@ class Request implements RequestInterface
     {
         return $this->request->input($key);
     }
+
+    /**
+     * Retrieve the entire request as an array
+     *
+     * @return mixed[]
+     */
+    public function toArray(): array
+    {
+        return $this->request->all();
+    }
 }

@@ -23,4 +23,11 @@ interface RequestInterface
      * @return mixed
      */
     public function input(?string $key = null, $default = null);
+
+    /**
+     * Retrieve the entire request as an array
+     *
+     * @return mixed[]
+     */
+    public function toArray(): array;
 }
