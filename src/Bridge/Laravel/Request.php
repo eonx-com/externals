@@ -60,7 +60,7 @@ class Request implements RequestInterface
      */
     public function input(?string $key = null, $default = null)
     {
-        return $this->request->input($key);
+        return $this->request->input($key, $default);
     }
 
     /**
