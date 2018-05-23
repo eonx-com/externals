@@ -35,6 +35,15 @@ interface RequestInterface
     public function input(?string $key = null, $default = null);
 
     /**
+     * Merge a new data set into an existing request
+     *
+     * @param mixed[] $data The data to merge into the request
+     *
+     * @return static
+     */
+    public function merge(array $data);
+
+    /**
      * Replace request with a new set of data
      *
      * @param mixed[] $data The data to replace in the request
