@@ -64,6 +64,20 @@ class Request implements RequestInterface
     }
 
     /**
+     * Merge a new data set into an existing request
+     *
+     * @param mixed[] $data The data to merge into the request
+     *
+     * @return static
+     */
+    public function merge(array $data): self
+    {
+        $this->request->merge($data);
+
+        return $this;
+    }
+
+    /**
      * Replace request with a new set of data
      *
      * @param mixed[] $data The data to replace in the request

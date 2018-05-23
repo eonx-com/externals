@@ -52,7 +52,7 @@ class RequestTest extends TestCase
      *
      * @return void
      */
-    public function testRequestReplaceReplacesDataInTheRequest(): void
+    public function testRequestReplaceAndMergeReplacesDataInTheRequest(): void
     {
         $request = new Request(new HttpRequest(['key' => 'value']));
 
@@ -60,6 +60,11 @@ class RequestTest extends TestCase
 
         $request->replace(['new' => 'data']);
         self::assertNull($request->input('key'));
+        self::assertSame('data', $request->input('new'));
+
+        self::assertNull($request->input('merged'));
+        $request->merge(['merged' => 'value']);
+        self::assertSame('value', $request->input('merged'));
         self::assertSame('data', $request->input('new'));
     }
 }
