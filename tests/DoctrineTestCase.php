@@ -22,6 +22,7 @@ use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
 use ReflectionClass;
 use ReflectionException;
+use Tests\EoneoPay\Externals\ORM\Stubs\Extensions\LoggableExtensionStub;
 
 /** @noinspection EfferentObjectCouplingInspection */
 
@@ -43,8 +44,14 @@ abstract class DoctrineTestCase extends TestCase
      */
     public static $paths = [
         // Paths to your entities folder and stubs folder
-        __DIR__ . '/ORM/Stubs'
+        __DIR__ . '/ORM/Stubs',
+        __DIR__ . '/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity'
     ];
+
+    /**
+     * @var string
+     */
+    protected static $sql;
 
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
@@ -88,6 +95,7 @@ abstract class DoctrineTestCase extends TestCase
         // NOTE: driver for application Entity can be different, Yaml, Xml or whatever
         // register annotation driver for our application Entity fully qualified namespace
         $driverChain->addDriver($annotationDriver, 'Tests\\EoneoPay\\Externals\\ORM\\Stubs');
+        $driverChain->addDriver($annotationDriver, 'Gedmo\\Loggable\\Entity');
 
         // General ORM configuration
         $config = new Configuration();
@@ -175,33 +183,25 @@ abstract class DoctrineTestCase extends TestCase
      *
      * @return void
      *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\Tools\ToolsException
-     * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        (new SchemaTool($this->getDoctrineEntityManager()))
-            ->createSchema($this->getDoctrineEntityManager()->getMetadataFactory()->getAllMetadata());
-    }
+        /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
+        $entityManager = $this->getDoctrineEntityManager();
 
-    /**
-     * Drop database.
-     *
-     * @return void
-     *
-     * @throws \Doctrine\Common\Annotations\AnnotationException
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\ORM\ORMException
-     */
-    protected function tearDown(): void
-    {
-        (new SchemaTool($this->getDoctrineEntityManager()))->dropDatabase();
+        if (static::$sql === null) {
+            $tool = new SchemaTool($entityManager);
+            $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
+            static::$sql = \implode(';', $tool->getCreateSchemaSql($metadata));
+        }
 
-        parent::tearDown();
+        // Create schema
+        $entityManager->getConnection()->exec(static::$sql);
     }
 
     /**
@@ -212,7 +212,8 @@ abstract class DoctrineTestCase extends TestCase
     private function getLaravelDoctrineExtensions(): array
     {
         return [
-            new SoftDeleteExtension()
+            new SoftDeleteExtension(),
+            new LoggableExtensionStub()
         ];
     }
 }
