@@ -38,17 +38,19 @@ class LoggableEventSubscriber extends BaseLoggableListener
      * @param \Doctrine\Common\Persistence\ObjectManager $objectManager
      * @param string $class
      *
-     * @return array
+     * @return mixed[]
      *
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function getConfiguration(ObjectManager $objectManager, $class): array
     {
         $config = parent::getConfiguration($objectManager, $class);
         $entity = new $class();
 
-        if (!$entity instanceof EntityInterface || empty($this->getEntityFillable($entity))) {
+        if (($entity instanceof EntityInterface) === false || empty($this->getEntityFillable($entity))) {
             return $config;
         }
 
@@ -63,9 +65,11 @@ class LoggableEventSubscriber extends BaseLoggableListener
      *
      * @param string $action
      * @param mixed $object
-     * @param LoggableAdapter $loggableAdapter
+     * @param \Gedmo\Loggable\Mapping\Event\LoggableAdapter $loggableAdapter
      *
      * @return \Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry|null
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     protected function createLogEntry($action, $object, LoggableAdapter $loggableAdapter): ?AbstractLogEntry
     {
@@ -83,14 +87,14 @@ class LoggableEventSubscriber extends BaseLoggableListener
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity
      *
-     * @return array
+     * @return string[]
      *
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
     private function getEntityFillable(EntityInterface $entity): array
     {
-        if (!\in_array('*', $entity->getFillableProperties(), true)) {
+        if (\in_array('*', $entity->getFillableProperties(), true) === false) {
             return $entity->getFillableProperties();
         }
 
