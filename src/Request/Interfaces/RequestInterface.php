@@ -6,6 +6,16 @@ namespace EoneoPay\Externals\Request\Interfaces;
 interface RequestInterface
 {
     /**
+     * Get a header by name
+     *
+     * @param string $key The key to find
+     * @param mixed $default The default to return if key isn't found
+     *
+     * @return mixed
+     */
+    public function getHeader(string $key, $default = null);
+
+    /**
      * Determine if the request contains a given input item key
      *
      * @param string $key The key to find
@@ -23,4 +33,39 @@ interface RequestInterface
      * @return mixed
      */
     public function input(?string $key = null, $default = null);
+
+    /**
+     * Merge a new data set into an existing request
+     *
+     * @param mixed[] $data The data to merge into the request
+     *
+     * @return static
+     */
+    public function merge(array $data);
+
+    /**
+     * Replace request with a new set of data
+     *
+     * @param mixed[] $data The data to replace in the request
+     *
+     * @return static
+     */
+    public function replace(array $data);
+
+    /**
+     * Set a header on the request
+     *
+     * @param string $key The key to set
+     * @param mixed $value The value to set against the header
+     *
+     * @return static
+     */
+    public function setHeader(string $key, $value);
+
+    /**
+     * Retrieve the entire request as an array
+     *
+     * @return mixed[]
+     */
+    public function toArray(): array;
 }
