@@ -77,7 +77,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
         $validator = $this->mockValidator();
 
         $validator->shouldReceive('validate')->once()->withNoArgs()->andThrow($this->mockValidationException());
-        $factory->shouldReceive('make')->once()->with([], [])->andReturn($validator);
+        $factory->shouldReceive('make')->once()->with(['entityId' => null], [])->andReturn($validator);
 
         $object = (new EntityWithRulesStub())->setRules();
 
@@ -101,7 +101,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
         $validator = $this->mockValidator();
 
         $validator->shouldReceive('validate')->once()->withNoArgs()->andReturn(null);
-        $factory->shouldReceive('make')->once()->with([], [])->andReturn($validator);
+        $factory->shouldReceive('make')->once()->with(['entityId' => null], [])->andReturn($validator);
 
         $object = (new EntityWithRulesStub())->setRules();
 
