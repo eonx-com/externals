@@ -1,0 +1,56 @@
+<?php
+declare(strict_types=1);
+
+namespace EoneoPay\Externals\Bridge\Laravel\Validation;
+
+use Closure;
+use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
+
+class InstanceOfRule implements ValidationRuleInterface
+{
+    /**
+     * Get rule name
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'instance_of';
+    }
+
+    /**
+     * Get message replacements
+     *
+     * @return \Closure
+     *
+     * * @SuppressWarnings(PHPMD.UnusedLocalVariable) $rule on Closure are defined by Laravel validator
+     */
+    public function getReplacements(): Closure
+    {
+        // Create replacement for message to include parameters
+        return function (string $message, string $attribute, string $rule, array $parameters): string {
+            return \str_replace([':attribute', ':values'], [$attribute, \implode(' / ', $parameters)], $message);
+        };
+    }
+
+    /**
+     * Get the validation rule closure
+     *
+     * @return \Closure
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable) $attribute on Closure are defined by Laravel validator
+     */
+    public function getRule(): Closure
+    {
+        return function (string $attribute, $value, array $parameters): bool {
+            $class = $parameters[0] ?? null;
+
+            // If no parameters given rule should fail
+            if ($class === null) {
+                return false;
+            }
+
+            return $value instanceof $class;
+        };
+    }
+}
