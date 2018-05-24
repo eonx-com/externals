@@ -39,6 +39,16 @@ class Request implements RequestInterface
     }
 
     /**
+     * Get user from request
+     *
+     * @return string|null
+     */
+    public function getUser(): ?string
+    {
+        return $this->request->getUser();
+    }
+
+    /**
      * Determine if the request contains a given input item key
      *
      * @param string $key The key to find
