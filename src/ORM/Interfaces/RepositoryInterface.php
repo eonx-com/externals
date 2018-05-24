@@ -6,6 +6,17 @@ namespace EoneoPay\Externals\ORM\Interfaces;
 interface RepositoryInterface
 {
     /**
+     * Counts entities by a set of criteria.
+     *
+     * @param mixed[]|null $criteria
+     *
+     * @return int The cardinality of the objects that match the given criteria.
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     */
+    public function count(?array $criteria = null): int;
+
+    /**
      * Find a entity by its primary key / identifier
      *
      * @param mixed $entityId The primary identifier for the entity
