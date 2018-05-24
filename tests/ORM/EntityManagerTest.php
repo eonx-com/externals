@@ -12,6 +12,7 @@ use Tests\EoneoPay\Externals\DoctrineTestCase;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithCustomRepository;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithNotFoundRepository;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithGetFillableStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithValidationStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
 
@@ -150,7 +151,8 @@ class EntityManagerTest extends DoctrineTestCase
      */
     public function testPersistAndRemoveSuccessful(): void
     {
-        $entity = new EntityStub(['string' => 'string', 'integer' => 1]);
+        // Use entity with getFillable to cover LoggableEventSubscriber
+        $entity = new EntityWithGetFillableStub(['string' => 'string', 'integer' => 1]);
 
         // Persist entity into database
         $this->getEntityManager()->persist($entity);
