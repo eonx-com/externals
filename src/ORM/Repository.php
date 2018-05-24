@@ -20,6 +20,14 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function count(?array $criteria = null): int
+    {
+        return $this->callMethod('count', $criteria ?? []);
+    }
+
+    /**
      * Find an entity by its primary key / identifier
      *
      * @param mixed $entityId The primary identifier for the entity
