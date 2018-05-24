@@ -19,7 +19,9 @@ class RequestTest extends TestCase
      */
     public function testRequestReadsHeaderInformationFromServer(): void
     {
-        $request = new Request(new HttpRequest([], [], [], [], [], ['HTTP_ACCEPT' => 'text/test']));
+        $request = new Request(
+            new HttpRequest([], [], [], [], [], ['HTTP_ACCEPT' => 'text/test', 'PHP_AUTH_USER' => 'user'])
+        );
 
         self::assertSame('text/test', $request->getHeader('accept'));
         self::assertSame('text/test', $request->getHeader('Accept'));
@@ -28,6 +30,8 @@ class RequestTest extends TestCase
         self::assertNull($request->getHeader('empty'));
         $request->setHeader('empty', 'notempty');
         self::assertSame('notempty', $request->getHeader('empty'));
+
+        self::assertSame('user', $request->getUser());
     }
 
     /**
