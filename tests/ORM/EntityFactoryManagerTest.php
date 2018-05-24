@@ -29,10 +29,17 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
             'Tests\EoneoPay\Externals\ORM\Stubs\Factories\\' => 'Tests\EoneoPay\Externals\ORM\Stubs'
         ]);
 
-        /** @noinspection UnnecessaryAssertionInspection Create returns EntityInterface */
-        self::assertInstanceOf(EntityStub::class, $entityFactoryManager->create(EntityStub::class));
-        /** @noinspection UnnecessaryAssertionInspection Create returns EntityInterface */
-        self::assertInstanceOf(EntityStub::class, $entityFactoryManager->create(EntityStub::class));
+        $entity1 = $entityFactoryManager->create(EntityStub::class);
+        $entity2 = $entityFactoryManager->create(EntityStub::class);
+        $entity3 = $entityFactoryManager->create(EntityStub::class, ['string' => 'different']);
+
+        foreach ([$entity1, $entity2, $entity3] as $entity) {
+            self::assertInstanceOf(EntityStub::class, $entity);
+        }
+
+        self::assertEquals(\spl_object_id($entity1), \spl_object_id($entity2));
+        self::assertNotEquals(\spl_object_id($entity1), \spl_object_id($entity3));
+
         /** @noinspection UnnecessaryAssertionInspection Create returns EntityInterface */
         self::assertInstanceOf(EntityWithRulesStub::class, $entityFactoryManager->create(EntityWithRulesStub::class));
 

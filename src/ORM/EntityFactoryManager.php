@@ -13,6 +13,13 @@ use EoneoPay\Utils\Str;
 class EntityFactoryManager implements EntityFactoryManagerInterface
 {
     /**
+     * Entity array to cache entities instances.
+     *
+     * @var mixed[]
+     */
+    private $entityInstances = [];
+
+    /**
      * @var \EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface
      */
     private $entityManager;
@@ -25,7 +32,7 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
     private $factoryClasses;
 
     /**
-     * Factory array to cache factories instance.
+     * Factory array to cache factories instances.
      *
      * @var \EoneoPay\Externals\ORM\Interfaces\EntityFactoryInterface[]
      */
@@ -93,15 +100,33 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
-     * @throws \ReflectionException If invalid class detected in factories folders
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \ReflectionException If invalid class detected in factories folders
      */
     public function create(string $className, ?array $data = null): EntityInterface
     {
+        // Initiate entity instances array
+        if (isset($this->entityInstances[$className]) === false) {
+            $this->entityInstances[$className] = [];
+        }
+
+        // Merge passed data into default data
+        $data = \array_merge($this->getDefaultData($className), $data ?? []);
+
+        // Create key for this data set
+        \array_multisort($data);
+        $key = \md5(\json_encode($data));
+
+        // If entity exists return
+        if (isset($this->entityInstances[$className][$key]) === true) {
+            return $this->entityInstances[$className][$key];
+        }
+
+        // Create and persist new entity instance
         $entity = $this->getEntityFactory($className)->create($data);
         $this->entityManager->persist($entity);
 
-        return $entity;
+        return $this->entityInstances[$className][$key] = $entity;
     }
 
     /**
@@ -111,8 +136,8 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
      *
      * @return mixed[]
      *
-     * @throws \ReflectionException If invalid class detected in factories folders
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \ReflectionException If invalid class detected in factories folders
      */
     public function getDefaultData(string $className): array
     {
@@ -126,8 +151,8 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\EntityFactoryInterface
      *
-     * @throws \ReflectionException If invalid class detected in factories folders
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \ReflectionException If invalid class detected in factories folders
      */
     public function getEntityFactory(string $className): EntityFactoryInterface
     {
@@ -182,8 +207,8 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
      *
      * @return string
      *
-     * @throws \ReflectionException If invalid class detected in factories folders
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \ReflectionException If invalid class detected in factories folders
      */
     private function resolve(string $className): string
     {

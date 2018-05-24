@@ -8,11 +8,11 @@ interface EntityFactoryInterface
     /**
      * Create an entity.
      *
-     * @param mixed[]|null $data
+     * @param mixed[] $data
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
      */
-    public function create(?array $data = null): EntityInterface;
+    public function create(array $data): EntityInterface;
 
     /**
      * Get default date used for test.
