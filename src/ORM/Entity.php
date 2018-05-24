@@ -452,21 +452,30 @@ abstract class Entity implements EntityInterface, SerializableInterface
             return $this;
         }
 
-        // Set property value
-        $this->{$resolved} = $value;
-
-        // Run transformer if applicable
+        // Set property value, prefer setter over direct set
+        $setter = \sprintf('set%s', \ucfirst($resolved));
         try {
-            $method = \sprintf('transform%s', \ucfirst($resolved));
-            if (\method_exists($this, $method)) {
-                $this->{$method}();
-            }
+            \method_exists($this, $setter) ? $this->{$setter}($value) : $this->{$resolved} = $value;
             // @codeCoverageIgnoreStart
         } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidMethodCallException $exception) {
-            // Exception will not be thrown so intentionally ignored
-            // @todo: Investigate why this inspection is failing
+            // Exception will not be thrown before method_exists checks first, so intentionally ignored
+
+            // Set value directly as a last resort
+            $this->{$resolved} = $value;
         }
         // @codeCoverageIgnoreEnd
+
+        // Run transformer if applicable
+        $method = \sprintf('transform%s', \ucfirst($resolved));
+        if (\method_exists($this, $method)) {
+            try {
+                $this->{$method}();
+                // @codeCoverageIgnoreStart
+            } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidMethodCallException $exception) {
+                // Exception will not be thrown before method_exists checks first, so intentionally ignored
+            }
+            // @codeCoverageIgnoreEnd
+        }
 
         return $this;
     }
