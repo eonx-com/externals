@@ -213,6 +213,7 @@ class EntityManagerTest extends DoctrineTestCase
         self::assertInstanceOf(EntityStub::class, $repository->findOneBy(['string' => 'string']));
         self::assertCount(1, $repository->findAll());
         self::assertCount(1, $repository->findBy(['string' => 'string']));
+        self::assertEquals(1, $repository->count());
     }
 
     /**
