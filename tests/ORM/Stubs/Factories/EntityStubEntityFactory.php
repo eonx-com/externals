@@ -12,13 +12,13 @@ class EntityStubEntityFactory extends EntityFactory
     /**
      * Create an entity.
      *
-     * @param mixed[]|null $data
+     * @param mixed[] $data
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
      */
-    public function create(?array $data = null): EntityInterface
+    public function create(array $data): EntityInterface
     {
-        return new EntityStub($data ?? $this->getDefaultData());
+        return new EntityStub($data);
     }
 
     /**
