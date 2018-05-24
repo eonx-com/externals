@@ -25,7 +25,7 @@ class EmptyWithRule implements ValidationRuleInterface
      *
      * @return \Closure
      *
-     * * @SuppressWarnings(PHPMD.UnusedLocalVariable) $rule on Closure are defined by Laravel validator
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable) $rule on Closure are defined by Laravel validator
      */
     public function getReplacements(): Closure
     {
