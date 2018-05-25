@@ -4,10 +4,26 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\Environment;
 
 use Closure;
+use Dotenv\Loader;
 use EoneoPay\Externals\Environment\Interfaces\EnvInterface;
 
 class Env implements EnvInterface
 {
+    /**
+     * Dotenv loader instance
+     *
+     * @var \Dotenv\Loader
+     */
+    private $dotenv;
+
+    /**
+     * Create a new env instance
+     */
+    public function __construct()
+    {
+        $this->dotenv = new Loader('');
+    }
+
     /**
      * Gets the value of an environment variable
      *
@@ -18,17 +34,12 @@ class Env implements EnvInterface
      */
     public function get(string $key, $default = null)
     {
-        // Since getenv() returns false if key doesn't exists we may have an error where
-        // the value is legitimately false, to avoid get all keys and check for key name
-        $env = \getenv();
+        $value = $this->dotenv->getEnvironmentVariable($key);
 
-        // Only return default if key legitimately doesn't exist
-        if (\array_key_exists($key, $env) === false) {
+        // If value doesn't exist, return default
+        if ($value === null) {
             return $default instanceof Closure ? $default() : $default;
         }
-
-        // Fetch value from environment
-        $value = \getenv($key);
 
         // If value includes quotes return substring
         if (\mb_strlen($value) > 1 && \mb_strpos($value, '"') === 0 && \mb_substr($value, -1) === '"') {
@@ -48,7 +59,7 @@ class Env implements EnvInterface
     public function remove(string $key): bool
     {
         // Set env with no value to unset
-        \putenv($key);
+        $this->dotenv->clearEnvironmentVariable($key);
 
         return true;
     }
@@ -69,7 +80,7 @@ class Env implements EnvInterface
         }
 
         // Set in env
-        \putenv(\sprintf('%s=%s', $key, (string)$value));
+        $this->dotenv->setEnvironmentVariable($key, $value);
 
         return true;
     }
