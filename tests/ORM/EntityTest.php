@@ -102,6 +102,24 @@ class EntityTest extends DoctrineTestCase
     }
 
     /**
+     * Test instanceOfRuleAsString build correctly the string representation of the validation rule.
+     *
+     * @return void
+     */
+    public function testInstanceOfRuleAsStringMethod(): void
+    {
+        self::assertEquals(
+            'instance_of:stdClass',
+            (new EntityStub())->getInstanceOfRuleForTest(\stdClass::class)
+        );
+
+        self::assertEquals(
+            'instance_of:Tests\EoneoPay\Externals\ORM\Stubs\EntityStub',
+            (new EntityStub())->getInstanceOfRuleForTest(EntityStub::class)
+        );
+    }
+
+    /**
      * Test entity can be json serialized
      *
      * @return void

@@ -76,6 +76,18 @@ class EntityStub extends Entity
     }
 
     /**
+     * Function exclusively for test purposes to test instanceOfRuleAsString.
+     *
+     * @param string $class
+     *
+     * @return string
+     */
+    public function getInstanceOfRuleForTest(string $class): string
+    {
+        return $this->instanceOfRuleAsString($class);
+    }
+
+    /**
      * Return an array of annotation/attribute pairs to search for properties in
      *
      * Note: Changing this array will cause the test testPropertyAnnotationsContainsInvalidClassAndAttribute() to fail
