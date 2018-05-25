@@ -29,8 +29,8 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
             'Tests\EoneoPay\Externals\ORM\Stubs\Factories\\' => 'Tests\EoneoPay\Externals\ORM\Stubs'
         ]);
 
-        $entity1 = $entityFactoryManager->create(EntityStub::class);
-        $entity2 = $entityFactoryManager->create(EntityStub::class);
+        $entity1 = $entityFactoryManager->get(EntityStub::class);
+        $entity2 = $entityFactoryManager->get(EntityStub::class);
         $entity3 = $entityFactoryManager->create(EntityStub::class, ['string' => 'different']);
 
         foreach ([$entity1, $entity2, $entity3] as $entity) {

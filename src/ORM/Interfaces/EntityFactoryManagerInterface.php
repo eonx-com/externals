@@ -16,7 +16,7 @@ interface EntityFactoryManagerInterface
     public function addNamespaceMapping(string $factoriesNamespace, string $entitiesNamespace): self;
 
     /**
-     * Persist the test entity and return it.
+     * Create a new entity, persist it and return it.
      *
      * @param string $className
      * @param mixed[]|null $data
@@ -27,6 +27,19 @@ interface EntityFactoryManagerInterface
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function create(string $className, ?array $data = null): EntityInterface;
+
+    /**
+     * Get the entity from cache or create a new one, persist it and return it.
+     *
+     * @param string $className
+     * @param mixed[]|null $data
+     *
+     * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     */
+    public function get(string $className, ?array $data = null): EntityInterface;
 
     /**
      * Get entity factory default data based on entity class name.
