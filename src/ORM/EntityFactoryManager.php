@@ -105,13 +105,36 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
      */
     public function create(string $className, ?array $data = null): EntityInterface
     {
+        // Create and persist new entity instance
+        $entity = $this->getEntityFactory($className)->create($this->mergeData($className, $data));
+
+        $this->entityManager->persist($entity);
+
+        return $entity;
+    }
+
+    /**
+     * Get the entity from cache or create a new one, persist it and return it.
+     *
+     * @param string $className
+     * @param mixed[]|null $data
+     *
+     * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @throws \ReflectionException
+     */
+    public function get(string $className, ?array $data = null): EntityInterface
+    {
         // Initiate entity instances array
         if (isset($this->entityInstances[$className]) === false) {
             $this->entityInstances[$className] = [];
         }
 
         // Merge passed data into default data
-        $data = \array_merge($this->getDefaultData($className), $data ?? []);
+        $data = $this->mergeData($className, $data);
 
         // Create key for this data set
         $key = \md5(\json_encode($data));
@@ -121,11 +144,7 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
             return $this->entityInstances[$className][$key];
         }
 
-        // Create and persist new entity instance
-        $entity = $this->getEntityFactory($className)->create($data);
-        $this->entityManager->persist($entity);
-
-        return $this->entityInstances[$className][$key] = $entity;
+        return $this->entityInstances[$className][$key] = $this->create($className, $data);
     }
 
     /**
@@ -197,6 +216,22 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
         }
 
         return $this->factoryClasses = (new EntityFactoryLoader($this->factoryPaths))->loadFactoriesClassNames();
+    }
+
+    /**
+     * Merge given data with default for given class name.
+     *
+     * @param string $className
+     * @param mixed[]|null $data
+     *
+     * @return mixed[]
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \ReflectionException
+     */
+    private function mergeData(string $className, ?array $data = null): array
+    {
+        return \array_merge($this->getDefaultData($className), $data ?? []);
     }
 
     /**
