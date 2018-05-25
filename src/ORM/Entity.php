@@ -260,6 +260,18 @@ abstract class Entity implements EntityInterface, SerializableInterface
     }
 
     /**
+     * Get instance_of rule string for given class.
+     *
+     * @param string $class
+     *
+     * @return string
+     */
+    protected function instanceOfRuleAsString(string $class): string
+    {
+        return \sprintf('instance_of:%s', $class);
+    }
+
+    /**
      * Get a value from a property
      *
      * @param string $property The property to get the value of
