@@ -5,6 +5,7 @@ namespace EoneoPay\Externals\Bridge\Laravel;
 
 use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
 use EoneoPay\Externals\Bridge\Laravel\Validation\EmptyWithRule;
+use EoneoPay\Externals\Bridge\Laravel\Validation\InstanceOfRule;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Validation\Factory;
 
@@ -60,6 +61,8 @@ class Validator implements ValidatorInterface
 
         // Add custom rules
         $this->addDependantRule(EmptyWithRule::class);
+        $this->addRule(InstanceOfRule::class);
+
 
         return $this->validator->passes();
     }
@@ -74,7 +77,7 @@ class Validator implements ValidatorInterface
     private function addDependantRule(string $className): void
     {
         // Pass through to addRule
-        $rule = $this->addRule($className);
+        $rule = $this->instantiateRule($className);
 
         // If rule doesn't exist skip, this is only here for safety since method is private
         if ($rule === null) {
@@ -92,9 +95,32 @@ class Validator implements ValidatorInterface
      *
      * @param string $className The class this rule uses
      *
+     * @return void
+     */
+    private function addRule(string $className): void
+    {
+        // Pass through to addRule
+        $rule = $this->instantiateRule($className);
+
+        // If rule doesn't exist skip, this is only here for safety since method is private
+        if ($rule === null) {
+            // @codeCoverageIgnoreStart
+            return;
+            // @codeCoverageIgnoreEnd
+        }
+
+        // Register as extension
+        $this->validator->addExtension($rule->getName(), $rule->getRule());
+    }
+
+    /**
+     * Instantiate custom rule and add replacer to validator.
+     *
+     * @param string $className
+     *
      * @return \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface|null
      */
-    private function addRule(string $className): ?ValidationRuleInterface
+    private function instantiateRule(string $className): ?ValidationRuleInterface
     {
         // If rule is invalid, skip, this is only here for safety since method is private
         if (\class_exists($className) === false) {

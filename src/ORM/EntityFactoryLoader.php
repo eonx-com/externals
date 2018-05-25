@@ -52,7 +52,7 @@ class EntityFactoryLoader implements EntityFactoryLoaderInterface
                 /** @noinspection PhpIncludeInspection Must require files dynamically */
                 require_once $sourceFile;
 
-                $includedFiles[] = $sourceFile;
+                $includedFiles[] = \realpath($sourceFile);
             }
         }
 
