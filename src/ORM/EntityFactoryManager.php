@@ -113,19 +113,29 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
         // Merge passed data into default data
         $data = \array_merge($this->getDefaultData($className), $data ?? []);
 
-        // Create key for this data set
-        $key = \md5(\json_encode($data));
+        // In-Memory caching should only be done if there is at least 1 array key
+        $cacheable = (bool)\count($data);
+        $key = null;
 
-        // If entity exists return
-        if (isset($this->entityInstances[$className][$key]) === true) {
-            return $this->entityInstances[$className][$key];
+        if ($cacheable) {
+            // Create key for this data set
+            $key = \md5(\json_encode($data));
+
+            // If entity exists return
+            if (isset($this->entityInstances[$className][$key]) === true) {
+                return $this->entityInstances[$className][$key];
+            }
         }
 
         // Create and persist new entity instance
         $entity = $this->getEntityFactory($className)->create($data);
         $this->entityManager->persist($entity);
 
-        return $this->entityInstances[$className][$key] = $entity;
+        if ($key !== null) {
+            return $this->entityInstances[$className][$key] = $entity;
+        }
+
+        return $entity;
     }
 
     /**

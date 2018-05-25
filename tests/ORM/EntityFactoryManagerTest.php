@@ -8,6 +8,7 @@ use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use Tests\EoneoPay\Externals\EntityFactoryManagerTestCase;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityCustomRepository;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithNoPropertiesStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithRulesStub;
 
 class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
@@ -47,6 +48,29 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
             ['integer' => 1, 'string' => 'string'],
             $entityFactoryManager->getDefaultData(EntityStub::class)
         );
+    }
+
+    /**
+     * EntityFactoryManager should not cache entities that have not been provided data.
+     *
+     * @return void
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     */
+    public function testCreateTwiceNoDataDifferentObject(): void
+    {
+        $entityFactoryManager = $this->getEntityFactoryManager([
+            'Tests\EoneoPay\Externals\ORM\Stubs\Factories\\' => 'Tests\EoneoPay\Externals\ORM\Stubs'
+        ]);
+
+        $entity1 = $entityFactoryManager->create(EntityWithNoPropertiesStub::class);
+        $entity2 = $entityFactoryManager->create(EntityWithNoPropertiesStub::class);
+
+        self::assertNotEquals(\spl_object_id($entity1), \spl_object_id($entity2));
     }
 
     /**
