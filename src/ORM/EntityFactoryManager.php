@@ -114,7 +114,6 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
         $data = \array_merge($this->getDefaultData($className), $data ?? []);
 
         // Create key for this data set
-        \array_multisort($data);
         $key = \md5(\json_encode($data));
 
         // If entity exists return
