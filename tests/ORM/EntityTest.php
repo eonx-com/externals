@@ -9,6 +9,8 @@ use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use Tests\EoneoPay\Externals\DoctrineTestCase;
 use Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\MultiChildEntityStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\MultiParentEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
 
 /**
@@ -36,6 +38,33 @@ class EntityTest extends DoctrineTestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     */
+    public function testAssociateMultiParentsWithMultiChildren(): void
+    {
+        $parent = new MultiParentEntityStub();
+        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+
+        $child->addParent($parent);
+
+        // Test child is added to parent collection
+        self::assertEquals(1, $parent->getChildren()->count());
+        // Test parent is added to child collection
+        self::assertEquals(1, $child->getParents()->count());
+
+        $child->addParent($parent);
+
+        // Test parent is added only once
+        self::assertEquals(1, $child->getParents()->count());
+    }
+
+    /**
+     * Test associate function. Stubs used for it are made to provide full coverage.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
      */
     public function testAssociateParentWithChildren(): void
     {

@@ -213,6 +213,41 @@ abstract class Entity implements EntityInterface, SerializableInterface
     }
 
     /**
+     * Associate an entity in a bidirectional way on a N-N relation
+     *
+     * @param string $attribute The attribute on the first entity for the many to many association
+     * @param \EoneoPay\Externals\ORM\Entity $parent The entity to associate
+     * @param string $association The attribute on the second entity for the many to many collection
+     *
+     * @return mixed The original entity for fluency
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     */
+    protected function associateMultiple(string $attribute, Entity $parent, string $association)
+    {
+        // Determine parent collection method
+        $parentCollection = \sprintf('get%s', $association);
+
+        // Check if this is already in collection
+        $exists = $parent->{$parentCollection}()->contains($this);
+
+        // If attribute is already parent and collection contains this item, return
+        if ($exists && $this->{$attribute}->contains($parent)) {
+            return $this;
+        }
+
+        // set parent if not exists
+        $this->{$attribute}->add($parent);
+
+        // Add to collection if it doesn't already exist
+        if ($exists === false) {
+            $parent->{$parentCollection}()->add($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * Get id property name for current entity.
      *
      * @return string
@@ -225,6 +260,18 @@ abstract class Entity implements EntityInterface, SerializableInterface
         $ids = (new AnnotationReader())->getClassPropertyAnnotation(\get_class($this), Id::class);
 
         return \key($ids) ?? 'id';
+    }
+
+    /**
+     * Get instance_of rule string for given class.
+     *
+     * @param string $class
+     *
+     * @return string
+     */
+    protected function instanceOfRuleAsString(string $class): string
+    {
+        return \sprintf('instance_of:%s', $class);
     }
 
     /**
@@ -257,18 +304,6 @@ abstract class Entity implements EntityInterface, SerializableInterface
         );
 
         return $rule;
-    }
-
-    /**
-     * Get instance_of rule string for given class.
-     *
-     * @param string $class
-     *
-     * @return string
-     */
-    protected function instanceOfRuleAsString(string $class): string
-    {
-        return \sprintf('instance_of:%s', $class);
     }
 
     /**
