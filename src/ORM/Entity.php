@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\Mapping\Id;
+use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
@@ -167,46 +168,40 @@ abstract class Entity implements EntityInterface, SerializableInterface
      *
      * @param string $attribute The attribute on the entity for the many to one association
      * @param \EoneoPay\Externals\ORM\Entity $parent The entity to associate
-     * @param string $association The attribute on the entity for the one to many collection
+     * @param string|null $association The attribute on the parent for the one to many collection
      *
      * @return mixed The original entity for fluency
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
      * @throws \ReflectionException Inherited, if class or property does not exist
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
      */
-    protected function associate(string $attribute, Entity $parent, string $association)
+    protected function associate(string $attribute, Entity $parent, ?string $association = null)
     {
-        // Determine collection method
-        $collection = \sprintf('get%s', \ucfirst($association));
+        // If attribute does not exist on entity, throw exception
+        $this->checkEntityHasAttribute($attribute);
+        // Determine getter
+        $getter = \sprintf('get%s', \ucfirst($attribute));
+        // Get current attribute value
+        $currentValue = $this->$getter();
 
-        // Check if this is already in collection
-        $exists = $parent->{$collection}()->contains($this);
-
-        // If attribute is already parent and collection contains this item, return
-        if ($exists && $this->{$attribute} === $parent) {
+        // If attribute value is already parent, return
+        if ($currentValue === $parent) {
             return $this;
         }
 
-        // If attribute is not this, remove existing association
-        if ($this->{$attribute} !== null &&
-            $this->{$attribute} !== $this &&
-            $this->{$attribute}->{$collection}()->contains($this)) {
-            $this->{$attribute}->{$collection}()->removeElement($this);
-        }
-
-        // Set parent
         $this->{$attribute} = $parent;
 
-        // Add to collection if it doesn't already exist
-        if ($exists === false) {
-            $parent->{$collection}()->add($this);
+        // If foreign key column explicitly defined assign parent id
+        $foreignKey = \sprintf('%sId', $attribute);
+        if (\property_exists($this, $foreignKey)) {
+            $this->$foreignKey = $parent->getId();
+        }
 
-            // If foreign key column explicitly defined assign parent id
-            $foreignKey = \sprintf('%sId', $attribute);
-            if (\property_exists($this, $foreignKey)) {
-                $this->{$foreignKey} = $parent->getId();
-            }
+        // If association set, handle it
+        if ($association !== null) {
+            $this->handleReverseAssociation($association, $parent, $currentValue);
         }
 
         return $this;
@@ -217,32 +212,41 @@ abstract class Entity implements EntityInterface, SerializableInterface
      *
      * @param string $attribute The attribute on the first entity for the many to many association
      * @param \EoneoPay\Externals\ORM\Entity $parent The entity to associate
-     * @param string $association The attribute on the second entity for the many to many collection
+     * @param string|null $association The attribute on the second entity for the many to many collection
      *
      * @return mixed The original entity for fluency
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
-    protected function associateMultiple(string $attribute, Entity $parent, string $association)
+    protected function associateMultiple(string $attribute, Entity $parent, ?string $association = null)
     {
-        // Determine parent collection method
-        $parentCollection = \sprintf('get%s', $association);
+        // If attribute does not exist on entity, throw exception
+        $this->checkEntityHasAttribute($attribute);
 
-        // Check if this is already in collection
-        $exists = $parent->{$parentCollection}()->contains($this);
-
-        // If attribute is already parent and collection contains this item, return
-        if ($exists && $this->{$attribute}->contains($parent)) {
+        // If attribute contains this item, return
+        if ($this->{$attribute}->contains($parent)) {
             return $this;
         }
 
-        // set parent if not exists
+        // Add parent if not exists
         $this->{$attribute}->add($parent);
 
-        // Add to collection if it doesn't already exist
-        if ($exists === false) {
-            $parent->{$parentCollection}()->add($this);
+        // If no association given, return
+        if ($association === null) {
+            return $this;
         }
+
+        // Determine parent collection method
+        $collection = \sprintf('get%s', \ucfirst($association));
+
+        // If parent collection contains this item, return
+        if ($parent->{$collection}()->contains($this)) {
+            return $this;
+        }
+
+        // Add entity to parent collection
+        $parent->{$collection}()->add($this);
 
         return $this;
     }
@@ -307,6 +311,24 @@ abstract class Entity implements EntityInterface, SerializableInterface
     }
 
     /**
+     * If attribute does not exist on entity, throw exception
+     *
+     * @param string $attribute
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
+     */
+    private function checkEntityHasAttribute(string $attribute): void
+    {
+        if (\property_exists($this, $attribute) === false) {
+            throw new InvalidArgumentException(\sprintf(
+                'Property %s::%s does not exist',
+                \get_class($this),
+                $attribute
+            ));
+        }
+    }
+
+    /**
      * Get a value from a property
      *
      * @param string $property The property to get the value of
@@ -338,6 +360,38 @@ abstract class Entity implements EntityInterface, SerializableInterface
     private function getResolvableAnnotations(): array
     {
         return $this->invokeEntityMethod('getPropertyAnnotations');
+    }
+
+    /**
+     * Handle reverse association.
+     *
+     * @param string $association
+     * @param \EoneoPay\Externals\ORM\Entity $parent
+     * @param \EoneoPay\Externals\ORM\Entity|null $currentValue
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If magic call does not exist on parent
+     */
+    private function handleReverseAssociation(string $association, Entity $parent, ?Entity $currentValue = null): void
+    {
+        // Determine collection method
+        $collection = \sprintf('get%s', \ucfirst($association));
+
+        // Check if this is already in collection
+        $exists = $parent->$collection()->contains($this);
+
+        // If attribute is not this, remove existing association
+        if ($currentValue !== null &&
+            $currentValue !== $this &&
+            $currentValue->$collection()->contains($this)) {
+            $currentValue->$collection()->removeElement($this);
+        }
+
+        // Add to collection if it doesn't already exist
+        if ($exists === false) {
+            $parent->$collection()->add($this);
+        }
     }
 
     /**

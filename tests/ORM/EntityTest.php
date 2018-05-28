@@ -5,6 +5,7 @@ namespace Tests\EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
+use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use Tests\EoneoPay\Externals\DoctrineTestCase;
 use Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub;
@@ -16,6 +17,7 @@ use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
 /**
  * @covers \EoneoPay\Externals\ORM\Entity
  *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Entity itself is complex so lot of tests to perform
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) Entity itself is complex so lot of tests to perform
  */
 class EntityTest extends DoctrineTestCase
@@ -38,6 +40,7 @@ class EntityTest extends DoctrineTestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
     public function testAssociateMultiParentsWithMultiChildren(): void
     {
@@ -51,7 +54,16 @@ class EntityTest extends DoctrineTestCase
         // Test parent is added to child collection
         self::assertEquals(1, $child->getParents()->count());
 
+        // Add parent twice
         $child->addParent($parent);
+        // Remove parent from child but not the other side of the relation
+        $child->getParents()->removeElement($parent);
+        // Add parent again
+        $child->addParent($parent);
+        // Remove parent from child to avoid skipping method
+        $child->getParents()->removeElement($parent);
+        // Add parent with no association
+        $child->addParentWithNoAssociation($parent);
 
         // Test parent is added only once
         self::assertEquals(1, $child->getParents()->count());
@@ -82,6 +94,42 @@ class EntityTest extends DoctrineTestCase
 
         // Test parent contains child only once
         self::assertEquals(1, $parent->getChildren()->count());
+    }
+
+    /**
+     * Entity should throw exception when trying to associate on a wrong association.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
+     */
+    public function testAssociateWithWrongAssociationException(): void
+    {
+        $this->expectException(InvalidMethodCallException::class);
+
+        $parent = new MultiParentEntityStub();
+        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+
+        $child->addParentWithWrongAssociation($parent);
+    }
+
+    /**
+     * Entity should throw exception when trying to associate on a wrong attribute.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
+     */
+    public function testAssociateWithWrongAttributeException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $parent = new MultiParentEntityStub();
+        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+
+        $child->addParentWithWrongAttribute($parent);
     }
 
     /**
