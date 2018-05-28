@@ -7,14 +7,14 @@ use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
 use EoneoPay\Externals\Bridge\Laravel\Validation\EmptyWithRule;
 use EoneoPay\Externals\Bridge\Laravel\Validation\InstanceOfRule;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
-use Illuminate\Validation\Factory;
+use Illuminate\Contracts\Validation\Factory;
 
 class Validator implements ValidatorInterface
 {
     /**
      * Validation factory instance
      *
-     * @var \Illuminate\Validation\Factory
+     * @var \Illuminate\Contracts\Validation\Factory
      */
     private $factory;
 
@@ -28,7 +28,7 @@ class Validator implements ValidatorInterface
     /**
      * Create new validation instance
      *
-     * @param \Illuminate\Validation\Factory $factory Validation factory instance
+     * @param \Illuminate\Contracts\Validation\Factory $factory Validation factory interface instance
      */
     public function __construct(Factory $factory)
     {
@@ -56,15 +56,17 @@ class Validator implements ValidatorInterface
      */
     public function validate(array $data, array $rules): bool
     {
-        // Create validator
-        $this->validator = $this->factory->make($data, $rules);
+        /** @var \Illuminate\Validation\Validator $validator */
+        $validator = $this->factory->make($data, $rules);
+        // Doing this to make PHPStan happy
+        $this->validator = $validator;
 
-        // Add custom rules
+            // Add custom rules
         $this->addDependantRule(EmptyWithRule::class);
         $this->addRule(InstanceOfRule::class);
 
 
-        return $this->validator->passes();
+        return $validator->passes();
     }
 
     /**

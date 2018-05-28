@@ -7,9 +7,11 @@ use Illuminate\Config\Repository as IlluminateConfig;
 use Illuminate\Container\Container as IlluminateContainer;
 use Illuminate\Contracts\Container\Container as IlluminateContainerContract;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
+use Illuminate\Contracts\Validation\Factory as ValidationFactoryContract;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
+use Illuminate\Validation\Factory;
 
 abstract class LaravelBridgeProvidersTestCase extends DoctrineTestCase
 {
@@ -71,6 +73,11 @@ abstract class LaravelBridgeProvidersTestCase extends DoctrineTestCase
         // Bind translator
         $app->bind('translator', function () {
             return new Translator(new ArrayLoader(), 'en');
+        });
+
+        // Bind validator
+        $app->bind(ValidationFactoryContract::class, function () use ($app) {
+            return new Factory($app->make('translator'));
         });
 
         $this->app = $app;
