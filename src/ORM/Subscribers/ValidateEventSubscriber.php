@@ -170,7 +170,8 @@ class ValidateEventSubscriber implements EventSubscriber
             $getter = \sprintf('get%s', \ucfirst($property));
             $annotation = \reset($annotations);
 
-            $contents[$annotation->name ?? $property] = $entity->$getter();
+            // Remove backticks from column name
+            $contents[\trim($annotation->name ?? $property, '`')] = $entity->$getter();
         }
 
         return $contents;
