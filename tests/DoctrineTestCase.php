@@ -12,13 +12,15 @@ use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\SchemaTool;
+use EoneoPay\Externals\Bridge\Laravel\Translator;
+use EoneoPay\Externals\Bridge\Laravel\Validator;
 use EoneoPay\Externals\ORM\Entity;
 use EoneoPay\Externals\ORM\EntityManager;
 use EoneoPay\Externals\ORM\Extensions\SoftDeleteExtension;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
 use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
 use Illuminate\Translation\ArrayLoader;
-use Illuminate\Translation\Translator;
+use Illuminate\Translation\Translator as IlluminateTranslator;
 use Illuminate\Validation\Factory;
 use ReflectionClass;
 use ReflectionException;
@@ -107,11 +109,15 @@ abstract class DoctrineTestCase extends TestCase
         // Use our already initialized cache driver
         $config->setMetadataCacheImpl($cache);
         $config->setQueryCacheImpl($cache);
+        // Create translator
+        $illuminateTranslator = new IlluminateTranslator(new ArrayLoader(), 'en');
+        $translator = new Translator($illuminateTranslator);
         // Create validator
-        $validationFactory = new Factory(new Translator(new ArrayLoader(), 'en'));
+        $validationFactory = new Factory($illuminateTranslator);
+        $validator = new Validator($validationFactory);
         // Instantiate event manager with validation subscriber
         $eventManager = new EventManager();
-        $eventManager->addEventSubscriber(new ValidateEventSubscriber($validationFactory));
+        $eventManager->addEventSubscriber(new ValidateEventSubscriber($validator, $translator));
 
         // Finally, create entity manager
         $this->doctrine = DoctrineEntityManager::create(self::$connection, $config, $eventManager);
