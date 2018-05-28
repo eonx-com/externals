@@ -5,8 +5,12 @@ namespace Tests\EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
+use EoneoPay\Externals\ORM\EntityManager;
 use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
+use EoneoPay\Externals\ORM\Exceptions\ORMException;
+use EoneoPay\Externals\ORM\Repository;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\EoneoPay\Externals\DoctrineTestCase;
 use Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
@@ -158,6 +162,55 @@ class EntityTest extends DoctrineTestCase
         $data['invalid'] = 'this should not be filled';
         $entity->fill($data);
         self::assertSame(self::$data, $this->getEntityContents($entity));
+    }
+
+    /**
+     * Test generating random unique strings checking entity field values
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
+     *
+     * @covers \EoneoPay\Externals\ORM\Entity::generateRandomUniqueValue
+     */
+    public function testGeneratingRandomUniqueValue(): void
+    {
+        /** @var \EoneoPay\Externals\ORM\EntityManager $entityManager */
+        $entityManager = $this->getMockEntityManagerWithRepository(0);
+
+        $value = (new EntityStub())->generateRandomUniqueValue($entityManager, 'someField');
+        self::assertNotNull($value);
+
+        self::assertNotSame(
+            $value,
+            (new EntityStub())->generateRandomUniqueValue($entityManager, 'someField')
+        );
+    }
+
+    /**
+     * Test generating random unique string throws an Exception if function cannot find uniqueness.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
+     *
+     * @covers \EoneoPay\Externals\ORM\Entity::generateRandomUniqueValue
+     */
+    public function testGeneratingRandomUniqueValueThrowsException(): void
+    {
+        $this->expectException(ORMException::class);
+        $this->expectExceptionMessage('Uniqueness could not be obtained');
+
+        /**
+         * @var \EoneoPay\Externals\ORM\EntityManager $entityManager
+         *
+         * Always have count() on repository return 1, as if the random value is taken already
+         */
+        $entityManager = $this->getMockEntityManagerWithRepository(1);
+
+        (new EntityStub())->generateRandomUniqueValue($entityManager, 'someField');
     }
 
     /**
@@ -372,5 +425,30 @@ class EntityTest extends DoctrineTestCase
             'unique:Tests\EoneoPay\Externals\ORM\Stubs\EntityStub,email,,entityId,where1,value1',
             (new EntityStub())->getEmailUniqueRuleForTest(['where1' => 'value1'])
         );
+    }
+
+    /**
+     * Create a Mock entity manager, with associated repository which can return count.
+     *
+     * @param int|null $countReturn
+     *
+     * @return \PHPUnit\Framework\MockObject\MockObject
+     */
+    private function getMockEntityManagerWithRepository(?int $countReturn = null): MockObject
+    {
+        $entityManager = $this->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getRepository'])
+            ->getMock();
+
+        $repository = $this->getMockBuilder(Repository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['count'])
+            ->getMock();
+
+        $repository->method('count')->willReturn($countReturn);
+        $entityManager->method('getRepository')->willReturn($repository);
+
+        return $entityManager;
     }
 }
