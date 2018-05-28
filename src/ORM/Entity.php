@@ -6,7 +6,6 @@ namespace EoneoPay\Externals\ORM;
 use Doctrine\ORM\Mapping\Id;
 use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
-use EoneoPay\Externals\ORM\Exceptions\ORMException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
 use EoneoPay\Utils\Arr;
@@ -103,45 +102,6 @@ abstract class Entity implements EntityInterface, SerializableInterface
         foreach ($data as $property => $value) {
             $this->set($property, $value);
         }
-    }
-
-    /**
-     * Generate a unique value based on provided field.
-     *
-     * @param \EoneoPay\Externals\ORM\EntityManager $entityManager
-     * @param string $field
-     * @param int|null $length
-     *
-     * @return string
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
-     */
-    public function generateRandomUniqueValue(
-        EntityManager $entityManager,
-        string $field,
-        ?int $length = null
-    ): string {
-        $repository = $entityManager->getRepository(static::class);
-        $generated = new \EoneoPay\Utils\Generator();
-        $uniqueValue = null;
-
-        // 100 attempts for uniqueness
-        for ($i = 0; $i < 100; $i++) {
-            $randomValue = $generated->randomString($length ?? 16);
-
-            // Check repository if the value has already been used
-            if ($repository->count([$field => $randomValue]) === 0) {
-                $uniqueValue = $randomValue;
-                break;
-            }
-        }
-
-        if ($uniqueValue === null) {
-            throw new ORMException('Uniqueness could not be obtained');
-        }
-
-        return $uniqueValue;
     }
 
     /**
