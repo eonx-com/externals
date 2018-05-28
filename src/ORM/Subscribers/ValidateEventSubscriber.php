@@ -15,9 +15,9 @@ use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
 use EoneoPay\Externals\Logger\Logger;
 use EoneoPay\Externals\ORM\Exceptions\DefaultEntityValidationFailedException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
+use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use EoneoPay\Utils\AnnotationReader;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use Illuminate\Validation\ValidationException;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) High coupling to cover decoupling between subscriber and application
@@ -30,20 +30,30 @@ class ValidateEventSubscriber implements EventSubscriber
     private $logger;
 
     /**
-     * @var \Illuminate\Contracts\Validation\Factory
+     * @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface
      */
-    private $validationFactory;
+    private $translator;
+
+    /**
+     * @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface
+     */
+    private $validator;
 
     /**
      * ValidateEventSubscriber constructor.
      *
-     * @param \Illuminate\Contracts\Validation\Factory $validationFactory
-     * @param null|\EoneoPay\Externals\Logger\Interfaces\LoggerInterface $logger
+     * @param \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator
+     * @param \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator
+     * @param \EoneoPay\Externals\Logger\Interfaces\LoggerInterface|null $logger
      */
-    public function __construct(ValidationFactory $validationFactory, ?LoggerInterface $logger = null)
-    {
-        $this->validationFactory = $validationFactory;
+    public function __construct(
+        ValidatorInterface $validator,
+        TranslatorInterface $translator,
+        ?LoggerInterface $logger = null
+    ) {
         $this->logger = $logger ?? new Logger();
+        $this->translator = $translator;
+        $this->validator = $validator;
     }
 
     /**
@@ -101,28 +111,32 @@ class ValidateEventSubscriber implements EventSubscriber
     {
         $entity = $eventArgs->getObject();
 
+        // Test if the entity has getRules function
         if (($entity instanceof EntityInterface) === false
             || \method_exists($entity, 'getRules') === false
             || \is_array($entity->getRules()) === false) {
             return;
         }
 
-        try {
-            /** @var \Illuminate\Validation\Validator $validator */
-            $validator = $this->validationFactory->make($this->getEntityContents($entity), $entity->getRules());
-            $validator->validate();
-        } catch (ValidationException $exception) {
-            $exceptionClass = \method_exists($entity, 'getValidationFailedException')
-                ? $entity->getValidationFailedException()
-                : DefaultEntityValidationFailedException::class;
-
-            throw new $exceptionClass(
-                $exception->getMessage(),
-                $exception->getCode(),
-                $exception,
-                $exception->errors()
-            );
+        /** @var \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity */
+        /** @noinspection PhpUndefinedMethodInspection getRules existence is tested just before */
+        $passes = $this->validator->validate($this->getEntityContents($entity), $entity->getRules());
+        // If validation passes, return
+        if ($passes) {
+            return;
         }
+
+        // Get exception class from entity and throw it
+        $exceptionClass = \method_exists($entity, 'getValidationFailedException')
+            ? $entity->getValidationFailedException()
+            : DefaultEntityValidationFailedException::class;
+
+        throw new $exceptionClass(
+            $this->translator->trans('exceptions.validation.failed'),
+            null,
+            null,
+            $this->validator->getFailures()
+        );
     }
 
     /**

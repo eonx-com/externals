@@ -14,15 +14,19 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
 {
     /**
      * Subscriber should return prePersist and preUpdate events.
+     *
+     * @return void
      */
     public function testGetSubscribedEvents(): void
     {
-        /** @var \Illuminate\Contracts\Validation\Factory $factory */
-        $factory = $this->mockValidationFactory();
+        /** @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator */
+        $validator = $this->mockValidator();
+        /** @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator */
+        $translator = $this->mockTranslator();
 
         self::assertEquals(
             [Events::prePersist, Events::preUpdate],
-            (new ValidateEventSubscriber($factory))->getSubscribedEvents()
+            (new ValidateEventSubscriber($validator, $translator))->getSubscribedEvents()
         );
     }
 
@@ -73,19 +77,33 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
     {
         $this->expectException(EntityValidationFailedException::class);
 
-        $factory = $this->mockValidationFactory();
-        $validator = $this->mockValidator();
-
-        $validator->shouldReceive('validate')->once()->withNoArgs()->andThrow($this->mockValidationException());
-        $factory->shouldReceive('make')->once()->with(['entityId' => null], [])->andReturn($validator);
-
         $object = (new EntityWithRulesStub())->setRules();
+
+        $validator = $this->mockValidator();
+        $validator
+            ->shouldReceive('validate')
+            ->once()
+            ->with(['entityId' => null], $object->getRules())
+            ->andReturn(false);
+        $validator
+            ->shouldReceive('getFailures')
+            ->once()
+            ->withNoArgs()
+            ->andReturn([]);
+
+        $translator = $this->mockTranslator();
+        $translator
+            ->shouldReceive('trans')
+            ->once()
+            ->with('exceptions.validation.failed')
+            ->andReturn('exceptions.validation.failed');
 
         /** @var \Doctrine\ORM\Event\LifecycleEventArgs $lifeCycleEvent */
         $lifeCycleEvent = $this->mockLifeCycleEvent($object);
 
-        /** @var \Illuminate\Contracts\Validation\Factory $factory */
-        (new ValidateEventSubscriber($factory))->preUpdate($lifeCycleEvent);
+        /** @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator */
+        /** @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator */
+        (new ValidateEventSubscriber($validator, $translator))->preUpdate($lifeCycleEvent);
     }
 
     /**
@@ -97,19 +115,24 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
      */
     public function testShouldValidateIfInterfaceAndGetRulesIsArray(): void
     {
-        $factory = $this->mockValidationFactory();
-        $validator = $this->mockValidator();
-
-        $validator->shouldReceive('validate')->once()->withNoArgs()->andReturn(null);
-        $factory->shouldReceive('make')->once()->with(['entityId' => null], [])->andReturn($validator);
-
         $object = (new EntityWithRulesStub())->setRules();
+
+        $validator = $this->mockValidator();
+        $validator
+            ->shouldReceive('validate')
+            ->once()
+            ->with(['entityId' => null], $object->getRules())
+            ->andReturn(true);
+
+        $translator = $this->mockTranslator();
+        $translator->shouldNotReceive('trans');
 
         /** @var \Doctrine\ORM\Event\LifecycleEventArgs $lifeCycleEvent */
         $lifeCycleEvent = $this->mockLifeCycleEvent($object);
 
-        /** @var \Illuminate\Contracts\Validation\Factory $factory */
-        (new ValidateEventSubscriber($factory))->preUpdate($lifeCycleEvent);
+        /** @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator */
+        /** @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator */
+        (new ValidateEventSubscriber($validator, $translator))->preUpdate($lifeCycleEvent);
 
         // This will only run if validation passes as an exception will be thrown
         self::assertTrue(true);

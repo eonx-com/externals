@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
-use EoneoPay\Externals\Bridge\Laravel\Validation\CustomRules;
 use EoneoPay\Externals\Bridge\Laravel\Validator;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Translation\Translator;

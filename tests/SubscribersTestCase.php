@@ -5,9 +5,8 @@ namespace Tests\EoneoPay\Externals;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Validator;
+use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
+use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Mockery;
 use Mockery\MockInterface;
 
@@ -31,34 +30,19 @@ abstract class SubscribersTestCase extends TestCase
     }
 
     /**
-     * Mock Illuminate validation exception.
+     * Mock TranslatorInterface.
      *
      * @return \Mockery\MockInterface
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Inherited from Mockery
      */
-    protected function mockValidationException(): MockInterface
+    protected function mockTranslator(): MockInterface
     {
-        $exception = Mockery::mock(ValidationException::class);
-        $exception->shouldReceive('errors')->once()->withNoArgs()->andReturn([]);
-
-        return $exception;
+        return Mockery::mock(TranslatorInterface::class);
     }
 
     /**
-     * Mock Illuminate validation factory.
-     *
-     * @return \Mockery\MockInterface
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess) Inherited from Mockery
-     */
-    protected function mockValidationFactory(): MockInterface
-    {
-        return Mockery::mock(ValidationFactory::class);
-    }
-
-    /**
-     * Mock Illuminate validator.
+     * Mock ValidatorInterface.
      *
      * @return \Mockery\MockInterface
      *
@@ -66,7 +50,7 @@ abstract class SubscribersTestCase extends TestCase
      */
     protected function mockValidator(): MockInterface
     {
-        return Mockery::mock(Validator::class);
+        return Mockery::mock(ValidatorInterface::class);
     }
 
     /**
@@ -80,13 +64,17 @@ abstract class SubscribersTestCase extends TestCase
      */
     protected function processNotValidateTest($object): void
     {
-        $factory = $this->mockValidationFactory();
-        $factory->shouldNotReceive('make');
+        $validator = $this->mockValidator();
+        $validator->shouldNotReceive('validate');
+
+        $translator = $this->mockTranslator();
+        $translator->shouldNotReceive('trans');
 
         /** @var \Doctrine\ORM\Event\LifecycleEventArgs $event */
         $event = $this->mockLifeCycleEvent($object);
-        /** @var \Illuminate\Validation\Factory $factory */
-        (new ValidateEventSubscriber($factory))->prePersist($event);
+        /** @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator */
+        /** @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator */
+        (new ValidateEventSubscriber($validator, $translator))->prePersist($event);
 
         self::assertTrue(true);
     }
