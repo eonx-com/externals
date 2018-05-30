@@ -173,10 +173,9 @@ abstract class Entity implements EntityInterface, SerializableInterface
      *
      * @return mixed The original entity for fluency
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
-     * @throws \ReflectionException Inherited, if class or property does not exist
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
+     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     protected function associate(string $attribute, Entity $parent, ?string $association = null)
     {
@@ -202,7 +201,16 @@ abstract class Entity implements EntityInterface, SerializableInterface
 
         // If association set, handle it
         if ($association !== null) {
-            $this->handleReverseAssociation($association, $parent, $currentValue);
+            try {
+                $this->handleReverseAssociation($association, $parent, $currentValue);
+            } catch (InvalidMethodCallException $exception) {
+                // We have to throw a different exception otherwise it's caught higher and it dies silently.
+                throw new InvalidArgumentException(\sprintf(
+                    'Property %s::%s does not exist',
+                    \get_class($parent),
+                    $association
+                ));
+            }
         }
 
         return $this;
@@ -217,7 +225,6 @@ abstract class Entity implements EntityInterface, SerializableInterface
      *
      * @return mixed The original entity for fluency
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
     protected function associateMultiple(string $attribute, Entity $parent, ?string $association = null)
@@ -241,13 +248,22 @@ abstract class Entity implements EntityInterface, SerializableInterface
         // Determine parent collection method
         $collection = \sprintf('get%s', \ucfirst($association));
 
-        // If parent collection contains this item, return
-        if ($parent->{$collection}()->contains($this)) {
-            return $this;
-        }
+        try {
+            // If parent collection contains this item, return
+            if ($parent->{$collection}()->contains($this)) {
+                return $this;
+            }
 
-        // Add entity to parent collection
-        $parent->{$collection}()->add($this);
+            // Add entity to parent collection
+            $parent->{$collection}()->add($this);
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidMethodCallException $exception) {
+            // We have to throw a different exception otherwise it's caught higher and it dies silently.
+            throw new InvalidArgumentException(\sprintf(
+                'Property %s::%s does not exist',
+                \get_class($parent),
+                $association
+            ));
+        }
 
         return $this;
     }
@@ -422,7 +438,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
                 return $this->{$method}();
             }
             // @codeCoverageIgnoreStart
-        } catch (InvalidMethodCallException $exception) {
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidMethodCallException $exception) {
             // Exception intentionally ignored, it'll never be thrown due to only being used on methods
             // which are confirmed to exist via method_exists()
         }
