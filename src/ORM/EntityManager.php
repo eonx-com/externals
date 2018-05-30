@@ -49,7 +49,7 @@ class EntityManager implements EntityManagerInterface
     /**
      * Generate a unique value based on provided field.
      *
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity
+     * @param string $entityClass
      * @param string $field
      * @param int|null $length
      *
@@ -59,7 +59,7 @@ class EntityManager implements EntityManagerInterface
      * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
      */
     public function generateRandomUniqueValue(
-        EntityInterface $entity,
+        string $entityClass,
         string $field,
         ?int $length = null
     ): string {
@@ -71,7 +71,7 @@ class EntityManager implements EntityManagerInterface
             $randomValue = $generated->randomString($length ?? 16);
 
             // Check repository if the value has already been used
-            if ($this->getRepository(\get_class($entity))->count([$field => $randomValue]) === 0) {
+            if ($this->getRepository($entityClass)->count([$field => $randomValue]) === 0) {
                 $uniqueValue = $randomValue;
                 break;
             }

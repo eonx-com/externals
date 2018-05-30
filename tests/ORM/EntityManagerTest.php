@@ -111,19 +111,19 @@ class EntityManagerTest extends DoctrineTestCase
     public function testGeneratingRandomUniqueValue(): void
     {
         /** @var \EoneoPay\Externals\ORM\Interfaces\RepositoryInterface $repository */
-        $value = $this->getEntityManager()->generateRandomUniqueValue(new EntityStub(), 'integer');
+        $value = $this->getEntityManager()->generateRandomUniqueValue(EntityStub::class, 'integer');
         self::assertNotNull($value);
         self::assertEquals(\strlen($value), 16);
 
         // Check value changes on second generate
         self::assertNotSame(
             $value,
-            $this->getEntityManager()->generateRandomUniqueValue(new EntityStub(), 'integer')
+            $this->getEntityManager()->generateRandomUniqueValue(EntityStub::class, 'integer')
         );
 
         // Check 'length' is respected
         self::assertEquals(\strlen(
-            $this->getEntityManager()->generateRandomUniqueValue(new EntityStub(), 'integer', 10)
+            $this->getEntityManager()->generateRandomUniqueValue(EntityStub::class, 'integer', 10)
         ), 10);
     }
 
