@@ -67,7 +67,7 @@ class EntityManager implements EntityManagerInterface
         $uniqueValue = null;
 
         // 100 attempts for uniqueness
-        for ($i = 0; $i < 100; $i++) {
+        for ($attempts = 0; $attempts < 100; $attempts++) {
             $randomValue = $generated->randomString($length ?? 16);
 
             // Check repository if the value has already been used
