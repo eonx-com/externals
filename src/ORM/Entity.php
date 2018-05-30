@@ -181,10 +181,12 @@ abstract class Entity implements EntityInterface, SerializableInterface
     {
         // If attribute does not exist on entity, throw exception
         $this->checkEntityHasAttribute($attribute);
+
         // Determine getter
         $getter = \sprintf('get%s', \ucfirst($attribute));
+
         // Get current attribute value
-        $currentValue = $this->$getter();
+        $currentValue = $this->{$getter}();
 
         // If attribute value is already parent, return
         if ($currentValue === $parent) {
@@ -196,7 +198,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
         // If foreign key column explicitly defined assign parent id
         $foreignKey = \sprintf('%sId', $attribute);
         if (\property_exists($this, $foreignKey)) {
-            $this->$foreignKey = $parent->getId();
+            $this->{$foreignKey} = $parent->getId();
         }
 
         // If association set, handle it
@@ -205,11 +207,11 @@ abstract class Entity implements EntityInterface, SerializableInterface
                 $this->handleReverseAssociation($association, $parent, $currentValue);
             } catch (InvalidMethodCallException $exception) {
                 // We have to throw a different exception otherwise it's caught higher and it dies silently.
-                throw new InvalidArgumentException(\sprintf(
-                    'Property %s::%s does not exist',
-                    \get_class($parent),
-                    $association
-                ));
+                throw new InvalidArgumentException(
+                    \sprintf('Property %s::%s does not exist', \get_class($parent), $association),
+                    null,
+                    $exception
+                );
             }
         }
 
@@ -258,11 +260,11 @@ abstract class Entity implements EntityInterface, SerializableInterface
             $parent->{$collection}()->add($this);
         } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidMethodCallException $exception) {
             // We have to throw a different exception otherwise it's caught higher and it dies silently.
-            throw new InvalidArgumentException(\sprintf(
-                'Property %s::%s does not exist',
-                \get_class($parent),
-                $association
-            ));
+            throw new InvalidArgumentException(
+                \sprintf('Property %s::%s does not exist', \get_class($parent), $association),
+                null,
+                $exception
+            );
         }
 
         return $this;
@@ -379,6 +381,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
         return $this->invokeEntityMethod('getPropertyAnnotations');
     }
 
+    /** @noinspection PhpDocRedundantThrowsInspection */
     /**
      * Handle reverse association.
      *
@@ -388,7 +391,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If magic call does not exist on parent
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the collection doesn't exist on parent
      */
     private function handleReverseAssociation(string $association, Entity $parent, ?Entity $currentValue = null): void
     {
@@ -396,13 +399,13 @@ abstract class Entity implements EntityInterface, SerializableInterface
         $collection = \sprintf('get%s', \ucfirst($association));
 
         // Check if this is already in collection
-        $exists = $parent->$collection()->contains($this);
+        $exists = $parent->{$collection}()->contains($this);
 
         // If attribute is not this, remove existing association
         if ($currentValue !== null &&
             $currentValue !== $this &&
-            $currentValue->$collection()->contains($this)) {
-            $currentValue->$collection()->removeElement($this);
+            $currentValue->{$collection}()->contains($this)) {
+            $currentValue->{$collection}()->removeElement($this);
         }
 
         // Add to collection if it doesn't already exist
@@ -433,19 +436,7 @@ abstract class Entity implements EntityInterface, SerializableInterface
      */
     private function invokeEntityMethod(string $method, ?array $default = null): array
     {
-        try {
-            if (\method_exists($this, $method) && \is_array($this->{$method}())) {
-                return $this->{$method}();
-            }
-            // @codeCoverageIgnoreStart
-        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidMethodCallException $exception) {
-            // Exception intentionally ignored, it'll never be thrown due to only being used on methods
-            // which are confirmed to exist via method_exists()
-        }
-        // @codeCoverageIgnoreEnd
-
-        // Return default value or empty array
-        return $default ?? [];
+        return \method_exists($this, $method) && \is_array($this->{$method}()) ? $this->{$method}() : $default ?? [];
     }
 
     /**
@@ -572,27 +563,12 @@ abstract class Entity implements EntityInterface, SerializableInterface
 
         // Set property value, prefer setter over direct set
         $setter = \sprintf('set%s', \ucfirst($resolved));
-        try {
-            \method_exists($this, $setter) ? $this->{$setter}($value) : $this->{$resolved} = $value;
-            // @codeCoverageIgnoreStart
-        } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidMethodCallException $exception) {
-            // Exception will not be thrown before method_exists checks first, so intentionally ignored
-
-            // Set value directly as a last resort
-            $this->{$resolved} = $value;
-        }
-        // @codeCoverageIgnoreEnd
+        \method_exists($this, $setter) ? $this->{$setter}($value) : $this->{$resolved} = $value;
 
         // Run transformer if applicable
         $method = \sprintf('transform%s', \ucfirst($resolved));
         if (\method_exists($this, $method)) {
-            try {
-                $this->{$method}();
-                // @codeCoverageIgnoreStart
-            } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidMethodCallException $exception) {
-                // Exception will not be thrown before method_exists checks first, so intentionally ignored
-            }
-            // @codeCoverageIgnoreEnd
+            $this->{$method}();
         }
 
         return $this;

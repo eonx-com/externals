@@ -56,7 +56,6 @@ class MultiChildEntityStub extends Entity
      *
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\MultiChildEntityStub
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
     public function addParent(MultiParentEntityStub $parent): self
@@ -72,7 +71,6 @@ class MultiChildEntityStub extends Entity
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\MultiChildEntityStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
      */
     public function addParentWithNoAssociation(MultiParentEntityStub $parent): self
     {
@@ -87,7 +85,6 @@ class MultiChildEntityStub extends Entity
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\MultiChildEntityStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
      */
     public function addParentWithWrongAttribute(MultiParentEntityStub $parent): self
     {
@@ -102,7 +99,6 @@ class MultiChildEntityStub extends Entity
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\MultiChildEntityStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
      */
     public function addParentWithWrongAssociation(MultiParentEntityStub $parent): self
     {

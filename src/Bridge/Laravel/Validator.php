@@ -56,15 +56,14 @@ class Validator implements ValidatorInterface
      */
     public function validate(array $data, array $rules): bool
     {
+        // Doing this to make PHPStan happy
         /** @var \Illuminate\Validation\Validator $validator */
         $validator = $this->factory->make($data, $rules);
-        // Doing this to make PHPStan happy
         $this->validator = $validator;
 
-            // Add custom rules
+        // Add custom rules
         $this->addDependantRule(EmptyWithRule::class);
         $this->addRule(InstanceOfRule::class);
-
 
         return $validator->passes();
     }

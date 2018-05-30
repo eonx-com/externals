@@ -14,6 +14,7 @@
     "eoneopay/standards": "dev-master",
     "gedmo/doctrine-extensions": "^2.4",
     "guzzlehttp/guzzle": "^6.0.0",
+    "inacho/php-credit-card-validator": "^1.0",
     "illuminate/http": "^5.5",
     "illuminate/validation": "^5.5",
     "indigophp/doctrine-annotation-autoload": "^0.1.0",

@@ -5,9 +5,9 @@ namespace EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
 use EoneoPay\Utils\Arr;
-use EoneoPay\Utils\Repository;
+use EoneoPay\Utils\Collection;
 
-class Response extends Repository implements ResponseInterface
+class Response extends Collection implements ResponseInterface
 {
     /**
      * @var string

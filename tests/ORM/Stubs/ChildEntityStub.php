@@ -79,7 +79,6 @@ class ChildEntityStub extends EntityStub
      *
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute doesn't exist on entity
      * @throws \ReflectionException Inherited, if class or property does not exist
