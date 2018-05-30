@@ -4,14 +4,34 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use EoneoPay\Externals\ORM\Entity;
 
 /**
  * @method ArrayCollection getParents()
+ *
+ * @ORM\Entity()
  */
-class MultiChildEntityStub extends EntityStub
+class MultiChildEntityStub extends Entity
 {
     /**
-     * @ORM\ManyToMany(targetEntity="Tests\EoneoPay\Externals\ORM\Stubs\MultiParentEntityStub", mappedBy="children")
+     * @ORM\Id()
+     * @ORM\Column(name="id", type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
+     *
+     * @var string
+     */
+    protected $entityId;
+
+    /**
+     * @ORM\Column(name="value", type="string")
+     *
+     * @var string
+     */
+    protected $value;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Tests\EoneoPay\Externals\ORM\Stubs\MultiParentEntityStub", inversedBy="children")
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
@@ -87,5 +107,15 @@ class MultiChildEntityStub extends EntityStub
     public function addParentWithWrongAssociation(MultiParentEntityStub $parent): self
     {
         return $this->associateMultiple('parents', $parent, 'invalid');
+    }
+
+    /**
+     * Serialize entity as an array
+     *
+     * @return mixed[]
+     */
+    public function toArray(): array
+    {
+        return [];
     }
 }

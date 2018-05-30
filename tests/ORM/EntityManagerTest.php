@@ -13,11 +13,12 @@ use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithCustomRepository;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithNotFoundRepository;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithGetFillableStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithNoEntityAnnotationStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithValidationStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) This tests the full functionality of the EntityManager
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) Manager itself is complex so lot of tests to perform
  */
 class EntityManagerTest extends DoctrineTestCase
 {
@@ -71,7 +72,7 @@ class EntityManagerTest extends DoctrineTestCase
     {
         $this->expectException(ORMException::class);
 
-        $this->getEntityManager()->persist(new ParentEntityStub());
+        $this->getEntityManager()->persist(new EntityWithNoEntityAnnotationStub());
         $this->getEntityManager()->flush();
     }
 
@@ -93,6 +94,37 @@ class EntityManagerTest extends DoctrineTestCase
 
         /** @noinspection UnnecessaryAssertionInspection Test of actual returned instance */
         self::assertInstanceOf(FilterCollectionInterface::class, $filters);
+    }
+
+    /**
+     * Test generating random unique strings checking entity field values
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     *
+     * @covers \EoneoPay\Externals\ORM\EntityManager::generateRandomUniqueValue
+     */
+    public function testGeneratingRandomUniqueValue(): void
+    {
+        /** @var \EoneoPay\Externals\ORM\Interfaces\RepositoryInterface $repository */
+        $value = $this->getEntityManager()->generateRandomUniqueValue(EntityStub::class, 'integer');
+        self::assertNotNull($value);
+        self::assertEquals(\strlen($value), 16);
+
+        // Check value changes on second generate
+        self::assertNotSame(
+            $value,
+            $this->getEntityManager()->generateRandomUniqueValue(EntityStub::class, 'integer')
+        );
+
+        // Check 'length' is respected
+        self::assertEquals(\strlen(
+            $this->getEntityManager()->generateRandomUniqueValue(EntityStub::class, 'integer', 10)
+        ), 10);
     }
 
     /**

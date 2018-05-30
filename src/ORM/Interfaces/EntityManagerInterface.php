@@ -18,6 +18,24 @@ interface EntityManagerInterface
     public function flush(): void;
 
     /**
+     * Generate a unique value based on provided field.
+     *
+     * @param string $entityClass
+     * @param string $field
+     * @param int|null $length
+     *
+     * @return string
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
+     */
+    public function generateRandomUniqueValue(
+        string $entityClass,
+        string $field,
+        ?int $length = null
+    ): string;
+
+    /**
      * Gets the filters attached to the entity manager.
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface

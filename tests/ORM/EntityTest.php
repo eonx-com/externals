@@ -35,24 +35,30 @@ class EntityTest extends DoctrineTestCase
     ];
 
     /**
-     * Test associate function. Stubs used for it are made to provide full coverage.
+     * Test associateMultiple function. Stubs used for it are made to provide full coverage.
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testAssociateMultiParentsWithMultiChildren(): void
     {
         $parent = new MultiParentEntityStub();
-        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+        $child = new MultiChildEntityStub(['annotation_name' => 'string', 'value' => 'my-value']);
 
         $child->addParent($parent);
 
         // Test child is added to parent collection
         self::assertEquals(1, $parent->getChildren()->count());
+        self::assertTrue($parent->getChildren()->contains($child));
         // Test parent is added to child collection
         self::assertEquals(1, $child->getParents()->count());
+        self::assertTrue($child->getParents()->contains($parent));
 
         // Add parent twice
         $child->addParent($parent);
@@ -67,6 +73,19 @@ class EntityTest extends DoctrineTestCase
 
         // Test parent is added only once
         self::assertEquals(1, $child->getParents()->count());
+
+        $this->getEntityManager()->persist($parent);
+        $this->getEntityManager()->persist($child);
+
+        $this->getEntityManager()->flush();
+        $this->getDoctrineEntityManager()->clear();
+
+        $childRetrieve = $this->getEntityManager()->getRepository(MultiChildEntityStub::class)->findOneBy([
+            'value' => 'my-value'
+        ]);
+
+        // Test parent is added to child collection
+        self::assertEquals(1, $childRetrieve->getParents()->count());
     }
 
     /**

@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @method ArrayCollection getChildren()
+ *
+ * @ORM\Entity()
  */
 class ParentEntityStub extends EntityStub
 {

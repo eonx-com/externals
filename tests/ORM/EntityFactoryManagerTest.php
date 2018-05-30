@@ -6,9 +6,11 @@ namespace Tests\EoneoPay\Externals\ORM;
 use EoneoPay\Externals\ORM\EntityFactoryManager;
 use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use Tests\EoneoPay\Externals\EntityFactoryManagerTestCase;
+use Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityCustomRepository;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithRulesStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
 
 class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
 {
@@ -81,6 +83,31 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
         $this->expectException(InvalidArgumentException::class);
 
         $this->getEntityFactoryManager()->create(EntityStub::class);
+    }
+
+    /**
+     * EntityFactory should create default relation entity if not set in data.
+     *
+     * @return void
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     */
+    public function testHandleDefaultRelationEntitySuccessfully(): void
+    {
+        $entityFactoryManager = $this->getEntityFactoryManager([
+            'Tests\EoneoPay\Externals\ORM\Stubs\Factories\\' => 'Tests\EoneoPay\Externals\ORM\Stubs'
+        ]);
+
+        $child = $entityFactoryManager->create(ChildEntityStub::class);
+
+        /** @noinspection UnnecessaryAssertionInspection Returns EntityInterface */
+        self::assertInstanceOf(ChildEntityStub::class, $child);
+        /** @var \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub $child */
+        self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
     }
 
     /**
