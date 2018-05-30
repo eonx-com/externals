@@ -47,6 +47,47 @@ class EntityManager implements EntityManagerInterface
     }
 
     /**
+     * Generate a unique value based on provided field.
+     *
+     * @param string $entityClass
+     * @param string $field
+     * @param int|null $length
+     *
+     * @return string
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
+     */
+    public function generateRandomUniqueValue(
+        string $entityClass,
+        string $field,
+        ?int $length = null
+    ): string {
+        $generated = new \EoneoPay\Utils\Generator();
+        $uniqueValue = null;
+
+        // 100 attempts for uniqueness
+        for ($i = 0; $i < 100; $i++) {
+            $randomValue = $generated->randomString($length ?? 16);
+
+            // Check repository if the value has already been used
+            if ($this->getRepository($entityClass)->count([$field => $randomValue]) === 0) {
+                $uniqueValue = $randomValue;
+                break;
+            }
+        }
+
+        if ($uniqueValue === null) {
+            // @codeCoverageIgnoreStart
+            // Unable to test without undetermined loop size
+            throw new ORMException('Uniqueness could not be obtained');
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $uniqueValue;
+    }
+
+    /**
      * Gets the filters attached to the entity manager.
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface
