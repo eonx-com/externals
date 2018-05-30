@@ -16,6 +16,7 @@ use Exception;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity covered by unit tests
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class Entity implements EntityInterface, SerializableInterface
 {
