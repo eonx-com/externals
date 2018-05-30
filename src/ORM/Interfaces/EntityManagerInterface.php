@@ -20,7 +20,7 @@ interface EntityManagerInterface
     /**
      * Generate a unique value based on provided field.
      *
-     * @param \EoneoPay\Externals\ORM\Interfaces\RepositoryInterface $repository
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity
      * @param string $field
      * @param int|null $length
      *
@@ -30,7 +30,7 @@ interface EntityManagerInterface
      * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
      */
     public function generateRandomUniqueValue(
-        RepositoryInterface $repository,
+        EntityInterface $entity,
         string $field,
         ?int $length = null
     ): string;
