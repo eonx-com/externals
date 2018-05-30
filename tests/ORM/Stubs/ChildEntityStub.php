@@ -56,6 +56,22 @@ class ChildEntityStub extends EntityStub
     }
 
     /**
+     * Set parent with invalid relation.
+     *
+     * @param \Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub $parent
+     *
+     * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
+     */
+    public function setInvalidParent(ParentEntityStub $parent): self
+    {
+        return $this->associate('parent', $parent, 'invalid');
+    }
+
+    /**
      *
      * Set parent.
      *

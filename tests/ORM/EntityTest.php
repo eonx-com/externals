@@ -89,11 +89,48 @@ class EntityTest extends DoctrineTestCase
     }
 
     /**
+     * Entity should throw exception when trying to associate on a wrong association.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
+     */
+    public function testAssociateMultiWithWrongAssociationException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $parent = new MultiParentEntityStub();
+        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+
+        $child->addParentWithWrongAssociation($parent);
+    }
+
+    /**
+     * Entity should throw exception when trying to associate on a wrong attribute.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
+     */
+    public function testAssociateMultiWithWrongAttributeException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $parent = new MultiParentEntityStub();
+        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+
+        $child->addParentWithWrongAttribute($parent);
+    }
+
+    /**
      * Test associate function. Stubs used for it are made to provide full coverage.
      *
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
@@ -121,34 +158,17 @@ class EntityTest extends DoctrineTestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
      */
     public function testAssociateWithWrongAssociationException(): void
     {
-        $this->expectException(InvalidMethodCallException::class);
-
-        $parent = new MultiParentEntityStub();
-        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
-
-        $child->addParentWithWrongAssociation($parent);
-    }
-
-    /**
-     * Entity should throw exception when trying to associate on a wrong attribute.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
-     */
-    public function testAssociateWithWrongAttributeException(): void
-    {
         $this->expectException(InvalidArgumentException::class);
 
-        $parent = new MultiParentEntityStub();
-        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+        $parent = new ParentEntityStub();
+        $child = new ChildEntityStub(['annotation_name' => 'string']);
 
-        $child->addParentWithWrongAttribute($parent);
+        $child->setInvalidParent($parent);
     }
 
     /**
