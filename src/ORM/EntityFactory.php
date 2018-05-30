@@ -24,4 +24,21 @@ abstract class EntityFactory implements EntityFactoryInterface
     {
         $this->factoryManager = $factoryManager;
     }
+
+    /**
+     * Add default entity into data if not set.
+     *
+     * @param mixed[] $data Given data to create entity
+     * @param string $key Attribute name of the relation entity
+     * @param string $entityClass Entity class to create if not set
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     */
+    protected function handleDefaultRelationEntity(array &$data, string $key, string $entityClass): void
+    {
+        if ((isset($data[$key]) === false) || \is_array($data[$key])) {
+            $data[$key] = $this->factoryManager->create($entityClass, $data[$key] ?? null);
+        }
+    }
 }

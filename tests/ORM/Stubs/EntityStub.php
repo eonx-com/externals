@@ -36,7 +36,7 @@ class EntityStub extends Entity
      *
      * @var string
      *
-     * @ORM\Column(type="string", length=36)
+     * @ORM\Column(name="id", type="string", length=36)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      */

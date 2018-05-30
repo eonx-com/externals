@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @method null|ParentEntityStub getParent()
+ *
+ * @ORM\Entity()
  */
 class ChildEntityStub extends EntityStub
 {
@@ -63,6 +65,7 @@ class ChildEntityStub extends EntityStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute doesn't exist on entity
      * @throws \ReflectionException Inherited, if class or property does not exist
      */
     public function setParent(ParentEntityStub $parent): self

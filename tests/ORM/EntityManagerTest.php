@@ -13,8 +13,8 @@ use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithCustomRepository;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithNotFoundRepository;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithGetFillableStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithNoEntityAnnotationStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithValidationStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) This tests the full functionality of the EntityManager
@@ -71,7 +71,7 @@ class EntityManagerTest extends DoctrineTestCase
     {
         $this->expectException(ORMException::class);
 
-        $this->getEntityManager()->persist(new ParentEntityStub());
+        $this->getEntityManager()->persist(new EntityWithNoEntityAnnotationStub());
         $this->getEntityManager()->flush();
     }
 
