@@ -98,7 +98,7 @@ class ValidatorTest extends TestCase
         ));
 
         // Test failure message
-        self::assertSame($validator->getFailures(), ['key1' => ['key1 must be an instance of ']]);
+        self::assertSame($validator->getFailures(), ['key1' => ['key1 must be an instance of {NO PARAMETER}']]);
     }
 
     /**
