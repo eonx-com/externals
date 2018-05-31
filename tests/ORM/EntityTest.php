@@ -43,7 +43,6 @@ class EntityTest extends DoctrineTestCase
      * @throws \Doctrine\ORM\ORMException
      * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testAssociateMultiParentsWithMultiChildren(): void
@@ -94,7 +93,6 @@ class EntityTest extends DoctrineTestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
      */
     public function testAssociateMultiWithWrongAssociationException(): void
     {
@@ -112,7 +110,6 @@ class EntityTest extends DoctrineTestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException
      */
     public function testAssociateMultiWithWrongAttributeException(): void
     {
@@ -129,7 +126,6 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist on an entity
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException

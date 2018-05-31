@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\HttpClient\Interfaces;
 
-use EoneoPay\Utils\Interfaces\RepositoryInterface;
+use EoneoPay\Utils\Interfaces\CollectionInterface;
 
-interface ResponseInterface extends RepositoryInterface
+interface ResponseInterface extends CollectionInterface
 {
     /**
      * Get response content
