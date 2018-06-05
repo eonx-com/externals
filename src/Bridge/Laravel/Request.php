@@ -39,6 +39,16 @@ class Request implements RequestInterface
     }
 
     /**
+     * Retrieve the server host
+     *
+     * @return string
+     */
+    public function getHost(): string
+    {
+        return $this->request->getHost();
+    }
+
+    /**
      * Get user from request
      *
      * @return string|null
