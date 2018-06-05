@@ -16,6 +16,13 @@ interface RequestInterface
     public function getHeader(string $key, $default = null);
 
     /**
+     * Retrieve the server host
+     *
+     * @return string
+     */
+    public function getHost(): string;
+
+    /**
      * Get user from request
      *
      * @return string|null
