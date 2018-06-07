@@ -22,7 +22,19 @@ class Request implements RequestInterface
      */
     public function __construct(HttpRequest $request)
     {
-        $this->request = $request;
+        // Create symfony request and merge in passed request
+        $httpRequest = $request::capture();
+        $this->request = $request->duplicate(
+            \array_merge($httpRequest->query->all(), $request->query->all()),
+            \array_merge($httpRequest->request->all(), $request->request->all()),
+            \array_merge($httpRequest->attributes->all(), $request->attributes->all()),
+            \array_merge($httpRequest->cookies->all(), $request->cookies->all()),
+            \array_merge($httpRequest->files->all(), $request->files->all()),
+            \array_merge($httpRequest->server->all(), $request->server->all())
+        );
+
+        // Set headers due to this being a special cadse
+        $this->request->headers->replace(\array_merge($httpRequest->headers->all(), $request->headers->all()));
     }
 
     /**
