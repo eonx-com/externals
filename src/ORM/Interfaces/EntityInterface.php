@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\ORM\Interfaces;
 
-interface EntityInterface
+use EoneoPay\Utils\Interfaces\SerializableInterface;
+
+interface EntityInterface extends SerializableInterface
 {
     /**
      * Allow getX() and setX($value) to get and set column values

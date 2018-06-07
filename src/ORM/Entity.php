@@ -10,7 +10,6 @@ use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
 use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
-use EoneoPay\Utils\Interfaces\SerializableInterface;
 use EoneoPay\Utils\XmlConverter;
 use Exception;
 
@@ -18,7 +17,7 @@ use Exception;
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity covered by unit tests
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-abstract class Entity implements EntityInterface, SerializableInterface
+abstract class Entity implements EntityInterface
 {
     /**
      * Create a new entity
