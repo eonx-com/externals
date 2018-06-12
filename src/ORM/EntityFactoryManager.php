@@ -110,7 +110,7 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
 
         // If the entity wasn't created, throw exception
         if (($entity instanceof $className) === false) {
-            // @codeCoverIgnoreStart
+            // @codeCoverageIgnoreStart
             // This is only here for safety and should never be thrown
             throw new InvalidArgumentException(\sprintf('EntityFactory was unable to create %s', $className));
             // @codeCoverageIgnoreEnd
