@@ -18,15 +18,15 @@ interface EntityFactoryManagerInterface
     /**
      * Create a new entity, persist it and return it.
      *
-     * @param string $className
-     * @param mixed[]|null $data
+     * @param string $className The class name of the entity to instantiate
+     * @param mixed[]|null $data Data to populate the entity with
      *
-     * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
+     * @return mixed The instantiated entity
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
-    public function create(string $className, ?array $data = null): EntityInterface;
+    public function create(string $className, ?array $data = null);
 
     /**
      * Get the entity from cache or create a new one, persist it and return it.
