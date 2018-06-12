@@ -93,20 +93,28 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
     /**
      * Persist the test entity and return it.
      *
-     * @param string $className
-     * @param mixed[]|null $data
+     * @param string $className The class name of the entity to instantiate
+     * @param mixed[]|null $data Data to populate the entity with
      *
-     * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
+     * @return mixed The instantiated entity
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      * @throws \ReflectionException If invalid class detected in factories folders
      */
-    public function create(string $className, ?array $data = null): EntityInterface
+    public function create(string $className, ?array $data = null)
     {
         // Create and persist new entity instance
         $entity = $this->getEntityFactory($className)->create($this->mergeData($className, $data));
+
+        // If the entity wasn't created, throw exception
+        if (($entity instanceof $className) === false) {
+            // @codeCoverageIgnoreStart
+            // This is only here for safety and should never be thrown
+            throw new InvalidArgumentException(\sprintf('EntityFactory was unable to create %s', $className));
+            // @codeCoverageIgnoreEnd
+        }
 
         $this->entityManager->persist($entity);
 
