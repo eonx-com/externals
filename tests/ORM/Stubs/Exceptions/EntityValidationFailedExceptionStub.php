@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\Externals\ORM\Exceptions;
+namespace Tests\EoneoPay\Externals\ORM\Stubs\Exceptions;
 
-class DefaultEntityValidationFailedException extends EntityValidationFailedException
+use EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException;
+
+class EntityValidationFailedExceptionStub extends EntityValidationFailedException
 {
     /**
      * Get Error code.

@@ -1,6 +1,5 @@
 parameters:
     ignoreErrors:
-        - '#Call to an undefined method EoneoPay\\Externals\\ORM\\Interfaces\\EntityInterface::(getRules|getValidationFailedException|getParent)\(\).#'
         - '#Call to an undefined method Illuminate\\Contracts\\Filesystem\\Filesystem::path\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - "#Casting to string something that's already string.#"

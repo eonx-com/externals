@@ -31,18 +31,6 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
     }
 
     /**
-     * Subscriber should not call validate if event object getRules does not return an array.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
-     */
-    public function testShouldNotValidateIfGetRulesNotArray(): void
-    {
-        $this->processNotValidateTest(new EntityWithRulesStub());
-    }
-
-    /**
      * Subscriber should not call validate if event object does not have getRules method.
      *
      * @return void
