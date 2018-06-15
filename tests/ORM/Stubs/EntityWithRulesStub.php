@@ -5,11 +5,13 @@ namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\ORM\Mapping as ORM;
 use EoneoPay\Externals\ORM\Entity;
+use EoneoPay\Externals\ORM\Interfaces\ValidatableInterface;
+use Tests\EoneoPay\Externals\ORM\Stubs\Exceptions\EntityValidationFailedExceptionStub;
 
 /**
  * @ORM\Entity()
  */
-class EntityWithRulesStub extends Entity
+class EntityWithRulesStub extends Entity implements ValidatableInterface
 {
     /**
      * Primary id
@@ -28,13 +30,19 @@ class EntityWithRulesStub extends Entity
     private $rules;
 
     /**
-     * Get validation rules.
-     *
-     * @return mixed[]|null
+     * {@inheritdoc}
      */
-    public function getRules(): ?array
+    public function getRules(): array
     {
-        return $this->rules;
+        return $this->rules ?? [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValidationFailedException(): string
+    {
+        return EntityValidationFailedExceptionStub::class;
     }
 
     /**

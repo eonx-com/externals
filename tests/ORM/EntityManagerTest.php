@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use EoneoPay\Externals\ORM\Exceptions\DefaultEntityValidationFailedException;
 use EoneoPay\Externals\ORM\Exceptions\ORMException;
 use EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException;
 use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
@@ -15,6 +14,7 @@ use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithNotFoundRepository;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithGetFillableStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithNoEntityAnnotationStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithValidationStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\Exceptions\EntityValidationFailedExceptionStub;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) This tests the full functionality of the EntityManager
@@ -219,7 +219,7 @@ class EntityManagerTest extends DoctrineTestCase
      */
     public function testPersistWithValidationFailedException(): void
     {
-        $this->expectException(DefaultEntityValidationFailedException::class);
+        $this->expectException(EntityValidationFailedExceptionStub::class);
 
         $this->getEntityManager()->persist(new EntityWithValidationStub());
         $this->getEntityManager()->flush();

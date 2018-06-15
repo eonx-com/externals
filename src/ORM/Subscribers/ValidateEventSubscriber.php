@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
 use EoneoPay\Externals\Logger\Logger;
-use EoneoPay\Externals\ORM\Exceptions\DefaultEntityValidationFailedException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\ORM\Interfaces\ValidatableInterface;
 use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use EoneoPay\Utils\AnnotationReader;
@@ -112,13 +112,11 @@ class ValidateEventSubscriber implements EventSubscriber
         $entity = $eventArgs->getObject();
 
         // Test if the entity has getRules function
-        if (($entity instanceof EntityInterface) === false
-            || \method_exists($entity, 'getRules') === false
-            || \is_array($entity->getRules()) === false) {
+        if (($entity instanceof ValidatableInterface) === false) {
             return;
         }
 
-        /** @var \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity */
+        /** @var \EoneoPay\Externals\ORM\Interfaces\ValidatableInterface $entity */
         /** @noinspection PhpUndefinedMethodInspection getRules existence is tested just before */
         $passes = $this->validator->validate($this->getEntityContents($entity), $entity->getRules());
         // If validation passes, return
@@ -127,9 +125,7 @@ class ValidateEventSubscriber implements EventSubscriber
         }
 
         // Get exception class from entity and throw it
-        $exceptionClass = \method_exists($entity, 'getValidationFailedException')
-            ? $entity->getValidationFailedException()
-            : DefaultEntityValidationFailedException::class;
+        $exceptionClass = $entity->getValidationFailedException();
 
         throw new $exceptionClass(
             $this->translator->trans('exceptions.validation.failed'),
