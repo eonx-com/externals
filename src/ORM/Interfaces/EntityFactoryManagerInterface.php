@@ -16,6 +16,18 @@ interface EntityFactoryManagerInterface
     public function addNamespaceMapping(string $factoriesNamespace, string $entitiesNamespace): self;
 
     /**
+     * Create a new entity and return it.
+     *
+     * @param string $className The class name of the entity to instantiate
+     * @param mixed[]|null $data Data to populate the entity with
+     *
+     * @return mixed The instantiated entity
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     */
+    public function create(string $className, ?array $data = null);
+
+    /**
      * Create a new entity, persist it and return it.
      *
      * @param string $className The class name of the entity to instantiate
@@ -24,9 +36,10 @@ interface EntityFactoryManagerInterface
      * @return mixed The instantiated entity
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
-    public function create(string $className, ?array $data = null);
+    public function persist(string $className, ?array $data = null);
 
     /**
      * Get the entity from cache or create a new one, persist it and return it.
@@ -36,8 +49,7 @@ interface EntityFactoryManagerInterface
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
     public function get(string $className, ?array $data = null): EntityInterface;
 

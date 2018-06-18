@@ -21,9 +21,7 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testCreateEntityAndGetDefaultDataSuccessfully(): void
     {
@@ -74,9 +72,7 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testEmptyNamespaceMappingException(): void
     {
@@ -92,9 +88,7 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testHandleDefaultRelationEntitySuccessfully(): void
     {
@@ -117,9 +111,7 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testNotFoundEntityFactoryException(): void
     {
@@ -130,5 +122,29 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
         ]);
 
         $entityFactoryManager->create(EntityCustomRepository::class);
+    }
+
+    /**
+     * Test persist saves entity to database
+     *
+     * @return void
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     */
+    public function testPersistSavesEntityToDatabase(): void
+    {
+        $entityFactoryManager = $this->getEntityFactoryManager([
+            'Tests\EoneoPay\Externals\ORM\Stubs\Factories\\' => 'Tests\EoneoPay\Externals\ORM\Stubs'
+        ]);
+
+        $entity = $entityFactoryManager->create(EntityStub::class);
+        self::assertNull($entity->getEntityId());
+
+        $entity = $entityFactoryManager->persist(EntityStub::class);
+        self::assertNotNull($entity->getEntityId());
     }
 }
