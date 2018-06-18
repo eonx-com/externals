@@ -17,8 +17,7 @@ class ChildEntityStubEntityFactory extends EntityFactory
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
     public function create(array $data): EntityInterface
     {

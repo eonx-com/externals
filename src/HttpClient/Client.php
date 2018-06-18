@@ -11,10 +11,12 @@ use EoneoPay\Utils\Exceptions\InvalidXmlException;
 use EoneoPay\Utils\XmlConverter;
 use Exception;
 use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 
+/** @SuppressWarnings(PHPMD.CouplingBetweenObjects) High coupling required for logging and exception handling */
 class Client implements ClientInterface
 {
     /**
@@ -66,6 +68,11 @@ class Client implements ClientInterface
             );
         } catch (RequestException $exception) {
             $response = $this->handleRequestException($exception);
+            // @codeCoverageIgnoreStart
+        } catch (GuzzleException $exception) {
+            // Covers any other guzzle exception, only here for safety
+            $response = new Response(null, 500);
+            // @codeCoverageIgnoreEnd
         }
 
         $this->logResponse($response);

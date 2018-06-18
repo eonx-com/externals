@@ -32,8 +32,7 @@ abstract class EntityFactory implements EntityFactoryInterface
      * @param string $key Attribute name of the relation entity
      * @param string $entityClass Entity class to create if not set
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
     protected function handleDefaultRelationEntity(array &$data, string $key, string $entityClass): void
     {

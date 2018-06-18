@@ -91,15 +91,13 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
     }
 
     /**
-     * Persist the test entity and return it.
+     * Create the test entity and return it.
      *
      * @param string $className The class name of the entity to instantiate
      * @param mixed[]|null $data Data to populate the entity with
      *
      * @return mixed The instantiated entity
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      * @throws \ReflectionException If invalid class detected in factories folders
      */
@@ -116,8 +114,6 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
             // @codeCoverageIgnoreEnd
         }
 
-        $this->entityManager->persist($entity);
-
         return $entity;
     }
 
@@ -129,9 +125,7 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      * @throws \ReflectionException
      */
     public function get(string $className, ?array $data = null): EntityInterface
@@ -192,6 +186,28 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
         $entityFactory = new $class($this);
 
         return $this->factoryInstances[$className] = $entityFactory;
+    }
+
+    /**
+     * Create and persist the test entity and return it.
+     *
+     * @param string $className The class name of the entity to instantiate
+     * @param mixed[]|null $data Data to populate the entity with
+     *
+     * @return mixed The instantiated entity
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \ReflectionException If invalid class detected in factories folders
+     */
+    public function persist(string $className, ?array $data = null)
+    {
+        $entity = $this->create($className, $data);
+
+        $this->entityManager->persist($entity);
+
+        return $entity;
     }
 
     /**
