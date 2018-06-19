@@ -181,6 +181,7 @@ class ValidateEventSubscriber implements EventSubscriber
             $annotation = \reset($annotations);
 
             // Remove backticks from column name
+            $contents[\trim($property, '`')] = $entity->$getter();
             $contents[\trim($annotation->name ?? $property, '`')] = $entity->$getter();
         }
 
