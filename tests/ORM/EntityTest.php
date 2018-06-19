@@ -374,7 +374,7 @@ class EntityTest extends DoctrineTestCase
                     <entityId></entityId>
                     <integer>%d</integer>
                     <string>%s</string>
-                    <deletedat/>
+                    <deletedAt/>
                 </%s>', $rootNode ?? 'data', self::$data['integer'], self::$data['string'], $rootNode ?? 'data');
         };
 
