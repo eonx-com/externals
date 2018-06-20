@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\HttpClient\Interfaces;
 
-interface InvalidApiResponseExceptionInterface
+use EoneoPay\Utils\Interfaces\BaseExceptionInterface;
+
+interface InvalidApiResponseExceptionInterface extends BaseExceptionInterface
 {
     /**
      * Get response.

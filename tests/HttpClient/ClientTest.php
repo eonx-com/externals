@@ -6,6 +6,7 @@ namespace Tests\EoneoPay\Externals\HttpClient;
 use EoneoPay\Externals\HttpClient\Client;
 use EoneoPay\Externals\HttpClient\Interfaces\InvalidApiResponseExceptionInterface;
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
+use EoneoPay\Utils\Interfaces\BaseExceptionInterface;
 use Tests\EoneoPay\Externals\HttpClientTestCase;
 
 class ClientTest extends HttpClientTestCase
@@ -110,6 +111,9 @@ class ClientTest extends HttpClientTestCase
                 ->request(self::METHOD, self::URI);
         } catch (InvalidApiResponseExceptionInterface $exception) {
             $response = $exception->getResponse();
+
+            self::assertSame(BaseExceptionInterface::DEFAULT_ERROR_CODE_RUNTIME, $exception->getErrorCode());
+            self::assertSame(BaseExceptionInterface::DEFAULT_ERROR_SUB_CODE, $exception->getErrorSubCode());
         }
 
         self::assertInstanceOf(ResponseInterface::class, $response);
