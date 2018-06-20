@@ -5,10 +5,10 @@ namespace EoneoPay\Externals\HttpClient\Exceptions;
 
 use EoneoPay\Externals\HttpClient\Interfaces\InvalidApiResponseExceptionInterface;
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
-use Exception;
+use EoneoPay\Utils\Exceptions\RuntimeException;
 use Throwable;
 
-class InvalidApiResponseException extends Exception implements InvalidApiResponseExceptionInterface
+class InvalidApiResponseException extends RuntimeException implements InvalidApiResponseExceptionInterface
 {
     /**
      * @var \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface
@@ -28,6 +28,22 @@ class InvalidApiResponseException extends Exception implements InvalidApiRespons
         parent::__construct('', 0, $previous);
 
         $this->response = $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getErrorCode(): int
+    {
+        return self::DEFAULT_ERROR_CODE_RUNTIME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getErrorSubCode(): int
+    {
+        return self::DEFAULT_ERROR_SUB_CODE;
     }
 
     /**
