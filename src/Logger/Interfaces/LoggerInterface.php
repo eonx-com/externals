@@ -31,10 +31,11 @@ interface LoggerInterface
      * Record a caught exception with backtrace
      *
      * @param \Exception $exception The exception to handle
+     * @param string|null $level The log level for this exception
      *
-     * @return void
+     * @return bool
      */
-    public function exception(Exception $exception): void;
+    public function exception(Exception $exception, ?string $level = null): bool;
 
     /**
      * Adds an informational message to the log
