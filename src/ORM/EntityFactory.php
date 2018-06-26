@@ -52,12 +52,14 @@ abstract class EntityFactory implements EntityFactoryInterface
      *
      * @return void
      *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     protected function persistDefaultRelationEntity(array &$data, string $key, string $entityClass): void
     {
         if ($this->isRelationSet($data, $key) === false) {
-            $data[$key] = $this->factoryManager->create($entityClass, $data[$key] ?? null);
+            $data[$key] = $this->factoryManager->persist($entityClass, $data[$key] ?? null);
         }
     }
 
