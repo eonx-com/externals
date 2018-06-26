@@ -26,18 +26,51 @@ abstract class EntityFactory implements EntityFactoryInterface
     }
 
     /**
-     * Add default entity into data if not set.
+     * Create and add default entity into data if not set.
      *
      * @param mixed[] $data Given data to create entity
      * @param string $key Attribute name of the relation entity
      * @param string $entityClass Entity class to create if not set
      *
+     * @return void
+     *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
-    protected function handleDefaultRelationEntity(array &$data, string $key, string $entityClass): void
+    protected function createDefaultRelationEntity(array &$data, string $key, string $entityClass): void
     {
-        if ((isset($data[$key]) === false) || \is_array($data[$key])) {
+        if ($this->isRelationSet($data, $key) === false) {
             $data[$key] = $this->factoryManager->create($entityClass, $data[$key] ?? null);
         }
+    }
+
+    /**
+     * Persist and add default entity into data if not set.
+     *
+     * @param mixed[] $data Given data to create entity
+     * @param string $key Attribute name of the relation entity
+     * @param string $entityClass Entity class to create if not set
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     */
+    protected function persistDefaultRelationEntity(array &$data, string $key, string $entityClass): void
+    {
+        if ($this->isRelationSet($data, $key) === false) {
+            $data[$key] = $this->factoryManager->create($entityClass, $data[$key] ?? null);
+        }
+    }
+
+    /**
+     * Check if the relation has been set already.
+     *
+     * @param mixed[] $data Given data to create entity
+     * @param string $key Attribute name of the relation entity
+     *
+     * @return bool
+     */
+    private function isRelationSet(array $data, string $key): bool
+    {
+        return isset($data[$key]) && \is_array($data[$key]) === false;
     }
 }
