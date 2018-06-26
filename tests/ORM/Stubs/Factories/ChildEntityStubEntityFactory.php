@@ -21,7 +21,8 @@ class ChildEntityStubEntityFactory extends EntityFactory
      */
     public function create(array $data): EntityInterface
     {
-        $this->handleDefaultRelationEntity($data, 'parent', ParentEntityStub::class);
+        $this->createDefaultRelationEntity($data, 'parent', ParentEntityStub::class);
+        $this->persistDefaultRelationEntity($data, 'parentPersist', ParentEntityStub::class);
 
         return new ChildEntityStub($data);
     }

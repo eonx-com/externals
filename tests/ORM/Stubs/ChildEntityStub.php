@@ -27,6 +27,13 @@ class ChildEntityStub extends EntityStub
     protected $parentId;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub", inversedBy="childrenPersist")
+     *
+     * @var \Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub
+     */
+    protected $parentPersist;
+
+    /**
      * ChildEntityStub constructor.
      *
      * @param mixed[]|null $data
@@ -72,7 +79,6 @@ class ChildEntityStub extends EntityStub
     }
 
     /**
-     *
      * Set parent.
      *
      * @param \Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub $parent
@@ -86,5 +92,21 @@ class ChildEntityStub extends EntityStub
     public function setParent(ParentEntityStub $parent): self
     {
         return $this->associate('parent', $parent, 'children');
+    }
+
+    /**
+     * Set parent persist.
+     *
+     * @param \Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub $parent
+     *
+     * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute doesn't exist on entity
+     * @throws \ReflectionException Inherited, if class or property does not exist
+     */
+    public function setParentPersist(ParentEntityStub $parent): self
+    {
+        return $this->associate('parentPersist', $parent, 'childrenPersist');
     }
 }

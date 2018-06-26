@@ -21,6 +21,13 @@ class ParentEntityStub extends EntityStub
     protected $children;
 
     /**
+     * @ORM\OneToMany(targetEntity="Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub", mappedBy="parentPersist")
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    protected $childrenPersist;
+
+    /**
      * ParentEntityStub constructor.
      *
      * @param mixed[]|null $data
@@ -30,5 +37,6 @@ class ParentEntityStub extends EntityStub
         parent::__construct($data);
 
         $this->children = new ArrayCollection();
+        $this->childrenPersist = new ArrayCollection();
     }
 }
