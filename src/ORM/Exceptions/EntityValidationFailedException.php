@@ -7,5 +7,4 @@ use EoneoPay\Utils\Exceptions\ValidationException;
 
 abstract class EntityValidationFailedException extends ValidationException
 {
-
 }
