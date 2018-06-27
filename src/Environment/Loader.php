@@ -45,7 +45,7 @@ class Loader implements LoaderInterface
     }
 
     /**
-     * Load the env file
+     * Load the env file and preserve existing values
      *
      * @return void
      *
@@ -53,28 +53,78 @@ class Loader implements LoaderInterface
      */
     public function load(): void
     {
+        $this->process();
+    }
+
+    /**
+     * Load the env file and overwrite existing values
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\Environment\Exceptions\InvalidPathException If env path is invalid
+     */
+    public function overload(): void
+    {
+        $this->process(true);
+    }
+
+    /**
+     * Get compiled array
+     *
+     * @return mixed[]|null
+     */
+    private function getCompiled(): ?array
+    {
         // If a compiled env file exists, prefer that
         $compiled = \sprintf('%s/%s', \rtrim($this->path, '/'), \ltrim($this->compiled));
-        if (\file_exists($compiled)) {
-            /** @noinspection PhpIncludeInspection Dynamic file may not exist */
-            /** @noinspection UsingInclusionReturnValueInspection This is how compiled files are loaded */
-            $values = require $compiled;
 
-            // If env is an array, process it otherwise fall through to .env
-            if (\is_array($values)) {
-                $env = new Env();
+        // If file doesn't exist, return
+        if (\file_exists($compiled) === false) {
+            return null;
+        }
 
-                foreach ($values as $key => $value) {
-                    $env->set($key, $value);
+        /** @noinspection PhpIncludeInspection Dynamic file may not exist */
+        /** @noinspection UsingInclusionReturnValueInspection This is how compiled files are loaded */
+        $values = require $compiled;
+
+        // Return values if it's an array, otherwise null
+        return \is_array($values) ? $values : null;
+    }
+
+    /**
+     * Process an env file
+     *
+     * @param bool|null $overload Whether to overwrite existing values or not
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\Environment\Exceptions\InvalidPathException If env path is invalid
+     */
+    private function process(?bool $overload = null): void
+    {
+        // If a compiled env file exists, prefer that
+        $compiled = $this->getCompiled();
+
+        if (\is_array($compiled)) {
+            $env = new Env();
+
+            foreach ($compiled as $key => $value) {
+                // Honour overload
+                if ($overload !== true && $env->get($key) !== null) {
+                    continue;
                 }
 
-                return;
+                $env->set($key, $value);
             }
+
+            return;
         }
 
         // Use dot env loader and wrap path exception
         try {
-            (new \Dotenv\Dotenv($this->path, $this->env))->overload();
+            $method = $overload === true ? 'overload' : 'load';
+
+            (new \Dotenv\Dotenv($this->path, $this->env))->{$method}();
         } catch (DotEnvException $exception) {
             throw new InvalidPathException($exception->getMessage(), $exception->getCode(), $exception);
         }
