@@ -29,14 +29,51 @@ class LoaderTest extends TestCase
     {
         $filesystem = $this->createFilesystem();
 
-        // Create both env files
+        // Clear env value
+        $env = new Env();
+        $env->remove('TEST');
+
+        // Create env file
         $filesystem->write('.env', 'TEST=env');
 
         // Load env file
         (new Loader($filesystem->path()))->load();
 
         // Test that compiled is preferred over env and the value is correct
-        self::assertSame('env', (new Env())->get('TEST'));
+        self::assertSame('env', $env->get('TEST'));
+    }
+
+    /**
+     * Test load doesn't overwrite existing values but overload does
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\Environment\Exceptions\InvalidPathException If env path is invalid
+     * @throws \org\bovigo\vfs\vfsStreamException If root directory contains an invalid character
+     */
+    public function testLoaderOverloadsOnlyWhenRequested(): void
+    {
+        $filesystem = $this->createFilesystem();
+
+        // Create a value
+        $env = new Env();
+        $env->set('TEST', 'exists');
+
+        // Create env file
+        $filesystem->write('env.php', \sprintf('<?php%sreturn [\'TEST\' => \'compiled\'];', \PHP_EOL));
+
+        // Load env file
+        $loader = new Loader($filesystem->path());
+        $loader->load();
+
+        // Test that value hasn't changed
+        self::assertSame('exists', $env->get('TEST'));
+
+        // Load with overload
+        $loader->overload();
+
+        // Test value has changed
+        self::assertSame('compiled', $env->get('TEST'));
     }
 
     /**
@@ -51,6 +88,10 @@ class LoaderTest extends TestCase
     {
         $filesystem = $this->createFilesystem();
 
+        // Clear env value
+        $env = new Env();
+        $env->remove('TEST');
+
         // Create both env files
         $filesystem->write('env.php', \sprintf('<?php%sreturn [\'TEST\' => \'compiled\'];', \PHP_EOL));
         $filesystem->write('.env', 'TEST=env');
@@ -59,7 +100,7 @@ class LoaderTest extends TestCase
         (new Loader($filesystem->path()))->load();
 
         // Test that compiled is preferred over env and the value is correct
-        self::assertSame('compiled', (new Env())->get('TEST'));
+        self::assertSame('compiled', $env->get('TEST'));
     }
 
     /**
