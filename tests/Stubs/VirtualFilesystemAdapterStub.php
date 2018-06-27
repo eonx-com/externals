@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\Externals\Bridge\Laravel\Stubs;
+namespace Tests\EoneoPay\Externals\Stubs;
 
 use DirectoryIterator;
 use FilesystemIterator;

@@ -63,16 +63,16 @@
     "packages-dev": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.62.2",
+            "version": "3.62.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "8fa68de81738f851e0aa62fbc0a657f2905aa860"
+                "reference": "31436550b916706c56949069ed42d258be60e0a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8fa68de81738f851e0aa62fbc0a657f2905aa860",
-                "reference": "8fa68de81738f851e0aa62fbc0a657f2905aa860",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/31436550b916706c56949069ed42d258be60e0a4",
+                "reference": "31436550b916706c56949069ed42d258be60e0a4",
                 "shasum": ""
             },
             "require": {
@@ -139,7 +139,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-06-22T22:41:36+00:00"
+            "time": "2018-06-26T20:31:07+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -805,12 +805,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/loyaltycorp/standards.git",
-                "reference": "3ba1fd7d4049a5e5b9e0392f605abcecd36ff646"
+                "reference": "317a918c4117902a613335991eee078d2cc9351b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/loyaltycorp/standards/zipball/3ba1fd7d4049a5e5b9e0392f605abcecd36ff646",
-                "reference": "3ba1fd7d4049a5e5b9e0392f605abcecd36ff646",
+                "url": "https://api.github.com/repos/loyaltycorp/standards/zipball/317a918c4117902a613335991eee078d2cc9351b",
+                "reference": "317a918c4117902a613335991eee078d2cc9351b",
                 "shasum": ""
             },
             "require": {
@@ -843,7 +843,7 @@
                 "eoneopay",
                 "standards"
             ],
-            "time": "2018-06-25T23:52:34+00:00"
+            "time": "2018-06-26T22:43:45+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -2767,16 +2767,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.31.0",
+            "version": "1.31.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "4dbe0e51d24a4c7e000999324d21fc25edbf7b05"
+                "reference": "385780c8ca2dbfd25452666e3f55e8dc1df58c41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/4dbe0e51d24a4c7e000999324d21fc25edbf7b05",
-                "reference": "4dbe0e51d24a4c7e000999324d21fc25edbf7b05",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/385780c8ca2dbfd25452666e3f55e8dc1df58c41",
+                "reference": "385780c8ca2dbfd25452666e3f55e8dc1df58c41",
                 "shasum": ""
             },
             "require": {
@@ -2818,7 +2818,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-06-24T14:32:22+00:00"
+            "time": "2018-06-25T13:15:16+00:00"
         },
         {
             "name": "nette/bootstrap",

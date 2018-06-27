@@ -7,7 +7,7 @@ use EoneoPay\Externals\Bridge\Laravel\Filesystem;
 use EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException;
 use Illuminate\Filesystem\FilesystemAdapter as ContractedFilesystem;
 use League\Flysystem\Filesystem as Flysystem;
-use Tests\EoneoPay\Externals\Bridge\Laravel\Stubs\VirtualFilesystemAdapterStub;
+use Tests\EoneoPay\Externals\Stubs\VirtualFilesystemAdapterStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**

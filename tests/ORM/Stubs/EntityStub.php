@@ -25,6 +25,7 @@ use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
  * @method null whenString()
  *
  * @ORM\Entity
+ *
  * @Gedmo\SoftDeleteable()
  */
 class EntityStub extends Entity

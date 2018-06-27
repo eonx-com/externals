@@ -5,6 +5,6 @@ namespace EoneoPay\Externals\Environment\Exceptions;
 
 use RuntimeException;
 
-class InvalidEnvValueException extends RuntimeException
+class InvalidPathException extends RuntimeException
 {
 }
