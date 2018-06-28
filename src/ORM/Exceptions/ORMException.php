@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\ORM\Exceptions;
 
-use EoneoPay\Utils\Exceptions\RuntimeException;
+use EoneoPay\Utils\Exceptions\CriticalException;
 
-class ORMException extends RuntimeException
+class ORMException extends CriticalException
 {
     /**
      * Get Error code.
@@ -14,7 +14,17 @@ class ORMException extends RuntimeException
      */
     public function getErrorCode(): int
     {
-        return self::DEFAULT_ERROR_CODE_RUNTIME;
+        return self::DEFAULT_ERROR_CODE_CRITICAL;
+    }
+
+    /**
+     * Display a friendly exception message
+     *
+     * @return string
+     */
+    public function getErrorMessage(): string
+    {
+        return 'A database error occurred';
     }
 
     /**
