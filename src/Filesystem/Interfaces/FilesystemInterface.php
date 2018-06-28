@@ -35,6 +35,15 @@ interface FilesystemInterface
     public function read(string $filename): string;
 
     /**
+     * Remove a file from the filesystem
+     *
+     * @param string $filename The filename to remove
+     *
+     * @return bool
+     */
+    public function remove(string $filename): bool;
+
+    /**
      * Write a file to the filesystem
      *
      * @param string $filename The filename to write to
