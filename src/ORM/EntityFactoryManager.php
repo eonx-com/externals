@@ -118,16 +118,14 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
     }
 
     /**
-     * Get the entity from cache or create a new one, persist it and return it.
+     * Get the entity from cache or create a new one and return it.
      *
      * @param string $className
      * @param mixed[]|null $data
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      * @throws \ReflectionException
      */
     public function get(string $className, ?array $data = null): EntityInterface
@@ -148,7 +146,7 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
             return $this->entityInstances[$className][$key];
         }
 
-        return $this->entityInstances[$className][$key] = $this->persist($className, $data);
+        return $this->entityInstances[$className][$key] = $this->create($className, $data);
     }
 
     /**
