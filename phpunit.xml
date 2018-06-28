@@ -12,9 +12,6 @@
     <filter>
         <whitelist>
             <directory suffix=".php">./src</directory>
-            <exclude>
-                <directory suffix=".php">./src/ORM/Exceptions</directory>
-            </exclude>
         </whitelist>
     </filter>
     <php>
