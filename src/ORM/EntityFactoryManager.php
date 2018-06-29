@@ -118,7 +118,7 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
     }
 
     /**
-     * Get the entity from cache or create a new one, persist it and return it.
+     * Get the entity from cache or create a new one and return it.
      *
      * @param string $className
      * @param mixed[]|null $data
