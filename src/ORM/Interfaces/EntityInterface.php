@@ -40,7 +40,6 @@ interface EntityInterface extends SerializableInterface
      *
      * @return null|string|int
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
     public function getId();
