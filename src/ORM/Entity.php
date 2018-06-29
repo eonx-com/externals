@@ -9,6 +9,7 @@ use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\AnnotationReader;
 use EoneoPay\Utils\Arr;
+use EoneoPay\Utils\Exceptions\AnnotationCacheException;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\XmlConverter;
 use Exception;
@@ -118,7 +119,6 @@ abstract class Entity implements EntityInterface
      *
      * @return null|string|int
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
     public function getId()
@@ -172,7 +172,6 @@ abstract class Entity implements EntityInterface
      *
      * @return mixed The original entity for fluency
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
      * @throws \ReflectionException Inherited, if class or property does not exist
      */
@@ -274,12 +273,20 @@ abstract class Entity implements EntityInterface
      *
      * @return string
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
      * @throws \ReflectionException Inherited, if class or property does not exist
      */
     protected function getIdProperty(): string
     {
-        $ids = (new AnnotationReader())->getClassPropertyAnnotation(\get_class($this), Id::class);
+        // Check for id annotation, if annotations aren't available return 'id'
+        try {
+            $ids = (new AnnotationReader())->getClassPropertyAnnotation(\get_class($this), Id::class);
+            // @codeCoverageIgnoreStart
+            // Can't test exception since opcache config can only be set in php.ini
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (AnnotationCacheException $exception) {
+            // Exception intentionally ignored as opcache has to be missing for annotations to fail
+            return 'id';
+            // @codeCoverageIgnoreEnd
+        }
 
         return \key($ids) ?? 'id';
     }
@@ -305,7 +312,6 @@ abstract class Entity implements EntityInterface
      * @return string
      *
      * @throws \ReflectionException
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      */
     protected function uniqueRuleAsString(string $target, ?array $wheres = null): string
     {
@@ -499,7 +505,6 @@ abstract class Entity implements EntityInterface
      *
      * @return string|null
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException Inherited, if opcache isn't caching comments
      * @throws \ReflectionException Inherited, if the class is invalid
      */
     private function resolvePropertyFromAnnotations(string $property): ?string
@@ -509,8 +514,16 @@ abstract class Entity implements EntityInterface
             return null;
         }
 
-        // Get annotation reader instance
-        $reader = new AnnotationReader();
+        // Get annotation reader instance, if annotations aren't available return null
+        try {
+            $reader = new AnnotationReader();
+            // @codeCoverageIgnoreStart
+            // Can't test exception since opcache config can only be set in php.ini
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (AnnotationCacheException $exception) {
+            // Exception intentionally ignored as opcache has to be missing for annotations to fail
+            return null;
+            // @codeCoverageIgnoreEnd
+        }
 
         // Create a fuzzy search version of the searched property
         $fuzzy = \mb_strtolower(\preg_replace('/[^\da-zA-Z]/', '', $property));

@@ -69,8 +69,8 @@ class Client implements ClientInterface
         } catch (RequestException $exception) {
             $response = $this->handleRequestException($exception);
             // @codeCoverageIgnoreStart
-        } catch (GuzzleException $exception) {
-            // Covers any other guzzle exception, only here for safety
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (GuzzleException $exception) {
+            // Covers any other guzzle exception, only here for safety so intentionally ignored
             $response = new Response(null, 500);
             // @codeCoverageIgnoreEnd
         }

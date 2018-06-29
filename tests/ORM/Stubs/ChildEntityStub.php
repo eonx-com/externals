@@ -70,7 +70,6 @@ class ChildEntityStub extends EntityStub
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
     public function setInvalidParent(ParentEntityStub $parent): self
@@ -85,7 +84,6 @@ class ChildEntityStub extends EntityStub
      *
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute doesn't exist on entity
      * @throws \ReflectionException Inherited, if class or property does not exist
      */
@@ -101,7 +99,6 @@ class ChildEntityStub extends EntityStub
      *
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache isn't caching annotations
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute doesn't exist on entity
      * @throws \ReflectionException Inherited, if class or property does not exist
      */

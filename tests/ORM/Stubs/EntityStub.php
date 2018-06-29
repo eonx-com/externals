@@ -68,7 +68,6 @@ class EntityStub extends Entity
      *
      * @return string
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
     public function getEmailUniqueRuleForTest(?array $wheres = null): string

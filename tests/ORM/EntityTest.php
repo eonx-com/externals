@@ -127,7 +127,6 @@ class EntityTest extends DoctrineTestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
     public function testAssociateParentWithChildren(): void
@@ -154,7 +153,6 @@ class EntityTest extends DoctrineTestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
     public function testAssociateWithWrongAssociationException(): void
@@ -198,7 +196,6 @@ class EntityTest extends DoctrineTestCase
     /**
      * Test entity has a generic getId method which return id value based on Id doctrine annotation.
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
     public function testGetIdReturnsRightValueBasedOnIdAnnotation(): void
@@ -398,7 +395,6 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      */
     public function testUniqueRuleAsStringMethod(): void
