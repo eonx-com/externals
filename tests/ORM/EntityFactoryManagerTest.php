@@ -37,8 +37,8 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
             self::assertInstanceOf(EntityStub::class, $entity);
         }
 
-        self::assertEquals(\spl_object_id($entity1), \spl_object_id($entity2));
-        self::assertNotEquals(\spl_object_id($entity1), \spl_object_id($entity3));
+        self::assertEquals(\spl_object_hash($entity1), \spl_object_hash($entity2));
+        self::assertNotEquals(\spl_object_hash($entity1), \spl_object_hash($entity3));
 
         /** @noinspection UnnecessaryAssertionInspection Create returns EntityInterface */
         self::assertInstanceOf(EntityWithRulesStub::class, $entityFactoryManager->create(EntityWithRulesStub::class));
