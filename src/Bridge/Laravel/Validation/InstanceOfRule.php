@@ -43,6 +43,11 @@ class InstanceOfRule implements ValidationRuleInterface
     public function getRule(): Closure
     {
         return function (string $attribute, $value, array $parameters): bool {
+            // If no value given just pass, to be able to validate optional attributes
+            if ($value === null) {
+                return true;
+            }
+
             $class = $parameters[0] ?? null;
 
             // If no parameters given rule should fail
