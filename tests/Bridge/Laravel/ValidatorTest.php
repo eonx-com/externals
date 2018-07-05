@@ -91,6 +91,12 @@ class ValidatorTest extends TestCase
             ['key1' => \sprintf('instance_of:%s,%s', \stdClass::class, EntityInterface::class)]
         ));
 
+        // If no value provided rule should pass
+        self::assertTrue($validator->validate(
+            ['key1' => null],
+            ['key1' => 'instance_of:' . \stdClass::class]
+        ));
+
         // If no parameter provided rule should fail
         self::assertFalse($validator->validate(
             ['key1' => new \stdClass()],
