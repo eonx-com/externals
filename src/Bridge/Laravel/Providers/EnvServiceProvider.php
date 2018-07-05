@@ -17,6 +17,6 @@ class EnvServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Interface for getting, setting and removing env values
-        $this->app->bind(EnvInterface::class, Env::class);
+        $this->app->singleton(EnvInterface::class, Env::class);
     }
 }

@@ -38,6 +38,16 @@ class Request implements RequestInterface
     }
 
     /**
+     * Get client ip address
+     *
+     * @return string|null
+     */
+    public function getClientIp(): ?string
+    {
+        return $this->request->getClientIp();
+    }
+
+    /**
      * Get a header by name
      *
      * @param string $key The key to find

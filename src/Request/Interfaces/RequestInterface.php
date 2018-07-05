@@ -6,6 +6,13 @@ namespace EoneoPay\Externals\Request\Interfaces;
 interface RequestInterface
 {
     /**
+     * Get client ip address
+     *
+     * @return string|null
+     */
+    public function getClientIp(): ?string;
+
+    /**
      * Get a header by name
      *
      * @param string $key The key to find
