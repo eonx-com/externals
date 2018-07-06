@@ -21,7 +21,7 @@ class RequestServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Interface for incoming http requests
-        $this->app->singleton(RequestInterface::class, function () {
+        $this->app->bind(RequestInterface::class, function (): Request {
             // Create env instance
             $env = $this->app->make(Env::class);
 
