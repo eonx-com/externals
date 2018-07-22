@@ -43,6 +43,7 @@ class LoggableEventSubscriber extends BaseLoggableListener
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
      * @throws \ReflectionException
      *
+     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function getConfiguration(ObjectManager $objectManager, $class): array
@@ -69,6 +70,7 @@ class LoggableEventSubscriber extends BaseLoggableListener
      *
      * @return \Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry|null
      *
+     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     protected function createLogEntry($action, $object, LoggableAdapter $loggableAdapter): ?AbstractLogEntry

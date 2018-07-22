@@ -355,6 +355,8 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      * Delete file or directory.
      *
      * @param \SplFileInfo $file
+     *
+     * @return void
      */
     protected function deleteFileInfoObject(SplFileInfo $file): void
     {
@@ -444,6 +446,8 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      * Check if file or directory is readable.
      *
      * @param \SplFileInfo $file
+     *
+     * @return void
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Flysystem requires UnreadableFileException method to be statically accessed
      */

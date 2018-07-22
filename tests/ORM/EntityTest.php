@@ -10,12 +10,14 @@ use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use Tests\EoneoPay\Externals\DoctrineTestCase;
 use Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
+use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithTransformers;
 use Tests\EoneoPay\Externals\ORM\Stubs\MultiChildEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\MultiParentEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Entity
+ * @covers \EoneoPay\Externals\ORM\Traits\HasTransformers
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Entity itself is complex so lot of tests to perform
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) Entity itself is complex so lot of tests to perform
@@ -196,6 +198,8 @@ class EntityTest extends DoctrineTestCase
     /**
      * Test entity has a generic getId method which return id value based on Id doctrine annotation.
      *
+     * @return void
+     *
      * @throws \ReflectionException
      */
     public function testGetIdReturnsRightValueBasedOnIdAnnotation(): void
@@ -208,6 +212,27 @@ class EntityTest extends DoctrineTestCase
         $entity->setEntityId($entityId);
 
         self::assertSame($entityId, $entity->getId());
+    }
+
+    /**
+     * Test HasTransformers trait transforms the properties as expected.
+     *
+     * @return void
+     */
+    public function testHasTransformersTraitWorksAsExcepted(): void
+    {
+        $entity = new EntityStubWithTransformers();
+
+        self::assertFalse($entity->setBool(null)->getBool());
+        self::assertTrue($entity->setBool('true')->getBool());
+        self::assertTrue($entity->setBool(true)->getBool());
+
+        self::assertNull($entity->setDatetime(null)->getDatetime());
+        self::assertInstanceOf(\DateTime::class, $entity->setDatetime('now')->getDatetime());
+        self::assertInstanceOf(\DateTime::class, $entity->setDatetime(new \DateTime())->getDatetime());
+
+        self::assertEquals('', $entity->setString(null)->getString());
+        self::assertEquals('equals', $entity->setString('equals')->getString());
     }
 
     /**

@@ -132,6 +132,8 @@ class EntityManager implements EntityManagerInterface
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to merge to the database
      *
+     * @return void
+     *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
      */
@@ -144,6 +146,8 @@ class EntityManager implements EntityManagerInterface
      * Persist entity to the database
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to persist to the database
+     *
+     * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
@@ -172,7 +176,7 @@ class EntityManager implements EntityManagerInterface
      * Call a method on the entity manager and catch any exception
      *
      * @param string $method The method to call
-     * @param mixed $parameters The parameters to pass to the method
+     * @param mixed ...$parameters The parameters to pass to the method
      *
      * @return mixed
      *

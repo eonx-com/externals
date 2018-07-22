@@ -2,13 +2,11 @@ parameters:
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\Contracts\\Filesystem\\Filesystem::path\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
-        - "#Casting to string something that's already string.#"
         - '#Class Tests\\EoneoPay\\Externals\\ORM\\Stubs\\InvalidClass not found.#'
         - '#Method Tests\\EoneoPay\\Externals\\LaravelBridgeProvidersTestCase::getApplication\(\) should return Illuminate\\Contracts\\Foundation\\Application but returns Illuminate\\Container\\Container.#'
         - '#Parameter \#1 \$client of class EoneoPay\\Externals\\HttpClient\\Client constructor expects GuzzleHttp\\Client\|null, Mockery\\MockInterface given.#'
         - '#Parameter \#2 $logger of class EoneoPay\\Externals\\HttpClient\\Client constructor expects EoneoPay\\Externals\\Logger\\Interfaces\\LoggerInterface|null, Mockery\\MockInterface given.#'
         - '#Parameter \#3 $response of class GuzzleHttp\\Exception\\RequestException constructor expects Psr\\Http\\Message\\ResponseInterface\|null, Mockery\\MockInterface|null given.#'
-        - '#PHPDoc tag @param for parameter \$\w+ with type mixed is not subtype of native type array<int, mixed>#'
         - '#Property Tests\\EoneoPay\\Externals\\LaravelBridgeProvidersTestCase::\$app \(Illuminate\\Contracts\\Foundation\\Application\) does not accept Illuminate\\Container\\Container.#'
         - '#Parameter \#1 \$manager of method EoneoPay\\Externals\\ORM\\Extensions\\SoftDeleteExtension::addSubscribers\(\) expects Doctrine\\Common\\EventManager, Mockery\\MockInterface given.#'
         - '#Parameter \#1 \$validator of class EoneoPay\\Externals\\ORM\\Subscribers\\ValidateEventSubscriber constructor expects EoneoPay\\Externals\\Validator\\Interfaces\\ValidatorInterface, Mockery\\MockInterface given.#'

@@ -339,6 +339,8 @@ abstract class Entity implements EntityInterface
      *
      * @param string $attribute
      *
+     * @return void
+     *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
      */
     private function checkEntityHasAttribute(string $attribute): void

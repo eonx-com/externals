@@ -33,6 +33,7 @@ class Container implements ContainerInterface
      *
      * @return mixed Entry.
      *
+     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function get($serviceId)
@@ -51,6 +52,7 @@ class Container implements ContainerInterface
      *
      * @return bool
      *
+     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function has($serviceId): bool

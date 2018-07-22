@@ -5,6 +5,7 @@ namespace Tests\EoneoPay\Externals\ORM\Stubs;
 
 use Doctrine\ORM\Mapping as ORM;
 use EoneoPay\Externals\ORM\Entity;
+use EoneoPay\Externals\ORM\Traits\HasTransformers;
 use Gedmo\Mapping\Annotation as Gedmo;
 use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
 
@@ -30,6 +31,7 @@ use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
  */
 class EntityStub extends Entity
 {
+    use HasTransformers;
     use SoftDeletes;
 
     /**
@@ -123,6 +125,6 @@ class EntityStub extends Entity
      */
     public function transformString(): void
     {
-        $this->string = (string)$this->string;
+        $this->transformToString('string');
     }
 }

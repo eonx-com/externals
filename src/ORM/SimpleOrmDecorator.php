@@ -19,7 +19,7 @@ abstract class SimpleOrmDecorator
      * Call a method on the entity manager and catch any exception
      *
      * @param string $method The method to call
-     * @param mixed $parameters The parameters to pass to the method
+     * @param mixed ...$parameters The parameters to pass to the method
      *
      * @return mixed
      *
