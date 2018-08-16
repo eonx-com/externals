@@ -28,9 +28,9 @@ interface RepositoryInterface
     /**
      * Get all records from a repository
      *
-     * @return mixed[]|null
+     * @return mixed[]
      */
-    public function findAll(): ?array;
+    public function findAll(): array;
 
     /**
      * Finds entitys which match a set of criteria

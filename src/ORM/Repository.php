@@ -44,11 +44,11 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
     /**
      * Get all records from a repository
      *
-     * @return mixed[]|null
+     * @return mixed[]
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
-    public function findAll(): ?array
+    public function findAll(): array
     {
         return $this->callMethod('findAll') ?? [];
     }
