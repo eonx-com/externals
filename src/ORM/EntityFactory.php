@@ -78,6 +78,11 @@ abstract class EntityFactory implements EntityFactoryInterface
             return false;
         }
 
+        // If key is an entity, return
+        if (($data[$key] instanceof Entity) === true) {
+            return true;
+        }
+
         // If key is null, unset and return - this allows a relationship to be null
         if ($data[$key] === null) {
             unset($data[$key]);
