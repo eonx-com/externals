@@ -73,6 +73,30 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
     }
 
     /**
+     * EntityFactory should create default relation entity if relationships are provided
+     *
+     * @return void
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     */
+    public function testDefaultRelationEntityCreatedIfRelationshipIsProvided(): void
+    {
+        $entityFactoryManager = $this->getEntityFactoryManager([
+            'Tests\EoneoPay\Externals\ORM\Stubs\Factories\\' => 'Tests\EoneoPay\Externals\ORM\Stubs'
+        ]);
+
+        $parent = new ParentEntityStub();
+        $child = $entityFactoryManager->create(ChildEntityStub::class, ['parent' => $parent]);
+
+        /** @noinspection UnnecessaryAssertionInspection Returns EntityInterface */
+        self::assertInstanceOf(ChildEntityStub::class, $child);
+        /** @var \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub $child */
+        self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
+    }
+
+    /**
      * EntityFactory should not create default relation entity data is explicitly set to null.
      *
      * @return void
