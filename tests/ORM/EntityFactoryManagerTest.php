@@ -50,6 +50,52 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
     }
 
     /**
+     * EntityFactory should create default relation entity if provided data is invalid
+     *
+     * @return void
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     */
+    public function testDefaultRelationEntityCreatedIfProvidedDataInvalid(): void
+    {
+        $entityFactoryManager = $this->getEntityFactoryManager([
+            'Tests\EoneoPay\Externals\ORM\Stubs\Factories\\' => 'Tests\EoneoPay\Externals\ORM\Stubs'
+        ]);
+
+        $child = $entityFactoryManager->create(ChildEntityStub::class, ['parent' => 'invalid']);
+
+        /** @noinspection UnnecessaryAssertionInspection Returns EntityInterface */
+        self::assertInstanceOf(ChildEntityStub::class, $child);
+        /** @var \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub $child */
+        self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
+    }
+
+    /**
+     * EntityFactory should not create default relation entity data is explicitly set to null.
+     *
+     * @return void
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     */
+    public function testDefaultRelationEntityIsNotCreatedIfSetToNull(): void
+    {
+        $entityFactoryManager = $this->getEntityFactoryManager([
+            'Tests\EoneoPay\Externals\ORM\Stubs\Factories\\' => 'Tests\EoneoPay\Externals\ORM\Stubs'
+        ]);
+
+        $child = $entityFactoryManager->create(ChildEntityStub::class, ['parent' => null]);
+
+        /** @noinspection UnnecessaryAssertionInspection Returns EntityInterface */
+        self::assertInstanceOf(ChildEntityStub::class, $child);
+        /** @var \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub $child */
+        self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
+    }
+
+    /**
      * EntityFactoryManager should throw exception when no factory paths provided.
      *
      * @return void

@@ -71,9 +71,26 @@ abstract class EntityFactory implements EntityFactoryInterface
      *
      * @return bool
      */
-    private function isRelationSet(array $data, string $key): bool
+    private function isRelationSet(array &$data, string $key): bool
     {
-        // Allow null to be passed in the key specifying a relationship should not be created
-        return \array_key_exists($key, $data) === true && \is_array($data[$key]) === false;
+        // If array key doesn't exist, return
+        if (\array_key_exists($key, $data) === false) {
+            return false;
+        }
+
+        // If key is null, unset and return - this allows a relationship to be null
+        if ($data[$key] === null) {
+            unset($data[$key]);
+
+            return true;
+        }
+
+        // If data isn't an array, unset
+        if (\is_array($data[$key]) === false) {
+            unset($data[$key]);
+        }
+
+        // Data is an array or not defined
+        return false;
     }
 }
