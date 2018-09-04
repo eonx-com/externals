@@ -5,7 +5,6 @@ namespace Tests\EoneoPay\Externals\Stubs;
 
 use DirectoryIterator;
 use FilesystemIterator;
-use finfo;
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
@@ -130,17 +129,12 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      */
     public function getMimetype($path)
     {
-        $location = $this->applyPathPrefix($path);
-        $finfo = new finfo(\FILEINFO_MIME_TYPE);
-        $mimetype = $finfo->file($location);
-
-        if (\in_array($mimetype, ['application/octet-stream', 'inode/x-empty'], true)) {
-            /** @noinspection PhpInternalEntityUsedInspection */
-            // Mimics Flysystem local driver
-            $mimetype = Util\MimeType::detectByFilename($location);
-        }
-
-        return ['path' => $path, 'type' => 'file', 'mimetype' => $mimetype];
+        /** @noinspection PhpInternalEntityUsedInspection This mimics flysystem's local driver */
+        return [
+            'mimetype' => Util\MimeType::detectByFilename($this->applyPathPrefix($path)),
+            'path' => $path,
+            'type' => 'file'
+        ];
     }
 
     /**
@@ -362,7 +356,9 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     {
         switch ($file->getType()) {
             case 'dir':
-                \rmdir($file->getRealPath());
+                if ($file->getRealPath() !== false) {
+                    \rmdir($file->getRealPath());
+                }
                 break;
 
             case 'link':
@@ -370,7 +366,9 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
                 break;
 
             default:
-                \unlink($file->getRealPath());
+                if ($file->getRealPath() !== false) {
+                    \unlink($file->getRealPath());
+                }
         }
     }
 

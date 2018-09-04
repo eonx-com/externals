@@ -94,22 +94,30 @@ class Env implements EnvInterface
      */
     private function resolveKeywords(string $value)
     {
-        // Handle php keywords
+        // Handle php keywords - code coverage disabled due to phpdbg not seeing case statements
         switch (\mb_strtolower($value)) {
+            // @codeCoverageIgnoreStart
             case 'false':
             case '(false)':
+            // @codeCoverageIgnoreEnd
                 return false;
 
+            // @codeCoverageIgnoreStart
             case 'true':
             case '(true)':
+            // @codeCoverageIgnoreEnd
                 return true;
 
+            // @codeCoverageIgnoreStart
             case 'empty':
             case '(empty)':
+            // @codeCoverageIgnoreEnd
                 return '';
 
+            // @codeCoverageIgnoreStart
             case 'null':
             case '(null)':
+            // @codeCoverageIgnoreEnd
                 return null;
         }
 

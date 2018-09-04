@@ -13,9 +13,6 @@ class ContainerServiceProviderTest extends LaravelBridgeProvidersTestCase
      * Test provider register container.
      *
      * @return void
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function testRegister(): void
     {

@@ -19,9 +19,6 @@ class ValidatorServiceProviderTest extends LaravelBridgeProvidersTestCase
      * Test provider bind translator and validator into container.
      *
      * @return void
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function testRegister(): void
     {

@@ -47,12 +47,18 @@ class EntityFactoryLoader implements EntityFactoryLoaderInterface
             );
 
             foreach ($iterator as $file) {
-                $sourceFile = $file[0] ?? '';
+                // If file[0] is null, skip this file
+                if (isset($file[0]) === false) {
+                    // The iterator should always return a filename, this is only for safety
+                    // @codeCoverageIgnoreStart
+                    continue;
+                    // @codeCoverageIgnoreEnd
+                }
 
                 /** @noinspection PhpIncludeInspection Must require files dynamically */
-                require_once $sourceFile;
+                require_once $file[0];
 
-                $includedFiles[] = \realpath($sourceFile);
+                $includedFiles[] = \realpath($file[0]);
             }
         }
 

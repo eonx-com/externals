@@ -16,9 +16,6 @@ class FilesystemServiceProviderTest extends LaravelBridgeProvidersTestCase
      * Test default filesystem is set correctly
      *
      * @return void
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function testDefaultFilesystem(): void
     {
@@ -52,9 +49,6 @@ class FilesystemServiceProviderTest extends LaravelBridgeProvidersTestCase
      * Test provider bind filesystem into container.
      *
      * @return void
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function testRegister(): void
     {

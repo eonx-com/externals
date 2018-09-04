@@ -13,9 +13,6 @@ class OrmServiceProviderTest extends LaravelBridgeProvidersTestCase
      * Test provider extend entity manager in container using our entity manager.
      *
      * @return void
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function testRegister(): void
     {

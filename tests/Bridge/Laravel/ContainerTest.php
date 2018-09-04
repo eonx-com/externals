@@ -15,9 +15,6 @@ class ContainerTest extends TestCase
      * Container should use illuminate container to retrieve services.
      *
      * @return void
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function testContainerForIlluminate(): void
     {
@@ -36,9 +33,6 @@ class ContainerTest extends TestCase
      * Container should throw PSR exception if service not found.
      *
      * @return void
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function testServiceNotFoundException(): void
     {

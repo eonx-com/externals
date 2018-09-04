@@ -18,13 +18,11 @@ class InvalidApiResponseException extends RuntimeException implements InvalidApi
     /**
      * InvalidApiResponseException constructor.
      *
-     * @param \Throwable|null $previous
-     * @param \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface $response
+     * @param \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface $response The response received from the api
+     * @param \Throwable|null $previous The original exception thrown
      */
-    public function __construct(
-        ?Throwable $previous = null,
-        ResponseInterface $response
-    ) {
+    public function __construct(ResponseInterface $response, ?Throwable $previous = null)
+    {
         parent::__construct('', 0, $previous);
 
         $this->response = $response;

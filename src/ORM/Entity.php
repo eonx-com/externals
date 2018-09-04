@@ -68,19 +68,27 @@ abstract class Entity implements EntityInterface
             );
         }
 
-        // Perform action
+        // Perform action - code coverage disabled due to phpdbg not seeing case statements
         switch ($type) {
+            // @codeCoverageIgnoreStart
             case 'get':
+                // @codeCoverageIgnoreEnd
                 return $this->get($property);
 
+            // @codeCoverageIgnoreStart
             case 'has':
+                // @codeCoverageIgnoreEnd
                 return $this->has($property);
 
+            // @codeCoverageIgnoreStart
             case 'is':
+                // @codeCoverageIgnoreEnd
                 // Always return a boolean
                 return (bool)$this->get($property);
 
+            // @codeCoverageIgnoreStart
             case 'set':
+                // @codeCoverageIgnoreEnd
                 // Return original instance for fluency
                 $this->set($property, \reset($parameters));
                 break;
@@ -118,8 +126,6 @@ abstract class Entity implements EntityInterface
      * Get entity id.
      *
      * @return null|string|int
-     *
-     * @throws \ReflectionException
      */
     public function getId()
     {
@@ -143,7 +149,7 @@ abstract class Entity implements EntityInterface
      */
     public function toJson(): string
     {
-        return \json_encode($this->toArray());
+        return \json_encode($this->toArray()) ?: '';
     }
 
     /**
@@ -173,7 +179,6 @@ abstract class Entity implements EntityInterface
      * @return mixed The original entity for fluency
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
-     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     protected function associate(string $attribute, Entity $parent, ?string $association = null)
     {
@@ -225,7 +230,7 @@ abstract class Entity implements EntityInterface
      *
      * @return mixed The original entity for fluency
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
      */
     protected function associateMultiple(string $attribute, Entity $parent, ?string $association = null)
     {
@@ -272,8 +277,6 @@ abstract class Entity implements EntityInterface
      * Get id property name for current entity.
      *
      * @return string
-     *
-     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     protected function getIdProperty(): string
     {
@@ -288,7 +291,7 @@ abstract class Entity implements EntityInterface
             // @codeCoverageIgnoreEnd
         }
 
-        return \key($ids) ?? 'id';
+        return (string)(\key($ids) ?? 'id');
     }
 
     /**
@@ -310,8 +313,6 @@ abstract class Entity implements EntityInterface
      * @param mixed[]|null $wheres
      *
      * @return string
-     *
-     * @throws \ReflectionException
      */
     protected function uniqueRuleAsString(string $target, ?array $wheres = null): string
     {
@@ -506,8 +507,6 @@ abstract class Entity implements EntityInterface
      * @param string $property The property to resolve
      *
      * @return string|null
-     *
-     * @throws \ReflectionException Inherited, if the class is invalid
      */
     private function resolvePropertyFromAnnotations(string $property): ?string
     {

@@ -13,9 +13,6 @@ class RequestServiceProviderTest extends LaravelBridgeProvidersTestCase
      * Test provider bind our request interface into container.
      *
      * @return void
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function testRegister(): void
     {

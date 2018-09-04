@@ -79,7 +79,7 @@ class Client implements ClientInterface
 
         // If response is unsuccessful, throw exception
         if ($response->isSuccessful() === false) {
-            throw new InvalidApiResponseException($exception ?? null, $response);
+            throw new InvalidApiResponseException($response, $exception ?? null);
         }
 
         return $response;
@@ -125,7 +125,7 @@ class Client implements ClientInterface
             );
         }
 
-        $content = \json_encode(['exception' => $exception->getMessage()]);
+        $content = \json_encode(['exception' => $exception->getMessage()]) ?: '';
 
         return new Response($this->processResponseContent($content), 400, null, $content);
     }
