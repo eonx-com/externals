@@ -14,9 +14,6 @@ class TranslatorServiceProviderTest extends LaravelBridgeProvidersTestCase
      * Test service provider register translators into Laravel application.
      *
      * @return void
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function testRegister(): void
     {

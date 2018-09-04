@@ -28,10 +28,7 @@ class Container implements ContainerInterface
      *
      * @param string $serviceId Identifier of the entry to look for.
      *
-     * @throws \Psr\Container\NotFoundExceptionInterface  No entry was found for **this** identifier.
-     * @throws \Psr\Container\ContainerExceptionInterface Error while retrieving the entry.
-     *
-     * @return mixed Entry.
+     * @return mixed
      *
      * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint

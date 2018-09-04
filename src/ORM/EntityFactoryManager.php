@@ -139,7 +139,7 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
         $data = $this->mergeData($className, $data);
 
         // Create key for this data set
-        $key = \md5(\json_encode($data));
+        $key = \md5(\json_encode($data) ?: '');
 
         // If entity exists return
         if (isset($this->entityInstances[$className][$key]) === true) {

@@ -69,8 +69,7 @@ class ChildEntityStub extends EntityStub
      *
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \ReflectionException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute doesn't exist on entity
      */
     public function setInvalidParent(ParentEntityStub $parent): self
     {
@@ -85,7 +84,6 @@ class ChildEntityStub extends EntityStub
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute doesn't exist on entity
-     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     public function setParent(ParentEntityStub $parent): self
     {
@@ -100,7 +98,6 @@ class ChildEntityStub extends EntityStub
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute doesn't exist on entity
-     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     public function setParentPersist(ParentEntityStub $parent): self
     {

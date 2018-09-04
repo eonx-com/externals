@@ -131,7 +131,6 @@ class Validator implements ValidatorInterface
         }
 
         // Instantiate class
-        /** @var \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface $rule */
         $rule = new $className();
 
         // If class isn't a valid rule, skip, this is only here for safety since method is private
@@ -142,6 +141,7 @@ class Validator implements ValidatorInterface
         }
 
         // Register messages
+        /** @var \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface $rule */
         $this->validator->addReplacer($rule->getName(), $rule->getReplacements());
 
         return $rule;
