@@ -8,6 +8,7 @@ use EoneoPay\Externals\Bridge\Laravel\Validation\EmptyWithRule;
 use EoneoPay\Externals\Bridge\Laravel\Validation\InstanceOfRule;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Validation\PresenceVerifierInterface;
 
 class Validator implements ValidatorInterface
 {
@@ -17,6 +18,13 @@ class Validator implements ValidatorInterface
      * @var \Illuminate\Contracts\Validation\Factory
      */
     private $factory;
+
+    /**
+     * Database presence verifier
+     *
+     * @var \Illuminate\Validation\PresenceVerifierInterface|null
+     */
+    private $presence;
 
     /**
      * Validation instance
@@ -29,9 +37,11 @@ class Validator implements ValidatorInterface
      * Create new validation instance
      *
      * @param \Illuminate\Contracts\Validation\Factory $factory Validation factory interface instance
+     * @param \Illuminate\Validation\PresenceVerifierInterface|null $presence Database presence verifier
      */
-    public function __construct(Factory $factory)
+    public function __construct(Factory $factory, ?PresenceVerifierInterface $presence = null)
     {
+        $this->presence = $presence;
         $this->factory = $factory;
     }
 
@@ -59,6 +69,14 @@ class Validator implements ValidatorInterface
         // Doing this to make PHPStan happy
         /** @var \Illuminate\Validation\Validator $validator */
         $validator = $this->factory->make($data, $rules);
+
+        if ($this->presence !== null) {
+            // This is unable to be covered as there is no application container in this project
+            // @codeCoverageIgnoreStart
+            $validator->setPresenceVerifier($this->presence);
+            // @codeCoverageIgnoreEnd
+        }
+
         $this->validator = $validator;
 
         // Add custom rules

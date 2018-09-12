@@ -26,9 +26,9 @@ use ReflectionClass;
 use ReflectionException;
 use Tests\EoneoPay\Externals\ORM\Stubs\Extensions\LoggableExtensionStub;
 
-/** @noinspection EfferentObjectCouplingInspection */
-
 /**
+ * @noinspection EfferentObjectCouplingInspection
+ *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) To handle magic of Doctrine configuration
  */
 abstract class DoctrineTestCase extends TestCase
