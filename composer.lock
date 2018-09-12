@@ -12,15 +12,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/loyaltycorp/utils.git",
-                "reference": "707b2b9315c9313d6bf009de5034cced82e11292"
+                "reference": "e5df17249cea1c476fcb06705d1eb8d5ee2e4343"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/loyaltycorp/utils/zipball/707b2b9315c9313d6bf009de5034cced82e11292",
-                "reference": "707b2b9315c9313d6bf009de5034cced82e11292",
+                "url": "https://api.github.com/repos/loyaltycorp/utils/zipball/e5df17249cea1c476fcb06705d1eb8d5ee2e4343",
+                "reference": "e5df17249cea1c476fcb06705d1eb8d5ee2e4343",
                 "shasum": ""
             },
             "require": {
+                "ext-dom": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
                 "php": ">=7.1"
             },
             "require-dev": {
@@ -57,22 +60,22 @@
                 "helpers",
                 "utilities"
             ],
-            "time": "2018-07-26T00:57:26+00:00"
+            "time": "2018-09-04T03:24:54+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.67.4",
+            "version": "3.67.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "df94a9ad78c9e817a9887bedf0e5b269c4f25810"
+                "reference": "e6571970d7f28da4c736eeeb0d01c0a5fdaf51e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/df94a9ad78c9e817a9887bedf0e5b269c4f25810",
-                "reference": "df94a9ad78c9e817a9887bedf0e5b269c4f25810",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e6571970d7f28da4c736eeeb0d01c0a5fdaf51e1",
+                "reference": "e6571970d7f28da4c736eeeb0d01c0a5fdaf51e1",
                 "shasum": ""
             },
             "require": {
@@ -139,7 +142,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-08-31T21:53:42+00:00"
+            "time": "2018-09-11T18:17:34+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -1443,34 +1446,34 @@
         },
         {
             "name": "illuminate/auth",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/auth.git",
-                "reference": "dbfd4994c61d7cfc68eb206450f10e5d33a3c833"
+                "reference": "3ce2a8eebabb382245d6f228d92239bce22629ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/auth/zipball/dbfd4994c61d7cfc68eb206450f10e5d33a3c833",
-                "reference": "dbfd4994c61d7cfc68eb206450f10e5d33a3c833",
+                "url": "https://api.github.com/repos/illuminate/auth/zipball/3ce2a8eebabb382245d6f228d92239bce22629ad",
+                "reference": "3ce2a8eebabb382245d6f228d92239bce22629ad",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.6.*",
-                "illuminate/http": "5.6.*",
-                "illuminate/queue": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/http": "5.7.*",
+                "illuminate/queue": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3"
             },
             "suggest": {
-                "illuminate/console": "Required to use the auth:clear-resets command (5.6.*).",
-                "illuminate/queue": "Required to fire login / logout events (5.6.*).",
-                "illuminate/session": "Required to use the session based guard (5.6.*)."
+                "illuminate/console": "Required to use the auth:clear-resets command (5.7.*).",
+                "illuminate/queue": "Required to fire login / logout events (5.7.*).",
+                "illuminate/session": "Required to use the session based guard (5.7.*)."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1490,31 +1493,31 @@
             ],
             "description": "The Illuminate Auth package.",
             "homepage": "https://laravel.com",
-            "time": "2018-08-14T12:58:42+00:00"
+            "time": "2018-09-11T13:31:51+00:00"
         },
         {
             "name": "illuminate/config",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/config.git",
-                "reference": "e8158dff3189deed846c84c66c60fa68c21ee579"
+                "reference": "4bf5ad8913e41e934160fa0d9ba8f42f4cd3cee6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/config/zipball/e8158dff3189deed846c84c66c60fa68c21ee579",
-                "reference": "e8158dff3189deed846c84c66c60fa68c21ee579",
+                "url": "https://api.github.com/repos/illuminate/config/zipball/4bf5ad8913e41e934160fa0d9ba8f42f4cd3cee6",
+                "reference": "4bf5ad8913e41e934160fa0d9ba8f42f4cd3cee6",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1534,37 +1537,37 @@
             ],
             "description": "The Illuminate Config package.",
             "homepage": "https://laravel.com",
-            "time": "2017-11-07T20:23:51+00:00"
+            "time": "2018-01-04T20:39:14+00:00"
         },
         {
             "name": "illuminate/console",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/console.git",
-                "reference": "3d5f34a6a06f33940a6e1ef05d663456da108bbd"
+                "reference": "cdcc37b0336e4aeb94ac06b0c2620adf0fe45691"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/console/zipball/3d5f34a6a06f33940a6e1ef05d663456da108bbd",
-                "reference": "3d5f34a6a06f33940a6e1ef05d663456da108bbd",
+                "url": "https://api.github.com/repos/illuminate/console/zipball/cdcc37b0336e4aeb94ac06b0c2620adf0fe45691",
+                "reference": "cdcc37b0336e4aeb94ac06b0c2620adf0fe45691",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3",
-                "symfony/console": "~4.0"
+                "symfony/console": "^4.1"
             },
             "suggest": {
-                "dragonmantank/cron-expression": "Required to use scheduling component (~2.0).",
-                "guzzlehttp/guzzle": "Required to use the ping methods on schedules (~6.0).",
-                "symfony/process": "Required to use scheduling component (~4.0)."
+                "dragonmantank/cron-expression": "Required to use scheduling component (^2.0).",
+                "guzzlehttp/guzzle": "Required to use the ping methods on schedules (^6.0).",
+                "symfony/process": "Required to use scheduling component (^4.1)."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1584,31 +1587,31 @@
             ],
             "description": "The Illuminate Console package.",
             "homepage": "https://laravel.com",
-            "time": "2018-08-16T21:28:32+00:00"
+            "time": "2018-09-11T13:32:44+00:00"
         },
         {
             "name": "illuminate/container",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "1f0757cae8749400aeda730f6438a081fc3c082d"
+                "reference": "b2adca648536dfdfc13c2b93a2d717149794b682"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/1f0757cae8749400aeda730f6438a081fc3c082d",
-                "reference": "1f0757cae8749400aeda730f6438a081fc3c082d",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/b2adca648536dfdfc13c2b93a2d717149794b682",
+                "reference": "b2adca648536dfdfc13c2b93a2d717149794b682",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.6.*",
+                "illuminate/contracts": "5.7.*",
                 "php": "^7.1.3",
-                "psr/container": "~1.0"
+                "psr/container": "^1.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1628,31 +1631,31 @@
             ],
             "description": "The Illuminate Container package.",
             "homepage": "https://laravel.com",
-            "time": "2018-05-24T13:16:56+00:00"
+            "time": "2018-05-28T08:50:10+00:00"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "2c029101285f6066f45e3ae5910b1b5f900fdcb4"
+                "reference": "fd5d68eddfe49647f8354ac4c5f09cb88ccece7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/2c029101285f6066f45e3ae5910b1b5f900fdcb4",
-                "reference": "2c029101285f6066f45e3ae5910b1b5f900fdcb4",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/fd5d68eddfe49647f8354ac4c5f09cb88ccece7a",
+                "reference": "fd5d68eddfe49647f8354ac4c5f09cb88ccece7a",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1.3",
-                "psr/container": "~1.0",
-                "psr/simple-cache": "~1.0"
+                "psr/container": "^1.0",
+                "psr/simple-cache": "^1.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1672,40 +1675,40 @@
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "https://laravel.com",
-            "time": "2018-07-31T12:49:53+00:00"
+            "time": "2018-09-05T21:56:43+00:00"
         },
         {
             "name": "illuminate/database",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "580a19b3c9bdb6ff1fa8c81a61dd3bc46af86c5c"
+                "reference": "415c573e8c57bc6e17ecbe26a8744e9ed041af05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/580a19b3c9bdb6ff1fa8c81a61dd3bc46af86c5c",
-                "reference": "580a19b3c9bdb6ff1fa8c81a61dd3bc46af86c5c",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/415c573e8c57bc6e17ecbe26a8744e9ed041af05",
+                "reference": "415c573e8c57bc6e17ecbe26a8744e9ed041af05",
                 "shasum": ""
             },
             "require": {
-                "illuminate/container": "5.6.*",
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/container": "5.7.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3"
             },
             "suggest": {
-                "doctrine/dbal": "Required to rename columns and drop SQLite columns (~2.6).",
-                "fzaninotto/faker": "Required to use the eloquent factory builder (~1.4).",
-                "illuminate/console": "Required to use the database commands (5.6.*).",
-                "illuminate/events": "Required to use the observers with Eloquent (5.6.*).",
-                "illuminate/filesystem": "Required to use the migrations (5.6.*).",
-                "illuminate/pagination": "Required to paginate the result set (5.6.*)."
+                "doctrine/dbal": "Required to rename columns and drop SQLite columns (^2.6).",
+                "fzaninotto/faker": "Required to use the eloquent factory builder (^1.4).",
+                "illuminate/console": "Required to use the database commands (5.7.*).",
+                "illuminate/events": "Required to use the observers with Eloquent (5.7.*).",
+                "illuminate/filesystem": "Required to use the migrations (5.7.*).",
+                "illuminate/pagination": "Required to paginate the result set (5.7.*)."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1731,32 +1734,32 @@
                 "orm",
                 "sql"
             ],
-            "time": "2018-08-26T13:56:10+00:00"
+            "time": "2018-09-06T13:57:10+00:00"
         },
         {
             "name": "illuminate/events",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
-                "reference": "5bdd8e84c0528970961289da088306c632eca8f7"
+                "reference": "ada2f80ea8d4a5933ded24f592b7940456a68be0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/events/zipball/5bdd8e84c0528970961289da088306c632eca8f7",
-                "reference": "5bdd8e84c0528970961289da088306c632eca8f7",
+                "url": "https://api.github.com/repos/illuminate/events/zipball/ada2f80ea8d4a5933ded24f592b7940456a68be0",
+                "reference": "ada2f80ea8d4a5933ded24f592b7940456a68be0",
                 "shasum": ""
             },
             "require": {
-                "illuminate/container": "5.6.*",
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/container": "5.7.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1776,39 +1779,39 @@
             ],
             "description": "The Illuminate Events package.",
             "homepage": "https://laravel.com",
-            "time": "2018-07-23T01:01:28+00:00"
+            "time": "2018-07-26T15:27:42+00:00"
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
-                "reference": "569904131813e4ac7051ae00bc1834063da562a6"
+                "reference": "2251e31e382ddcbbcb34fddc43e7cc0afa530be8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/filesystem/zipball/569904131813e4ac7051ae00bc1834063da562a6",
-                "reference": "569904131813e4ac7051ae00bc1834063da562a6",
+                "url": "https://api.github.com/repos/illuminate/filesystem/zipball/2251e31e382ddcbbcb34fddc43e7cc0afa530be8",
+                "reference": "2251e31e382ddcbbcb34fddc43e7cc0afa530be8",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3",
-                "symfony/finder": "~4.0"
+                "symfony/finder": "^4.1"
             },
             "suggest": {
-                "league/flysystem": "Required to use the Flysystem local and FTP drivers (~1.0).",
-                "league/flysystem-aws-s3-v3": "Required to use the Flysystem S3 driver (~1.0).",
-                "league/flysystem-cached-adapter": "Required to use the Flysystem cache (~1.0).",
-                "league/flysystem-rackspace": "Required to use the Flysystem Rackspace driver (~1.0).",
-                "league/flysystem-sftp": "Required to use the Flysystem SFTP driver (~1.0)."
+                "league/flysystem": "Required to use the Flysystem local and FTP drivers (^1.0).",
+                "league/flysystem-aws-s3-v3": "Required to use the Flysystem S3 driver (^1.0).",
+                "league/flysystem-cached-adapter": "Required to use the Flysystem cache (^1.0).",
+                "league/flysystem-rackspace": "Required to use the Flysystem Rackspace driver (^1.0).",
+                "league/flysystem-sftp": "Required to use the Flysystem SFTP driver (^1.0)."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1828,33 +1831,33 @@
             ],
             "description": "The Illuminate Filesystem package.",
             "homepage": "https://laravel.com",
-            "time": "2018-08-13T14:51:11+00:00"
+            "time": "2018-08-14T19:42:44+00:00"
         },
         {
             "name": "illuminate/http",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/http.git",
-                "reference": "2fca05297d519284f2b472e272571d987c2750b4"
+                "reference": "5bcf3e2d547a07bf98e0e71fa919fdaf513eee36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/http/zipball/2fca05297d519284f2b472e272571d987c2750b4",
-                "reference": "2fca05297d519284f2b472e272571d987c2750b4",
+                "url": "https://api.github.com/repos/illuminate/http/zipball/5bcf3e2d547a07bf98e0e71fa919fdaf513eee36",
+                "reference": "5bcf3e2d547a07bf98e0e71fa919fdaf513eee36",
                 "shasum": ""
             },
             "require": {
-                "illuminate/session": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/session": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3",
-                "symfony/http-foundation": "~4.0",
-                "symfony/http-kernel": "~4.0"
+                "symfony/http-foundation": "^4.1",
+                "symfony/http-kernel": "^4.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1874,31 +1877,31 @@
             ],
             "description": "The Illuminate Http package.",
             "homepage": "https://laravel.com",
-            "time": "2018-08-15T13:07:48+00:00"
+            "time": "2018-08-28T08:47:30+00:00"
         },
         {
             "name": "illuminate/pagination",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
-                "reference": "ee3177bd380ea2be7c0330d8ef8b0ab858be8947"
+                "reference": "c7722fa2811cc9cd90fbaec1ba659765d8e429d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/pagination/zipball/ee3177bd380ea2be7c0330d8ef8b0ab858be8947",
-                "reference": "ee3177bd380ea2be7c0330d8ef8b0ab858be8947",
+                "url": "https://api.github.com/repos/illuminate/pagination/zipball/c7722fa2811cc9cd90fbaec1ba659765d8e429d6",
+                "reference": "c7722fa2811cc9cd90fbaec1ba659765d8e429d6",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1918,31 +1921,31 @@
             ],
             "description": "The Illuminate Pagination package.",
             "homepage": "https://laravel.com",
-            "time": "2018-05-06T14:22:45+00:00"
+            "time": "2018-08-31T17:05:14+00:00"
         },
         {
             "name": "illuminate/pipeline",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pipeline.git",
-                "reference": "07b12156ad6d429d9f0ea179b2ed1e918372023e"
+                "reference": "9d1a486efeb8148f95f65c5afda027099bd0d55a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/pipeline/zipball/07b12156ad6d429d9f0ea179b2ed1e918372023e",
-                "reference": "07b12156ad6d429d9f0ea179b2ed1e918372023e",
+                "url": "https://api.github.com/repos/illuminate/pipeline/zipball/9d1a486efeb8148f95f65c5afda027099bd0d55a",
+                "reference": "9d1a486efeb8148f95f65c5afda027099bd0d55a",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -1962,44 +1965,44 @@
             ],
             "description": "The Illuminate Pipeline package.",
             "homepage": "https://laravel.com",
-            "time": "2018-05-14T13:08:37+00:00"
+            "time": "2018-05-22T14:50:29+00:00"
         },
         {
             "name": "illuminate/queue",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/queue.git",
-                "reference": "4219e999ecefd0475ea9c4b49ca04b4859396bf3"
+                "reference": "4a6a53c05b8bb2c21f62c22052063841302ac0d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/queue/zipball/4219e999ecefd0475ea9c4b49ca04b4859396bf3",
-                "reference": "4219e999ecefd0475ea9c4b49ca04b4859396bf3",
+                "url": "https://api.github.com/repos/illuminate/queue/zipball/4a6a53c05b8bb2c21f62c22052063841302ac0d4",
+                "reference": "4a6a53c05b8bb2c21f62c22052063841302ac0d4",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "5.6.*",
-                "illuminate/container": "5.6.*",
-                "illuminate/contracts": "5.6.*",
-                "illuminate/database": "5.6.*",
-                "illuminate/filesystem": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/console": "5.7.*",
+                "illuminate/container": "5.7.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/database": "5.7.*",
+                "illuminate/filesystem": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3",
-                "symfony/debug": "~4.0",
-                "symfony/process": "~4.0"
+                "symfony/debug": "^4.1",
+                "symfony/process": "^4.1"
             },
             "suggest": {
-                "aws/aws-sdk-php": "Required to use the SQS queue driver (~3.0).",
+                "aws/aws-sdk-php": "Required to use the SQS queue driver (^3.0).",
                 "ext-pcntl": "Required to use all features of the queue worker.",
                 "ext-posix": "Required to use all features of the queue worker.",
-                "illuminate/redis": "Required to use the Redis queue driver (5.6.*).",
-                "pda/pheanstalk": "Required to use the Beanstalk queue driver (~3.0)."
+                "illuminate/redis": "Required to use the Redis queue driver (5.7.*).",
+                "pda/pheanstalk": "Required to use the Beanstalk queue driver (^3.0)."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -2019,43 +2022,43 @@
             ],
             "description": "The Illuminate Queue package.",
             "homepage": "https://laravel.com",
-            "time": "2018-08-20T13:25:32+00:00"
+            "time": "2018-09-06T13:43:57+00:00"
         },
         {
             "name": "illuminate/routing",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/routing.git",
-                "reference": "731a9f74f626195487721888ede7e3dad7c0571f"
+                "reference": "be6a350d08493b82b3fc45166c5caa4df6661336"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/routing/zipball/731a9f74f626195487721888ede7e3dad7c0571f",
-                "reference": "731a9f74f626195487721888ede7e3dad7c0571f",
+                "url": "https://api.github.com/repos/illuminate/routing/zipball/be6a350d08493b82b3fc45166c5caa4df6661336",
+                "reference": "be6a350d08493b82b3fc45166c5caa4df6661336",
                 "shasum": ""
             },
             "require": {
-                "illuminate/container": "5.6.*",
-                "illuminate/contracts": "5.6.*",
-                "illuminate/http": "5.6.*",
-                "illuminate/pipeline": "5.6.*",
-                "illuminate/session": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/container": "5.7.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/http": "5.7.*",
+                "illuminate/pipeline": "5.7.*",
+                "illuminate/session": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3",
-                "symfony/debug": "~4.0",
-                "symfony/http-foundation": "~4.0",
-                "symfony/http-kernel": "~4.0",
-                "symfony/routing": "~4.0"
+                "symfony/debug": "^4.1",
+                "symfony/http-foundation": "^4.1",
+                "symfony/http-kernel": "^4.1",
+                "symfony/routing": "^4.1"
             },
             "suggest": {
-                "illuminate/console": "Required to use the make commands (5.6.*).",
-                "symfony/psr-http-message-bridge": "Required to psr7 bridging features (~1.0)."
+                "illuminate/console": "Required to use the make commands (5.7.*).",
+                "symfony/psr-http-message-bridge": "Required to psr7 bridging features (^1.0)."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -2075,37 +2078,37 @@
             ],
             "description": "The Illuminate Routing package.",
             "homepage": "https://laravel.com",
-            "time": "2018-08-15T21:02:31+00:00"
+            "time": "2018-09-10T19:42:43+00:00"
         },
         {
             "name": "illuminate/session",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/session.git",
-                "reference": "55b140532c12b6190177eb47d86a1369f6c5bd33"
+                "reference": "712f834c8b85a4f58ab40f56a359ac3e7e24c11a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/session/zipball/55b140532c12b6190177eb47d86a1369f6c5bd33",
-                "reference": "55b140532c12b6190177eb47d86a1369f6c5bd33",
+                "url": "https://api.github.com/repos/illuminate/session/zipball/712f834c8b85a4f58ab40f56a359ac3e7e24c11a",
+                "reference": "712f834c8b85a4f58ab40f56a359ac3e7e24c11a",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.6.*",
-                "illuminate/filesystem": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/filesystem": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3",
-                "symfony/finder": "~4.0",
-                "symfony/http-foundation": "~4.0"
+                "symfony/finder": "^4.1",
+                "symfony/http-foundation": "^4.1"
             },
             "suggest": {
-                "illuminate/console": "Required to use the session:table command (5.6.*)."
+                "illuminate/console": "Required to use the session:table command (5.7.*)."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -2125,42 +2128,43 @@
             ],
             "description": "The Illuminate Session package.",
             "homepage": "https://laravel.com",
-            "time": "2018-07-30T13:38:17+00:00"
+            "time": "2018-07-30T13:42:51+00:00"
         },
         {
             "name": "illuminate/support",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "4eb12aa00bbf2d5e73c355ad404a9d0679879094"
+                "reference": "966c3198b5f82c00f8e5f7b6f16c35ffcb636acc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/4eb12aa00bbf2d5e73c355ad404a9d0679879094",
-                "reference": "4eb12aa00bbf2d5e73c355ad404a9d0679879094",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/966c3198b5f82c00f8e5f7b6f16c35ffcb636acc",
+                "reference": "966c3198b5f82c00f8e5f7b6f16c35ffcb636acc",
                 "shasum": ""
             },
             "require": {
-                "doctrine/inflector": "~1.1",
+                "doctrine/inflector": "^1.1",
                 "ext-mbstring": "*",
-                "illuminate/contracts": "5.6.*",
-                "nesbot/carbon": "^1.24.1",
+                "illuminate/contracts": "5.7.*",
+                "nesbot/carbon": "^1.26.3",
                 "php": "^7.1.3"
             },
             "conflict": {
                 "tightenco/collect": "<5.5.33"
             },
             "suggest": {
-                "illuminate/filesystem": "Required to use the composer class (5.6.*).",
+                "illuminate/filesystem": "Required to use the composer class (5.7.*).",
+                "moontoast/math": "Required to use ordered UUIDs (^1.1).",
                 "ramsey/uuid": "Required to use Str::uuid() (^3.7).",
-                "symfony/process": "Required to use the composer class (~4.0).",
-                "symfony/var-dumper": "Required to use the dd function (~4.0)."
+                "symfony/process": "Required to use the composer class (^4.1).",
+                "symfony/var-dumper": "Required to use the dd function (^4.1)."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -2183,32 +2187,32 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2018-08-15T21:02:31+00:00"
+            "time": "2018-09-07T22:44:17+00:00"
         },
         {
             "name": "illuminate/translation",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/translation.git",
-                "reference": "add5b215599e6e02ec2568d67216aa012443b8d7"
+                "reference": "17baa5021eaed45cd193c47f9973092a6d3aed22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/translation/zipball/add5b215599e6e02ec2568d67216aa012443b8d7",
-                "reference": "add5b215599e6e02ec2568d67216aa012443b8d7",
+                "url": "https://api.github.com/repos/illuminate/translation/zipball/17baa5021eaed45cd193c47f9973092a6d3aed22",
+                "reference": "17baa5021eaed45cd193c47f9973092a6d3aed22",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.6.*",
-                "illuminate/filesystem": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/filesystem": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -2228,37 +2232,37 @@
             ],
             "description": "The Illuminate Translation package.",
             "homepage": "https://laravel.com",
-            "time": "2018-05-28T12:54:39+00:00"
+            "time": "2018-05-28T13:39:48+00:00"
         },
         {
             "name": "illuminate/validation",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/validation.git",
-                "reference": "f88970bcf025297081651ff0ef91ea73872456dd"
+                "reference": "0816c786a0878a5ac77f6012efcdef85d3e51d2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/validation/zipball/f88970bcf025297081651ff0ef91ea73872456dd",
-                "reference": "f88970bcf025297081651ff0ef91ea73872456dd",
+                "url": "https://api.github.com/repos/illuminate/validation/zipball/0816c786a0878a5ac77f6012efcdef85d3e51d2d",
+                "reference": "0816c786a0878a5ac77f6012efcdef85d3e51d2d",
                 "shasum": ""
             },
             "require": {
-                "illuminate/container": "5.6.*",
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
-                "illuminate/translation": "5.6.*",
+                "illuminate/container": "5.7.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/support": "5.7.*",
+                "illuminate/translation": "5.7.*",
                 "php": "^7.1.3",
-                "symfony/http-foundation": "~4.0"
+                "symfony/http-foundation": "^4.1"
             },
             "suggest": {
-                "illuminate/database": "Required to use the database presence verifier (5.6.*)."
+                "illuminate/database": "Required to use the database presence verifier (5.7.*)."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -2278,35 +2282,35 @@
             ],
             "description": "The Illuminate Validation package.",
             "homepage": "https://laravel.com",
-            "time": "2018-08-22T09:53:07+00:00"
+            "time": "2018-09-10T15:18:10+00:00"
         },
         {
             "name": "illuminate/view",
-            "version": "v5.6.35",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/view.git",
-                "reference": "8d4e1c4d8c133eaca33c94ee35b7c0d2ef1dc66f"
+                "reference": "5efdaf61535cfb53024ca1933bb8fa3cb016a4c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/view/zipball/8d4e1c4d8c133eaca33c94ee35b7c0d2ef1dc66f",
-                "reference": "8d4e1c4d8c133eaca33c94ee35b7c0d2ef1dc66f",
+                "url": "https://api.github.com/repos/illuminate/view/zipball/5efdaf61535cfb53024ca1933bb8fa3cb016a4c4",
+                "reference": "5efdaf61535cfb53024ca1933bb8fa3cb016a4c4",
                 "shasum": ""
             },
             "require": {
-                "illuminate/container": "5.6.*",
-                "illuminate/contracts": "5.6.*",
-                "illuminate/events": "5.6.*",
-                "illuminate/filesystem": "5.6.*",
-                "illuminate/support": "5.6.*",
+                "illuminate/container": "5.7.*",
+                "illuminate/contracts": "5.7.*",
+                "illuminate/events": "5.7.*",
+                "illuminate/filesystem": "5.7.*",
+                "illuminate/support": "5.7.*",
                 "php": "^7.1.3",
-                "symfony/debug": "~4.0"
+                "symfony/debug": "^4.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.6-dev"
+                    "dev-master": "5.7-dev"
                 }
             },
             "autoload": {
@@ -2326,7 +2330,7 @@
             ],
             "description": "The Illuminate View package.",
             "homepage": "https://laravel.com",
-            "time": "2018-07-19T23:06:53+00:00"
+            "time": "2018-09-03T09:36:57+00:00"
         },
         {
             "name": "inacho/php-credit-card-validator",
@@ -2543,39 +2547,39 @@
         },
         {
             "name": "laravel-doctrine/orm",
-            "version": "1.4.7",
+            "version": "1.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-doctrine/orm.git",
-                "reference": "c3afbd2ddf426ef26e6f244e55e1865becfef3bc"
+                "reference": "5a004509adccc2cfc2143df6101852e2fab4a048"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-doctrine/orm/zipball/c3afbd2ddf426ef26e6f244e55e1865becfef3bc",
-                "reference": "c3afbd2ddf426ef26e6f244e55e1865becfef3bc",
+                "url": "https://api.github.com/repos/laravel-doctrine/orm/zipball/5a004509adccc2cfc2143df6101852e2fab4a048",
+                "reference": "5a004509adccc2cfc2143df6101852e2fab4a048",
                 "shasum": ""
             },
             "require": {
                 "doctrine/orm": "2.5.*|2.6.*",
-                "illuminate/auth": "5.5.*|5.6.*",
-                "illuminate/console": "5.5.*|5.6.*",
-                "illuminate/container": "5.5.*|5.6.*",
-                "illuminate/contracts": "5.5.*|5.6.*",
-                "illuminate/pagination": "5.5.*|5.6.*",
-                "illuminate/routing": "5.5.*|5.6.*",
-                "illuminate/support": "5.5.*|5.6.*",
-                "illuminate/validation": "5.5.*|5.6.*",
-                "illuminate/view": "5.5.*|5.6.*",
+                "illuminate/auth": "5.5.*|5.6.*|5.7.*",
+                "illuminate/console": "5.5.*|5.6.*|5.7.*",
+                "illuminate/container": "5.5.*|5.6.*|5.7.*",
+                "illuminate/contracts": "5.5.*|5.6.*|5.7.*",
+                "illuminate/pagination": "5.5.*|5.6.*|5.7.*",
+                "illuminate/routing": "5.5.*|5.6.*|5.7.*",
+                "illuminate/support": "5.5.*|5.6.*|5.7.*",
+                "illuminate/validation": "5.5.*|5.6.*|5.7.*",
+                "illuminate/view": "5.5.*|5.6.*|5.7.*",
                 "php": ">=7.0",
                 "symfony/serializer": "^2.7|~3.0|~4.0"
             },
             "require-dev": {
                 "barryvdh/laravel-debugbar": "~2.0",
-                "illuminate/log": "5.5.*|5.6.*",
-                "illuminate/notifications": "5.5.*|5.6.*",
-                "illuminate/queue": "5.5.*|5.6.*",
+                "illuminate/log": "5.5.*|5.6.*|5.7.*",
+                "illuminate/notifications": "5.5.*|5.6.*|5.7.*",
+                "illuminate/queue": "5.5.*|5.6.*|5.7.*",
                 "itsgoingd/clockwork": "~1.9",
-                "mockery/mockery": "1.0.0-alpha1",
+                "mockery/mockery": "^1.0",
                 "phpunit/phpunit": "~5.0"
             },
             "suggest": {
@@ -2625,7 +2629,7 @@
                 "laravel",
                 "orm"
             ],
-            "time": "2018-05-28T08:50:46+00:00"
+            "time": "2018-09-03T11:51:54+00:00"
         },
         {
             "name": "league/flysystem",
@@ -4472,16 +4476,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.3.2",
+            "version": "7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "34705f81bddc3f505b9599a2ef96e2b4315ba9b8"
+                "reference": "7b331efabbb628c518c408fdfcaf571156775de2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/34705f81bddc3f505b9599a2ef96e2b4315ba9b8",
-                "reference": "34705f81bddc3f505b9599a2ef96e2b4315ba9b8",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7b331efabbb628c518c408fdfcaf571156775de2",
+                "reference": "7b331efabbb628c518c408fdfcaf571156775de2",
                 "shasum": ""
             },
             "require": {
@@ -4552,7 +4556,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-08-22T06:39:21+00:00"
+            "time": "2018-09-08T15:14:29+00:00"
         },
         {
             "name": "psr/container",
@@ -5563,16 +5567,16 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "4.7.2",
+            "version": "4.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "d6d531b47b81fda400f11dab30008e12703e7fee"
+                "reference": "360ed8f9ce03afbf07fc67d198fe187fc2543c32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/d6d531b47b81fda400f11dab30008e12703e7fee",
-                "reference": "d6d531b47b81fda400f11dab30008e12703e7fee",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/360ed8f9ce03afbf07fc67d198fe187fc2543c32",
+                "reference": "360ed8f9ce03afbf07fc67d198fe187fc2543c32",
                 "shasum": ""
             },
             "require": {
@@ -5598,7 +5602,7 @@
                 "MIT"
             ],
             "description": "Slevomat Coding Standard for PHP_CodeSniffer complements Consistence Coding Standard by providing sniffs with additional checks.",
-            "time": "2018-08-30T21:30:07+00:00"
+            "time": "2018-09-03T21:12:37+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
