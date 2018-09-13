@@ -36,4 +36,17 @@ class EventDispatcher implements EventDispatcherInterface
     {
         return $this->dispatcher->dispatch($event, $payload ?? [], $halt ?? false);
     }
+
+    /**
+     * Configure listener for given events.
+     *
+     * @param string[] $events
+     * @param string $listener
+     *
+     * @return void
+     */
+    public function listen(array $events, string $listener): void
+    {
+        $this->dispatcher->listen($events, $listener);
+    }
 }
