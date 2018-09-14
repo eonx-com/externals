@@ -16,6 +16,35 @@ use Tests\EoneoPay\Externals\TestCase;
 class FilesystemTest extends TestCase
 {
     /**
+     * Test filesystem can retrieve files from disk
+     *
+     * @return void
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException
+     */
+    public function testFilesystemCanListFilesInDirectoryRecursively(): void
+    {
+        $filesystem = $this->createFilesystem();
+
+        $filenames = [
+            'test/test.txt',
+            'test/sub-directory/test.txt'
+        ];
+
+        foreach ($filenames as $filename) {
+            $filesystem->write($filename, 'contents');
+        }
+
+        $files = $filesystem->files('test', true);
+
+        self::assertCount(2, $files);
+
+        foreach ($filenames as $filename) {
+            self::assertContains($filename, $files);
+        }
+    }
+
+    /**
      * Test filesystem can write files to disk
      *
      * @return void
