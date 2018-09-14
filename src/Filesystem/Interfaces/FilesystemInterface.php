@@ -15,6 +15,16 @@ interface FilesystemInterface
     public function exists(string $filename): bool;
 
     /**
+     * Get an array of all files in a directory.
+     *
+     * @param null|string $directory The directory to retrieve the files from
+     * @param null|bool $recursive Either to retrieve files from sub-directories
+     *
+     * @return mixed[]
+     */
+    public function files(?string $directory = null, ?bool $recursive = null): array;
+
+    /**
      * Get the full path to a file
      *
      * @param string|null $filename The filename to append to the path
