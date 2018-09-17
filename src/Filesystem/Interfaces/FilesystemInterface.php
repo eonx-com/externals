@@ -6,6 +6,16 @@ namespace EoneoPay\Externals\Filesystem\Interfaces;
 interface FilesystemInterface
 {
     /**
+     * Append to a file.
+     *
+     * @param string $path
+     * @param string $data
+     *
+     * @return bool
+     */
+    public function append(string $path, string $data): bool;
+
+    /**
      * Check whether a file exists
      *
      * @param string $filename The file to check

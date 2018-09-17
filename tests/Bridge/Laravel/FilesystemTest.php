@@ -16,6 +16,28 @@ use Tests\EoneoPay\Externals\TestCase;
 class FilesystemTest extends TestCase
 {
     /**
+     * Test filesystem can append content to existing file.
+     *
+     * @return void
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException
+     */
+    public function testFilesystemCanAppendContentToExistingFile(): void
+    {
+        $filesystem = $this->createFilesystem();
+
+        $filename = 'test/test.txt';
+        $contents = 'contents';
+
+        self::assertTrue($filesystem->write($filename, $contents));
+        self::assertSame($contents, $filesystem->read($filename));
+
+        $filesystem->append($filename, 'just append');
+
+        self::assertSame($contents . \PHP_EOL . 'just append', $filesystem->read($filename));
+    }
+
+    /**
      * Test filesystem can retrieve files from disk
      *
      * @return void
