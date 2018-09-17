@@ -29,6 +29,19 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
     }
 
     /**
+     * Append to a file.
+     *
+     * @param string $path
+     * @param string $data
+     *
+     * @return bool
+     */
+    public function append(string $path, string $data): bool
+    {
+        return (bool)$this->filesystem->append($path, $data);
+    }
+
+    /**
      * Check whether a file exists
      *
      * @param string $filename The file to check
