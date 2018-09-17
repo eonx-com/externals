@@ -34,7 +34,7 @@ class FilesystemTest extends TestCase
 
         $filesystem->append($filename, 'just append');
 
-        self::assertSame($contents . PHP_EOL . 'just append', $filesystem->read($filename));
+        self::assertSame($contents . \PHP_EOL . 'just append', $filesystem->read($filename));
     }
 
     /**
