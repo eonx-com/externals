@@ -247,6 +247,36 @@ class EntityManagerTest extends DoctrineTestCase
     }
 
     /**
+     * Test repository methods retrieve record from database in requested order.
+     *
+     * @return void
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     */
+    public function testRepositoryOrderingMethods(): void
+    {
+        $this->getEntityManager()->persist(new EntityStub(['string' => 'Alpha', 'integer' => 1]));
+        $this->getEntityManager()->persist(new EntityStub(['string' => 'Alpha', 'integer' => 2]));
+        $this->getEntityManager()->persist(new EntityStub(['string' => 'Beta', 'integer' => 3]));
+        $this->getEntityManager()->persist(new EntityStub(['string' => 'Beta', 'integer' => 4]));
+        $this->getEntityManager()->flush();
+
+        $repository = $this->getEntityManager()->getRepository(EntityStub::class);
+
+        $actualOne = $repository->findOneBy(['string' => 'Alpha'], ['integer' => 'DESC']);
+        self::assertInstanceOf(EntityStub::class, $actualOne);
+        self::assertEquals(2, $actualOne->getInteger());
+
+        $actualSet = $repository->findBy(['string' => 'Beta'], ['integer' => 'ASC']);
+        self::assertCount(2, $actualSet);
+        self::assertEquals(3, $actualSet[0]->getInteger());
+        self::assertEquals(4, $actualSet[1]->getInteger());
+    }
+
+    /**
      * Test simple orm decorator wraps Doctrine exceptions into its own ORMException.
      *
      * @return void
