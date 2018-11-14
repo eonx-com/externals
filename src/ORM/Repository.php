@@ -57,28 +57,30 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
      * Finds entities which match a set of criteria
      *
      * @param mixed[] $criteria Array of criteria to find by
+     * @param array $orderBy Array of criteria to sort on. Use column name as key, and ASC/DESC as value.
      *
      * @return mixed[]
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
-    public function findBy(array $criteria): array
+    public function findBy(array $criteria, array $orderBy = null): array
     {
-        return $this->callMethod('findBy', $criteria) ?? [];
+        return $this->callMethod('findBy', $criteria, $orderBy) ?? [];
     }
 
     /**
      * Finds a single entity by a set of criteria
      *
      * @param mixed[] $criteria Array of criteria
+     * @param array $orderBy Array of criteria to sort on. Use column name as key, and ASC/DESC as value.
      *
      * @return mixed Associated entity on success, null if not found
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
-    public function findOneBy(array $criteria)
+    public function findOneBy(array $criteria, array $orderBy = null)
     {
-        return $this->callMethod('findOneBy', $criteria);
+        return $this->callMethod('findOneBy', $criteria, $orderBy);
     }
 
     /**

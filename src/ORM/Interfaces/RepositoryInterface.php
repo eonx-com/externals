@@ -36,17 +36,19 @@ interface RepositoryInterface
      * Finds entitys which match a set of criteria
      *
      * @param mixed[] $criteria Array of criteria to find by
+     * @param array $orderBy Array of criteria to sort on. Use column name as key, and ASC/DESC as value.
      *
      * @return mixed[]
      */
-    public function findBy(array $criteria): array;
+    public function findBy(array $criteria, array $orderBy = null): array;
 
     /**
      * Finds a single entity by a set of criteria
      *
      * @param mixed[] $criteria Array of criteria
+     * @param array $orderBy Array of criteria to sort on. Use column name as key, and ASC/DESC as value.
      *
      * @return mixed Associated entity on success, null if not found
      */
-    public function findOneBy(array $criteria);
+    public function findOneBy(array $criteria, array $orderBy = null);
 }
