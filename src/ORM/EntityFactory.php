@@ -5,6 +5,7 @@ namespace EoneoPay\Externals\ORM;
 
 use EoneoPay\Externals\ORM\Interfaces\EntityFactoryInterface;
 use EoneoPay\Externals\ORM\Interfaces\EntityFactoryManagerInterface;
+use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 
 abstract class EntityFactory implements EntityFactoryInterface
 {
@@ -79,7 +80,7 @@ abstract class EntityFactory implements EntityFactoryInterface
         }
 
         // If key is an entity, return
-        if (($data[$key] instanceof Entity) === true) {
+        if (($data[$key] instanceof EntityInterface) === true) {
             return true;
         }
 

@@ -39,8 +39,6 @@ interface EntityInterface extends SerializableInterface
      * Get entity id.
      *
      * @return null|string|int
-     *
-     * @throws \ReflectionException
      */
     public function getId();
 }
