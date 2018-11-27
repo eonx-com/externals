@@ -21,11 +21,24 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
     /**
      * Create new filesystem instance
      *
-     * @param \Illuminate\Contracts\Filesystem\Filesystem $contract Contracted filesystem isntance
+     * @param \Illuminate\Contracts\Filesystem\Filesystem $contract Contracted filesystem instance
      */
     public function __construct(FilesystemContract $contract)
     {
         $this->filesystem = $contract;
+    }
+
+    /**
+     * Append to a file.
+     *
+     * @param string $path
+     * @param string $data
+     *
+     * @return bool
+     */
+    public function append(string $path, string $data): bool
+    {
+        return (bool)$this->filesystem->append($path, $data);
     }
 
     /**
@@ -38,6 +51,19 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
     public function exists(string $filename): bool
     {
         return $this->filesystem->exists($filename);
+    }
+
+    /**
+     * Get an array of all files in a directory.
+     *
+     * @param null|string $directory The directory to retrieve the files from
+     * @param null|bool $recursive Either to retrieve files from sub-directories
+     *
+     * @return mixed[]
+     */
+    public function files(?string $directory = null, ?bool $recursive = null): array
+    {
+        return $this->filesystem->files($directory, $recursive ?? false);
     }
 
     /**

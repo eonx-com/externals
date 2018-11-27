@@ -15,4 +15,14 @@ interface EventDispatcherInterface
      * @return mixed[]|null
      */
     public function dispatch($event, $payload = null, ?bool $halt = null): ?array;
+
+    /**
+     * Configure listener for given events.
+     *
+     * @param string[] $events
+     * @param string $listener
+     *
+     * @return void
+     */
+    public function listen(array $events, string $listener): void;
 }
