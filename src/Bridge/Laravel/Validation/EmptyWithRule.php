@@ -30,7 +30,12 @@ class EmptyWithRule implements ValidationRuleInterface
     public function getReplacements(): Closure
     {
         // Create replacement for message to include parameters
-        return function (string $message, string $attribute, string $rule, array $parameters): string {
+        return function (
+            string $message,
+            string $attribute,
+            /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $rule,
+            array $parameters
+        ): string {
             return \str_replace([':attribute', ':values'], [$attribute, \implode(' / ', $parameters)], $message);
         };
     }
@@ -45,7 +50,12 @@ class EmptyWithRule implements ValidationRuleInterface
     public function getRule(): Closure
     {
         // Ensure that the field is empty if one of the specified parameters isn't
-        return function (string $attribute, $value, array $parameters, Validator $validator): bool {
+        return function (
+            /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $attribute,
+            /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ $value,
+            array $parameters,
+            Validator $validator
+        ): bool {
             // Since getValue() is protected we need to use getData() to get parameter value using Arr in the
             // same way Laravel does for the getValue() method
             $arr = new Arr();

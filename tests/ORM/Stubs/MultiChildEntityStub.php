@@ -114,4 +114,12 @@ class MultiChildEntityStub extends Entity
     {
         return [];
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getIdProperty(): string
+    {
+        return 'entityId';
+    }
 }

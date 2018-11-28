@@ -153,13 +153,15 @@ class Validator implements ValidatorInterface
 
         // If class isn't a valid rule, skip, this is only here for safety since method is private
         if (($rule instanceof ValidationRuleInterface) === false) {
-            // @codeCoverageIgnoreStart
-            return null;
-            // @codeCoverageIgnoreEnd
+            return null; // @codeCoverageIgnore
         }
 
         // Register messages
-        /** @var \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface $rule */
+        /**
+         * @var \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface $rule
+         *
+         * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
+         */
         $this->validator->addReplacer($rule->getName(), $rule->getReplacements());
 
         return $rule;

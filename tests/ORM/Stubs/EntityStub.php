@@ -69,8 +69,6 @@ class EntityStub extends Entity
      * @param string[]|null $wheres
      *
      * @return string
-     *
-     * @throws \ReflectionException
      */
     public function getEmailUniqueRuleForTest(?array $wheres = null): string
     {
@@ -126,5 +124,13 @@ class EntityStub extends Entity
     public function transformString(): void
     {
         $this->transformToString('string');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getIdProperty(): string
+    {
+        return 'entityId';
     }
 }

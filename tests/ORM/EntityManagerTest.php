@@ -152,7 +152,6 @@ class EntityManagerTest extends DoctrineTestCase
      * @throws \Doctrine\ORM\ORMException
      * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
-     * @throws \ReflectionException
      */
     public function testMergeEntityWithDatabaseSuccessful(): void
     {
@@ -177,7 +176,6 @@ class EntityManagerTest extends DoctrineTestCase
      * @throws \Doctrine\ORM\ORMException
      * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
-     * @throws \ReflectionException
      */
     public function testPersistAndRemoveSuccessful(): void
     {

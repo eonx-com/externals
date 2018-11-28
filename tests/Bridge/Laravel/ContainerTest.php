@@ -5,7 +5,6 @@ namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
 use EoneoPay\Externals\Bridge\Laravel\Container;
 use Illuminate\Container\Container as IlluminateContainer;
-use Psr\Container\NotFoundExceptionInterface;
 use Tests\EoneoPay\Externals\Bridge\Laravel\Stubs\ServiceStub;
 use Tests\EoneoPay\Externals\TestCase;
 
@@ -27,17 +26,5 @@ class ContainerTest extends TestCase
         self::assertFalse($container->has('invalid'));
 
         self::assertInstanceOf(ServiceStub::class, $container->get(ServiceStub::class));
-    }
-
-    /**
-     * Container should throw PSR exception if service not found.
-     *
-     * @return void
-     */
-    public function testServiceNotFoundException(): void
-    {
-        $this->expectException(NotFoundExceptionInterface::class);
-
-        (new Container(new IlluminateContainer()))->get(ServiceStub::class);
     }
 }

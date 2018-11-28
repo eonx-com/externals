@@ -41,7 +41,6 @@ class LoggableEventSubscriber extends BaseLoggableListener
      * @return mixed[]
      *
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
-     * @throws \ReflectionException
      *
      * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
@@ -92,7 +91,6 @@ class LoggableEventSubscriber extends BaseLoggableListener
      * @return string[]
      *
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
-     * @throws \ReflectionException
      */
     private function getEntityFillable(EntityInterface $entity): array
     {

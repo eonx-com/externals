@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
+use EoneoPay\Utils\DateTime;
 use Tests\EoneoPay\Externals\DoctrineTestCase;
 use Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
@@ -129,7 +130,6 @@ class EntityTest extends DoctrineTestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function testAssociateParentWithChildren(): void
     {
@@ -155,7 +155,6 @@ class EntityTest extends DoctrineTestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function testAssociateWithWrongAssociationException(): void
     {
@@ -199,8 +198,6 @@ class EntityTest extends DoctrineTestCase
      * Test entity has a generic getId method which return id value based on Id doctrine annotation.
      *
      * @return void
-     *
-     * @throws \ReflectionException
      */
     public function testGetIdReturnsRightValueBasedOnIdAnnotation(): void
     {
@@ -218,6 +215,8 @@ class EntityTest extends DoctrineTestCase
      * Test HasTransformers trait transforms the properties as expected.
      *
      * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException If string passed to constructor is not valid
      */
     public function testHasTransformersTraitWorksAsExcepted(): void
     {
@@ -228,8 +227,8 @@ class EntityTest extends DoctrineTestCase
         self::assertTrue($entity->setBool(true)->getBool());
 
         self::assertNull($entity->setDatetime(null)->getDatetime());
-        self::assertInstanceOf(\DateTime::class, $entity->setDatetime('now')->getDatetime());
-        self::assertInstanceOf(\DateTime::class, $entity->setDatetime(new \DateTime())->getDatetime());
+        self::assertInstanceOf(DateTime::class, $entity->setDatetime('now')->getDatetime());
+        self::assertInstanceOf(DateTime::class, $entity->setDatetime(new DateTime())->getDatetime());
 
         self::assertEquals('', $entity->setString(null)->getString());
         self::assertEquals('equals', $entity->setString('equals')->getString());
@@ -348,11 +347,8 @@ class EntityTest extends DoctrineTestCase
     {
         $entity = new EntityStub();
 
-        // Set 'annotationName' which is based off the column 'annotation_name' for the 'string' attribute
-        $entity->setAnnotationName('test');
-
-        // The value should be fetched via annotationName and string directly
-        self::assertSame('test', $entity->getAnnotationName());
+        self::assertNull($entity->getString());
+        self::assertSame($entity, $entity->setString('test'));
         self::assertSame('test', $entity->getString());
     }
 
@@ -419,8 +415,6 @@ class EntityTest extends DoctrineTestCase
      * Test uniqueRuleAsString build correctly the string representation of the validation rule.
      *
      * @return void
-     *
-     * @throws \ReflectionException
      */
     public function testUniqueRuleAsStringMethod(): void
     {

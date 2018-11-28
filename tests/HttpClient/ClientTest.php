@@ -20,7 +20,9 @@ class ClientTest extends HttpClientTestCase
      */
     public function testContentEmptyWhenRuntimeExceptionOnBody(): void
     {
-        $response = (new Client($this->mockGuzzleClientForResponse($this->mockStreamForRuntimeException())))
+        /** @var \Mockery\MockInterface $mockedBody */
+        $mockedBody = $this->mockStreamForRuntimeException();
+        $response = (new Client($this->mockGuzzleClientForResponse($mockedBody)))
             ->request(self::METHOD, self::URI);
 
         /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
@@ -91,7 +93,10 @@ class ClientTest extends HttpClientTestCase
     public function testShouldReturnResponseInterfaceBasedOnRequestExceptionResponse(): void
     {
         $contents = 'my contents';
-        $response = (new Client($this->mockGuzzleClientForRequestException($this->mockStreamForContents($contents))))
+
+        /** @var \Mockery\MockInterface $mockedBody */
+        $mockedBody = $this->mockStreamForContents($contents);
+        $response = (new Client($this->mockGuzzleClientForRequestException($mockedBody)))
             ->request(self::METHOD, self::URI);
 
         /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */

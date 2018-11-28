@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\ORM\Traits;
 
-use DateTime;
+use DateTime as BaseDateTime;
+use EoneoPay\Utils\DateTime;
 
 trait HasTransformers
 {
@@ -25,10 +26,12 @@ trait HasTransformers
      * @param string $property
      *
      * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException If string passed to constructor is not valid
      */
     protected function transformToDateTime(string $property): void
     {
-        if ($this->{$property} === null || $this->{$property} instanceof DateTime) {
+        if ($this->{$property} === null || $this->{$property} instanceof BaseDateTime) {
             return;
         }
 
