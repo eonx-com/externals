@@ -26,7 +26,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
 
         self::assertEquals(
             [Events::prePersist, Events::preUpdate],
-            (new ValidateEventSubscriber($validator, $translator))->getSubscribedEvents()
+            (new ValidateEventSubscriber($translator, $validator))->getSubscribedEvents()
         );
     }
 
@@ -91,7 +91,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
 
         /** @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator */
         /** @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator */
-        (new ValidateEventSubscriber($validator, $translator))->preUpdate($lifeCycleEvent);
+        (new ValidateEventSubscriber($translator, $validator))->preUpdate($lifeCycleEvent);
     }
 
     /**
@@ -120,7 +120,7 @@ class ValidateEventSubscriberTest extends SubscribersTestCase
 
         /** @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator */
         /** @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator */
-        (new ValidateEventSubscriber($validator, $translator))->preUpdate($lifeCycleEvent);
+        (new ValidateEventSubscriber($translator, $validator))->preUpdate($lifeCycleEvent);
 
         // This will only run if validation passes as an exception will be thrown
         self::assertTrue(true);

@@ -3,20 +3,15 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\ORM;
 
-use Doctrine\ORM\Mapping\Id;
 use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
-use EoneoPay\Utils\AnnotationReader;
 use EoneoPay\Utils\Arr;
-use EoneoPay\Utils\Exceptions\AnnotationCacheException;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\XmlConverter;
-use Exception;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity covered by unit tests
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class Entity implements EntityInterface
 {
@@ -70,25 +65,17 @@ abstract class Entity implements EntityInterface
 
         // Perform action - code coverage disabled due to phpdbg not seeing case statements
         switch ($type) {
-            // @codeCoverageIgnoreStart
-            case 'get':
-                // @codeCoverageIgnoreEnd
+            case 'get': // @codeCoverageIgnore
                 return $this->get($property);
 
-            // @codeCoverageIgnoreStart
-            case 'has':
-                // @codeCoverageIgnoreEnd
+            case 'has': // @codeCoverageIgnore
                 return $this->has($property);
 
-            // @codeCoverageIgnoreStart
-            case 'is':
-                // @codeCoverageIgnoreEnd
+            case 'is': // @codeCoverageIgnore
                 // Always return a boolean
                 return (bool)$this->get($property);
 
-            // @codeCoverageIgnoreStart
-            case 'set':
-                // @codeCoverageIgnoreEnd
+            case 'set': // @codeCoverageIgnore
                 // Return original instance for fluency
                 $this->set($property, \reset($parameters));
                 break;
@@ -125,11 +112,19 @@ abstract class Entity implements EntityInterface
     /**
      * Get entity id.
      *
-     * @return null|string|int
+     * @return int|string|null
      */
     public function getId()
     {
         return $this->get($this->getIdProperty());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getProperties(): array
+    {
+        return \array_keys(\get_object_vars($this));
     }
 
     /**
@@ -170,26 +165,30 @@ abstract class Entity implements EntityInterface
     }
 
     /**
+     * Get the id property for this entity
+     *
+     * @return string
+     */
+    abstract protected function getIdProperty(): string;
+
+    /**
      * Associate an entity in a bidirectional way from the owning side
      *
      * @param string $attribute The attribute on the entity for the many to one association
-     * @param \EoneoPay\Externals\ORM\Entity $parent The entity to associate
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $parent The entity to associate
      * @param string|null $association The attribute on the parent for the one to many collection
      *
      * @return mixed The original entity for fluency
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
      */
-    protected function associate(string $attribute, Entity $parent, ?string $association = null)
+    protected function associate(string $attribute, EntityInterface $parent, ?string $association = null)
     {
         // If attribute does not exist on entity, throw exception
         $this->checkEntityHasAttribute($attribute);
 
-        // Determine getter
-        $getter = \sprintf('get%s', \ucfirst($attribute));
-
         // Get current attribute value
-        $currentValue = $this->{$getter}();
+        $currentValue = $this->getValue($attribute);
 
         // If attribute value is already parent, return
         if ($currentValue === $parent) {
@@ -208,7 +207,7 @@ abstract class Entity implements EntityInterface
         if ($association !== null) {
             try {
                 $this->handleReverseAssociation($association, $parent, $currentValue);
-            } catch (InvalidMethodCallException $exception) {
+            } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidMethodCallException $exception) {
                 // We have to throw a different exception otherwise it's caught higher and it dies silently.
                 throw new InvalidArgumentException(
                     \sprintf('Property %s::%s does not exist', \get_class($parent), $association),
@@ -225,14 +224,14 @@ abstract class Entity implements EntityInterface
      * Associate an entity in a bidirectional way on a N-N relation
      *
      * @param string $attribute The attribute on the first entity for the many to many association
-     * @param \EoneoPay\Externals\ORM\Entity $parent The entity to associate
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $parent The entity to associate
      * @param string|null $association The attribute on the second entity for the many to many collection
      *
      * @return mixed The original entity for fluency
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
      */
-    protected function associateMultiple(string $attribute, Entity $parent, ?string $association = null)
+    protected function associateMultiple(string $attribute, EntityInterface $parent, ?string $association = null)
     {
         // If attribute does not exist on entity, throw exception
         $this->checkEntityHasAttribute($attribute);
@@ -274,27 +273,6 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * Get id property name for current entity.
-     *
-     * @return string
-     */
-    protected function getIdProperty(): string
-    {
-        // Check for id annotation, if annotations aren't available return 'id'
-        try {
-            $ids = (new AnnotationReader())->getClassPropertyAnnotation(\get_class($this), Id::class);
-            // @codeCoverageIgnoreStart
-            // Can't test exception since opcache config can only be set in php.ini
-        } /** @noinspection BadExceptionsProcessingInspection */ catch (AnnotationCacheException $exception) {
-            // Exception intentionally ignored as opcache has to be missing for annotations to fail
-            return 'id';
-            // @codeCoverageIgnoreEnd
-        }
-
-        return (string)(\key($ids) ?? 'id');
-    }
-
-    /**
      * Get instance_of rule string for given class.
      *
      * @param string $class
@@ -309,15 +287,13 @@ abstract class Entity implements EntityInterface
     /**
      * Get unique rule string for given target property and optional where clauses.
      *
-     * @param string $target
-     * @param mixed[]|null $wheres
+     * @param string $target The target entity
+     * @param mixed[]|null $wheres Additional/optional where clauses
      *
      * @return string
      */
     protected function uniqueRuleAsString(string $target, ?array $wheres = null): string
     {
-        $idProperty = $this->getIdProperty();
-
         $additional = '';
         foreach ($wheres ?? [] as $column => $value) {
             $additional .= \sprintf(',%s,%s', $column, $value);
@@ -327,8 +303,8 @@ abstract class Entity implements EntityInterface
             'unique:%s,%s,%s,%s%s',
             \get_class($this),
             $target,
-            $this->{$idProperty},
-            $idProperty,
+            $this->getValue($this->getIdProperty()),
+            $this->getIdProperty(),
             $additional
         );
 
@@ -380,29 +356,35 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * Get property annotations which can be used to resolve property names for this entity
+     * Get property value via getter
      *
-     * @return mixed[]
+     * @param string $property The property to get
+     *
+     * @return mixed
      */
-    private function getResolvableAnnotations(): array
+    private function getValue(string $property)
     {
-        return $this->invokeEntityMethod('getPropertyAnnotations');
+        $getter = \sprintf('get%s', \ucfirst($property));
+
+        return $this->{$getter}();
     }
 
     /** @noinspection PhpDocRedundantThrowsInspection */
+
     /**
      * Handle reverse association.
      *
      * @param string $association
-     * @param \EoneoPay\Externals\ORM\Entity $parent
-     * @param \EoneoPay\Externals\ORM\Entity|null $currentValue
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $parent
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $currentValue
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the collection doesn't exist on parent
      */
-    private function handleReverseAssociation(string $association, Entity $parent, ?Entity $currentValue = null): void
-    {
+    private function handleReverseAssociation(
+        string $association,
+        EntityInterface $parent,
+        ?EntityInterface $currentValue = null
+    ): void {
         // Determine collection method
         $collection = \sprintf('get%s', \ucfirst($association));
 
@@ -491,70 +473,10 @@ abstract class Entity implements EntityInterface
      */
     private function resolveProperty(string $property): ?string
     {
-        // Search for property within entity properties
-        try {
-            return (new Arr())->search(\array_keys(\get_object_vars($this)), $property) ??
-                $this->resolvePropertyFromAnnotations($property);
-        } /** @noinspection BadExceptionsProcessingInspection */ catch (Exception $exception) {
-            // Ignore error intentionally, this prevents endless bubbling of exceptions
-            return null;
-        }
-    }
+        // All properties will be camel case within the object
+        $property = \lcfirst($property);
 
-    /**
-     * Search annotations for a property
-     *
-     * @param string $property The property to resolve
-     *
-     * @return string|null
-     */
-    private function resolvePropertyFromAnnotations(string $property): ?string
-    {
-        // If there are no resolvable annotations, return
-        if (\count($this->getResolvableAnnotations()) === 0) {
-            return null;
-        }
-
-        // Get annotation reader instance, if annotations aren't available return null
-        try {
-            $reader = new AnnotationReader();
-            // @codeCoverageIgnoreStart
-            // Can't test exception since opcache config can only be set in php.ini
-        } /** @noinspection BadExceptionsProcessingInspection */ catch (AnnotationCacheException $exception) {
-            // Exception intentionally ignored as opcache has to be missing for annotations to fail
-            return null;
-            // @codeCoverageIgnoreEnd
-        }
-
-        // Create a fuzzy search version of the searched property
-        $fuzzy = \mb_strtolower(\preg_replace('/[^\da-zA-Z]/', '', $property));
-
-        // Attempt to resolve property from annotations
-        foreach ($this->getResolvableAnnotations() as $class => $attribute) {
-            // If the annotation class doesn't exist, skip
-            if (\class_exists($class) === false) {
-                continue;
-            }
-
-            // Get matching annotation properties
-            $annotations = $reader->getClassPropertyAnnotation(static::class, $class);
-
-            // Search annotations for attribute
-            foreach ($annotations as $realProperty => $annotation) {
-                // Only look in annotations which have the correct attribute
-                if (\property_exists($annotation, $attribute) === false) {
-                    continue;
-                }
-
-                // Fuzzy search the attribute
-                if ($fuzzy === \mb_strtolower(\preg_replace('/[^\da-zA-Z]/', '', $annotation->{$attribute}))) {
-                    return $realProperty;
-                }
-            }
-        }
-
-        // Property was not found
-        return null;
+        return \property_exists($this, $property) ? $property : (new Arr())->search($this->getProperties(), $property);
     }
 
     /**

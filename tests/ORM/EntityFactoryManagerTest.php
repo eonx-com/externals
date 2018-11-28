@@ -40,7 +40,6 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
         self::assertEquals(\spl_object_hash($entity1), \spl_object_hash($entity2));
         self::assertNotEquals(\spl_object_hash($entity1), \spl_object_hash($entity3));
 
-        /** @noinspection UnnecessaryAssertionInspection Create returns EntityInterface */
         self::assertInstanceOf(EntityWithRulesStub::class, $entityFactoryManager->create(EntityWithRulesStub::class));
 
         self::assertEquals(
@@ -66,9 +65,7 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
 
         $child = $entityFactoryManager->create(ChildEntityStub::class, ['parent' => 'invalid']);
 
-        /** @noinspection UnnecessaryAssertionInspection Returns EntityInterface */
         self::assertInstanceOf(ChildEntityStub::class, $child);
-        /** @var \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub $child */
         self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
     }
 
@@ -90,9 +87,7 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
         $parent = new ParentEntityStub();
         $child = $entityFactoryManager->create(ChildEntityStub::class, ['parent' => $parent]);
 
-        /** @noinspection UnnecessaryAssertionInspection Returns EntityInterface */
         self::assertInstanceOf(ChildEntityStub::class, $child);
-        /** @var \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub $child */
         self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
     }
 
@@ -113,9 +108,7 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
 
         $child = $entityFactoryManager->create(ChildEntityStub::class, ['parent' => null]);
 
-        /** @noinspection UnnecessaryAssertionInspection Returns EntityInterface */
         self::assertInstanceOf(ChildEntityStub::class, $child);
-        /** @var \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub $child */
         self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
     }
 
@@ -168,9 +161,7 @@ class EntityFactoryManagerTest extends EntityFactoryManagerTestCase
 
         $child = $entityFactoryManager->create(ChildEntityStub::class);
 
-        /** @noinspection UnnecessaryAssertionInspection Returns EntityInterface */
         self::assertInstanceOf(ChildEntityStub::class, $child);
-        /** @var \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub $child */
         self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
     }
 

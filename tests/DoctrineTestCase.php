@@ -117,7 +117,7 @@ abstract class DoctrineTestCase extends TestCase
         $validator = new Validator($validationFactory);
         // Instantiate event manager with validation subscriber
         $eventManager = new EventManager();
-        $eventManager->addEventSubscriber(new ValidateEventSubscriber($validator, $translator));
+        $eventManager->addEventSubscriber(new ValidateEventSubscriber($translator, $validator));
 
         // Finally, create entity manager
         $this->doctrine = DoctrineEntityManager::create(self::$connection, $config, $eventManager);

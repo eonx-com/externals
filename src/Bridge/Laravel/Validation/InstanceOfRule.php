@@ -28,7 +28,12 @@ class InstanceOfRule implements ValidationRuleInterface
     public function getReplacements(): Closure
     {
         // Create replacement for message to include parameters
-        return function (string $message, string $attribute, string $rule, array $parameters): string {
+        return function (
+            string $message,
+            string $attribute,
+            /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $rule,
+            array $parameters
+        ): string {
             return \str_replace([':attribute', ':values'], [$attribute, $parameters[0] ?? '{NO PARAMETER}'], $message);
         };
     }
@@ -42,7 +47,11 @@ class InstanceOfRule implements ValidationRuleInterface
      */
     public function getRule(): Closure
     {
-        return function (string $attribute, $value, array $parameters): bool {
+        return function (
+            /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $attribute,
+            $value,
+            array $parameters
+        ): bool {
             // If no value given just pass, to be able to validate optional attributes
             if ($value === null) {
                 return true;

@@ -45,8 +45,6 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      *
      * @param string $root The optional root directly to use
      *
-     * @throws \org\bovigo\vfs\vfsStreamException If root directory contains an invalid character
-     *
      * @SuppressWarnings(PHPMD.StaticAccess) vfsStream requires methods to be statically accessed
      */
     public function __construct(?string $root = null)

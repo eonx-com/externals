@@ -48,6 +48,14 @@ class EntityStubWithTransformers extends Entity
     }
 
     /**
+     * @inheritdoc
+     */
+    protected function getIdProperty(): string
+    {
+        return 'string';
+    }
+
+    /**
      * Transform $bool to bool.
      *
      * @return void
@@ -61,6 +69,8 @@ class EntityStubWithTransformers extends Entity
      * Transform $datetime to DateTime.
      *
      * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException If string passed to constructor is not valid
      */
     protected function transformDatetime(): void
     {

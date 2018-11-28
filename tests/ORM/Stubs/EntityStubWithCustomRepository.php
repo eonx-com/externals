@@ -31,4 +31,12 @@ class EntityStubWithCustomRepository extends Entity
             'id' => $this->entityId
         ];
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getIdProperty(): string
+    {
+        return 'entityId';
+    }
 }

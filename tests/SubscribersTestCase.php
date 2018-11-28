@@ -74,7 +74,7 @@ abstract class SubscribersTestCase extends TestCase
         $event = $this->mockLifeCycleEvent($object);
         /** @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator */
         /** @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator */
-        (new ValidateEventSubscriber($validator, $translator))->prePersist($event);
+        (new ValidateEventSubscriber($translator, $validator))->prePersist($event);
 
         self::assertTrue(true);
     }

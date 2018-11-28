@@ -182,10 +182,7 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
 
         $class = $this->resolve($className);
 
-        /** @var \EoneoPay\Externals\ORM\Interfaces\EntityFactoryInterface $entityFactory */
-        $entityFactory = new $class($this);
-
-        return $this->factoryInstances[$className] = $entityFactory;
+        return $this->factoryInstances[$className] = new $class($this);
     }
 
     /**

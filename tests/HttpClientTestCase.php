@@ -61,8 +61,9 @@ abstract class HttpClientTestCase extends TestCase
      */
     protected function clientRequest(string $contents, ?int $statusCode = null): ResponseInterface
     {
-        /** @var \GuzzleHttp\Client $mockedClient */
-        $mockedClient = $this->mockGuzzleClientForResponse($this->mockStreamForContents($contents), $statusCode);
+        /** @var \Mockery\MockInterface $mockedStream */
+        $mockedStream = $this->mockStreamForContents($contents);
+        $mockedClient = $this->mockGuzzleClientForResponse($mockedStream, $statusCode);
 
         return (new Client($mockedClient))->request(self::METHOD, self::URI);
     }
@@ -73,18 +74,18 @@ abstract class HttpClientTestCase extends TestCase
      * @param \Mockery\MockInterface|null $body
      * @param int|null $statusCode
      *
-     * @return \Mockery\MockInterface
+     * @return \GuzzleHttp\Client
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
     protected function mockGuzzleClientForRequestException(
         ?MockInterface $body = null,
         ?int $statusCode = null
-    ): MockInterface {
+    ): GuzzleClient {
         $exception = new RequestException(
             self::EXCEPTION_MESSAGE,
             new Request('', self::URI),
-            $body !== null ? $this->mockGuzzleResponse($body, $statusCode) : null
+            ($body instanceof MockInterface) === true ? $this->mockGuzzleResponse($body, $statusCode) : null
         );
 
         $client = Mockery::mock(GuzzleClient::class);
@@ -104,11 +105,11 @@ abstract class HttpClientTestCase extends TestCase
      * @param \Mockery\MockInterface $body
      * @param int|null $statusCode
      *
-     * @return \Mockery\MockInterface
+     * @return \GuzzleHttp\Client
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
-    protected function mockGuzzleClientForResponse(MockInterface $body, ?int $statusCode = null): MockInterface
+    protected function mockGuzzleClientForResponse(MockInterface $body, ?int $statusCode = null): GuzzleClient
     {
         $client = Mockery::mock(GuzzleClient::class);
 
@@ -127,11 +128,11 @@ abstract class HttpClientTestCase extends TestCase
      * @param \Mockery\MockInterface $body
      * @param int|null $statusCode
      *
-     * @return \Mockery\MockInterface
+     * @return \Psr\Http\Message\ResponseInterface
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
-    protected function mockGuzzleResponse(MockInterface $body, ?int $statusCode = null): MockInterface
+    protected function mockGuzzleResponse(MockInterface $body, ?int $statusCode = null): PsrResponseInterface
     {
         $response = Mockery::mock(PsrResponseInterface::class);
 
@@ -145,11 +146,11 @@ abstract class HttpClientTestCase extends TestCase
     /**
      * Mock logger for the case that an exception is thrown.
      *
-     * @return \Mockery\MockInterface
+     * @return \EoneoPay\Externals\Logger\Interfaces\LoggerInterface
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
-    protected function mockLoggerForException(): MockInterface
+    protected function mockLoggerForException(): LoggerInterface
     {
         $logger = Mockery::mock(LoggerInterface::class);
 
@@ -171,11 +172,11 @@ abstract class HttpClientTestCase extends TestCase
      *
      * @param string $contents
      *
-     * @return \Mockery\MockInterface
+     * @return \Psr\Http\Message\StreamInterface
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
-    protected function mockStreamForContents(string $contents): MockInterface
+    protected function mockStreamForContents(string $contents): StreamInterface
     {
         $stream = Mockery::mock(StreamInterface::class);
         $stream->shouldReceive('getContents')->once()->withNoArgs()->andReturn($contents);
@@ -186,11 +187,11 @@ abstract class HttpClientTestCase extends TestCase
     /**
      * Mock stream interface to throw runtime exception when getting contents.
      *
-     * @return \Mockery\MockInterface
+     * @return \Psr\Http\Message\StreamInterface
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery methods are static
      */
-    protected function mockStreamForRuntimeException(): MockInterface
+    protected function mockStreamForRuntimeException(): StreamInterface
     {
         $stream = Mockery::mock(StreamInterface::class);
         $stream->shouldReceive('getContents')->once()->withNoArgs()->andThrow(RuntimeException::class);

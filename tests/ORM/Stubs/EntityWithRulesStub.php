@@ -64,4 +64,12 @@ class EntityWithRulesStub extends Entity implements ValidatableInterface
     {
         return [];
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getIdProperty(): string
+    {
+        return 'entityId';
+    }
 }

@@ -28,16 +28,4 @@ class ContainerTest extends TestCase
 
         self::assertInstanceOf(ServiceStub::class, $container->get(ServiceStub::class));
     }
-
-    /**
-     * Container should throw PSR exception if service not found.
-     *
-     * @return void
-     */
-    public function testServiceNotFoundException(): void
-    {
-        $this->expectException(NotFoundExceptionInterface::class);
-
-        (new Container(new IlluminateContainer()))->get(ServiceStub::class);
-    }
 }

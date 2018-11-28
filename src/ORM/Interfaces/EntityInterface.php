@@ -41,4 +41,11 @@ interface EntityInterface extends SerializableInterface
      * @return null|string|int
      */
     public function getId();
+
+    /**
+     * Get all properties for this entity
+     *
+     * @return string[]
+     */
+    public function getProperties(): array;
 }

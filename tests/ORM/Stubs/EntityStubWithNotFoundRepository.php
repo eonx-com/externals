@@ -33,4 +33,12 @@ class EntityStubWithNotFoundRepository extends Entity
             'id' => $this->entityId
         ];
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getIdProperty(): string
+    {
+        return 'entityId';
+    }
 }
