@@ -5,7 +5,6 @@ namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
 use EoneoPay\Externals\Bridge\Laravel\Container;
 use Illuminate\Container\Container as IlluminateContainer;
-use Psr\Container\NotFoundExceptionInterface;
 use Tests\EoneoPay\Externals\Bridge\Laravel\Stubs\ServiceStub;
 use Tests\EoneoPay\Externals\TestCase;
 
