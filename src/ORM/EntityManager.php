@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
-use EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException;
 use EoneoPay\Externals\ORM\Exceptions\ORMException;
 use EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
+use EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface;
 use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
 use EoneoPay\Externals\ORM\Interfaces\RepositoryInterface;
 use EoneoPay\Externals\ORM\Query\FilterCollection;
@@ -38,8 +38,8 @@ class EntityManager implements EntityManagerInterface
      *
      * @return void
      *
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
      */
     public function flush(): void
     {
@@ -105,7 +105,7 @@ class EntityManager implements EntityManagerInterface
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\RepositoryInterface
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException;
+     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException If repository is not found for entity
      */
     public function getRepository(string $class): RepositoryInterface
     {
@@ -134,8 +134,8 @@ class EntityManager implements EntityManagerInterface
      *
      * @return void
      *
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
      */
     public function merge(EntityInterface $entity): void
     {
@@ -149,8 +149,8 @@ class EntityManager implements EntityManagerInterface
      *
      * @return void
      *
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
      */
     public function persist(EntityInterface $entity): void
     {
@@ -164,7 +164,7 @@ class EntityManager implements EntityManagerInterface
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      */
     public function remove(EntityInterface $entity): void
@@ -180,7 +180,7 @@ class EntityManager implements EntityManagerInterface
      *
      * @return mixed
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      */
     private function callMethod(string $method, ...$parameters)
@@ -189,7 +189,7 @@ class EntityManager implements EntityManagerInterface
             return \call_user_func_array([$this->entityManager, $method], $parameters ?? []);
         } catch (Exception $exception) {
             // Throw directly exceptions from this package
-            if ($exception instanceof EntityValidationFailedException) {
+            if ($exception instanceof EntityValidationFailedExceptionInterface) {
                 throw $exception;
             }
 
