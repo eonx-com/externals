@@ -7,6 +7,7 @@ use EoneoPay\Externals\Bridge\Laravel\Filesystem;
 use EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException;
 use Illuminate\Filesystem\FilesystemAdapter as ContractedFilesystem;
 use League\Flysystem\Filesystem as Flysystem;
+use Tests\EoneoPay\Externals\Stubs\UnwritableFilesystemStub;
 use Tests\EoneoPay\Externals\Stubs\VirtualFilesystemAdapterStub;
 use Tests\EoneoPay\Externals\TestCase;
 
@@ -94,6 +95,18 @@ class FilesystemTest extends TestCase
         $this->expectException(FileNotFoundException::class);
 
         $filesystem->read('non-existent.file');
+    }
+
+    /**
+     * Test reading a file which doesn't exists throws an exception
+     *
+     * @return void
+     */
+    public function testUnwritableFilesystemReturnsFalse(): void
+    {
+        $filesystem = new Filesystem(new ContractedFilesystem(new Flysystem(new UnwritableFilesystemStub())));
+
+        self::assertFalse($filesystem->write('unwriteable.file', 'data'));
     }
 
     /**

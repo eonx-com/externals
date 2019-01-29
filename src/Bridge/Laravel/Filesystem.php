@@ -6,6 +6,7 @@ namespace EoneoPay\Externals\Bridge\Laravel;
 use EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException;
 use EoneoPay\Externals\Filesystem\Interfaces\CloudFilesystemInterface;
 use EoneoPay\Externals\Filesystem\Interfaces\DiskFilesystemInterface;
+use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException as ContractedFileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 
@@ -29,24 +30,15 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
     }
 
     /**
-     * Append to a file.
-     *
-     * @param string $path
-     * @param string $data
-     *
-     * @return bool
+     * @inheritdoc
      */
-    public function append(string $path, string $data): bool
+    public function append(string $filename, string $contents): bool
     {
-        return (bool)$this->filesystem->append($path, $data);
+        return $this->safeWrite('append', $filename, $contents);
     }
 
     /**
-     * Check whether a file exists
-     *
-     * @param string $filename The file to check
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function exists(string $filename): bool
     {
@@ -54,12 +46,7 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
     }
 
     /**
-     * Get an array of all files in a directory.
-     *
-     * @param null|string $directory The directory to retrieve the files from
-     * @param null|bool $recursive Either to retrieve files from sub-directories
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function files(?string $directory = null, ?bool $recursive = null): array
     {
@@ -67,11 +54,7 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
     }
 
     /**
-     * Get the full path to a file
-     *
-     * @param string|null $filename The filename to append to the path
-     *
-     * @return string
+     * @inheritdoc
      */
     public function path(?string $filename = null): string
     {
@@ -82,11 +65,7 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
     }
 
     /**
-     * Get contents of a file
-     *
-     * @param string $filename The filename to read from
-     *
-     * @return string
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException If file is not found
      */
@@ -101,27 +80,38 @@ class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
     }
 
     /**
-     * Remove a file from the filesystem
-     *
-     * @param string $filename The filename to remove
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function remove(string $filename): bool
     {
-        return $this->filesystem->delete($filename);
+        return $this->safeWrite('delete', $filename);
     }
 
     /**
-     * Write a file to the filesystem
-     *
-     * @param string $filename The filename to write to
-     * @param string $contents The contents to write to the file
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function write(string $filename, string $contents): bool
     {
-        return $this->filesystem->put($filename, $contents);
+        return $this->safeWrite('put', $filename, $contents);
+    }
+
+    /**
+     * @noinspection PhpDocSignatureInspection Signature matches parameters but phpstorm doesn't understand it
+     *
+     * Safely perform a writable action
+     *
+     * @param string $action The action to perform
+     * @param mixed ...$parameters The parameters to pass to the method
+     *
+     * @return bool
+     */
+    private function safeWrite(string $action, ... $parameters): bool
+    {
+        try {
+            return (bool)\call_user_func_array([$this->filesystem, $action], $parameters);
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (Exception $exception) {
+            // If any exception is thrown it's likely the filesystem isn't writable
+            return false;
+        }
     }
 }

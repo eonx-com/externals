@@ -13,8 +13,6 @@ interface ClientInterface
      * @param mixed[]|null $options The options to send with the request
      *
      * @return \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface A constructed api response
-     *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException If response is not successful
      */
     public function request(string $method, string $uri, ?array $options = null): ResponseInterface;
 }
