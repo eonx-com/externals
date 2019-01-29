@@ -6,14 +6,14 @@ namespace EoneoPay\Externals\Filesystem\Interfaces;
 interface FilesystemInterface
 {
     /**
-     * Append to a file.
+     * Append to a file
      *
-     * @param string $path
-     * @param string $data
+     * @param string $filename The filename to write to
+     * @param string $contents The contents to write to the file
      *
      * @return bool
      */
-    public function append(string $path, string $data): bool;
+    public function append(string $filename, string $contents): bool;
 
     /**
      * Check whether a file exists
@@ -49,8 +49,6 @@ interface FilesystemInterface
      * @param string $filename The filename to read from
      *
      * @return string
-     *
-     * @throws \EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException If file is not found
      */
     public function read(string $filename): string;
 

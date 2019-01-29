@@ -20,7 +20,7 @@ class EventDispatcherTest extends TestCase
         $illuminateDispatcher = new IlluminateDispatcher();
         $eventDispatcher = new EventDispatcher($illuminateDispatcher);
 
-        self::assertInternalType('array', $eventDispatcher->dispatch('my-event'));
+        self::assertIsArray($eventDispatcher->dispatch('my-event'));
         self::assertNull($eventDispatcher->dispatch('my-event', null, true));
     }
 
