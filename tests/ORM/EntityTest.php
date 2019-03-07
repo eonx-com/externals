@@ -44,9 +44,7 @@ class EntityTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testAssociateMultiParentsWithMultiChildren(): void
     {

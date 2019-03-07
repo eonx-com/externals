@@ -7,6 +7,8 @@ class UnwritableFilesystemStub extends VirtualFilesystemAdapterStub
 {
     /**
      * @inheritdoc
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     public function __construct(?string $root = null)
     {

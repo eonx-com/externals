@@ -27,8 +27,8 @@ interface FilesystemInterface
     /**
      * Get an array of all files in a directory.
      *
-     * @param null|string $directory The directory to retrieve the files from
-     * @param null|bool $recursive Either to retrieve files from sub-directories
+     * @param string|null $directory The directory to retrieve the files from
+     * @param bool|null $recursive Either to retrieve files from sub-directories
      *
      * @return mixed[]
      */
