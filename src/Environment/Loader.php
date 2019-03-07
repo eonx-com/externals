@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\Environment;
 
+use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException as DotEnvException;
 use EoneoPay\Externals\Environment\Exceptions\InvalidPathException;
 use EoneoPay\Externals\Environment\Interfaces\LoaderInterface;
@@ -124,7 +125,7 @@ class Loader implements LoaderInterface
         try {
             $method = $overload === true ? 'overload' : 'load';
 
-            (new \Dotenv\Dotenv($this->path, $this->env))->{$method}();
+            (new Dotenv($this->path, $this->env))->{$method}();
         } catch (DotEnvException $exception) {
             throw new InvalidPathException($exception->getMessage(), $exception->getCode(), $exception);
         }

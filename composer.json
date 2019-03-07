@@ -28,6 +28,7 @@
     "mikey179/vfsstream": "^1.6",
     "mockery/mockery": "^1.0",
     "monolog/monolog": "^1.23",
+    "nicoswd/php-gpg": "^1.7",
     "phpmd/phpmd": "^2.6",
     "phpstan/phpstan": "^0.11",
     "phpunit/phpunit": "^7.0",
@@ -53,6 +54,7 @@
     "laravel-doctrine/orm": "Required to use the ORM class",
     "league/flysystem": "Required to use the Filesystem class",
     "monolog/monolog": "Required to use the logger class",
+    "nicoswd/php-gpg": "Required to use the encryption class",
     "vlucas/phpdotenv": "Required to use the env helper"
   },
   "minimum-stability": "stable",
