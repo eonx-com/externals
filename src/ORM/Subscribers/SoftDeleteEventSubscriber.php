@@ -29,6 +29,8 @@ class SoftDeleteEventSubscriber extends SoftDeleteableListener
      * @param \Doctrine\Common\EventArgs $args
      *
      * @return void
+     *
+     * @throws \Exception If there is a database error
      */
     public function onFlush(EventArgs $args): void
     {

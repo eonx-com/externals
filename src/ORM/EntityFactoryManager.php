@@ -193,8 +193,6 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
      *
      * @return mixed The instantiated entity
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      * @throws \ReflectionException If invalid class detected in factories folders
      */
@@ -274,8 +272,6 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
             ));
         }
 
-        $factoryClass = null;
-
         foreach ($this->namespaceMapping as $factoriesNamespace => $entitiesNamespace) {
             $class = \sprintf(
                 '%s%sEntityFactory',
@@ -287,18 +283,14 @@ class EntityFactoryManager implements EntityFactoryManagerInterface
                 continue;
             }
 
-            $factoryClass = $class;
-            break;
+            return $class;
         }
 
-        if ($factoryClass === null) {
-            throw new InvalidArgumentException(\sprintf(
-                'EntityFactory for %s not found in any of configured namespaces: %s',
-                $className,
-                \implode(',', \array_keys($this->namespaceMapping))
-            ));
-        }
-
-        return $factoryClass;
+        // If class wasn't returned, throw exception
+        throw new InvalidArgumentException(\sprintf(
+            'EntityFactory for %s not found in any of configured namespaces: %s',
+            $className,
+            \implode(',', \array_keys($this->namespaceMapping))
+        ));
     }
 }

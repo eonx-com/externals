@@ -69,6 +69,8 @@ class LoggableEventSubscriber extends BaseLoggableListener
      *
      * @return \Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry|null
      *
+     * @throws \Exception Underlying extension throws exception on failure
+     *
      * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */

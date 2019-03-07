@@ -23,6 +23,7 @@ class LoaderTest extends TestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\Environment\Exceptions\InvalidPathException If env path is invalid
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     public function testLoaderCanReadEnvFile(): void
     {
@@ -48,6 +49,7 @@ class LoaderTest extends TestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\Environment\Exceptions\InvalidPathException If env path is invalid
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     public function testLoaderOverloadsOnlyWhenRequested(): void
     {
@@ -80,6 +82,7 @@ class LoaderTest extends TestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\Environment\Exceptions\InvalidPathException If env path is invalid
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     public function testLoaderPrefersCompiledOverEnv(): void
     {
@@ -119,6 +122,8 @@ class LoaderTest extends TestCase
      * Create a file system with env files
      *
      * @return \EoneoPay\Externals\Bridge\Laravel\Filesystem
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     private function createFilesystem(): Filesystem
     {

@@ -22,8 +22,6 @@ interface EntityFactoryManagerInterface
      * @param mixed[]|null $data Data to populate the entity with
      *
      * @return mixed The instantiated entity
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
     public function create(string $className, ?array $data = null);
 
@@ -34,10 +32,6 @@ interface EntityFactoryManagerInterface
      * @param mixed[]|null $data Data to populate the entity with
      *
      * @return mixed The instantiated entity
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function persist(string $className, ?array $data = null);
 
@@ -48,8 +42,6 @@ interface EntityFactoryManagerInterface
      * @param mixed[]|null $data
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
     public function get(string $className, ?array $data = null): EntityInterface;
 

@@ -11,9 +11,6 @@ interface EntityManagerInterface
      * Flush unit of work to the database
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      */
     public function flush(): void;
 
@@ -25,9 +22,6 @@ interface EntityManagerInterface
      * @param int|null $length
      *
      * @return string
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
      */
     public function generateRandomUniqueValue(
         string $entityClass,
@@ -57,9 +51,6 @@ interface EntityManagerInterface
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to merge into the database
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      */
     public function merge(EntityInterface $entity): void;
 
@@ -69,9 +60,6 @@ interface EntityManagerInterface
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to persist to the database
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      */
     public function persist(EntityInterface $entity): void;
 
@@ -81,9 +69,6 @@ interface EntityManagerInterface
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to remove from the database
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If entity validation fails
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      */
     public function remove(EntityInterface $entity): void;
 }

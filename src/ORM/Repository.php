@@ -21,6 +21,8 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function count(?array $criteria = null): int
     {

@@ -34,8 +34,6 @@ abstract class EntityFactory implements EntityFactoryInterface
      * @param string $entityClass Entity class to create if not set
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
      */
     protected function createDefaultRelationEntity(array &$data, string $key, string $entityClass): void
     {
@@ -52,10 +50,6 @@ abstract class EntityFactory implements EntityFactoryInterface
      * @param string $entityClass Entity class to create if not set
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     protected function persistDefaultRelationEntity(array &$data, string $key, string $entityClass): void
     {

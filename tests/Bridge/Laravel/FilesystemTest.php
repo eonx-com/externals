@@ -20,6 +20,8 @@ class FilesystemTest extends TestCase
      * Test filesystem can append content to existing file.
      *
      * @return void
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     public function testFilesystemCanAppendContentToExistingFile(): void
     {
@@ -40,6 +42,8 @@ class FilesystemTest extends TestCase
      * Test filesystem can retrieve files from disk
      *
      * @return void
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     public function testFilesystemCanListFilesInDirectoryRecursively(): void
     {
@@ -67,6 +71,8 @@ class FilesystemTest extends TestCase
      * Test filesystem can write files to disk
      *
      * @return void
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     public function testFilesystemCanReadAndWritesFilesToDisk(): void
     {
@@ -87,6 +93,8 @@ class FilesystemTest extends TestCase
      * Test reading a file which doesn't exists throws an exception
      *
      * @return void
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     public function testFilesystemThrowsExceptionIfReadiningNonExistentFile(): void
     {
@@ -101,6 +109,8 @@ class FilesystemTest extends TestCase
      * Test reading a file which doesn't exists throws an exception
      *
      * @return void
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     public function testUnwritableFilesystemReturnsFalse(): void
     {
@@ -113,6 +123,8 @@ class FilesystemTest extends TestCase
      * Create a filesystem instance for testing
      *
      * @return \EoneoPay\Externals\Bridge\Laravel\Filesystem
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
     private function createFilesystem(): Filesystem
     {

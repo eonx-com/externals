@@ -11,8 +11,6 @@ interface RepositoryInterface
      * @param mixed[]|null $criteria
      *
      * @return int The cardinality of the objects that match the given criteria.
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function count(?array $criteria = null): int;
 

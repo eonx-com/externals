@@ -64,8 +64,6 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testEntityManagerWrapsExceptionIntoORMException(): void
     {
@@ -100,9 +98,7 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      *
      * @covers \EoneoPay\Externals\ORM\EntityManager::generateRandomUniqueValue
@@ -149,8 +145,6 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testMergeEntityWithDatabaseSuccessful(): void
     {
@@ -173,8 +167,6 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testPersistAndRemoveSuccessful(): void
     {
@@ -209,8 +201,6 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testPersistWithValidationFailedException(): void
     {
@@ -227,8 +217,6 @@ class EntityManagerTest extends DoctrineTestCase
      *
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
      */
     public function testRepositoryMethods(): void
     {
