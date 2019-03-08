@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
+use Doctrine\ORM\Tools\ResolveTargetEntityListener;
 use EoneoPay\Externals\Bridge\Laravel\Providers\OrmServiceProvider;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
+use Illuminate\Config\Repository;
+use stdClass;
 use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
 
 class OrmServiceProviderTest extends LaravelBridgeProvidersTestCase
@@ -16,12 +19,24 @@ class OrmServiceProviderTest extends LaravelBridgeProvidersTestCase
      */
     public function testRegister(): void
     {
-        $this->getApplication()->singleton('em', function () {
+        $app = $this->getApplication();
+
+        $app->singleton('em', function () {
             return $this->getDoctrineEntityManager();
         });
+        $app->instance('config', new Repository([
+            'doctrine' => [
+                'replacements' => [
+                    stdClass::class => 'replacement'
+                ]
+            ]
+        ]));
 
-        (new OrmServiceProvider($this->getApplication()))->register();
+        (new OrmServiceProvider($app))->register();
 
-        self::assertInstanceOf(EntityManagerInterface::class, $this->getApplication()->get('em'));
+        self::assertInstanceOf(EntityManagerInterface::class, $app->get('em'));
+
+        // ensure the ResolveTargetEntityListener fires
+        $app->make(ResolveTargetEntityListener::class);
     }
 }
