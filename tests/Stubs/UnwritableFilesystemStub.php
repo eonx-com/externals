@@ -15,6 +15,6 @@ class UnwritableFilesystemStub extends VirtualFilesystemAdapterStub
         parent::__construct($root);
 
         // Create read-only file system
-        \chmod($this->getPathPrefix(), 0400);
+        \chmod((string)$this->getPathPrefix(), 0400);
     }
 }

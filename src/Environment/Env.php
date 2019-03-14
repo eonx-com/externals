@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\Environment;
 
 use Closure;
+use Dotenv\Environment\DotenvFactory;
 use Dotenv\Loader;
 use EoneoPay\Externals\Environment\Interfaces\EnvInterface;
 
@@ -21,7 +22,7 @@ class Env implements EnvInterface
      */
     public function __construct()
     {
-        $this->dotenv = new Loader('');
+        $this->dotenv = new Loader([], new DotenvFactory());
     }
 
     /**
@@ -80,7 +81,7 @@ class Env implements EnvInterface
         }
 
         // Set in env
-        $this->dotenv->setEnvironmentVariable($key, $value);
+        $this->dotenv->setEnvironmentVariable($key, (string)$value);
 
         return true;
     }
