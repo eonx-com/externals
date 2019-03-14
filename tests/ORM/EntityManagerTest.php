@@ -153,7 +153,7 @@ class EntityManagerTest extends DoctrineTestCase
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
 
-        $newEntity = (new EntityStub(['string' => 'string_merged']))->setEntityId($entity->getId());
+        $newEntity = (new EntityStub(['string' => 'string_merged']))->setEntityId((string)$entity->getId());
 
         $this->getEntityManager()->merge($newEntity);
 

@@ -395,8 +395,8 @@ class EntityTest extends DoctrineTestCase
         };
 
         $entity = new EntityStub(self::$data);
-        self::assertXmlStringEqualsXmlString($expected(), $entity->toXml());
-        self::assertXmlStringEqualsXmlString($expected('my-entity'), $entity->toXml('my-entity'));
+        self::assertXmlStringEqualsXmlString($expected(), (string)$entity->toXml());
+        self::assertXmlStringEqualsXmlString($expected('my-entity'), (string)$entity->toXml('my-entity'));
     }
 
     /**
