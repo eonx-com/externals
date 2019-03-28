@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
+use Doctrine\ORM\Mapping\MappingException;
 use EoneoPay\Externals\ORM\Exceptions\ORMException;
 use EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
@@ -12,8 +13,12 @@ use EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedException
 use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
 use EoneoPay\Externals\ORM\Interfaces\RepositoryInterface;
 use EoneoPay\Externals\ORM\Query\FilterCollection;
+use EoneoPay\Utils\Generator;
 use Exception;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) EntityManager is complicated
+ */
 class EntityManager implements EntityManagerInterface
 {
     /**
@@ -31,6 +36,38 @@ class EntityManager implements EntityManagerInterface
     public function __construct(DoctrineEntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
+     */
+    public function findByIds(string $class, array $ids): array
+    {
+        /** @var \Doctrine\ORM\QueryBuilder $builder */
+        $builder = $this->callMethod('createQueryBuilder');
+
+        $builder->select('e');
+        $builder->from($class, 'e');
+
+        /** @var \Doctrine\ORM\Mapping\ClassMetadataInfo $meta */
+        $meta = $this->callMethod('getClassMetadata', $class);
+
+        try {
+            $field = \sprintf('e.%s', $meta->getSingleIdentifierFieldName());
+            // @codeCoverageIgnoreStart
+        } catch (MappingException $exception) {
+            // Exception only thrown when composite identifiers are used
+            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, $exception);
+            // @codeCoverageIgnoreEnd
+        }
+
+        $builder->where($builder->expr()->in($field, ':ids'));
+        $builder->setParameter('ids', $ids);
+
+        return $builder->getQuery()->getResult();
     }
 
     /**
@@ -63,7 +100,7 @@ class EntityManager implements EntityManagerInterface
         string $field,
         ?int $length = null
     ): string {
-        $generated = new \EoneoPay\Utils\Generator();
+        $generated = new Generator();
         $uniqueValue = null;
 
         // 100 attempts for uniqueness

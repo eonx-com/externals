@@ -232,6 +232,37 @@ class EntityManagerTest extends DoctrineTestCase
     }
 
     /**
+     * Test repository method findByIds
+     *
+     * @return void
+     *
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function testRepositoryMethodFindByIds(): void
+    {
+        $this->getEntityManager()->persist($entity1 = new EntityStub());
+        $this->getEntityManager()->persist($entity2 = new EntityStub());
+        $this->getEntityManager()->persist($entity3 = new EntityStub());
+        $this->getEntityManager()->flush();
+
+        $ids = [];
+        $ids[] = $this->getDoctrineEntityManager()->getClassMetadata(EntityStub::class)
+            ->getIdentifierValues($entity1);
+        $ids[] = $this->getDoctrineEntityManager()->getClassMetadata(EntityStub::class)
+            ->getIdentifierValues($entity2);
+        $ids[] = $this->getDoctrineEntityManager()->getClassMetadata(EntityStub::class)
+            ->getIdentifierValues($entity3);
+
+        $result = $this->getEntityManager()->findByIds(EntityStub::class, $ids);
+
+        static::assertCount(3, $result);
+        static::assertContains($entity1, $result);
+        static::assertContains($entity2, $result);
+        static::assertContains($entity3, $result);
+    }
+
+    /**
      * Test simple orm decorator wraps Doctrine exceptions into its own ORMException.
      *
      * @return void
