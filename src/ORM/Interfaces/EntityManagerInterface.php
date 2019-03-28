@@ -8,6 +8,18 @@ use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
 interface EntityManagerInterface
 {
     /**
+     * Finds an entity by its identifier.
+     *
+     * Does NOT currently support composite identifiers.
+     *
+     * @param string $class
+     * @param mixed[] $ids
+     *
+     * @return object[]
+     */
+    public function findByIds(string $class, array $ids): array;
+
+    /**
      * Flush unit of work to the database
      *
      * @return void
