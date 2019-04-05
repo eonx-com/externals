@@ -79,13 +79,13 @@ class ChildEntityStub extends EntityStub
     /**
      * Set parent.
      *
-     * @param \Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub $parent
+     * @param \Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub|null $parent
      *
      * @return \Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute doesn't exist on entity
      */
-    public function setParent(ParentEntityStub $parent): self
+    public function setParent(?ParentEntityStub $parent): self
     {
         return $this->associate('parent', $parent, 'children');
     }

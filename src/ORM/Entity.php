@@ -175,14 +175,14 @@ abstract class Entity implements EntityInterface
      * Associate an entity in a bidirectional way from the owning side
      *
      * @param string $attribute The attribute on the entity for the many to one association
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $parent The entity to associate
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $parent The entity to associate
      * @param string|null $association The attribute on the parent for the one to many collection
      *
      * @return mixed The original entity for fluency
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
      */
-    protected function associate(string $attribute, EntityInterface $parent, ?string $association = null)
+    protected function associate(string $attribute, ?EntityInterface $parent, ?string $association = null)
     {
         // If attribute does not exist on entity, throw exception
         $this->checkEntityHasAttribute($attribute);
@@ -210,7 +210,11 @@ abstract class Entity implements EntityInterface
             } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidMethodCallException $exception) {
                 // We have to throw a different exception otherwise it's caught higher and it dies silently.
                 throw new InvalidArgumentException(
-                    \sprintf('Property %s::%s does not exist', \get_class($parent), $association),
+                    \sprintf(
+                        'Property %s::%s does not exist',
+                        $parent !== null ? \get_class($parent) : '',
+                        $association
+                    ),
                     null,
                     $exception
                 );
@@ -375,21 +379,21 @@ abstract class Entity implements EntityInterface
      * Handle reverse association.
      *
      * @param string $association
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $parent
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $parent
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $currentValue
      *
      * @return void
      */
     private function handleReverseAssociation(
         string $association,
-        EntityInterface $parent,
+        ?EntityInterface $parent,
         ?EntityInterface $currentValue = null
     ): void {
         // Determine collection method
         $collection = \sprintf('get%s', \ucfirst($association));
 
         // Check if this is already in collection
-        $exists = $parent->{$collection}()->contains($this);
+        $exists = $parent !== null && $parent->{$collection}()->contains($this);
 
         // If attribute is not this, remove existing association
         if ($currentValue !== null &&
