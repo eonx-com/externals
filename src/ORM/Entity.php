@@ -200,7 +200,7 @@ abstract class Entity implements EntityInterface
         // If foreign key column explicitly defined assign parent id
         $foreignKey = \sprintf('%sId', $attribute);
         if (\property_exists($this, $foreignKey)) {
-            $this->{$foreignKey} = $parent->getId();
+            $this->{$foreignKey} = $parent === null ? null : $parent->getId();
         }
 
         // If association set, handle it
@@ -386,7 +386,7 @@ abstract class Entity implements EntityInterface
      */
     private function handleReverseAssociation(
         string $association,
-        ?EntityInterface $parent,
+        ?EntityInterface $parent = null,
         ?EntityInterface $currentValue = null
     ): void {
         // Determine collection method
@@ -403,7 +403,7 @@ abstract class Entity implements EntityInterface
         }
 
         // Add to collection if it doesn't already exist
-        if ($exists === false) {
+        if ($exists === false && $parent !== null) {
             $parent->$collection()->add($this);
         }
     }

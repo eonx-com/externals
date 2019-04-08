@@ -85,7 +85,7 @@ class ChildEntityStub extends EntityStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute doesn't exist on entity
      */
-    public function setParent(?ParentEntityStub $parent): self
+    public function setParent(?ParentEntityStub $parent = null): self
     {
         return $this->associate('parent', $parent, 'children');
     }

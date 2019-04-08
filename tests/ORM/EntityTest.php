@@ -146,7 +146,7 @@ class EntityTest extends DoctrineTestCase
         // Test parent contains child only once
         self::assertEquals(1, $parent->getChildren()->count());
 
-        $child->setParent(null);
+        $child->setParent();
 
         // Test parent contains no children
         self::assertEquals(0, $parent->getChildren()->count());
