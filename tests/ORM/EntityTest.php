@@ -7,14 +7,13 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException;
-use EoneoPay\Utils\DateTime;
-use Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithTransformers;
-use Tests\EoneoPay\Externals\ORM\Stubs\MultiChildEntityStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\MultiParentEntityStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
 use Tests\EoneoPay\Externals\ORMTestCase;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildEntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidRelationshipStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildEntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentEntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Entity
@@ -142,6 +141,20 @@ class EntityTest extends ORMTestCase
     }
 
     /**
+     * Test associate on invalid property throws an exception
+     *
+     * @return void
+     */
+    public function testAssociateThrowsExceptionWithInvalidProperty(): void
+    {
+        $child = new InvalidRelationshipStub();
+
+        $this->expectException(InvalidRelationshipException::class);
+
+        $child->setParent(new ParentEntityStub());
+    }
+
+    /**
      * Entity should throw exception when trying to associate on a wrong association.
      *
      * @return void
@@ -204,29 +217,6 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Test HasTransformers trait transforms the properties as expected.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException If string passed to constructor is not valid
-     */
-    public function testHasTransformersTraitWorksAsExcepted(): void
-    {
-        $entity = new EntityStubWithTransformers();
-
-        self::assertFalse($entity->setBool(null)->getBool());
-        self::assertTrue($entity->setBool('true')->getBool());
-        self::assertTrue($entity->setBool(true)->getBool());
-
-        self::assertNull($entity->setDatetime(null)->getDatetime());
-        self::assertInstanceOf(DateTime::class, $entity->setDatetime('now')->getDatetime());
-        self::assertInstanceOf(DateTime::class, $entity->setDatetime(new DateTime())->getDatetime());
-
-        self::assertEquals('', $entity->setString(null)->getString());
-        self::assertEquals('equals', $entity->setString('equals')->getString());
-    }
-
-    /**
      * Test instanceOfRuleAsString build correctly the string representation of the validation rule.
      *
      * @return void
@@ -239,7 +229,7 @@ class EntityTest extends ORMTestCase
         );
 
         self::assertEquals(
-            'instance_of:Tests\EoneoPay\Externals\ORM\Stubs\EntityStub',
+            'instance_of:Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub',
             (new EntityStub())->getInstanceOfRuleForTest(EntityStub::class)
         );
     }
@@ -320,7 +310,7 @@ class EntityTest extends ORMTestCase
         $entity = new EntityStub();
 
         $expected = [
-            'Tests\EoneoPay\Externals\ORM\Stubs\InvalidClass' => 'name', // This class is invalid
+            'Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidClass' => 'name', // This class is invalid
             Column::class => 'name',
             Id::class => 'invalid' // This attribute is invalid
         ];
@@ -378,7 +368,6 @@ class EntityTest extends ORMTestCase
     public function testToXmlReturnsRightString(): void
     {
         $expected = static function (?string $rootNode = null): string {
-            /** @noinspection SyntaxError Closing tag name added from sprintf */
             return \sprintf('<?xml version="1.0" encoding="UTF-8"?>
                 <%s>
                     <entityId></entityId>
@@ -411,7 +400,7 @@ class EntityTest extends ORMTestCase
     public function testUniqueRuleAsStringMethod(): void
     {
         self::assertEquals(
-            'unique:Tests\EoneoPay\Externals\ORM\Stubs\EntityStub,email,,entityId,where1,value1',
+            'unique:Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub,email,,entityId,where1,value1',
             (new EntityStub())->getEmailUniqueRuleForTest(['where1' => 'value1'])
         );
     }

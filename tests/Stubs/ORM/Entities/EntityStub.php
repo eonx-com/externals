@@ -25,7 +25,7 @@ use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
  * @method self setAnnotationName(string $name)
  * @method null whenString()
  *
- * @ORM\Entity
+ * @ORM\Entity()
  *
  * @Gedmo\SoftDeleteable()
  */

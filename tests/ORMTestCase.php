@@ -11,6 +11,7 @@ use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
+use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -20,7 +21,9 @@ use EoneoPay\Externals\ORM\Entity;
 use EoneoPay\Externals\ORM\EntityManager;
 use EoneoPay\Externals\ORM\Extensions\SoftDeleteExtension;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
+use EoneoPay\Externals\ORM\Listeners\GenerateUniqueValue;
 use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
+use EoneoPay\Utils\Generator;
 use Exception;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator as IlluminateTranslator;
@@ -189,6 +192,7 @@ abstract class ORMTestCase extends TestCase
 
         // Instantiate event manager with validation subscriber
         $eventManager = new EventManager();
+        $eventManager->addEventListener(Events::prePersist, new GenerateUniqueValue(new Generator(), $translator));
         $eventManager->addEventSubscriber(new ValidateEventSubscriber($translator, $validator));
 
         // Finally, create entity manager

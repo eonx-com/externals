@@ -46,24 +46,6 @@ class EntityManagerTest extends ORMTestCase
     }
 
     /**
-     * Test filters collection methods enable/disable filters on entity manager.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
-     */
-    public function testFiltersCollectionMethodsSuccessful(): void
-    {
-        $filters = $this->getEntityManager()->getFilters();
-
-        $filters->enable('soft-deleteable');
-        $filters->disable('soft-deleteable');
-
-        /** @noinspection UnnecessaryAssertionInspection Test of actual returned instance */
-        self::assertInstanceOf(FilterCollectionInterface::class, $filters);
-    }
-
-    /**
      * Test entity manager get filters returns our filters collection.
      *
      * @return void
@@ -197,17 +179,5 @@ class EntityManagerTest extends ORMTestCase
         self::assertEquals(1, $repository->count());
     }
 
-    /**
-     * Test simple orm decorator wraps Doctrine exceptions into its own ORMException.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
-     */
-    public function testSimpleOrmDecoratorExceptionWrapsExceptions(): void
-    {
-        $this->expectException(ORMException::class);
 
-        $this->getEntityManager()->getFilters()->enable('invalid');
-    }
 }
