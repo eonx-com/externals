@@ -6,12 +6,13 @@ namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 use EoneoPay\Externals\Bridge\Laravel\Providers\EnvServiceProvider;
 use EoneoPay\Externals\Environment\Env;
 use EoneoPay\Externals\Environment\Interfaces\EnvInterface;
-use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
+use Tests\EoneoPay\Externals\TestCase;
 
 /**
  * @covers \EoneoPay\Externals\Bridge\Laravel\Providers\EnvServiceProvider
  */
-class EnvServiceProviderTest extends LaravelBridgeProvidersTestCase
+class EnvServiceProviderTest extends TestCase
 {
     /**
      * Test provider bind translator and validator into container.
@@ -20,8 +21,12 @@ class EnvServiceProviderTest extends LaravelBridgeProvidersTestCase
      */
     public function testRegister(): void
     {
-        (new EnvServiceProvider($this->getApplication()))->register();
+        $application = new ApplicationStub();
 
-        self::assertInstanceOf(Env::class, $this->getApplication()->get(EnvInterface::class));
+        // Run registration
+        (new EnvServiceProvider($application))->register();
+
+        // Ensure services are bound
+        self::assertInstanceOf(Env::class, $application->get(EnvInterface::class));
     }
 }

@@ -5,12 +5,10 @@ namespace EoneoPay\Externals\ORM\Exceptions;
 
 use EoneoPay\Utils\Exceptions\CriticalException;
 
-class ORMException extends CriticalException
+final class ORMException extends CriticalException
 {
     /**
-     * Get Error code.
-     *
-     * @return int
+     * @inheritdoc
      */
     public function getErrorCode(): int
     {
@@ -18,9 +16,7 @@ class ORMException extends CriticalException
     }
 
     /**
-     * Display a friendly exception message
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getErrorMessage(): string
     {
@@ -28,9 +24,7 @@ class ORMException extends CriticalException
     }
 
     /**
-     * Get Error sub-code.
-     *
-     * @return int
+     * @inheritdoc
      */
     public function getErrorSubCode(): int
     {

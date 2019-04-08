@@ -8,23 +8,32 @@ use EoneoPay\Externals\Bridge\Laravel\Providers\OrmServiceProvider;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
 use Illuminate\Config\Repository;
 use stdClass;
-use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
+use Tests\EoneoPay\Externals\ORMTestCase;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
 
-class OrmServiceProviderTest extends LaravelBridgeProvidersTestCase
+/**
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Providers\OrmServiceProvider
+ */
+class OrmServiceProviderTest extends ORMTestCase
 {
     /**
      * Test provider extend entity manager in container using our entity manager.
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException If item isn't found in container
      */
     public function testRegister(): void
     {
-        $app = $this->getApplication();
+        $application = new ApplicationStub();
 
-        $app->singleton('em', function () {
+        // Bind doctrine entity manager to key
+        $application->singleton('em', function () {
             return $this->getDoctrineEntityManager();
         });
-        $app->instance('config', new Repository([
+
+        // Configure application
+        $application->instance('config', new Repository([
             'doctrine' => [
                 'replacements' => [
                     stdClass::class => 'replacement'
@@ -32,11 +41,13 @@ class OrmServiceProviderTest extends LaravelBridgeProvidersTestCase
             ]
         ]));
 
-        (new OrmServiceProvider($app))->register();
+        // Run service provider
+        (new OrmServiceProvider($application))->register();
 
-        self::assertInstanceOf(EntityManagerInterface::class, $app->get('em'));
+        // Ensure services are bound
+        self::assertInstanceOf(EntityManagerInterface::class, $application->get('em'));
 
-        // ensure the ResolveTargetEntityListener fires
-        $app->make(ResolveTargetEntityListener::class);
+        // Ensure the ResolveTargetEntityListener fires
+        $application->make(ResolveTargetEntityListener::class);
     }
 }

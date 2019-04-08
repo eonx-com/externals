@@ -6,7 +6,7 @@ namespace EoneoPay\Externals\Bridge\Laravel;
 use EoneoPay\Externals\Container\Interfaces\ContainerInterface;
 use Illuminate\Contracts\Container\Container as IlluminateContainer;
 
-class Container implements ContainerInterface
+final class Container implements ContainerInterface
 {
     /**
      * @var \Illuminate\Contracts\Container\Container
@@ -14,7 +14,7 @@ class Container implements ContainerInterface
     private $container;
 
     /**
-     * Container constructor.
+     * Create container
      *
      * @param \Illuminate\Contracts\Container\Container $container
      */
@@ -24,14 +24,7 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Finds an entry of the container by its identifier and returns it.
-     *
-     * @param string $serviceId Identifier of the entry to look for.
-     *
-     * @return mixed
-     *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @inheritdoc
      */
     public function get($serviceId)
     {
@@ -39,18 +32,7 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Returns true if the container can return an entry for the given identifier.
-     * Returns false otherwise.
-     *
-     * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
-     * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
-     *
-     * @param string $serviceId Identifier of the entry to look for.
-     *
-     * @return bool
-     *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @inheritdoc
      */
     public function has($serviceId): bool
     {

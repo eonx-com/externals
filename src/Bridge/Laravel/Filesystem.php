@@ -10,7 +10,7 @@ use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException as ContractedFileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 
-class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
+final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
 {
     /**
      * Contracted filesystem instance

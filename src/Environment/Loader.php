@@ -10,7 +10,7 @@ use Dotenv\Loader as DotEnvLoader;
 use EoneoPay\Externals\Environment\Exceptions\InvalidPathException;
 use EoneoPay\Externals\Environment\Interfaces\LoaderInterface;
 
-class Loader implements LoaderInterface
+final class Loader implements LoaderInterface
 {
     /**
      * Relative path to compiled env file
@@ -48,9 +48,7 @@ class Loader implements LoaderInterface
     }
 
     /**
-     * Load the env file and preserve existing values
-     *
-     * @return void
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\Environment\Exceptions\InvalidPathException If env path is invalid
      */
@@ -60,9 +58,7 @@ class Loader implements LoaderInterface
     }
 
     /**
-     * Load the env file and overwrite existing values
-     *
-     * @return void
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\Environment\Exceptions\InvalidPathException If env path is invalid
      */

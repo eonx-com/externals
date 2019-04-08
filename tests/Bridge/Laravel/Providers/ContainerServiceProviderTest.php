@@ -3,11 +3,17 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
+use EoneoPay\Externals\Bridge\Laravel\Container;
 use EoneoPay\Externals\Bridge\Laravel\Providers\ContainerServiceProvider;
 use EoneoPay\Externals\Container\Interfaces\ContainerInterface;
-use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
+use Illuminate\Contracts\Container\Container as IlluminateContainerContract;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
+use Tests\EoneoPay\Externals\TestCase;
 
-class ContainerServiceProviderTest extends LaravelBridgeProvidersTestCase
+/**
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Providers\ContainerServiceProvider
+ */
+class ContainerServiceProviderTest extends TestCase
 {
     /**
      * Test provider register container.
@@ -16,8 +22,17 @@ class ContainerServiceProviderTest extends LaravelBridgeProvidersTestCase
      */
     public function testRegister(): void
     {
-        (new ContainerServiceProvider($this->getApplication()))->register();
+        $application = new ApplicationStub();
 
-        self::assertInstanceOf(ContainerInterface::class, $this->getApplication()->get(ContainerInterface::class));
+        // Bind application container
+        $application->bind(IlluminateContainerContract::class, static function () use ($application) {
+            return $application;
+        });
+
+        // Run registration
+        (new ContainerServiceProvider($application))->register();
+
+        // Ensure services are bound
+        self::assertInstanceOf(Container::class, $application->get(ContainerInterface::class));
     }
 }

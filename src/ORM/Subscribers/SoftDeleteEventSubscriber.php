@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\ORM\Subscribers;
 
 use Doctrine\Common\EventArgs;
+use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\SoftDeleteable\SoftDeleteableListener;
 
-class SoftDeleteEventSubscriber extends SoftDeleteableListener
+final class SoftDeleteEventSubscriber extends SoftDeleteableListener
 {
     /**
      * Objects soft-deleted on flush.
@@ -24,19 +25,25 @@ class SoftDeleteEventSubscriber extends SoftDeleteableListener
     }
 
     /**
-     * Cache soft deleted objects to detach them from the entity manager on postFlush.
-     *
-     * @param \Doctrine\Common\EventArgs $args
-     *
-     * @return void
+     * @inheritdoc
      *
      * @throws \Exception If there is a database error
      */
     public function onFlush(EventArgs $args): void
     {
         $eventAdapter = $this->getEventAdapter($args);
-        /** @var \Doctrine\ORM\EntityManagerInterface $objectManager */
         $objectManager = $eventAdapter->getObjectManager();
+
+        // Ensure object manager implements entity manager interface
+        if (($objectManager instanceof EntityManagerInterface) === false) {
+            return;
+        }
+
+        /**
+         * @var \Doctrine\ORM\EntityManagerInterface $objectManager
+         *
+         * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
+         */
         $unitOfWork = $objectManager->getUnitOfWork();
 
         foreach ($eventAdapter->getScheduledObjectDeletions($unitOfWork) as $object) {
@@ -53,11 +60,7 @@ class SoftDeleteEventSubscriber extends SoftDeleteableListener
     }
 
     /**
-     * Detach soft-deleted objects from object manager.
-     *
-     * @param \Doctrine\Common\EventArgs $args
-     *
-     * @return void
+     * @inheritdoc
      */
     public function postFlush(EventArgs $args): void
     {

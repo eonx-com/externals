@@ -6,12 +6,10 @@ namespace EoneoPay\Externals\Bridge\Laravel\Validation;
 use Closure;
 use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
 
-class InstanceOfRule implements ValidationRuleInterface
+final class InstanceOfRule implements ValidationRuleInterface
 {
     /**
-     * Get rule name
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getName(): string
     {
@@ -19,16 +17,12 @@ class InstanceOfRule implements ValidationRuleInterface
     }
 
     /**
-     * Get message replacements
-     *
-     * @return \Closure
-     *
-     * * @SuppressWarnings(PHPMD.UnusedLocalVariable) $rule on Closure are defined by Laravel validator
+     * @inheritdoc
      */
     public function getReplacements(): Closure
     {
         // Create replacement for message to include parameters
-        return function (
+        return static function (
             string $message,
             string $attribute,
             /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $rule,
@@ -39,15 +33,11 @@ class InstanceOfRule implements ValidationRuleInterface
     }
 
     /**
-     * Get the validation rule closure
-     *
-     * @return \Closure
-     *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable) $attribute on Closure are defined by Laravel validator
+     * @inheritdoc
      */
     public function getRule(): Closure
     {
-        return function (
+        return static function (
             /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $attribute,
             $value,
             array $parameters

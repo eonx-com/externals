@@ -8,12 +8,10 @@ use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
 use EoneoPay\Utils\Arr;
 use Illuminate\Validation\Validator;
 
-class EmptyWithRule implements ValidationRuleInterface
+final class EmptyWithRule implements ValidationRuleInterface
 {
     /**
-     * Get rule name
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getName(): string
     {
@@ -21,16 +19,12 @@ class EmptyWithRule implements ValidationRuleInterface
     }
 
     /**
-     * Get message replacements
-     *
-     * @return \Closure
-     *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable) $rule on Closure are defined by Laravel validator
+     * @inheritdoc
      */
     public function getReplacements(): Closure
     {
         // Create replacement for message to include parameters
-        return function (
+        return static function (
             string $message,
             string $attribute,
             /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $rule,
@@ -41,16 +35,12 @@ class EmptyWithRule implements ValidationRuleInterface
     }
 
     /**
-     * Get the validation rule closure
-     *
-     * @return \Closure
-     *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable) $attribute and $value on Closure are defined by Laravel validator
+     * @inheritdoc
      */
     public function getRule(): Closure
     {
         // Ensure that the field is empty if one of the specified parameters isn't
-        return function (
+        return static function (
             /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $attribute,
             /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ $value,
             array $parameters,

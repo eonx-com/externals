@@ -10,7 +10,7 @@ use Exception;
 use nicoSWD\GPG\GPG as Client;
 use nicoSWD\GPG\PublicKey;
 
-class Gpg implements GpgInterface
+final class Gpg implements GpgInterface
 {
     /**
      * @inheritdoc

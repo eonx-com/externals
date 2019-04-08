@@ -34,7 +34,7 @@ class EnvTest extends TestCase
 
         // Test default is returned if key doesn't exist
         self::assertNull($env->get('ENV_INVALID'));
-        self::assertSame(1, $env->get('ENV_INVALID', function () {
+        self::assertSame(1, $env->get('ENV_INVALID', static function (): int {
             return 1;
         }));
     }

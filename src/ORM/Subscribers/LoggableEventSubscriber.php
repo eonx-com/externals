@@ -11,7 +11,7 @@ use Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry;
 use Gedmo\Loggable\LoggableListener as BaseLoggableListener;
 use Gedmo\Loggable\Mapping\Event\LoggableAdapter;
 
-class LoggableEventSubscriber extends BaseLoggableListener
+final class LoggableEventSubscriber extends BaseLoggableListener
 {
     /**
      * Closure to resolve username.
@@ -33,17 +33,9 @@ class LoggableEventSubscriber extends BaseLoggableListener
     }
 
     /**
-     * Get configuration for given object manager and class.
-     *
-     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager
-     * @param string $class
-     *
-     * @return mixed[]
+     * @inheritdoc
      *
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
-     *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function getConfiguration(ObjectManager $objectManager, $class): array
     {
@@ -61,18 +53,9 @@ class LoggableEventSubscriber extends BaseLoggableListener
     }
 
     /**
-     * Create a new Log instance
-     *
-     * @param string $action
-     * @param mixed $object
-     * @param \Gedmo\Loggable\Mapping\Event\LoggableAdapter $loggableAdapter
-     *
-     * @return \Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry|null
+     * @inheritdoc
      *
      * @throws \Exception Underlying extension throws exception on failure
-     *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     protected function createLogEntry($action, $object, LoggableAdapter $loggableAdapter): ?AbstractLogEntry
     {

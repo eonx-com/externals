@@ -13,8 +13,6 @@ interface TranslatorInterface
      * @param string|null $locale The locale to fetch the key from
      *
      * @return string|array|null
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification
      */
     public function get(string $key, ?array $replace = null, ?string $locale = null);
 

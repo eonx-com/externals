@@ -7,12 +7,12 @@ use EoneoPay\Externals\Bridge\Laravel\Container;
 use EoneoPay\Externals\Container\Interfaces\ContainerInterface;
 use Illuminate\Support\ServiceProvider;
 
-class ContainerServiceProvider extends ServiceProvider
+final class ContainerServiceProvider extends ServiceProvider
 {
     /**
-     * Register PSR11 Container implementation in Laravel/Lumen application.
+     * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @return void
+     * @inheritdoc
      */
     public function register(): void
     {

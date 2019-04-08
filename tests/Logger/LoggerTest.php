@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Logger;
 
 use EoneoPay\Externals\Logger\Logger;
-use Monolog\Logger as Monolog;
-use Tests\EoneoPay\Externals\Logger\Stubs\ArrayHandlerStub;
-use Tests\EoneoPay\Externals\Logger\Stubs\ThrowExceptionHandlerStub;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Monolog\Handler\LogHandlerStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 class LoggerTest extends TestCase
@@ -18,7 +16,7 @@ class LoggerTest extends TestCase
      */
     public function testBooleanMethods(): void
     {
-        $handler = new ArrayHandlerStub(Monolog::DEBUG, true);
+        $handler = new LogHandlerStub();
         $logger = new Logger(null, $handler);
         $message = 'my message';
         $context = ['attr' => 'value'];
@@ -42,7 +40,7 @@ class LoggerTest extends TestCase
      */
     public function testLogException(): void
     {
-        $handler = new ArrayHandlerStub(Monolog::DEBUG, true);
+        $handler = new LogHandlerStub();
         $logger = new Logger(null, $handler);
         $message = 'my message';
 
@@ -64,8 +62,6 @@ class LoggerTest extends TestCase
      */
     public function testLoggerReturnsFalseWhenMonologExceptionThrown(): void
     {
-        self::assertFalse(
-            (new Logger(null, new ThrowExceptionHandlerStub(Monolog::DEBUG, true)))->error('message')
-        );
+        self::assertFalse((new Logger(null, new LogHandlerStub(false)))->error('message'));
     }
 }

@@ -8,7 +8,7 @@ use Dotenv\Environment\DotenvFactory;
 use Dotenv\Loader;
 use EoneoPay\Externals\Environment\Interfaces\EnvInterface;
 
-class Env implements EnvInterface
+final class Env implements EnvInterface
 {
     /**
      * Dotenv loader instance
@@ -26,12 +26,7 @@ class Env implements EnvInterface
     }
 
     /**
-     * Gets the value of an environment variable
-     *
-     * @param string $key The key to get
-     * @param mixed $default The value to return if the key isn't set
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function get(string $key, $default = null)
     {
@@ -51,11 +46,7 @@ class Env implements EnvInterface
     }
 
     /**
-     * Remove an environment variable
-     *
-     * @param string $key The key to remove
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function remove(string $key): bool
     {
@@ -66,12 +57,7 @@ class Env implements EnvInterface
     }
 
     /**
-     * Set an environment variable
-     *
-     * @param string $key The key to set
-     * @param mixed $value The value to assign to the key
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function set(string $key, $value): bool
     {
@@ -100,25 +86,25 @@ class Env implements EnvInterface
             // @codeCoverageIgnoreStart
             case 'false':
             case '(false)':
-            // @codeCoverageIgnoreEnd
+                // @codeCoverageIgnoreEnd
                 return false;
 
             // @codeCoverageIgnoreStart
             case 'true':
             case '(true)':
-            // @codeCoverageIgnoreEnd
+                // @codeCoverageIgnoreEnd
                 return true;
 
             // @codeCoverageIgnoreStart
             case 'empty':
             case '(empty)':
-            // @codeCoverageIgnoreEnd
+                // @codeCoverageIgnoreEnd
                 return '';
 
             // @codeCoverageIgnoreStart
             case 'null':
             case '(null)':
-            // @codeCoverageIgnoreEnd
+                // @codeCoverageIgnoreEnd
                 return null;
         }
 

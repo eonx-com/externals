@@ -5,6 +5,6 @@ namespace EoneoPay\Externals\Encryption\Exceptions;
 
 use InvalidArgumentException;
 
-class InvalidPublicKeyException extends InvalidArgumentException
+final class InvalidPublicKeyException extends InvalidArgumentException
 {
 }

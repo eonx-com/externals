@@ -4,46 +4,43 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\ORM\Extensions;
 
 use EoneoPay\Externals\ORM\Extensions\SoftDeleteExtension;
-use EoneoPay\Externals\ORM\Subscribers\SoftDeleteEventSubscriber;
 use Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter;
-use Tests\EoneoPay\Externals\ExtensionsTestCase;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\Common\EventManagerStub;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\ORM\EntityManagerStub;
+use Tests\EoneoPay\Externals\TestCase;
 
-class SoftDeleteExtensionTest extends ExtensionsTestCase
+/**
+ * @covers \EoneoPay\Externals\ORM\Extensions\SoftDeleteExtension
+ */
+class SoftDeleteExtensionTest extends TestCase
 {
     /**
-     * Extension should add the event subscriber to the event manager.
+     * LoggableExtension should add subscriber to Doctrine event manager when calling addSubscribers.
      *
      * @return void
      */
-    public function testAddSubscriberCallManagerWithRightSubscriber(): void
+    public function testEventSubscriberIsSetInEventManager(): void
     {
-        $eventManager = $this->mockEventManager();
-        $eventManager
-            ->shouldReceive('addEventSubscriber')
-            ->once()
-            ->withArgs(function ($subscriber): bool {
-                return $subscriber instanceof SoftDeleteEventSubscriber;
-            })
-            ->andReturnNull();
-        /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
-        $entityManager = $this->mockEntityManager();
-        /** @var \Doctrine\Common\EventManager $eventManager */
-        (new SoftDeleteExtension())->addSubscribers($eventManager, $entityManager);
-        // Assertions are made using mockery
-        self::assertTrue(true);
+        $eventManager = new EventManagerStub();
+        $softDeleteable = new SoftDeleteExtension();
+
+        self::assertCount(0, $eventManager->getSubscribers());
+
+        $softDeleteable->addSubscribers($eventManager, new EntityManagerStub());
+
+        self::assertCount(1, $eventManager->getSubscribers());
     }
 
     /**
-     * Extension should return array with soft delete filter when getting list of provided filters.
+     * Extension should register a soft deleteable filter
      *
      * @return void
      */
-    public function testGetFiltersReturnExpectedArray(): void
+    public function testGetFiltersReturnsSoftDeleteFilter(): void
     {
-        $filters = (new SoftDeleteExtension())->getFilters();
-        $key = 'soft-deleteable';
-
-        self::assertArrayHasKey($key, $filters);
-        self::assertEquals(SoftDeleteableFilter::class, $filters[$key]);
+        self::assertSame(
+            ['soft-deleteable' => SoftDeleteableFilter::class],
+            (new SoftDeleteExtension())->getFilters()
+        );
     }
 }

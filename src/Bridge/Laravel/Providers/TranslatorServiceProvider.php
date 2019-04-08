@@ -8,12 +8,12 @@ use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 use Illuminate\Contracts\Translation\Translator as ContractedTranslator;
 use Illuminate\Support\ServiceProvider;
 
-class TranslatorServiceProvider extends ServiceProvider
+final class TranslatorServiceProvider extends ServiceProvider
 {
     /**
-     * Register translator
+     * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @return void
+     * @inheritdoc
      */
     public function register(): void
     {

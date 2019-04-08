@@ -3,25 +3,42 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\ORM;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
+use EoneoPay\Externals\ORM\Exceptions\ORMException;
+use EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface;
 use EoneoPay\Externals\ORM\Interfaces\RepositoryInterface;
 
-class Repository extends SimpleOrmDecorator implements RepositoryInterface
+abstract class Repository implements RepositoryInterface
 {
     /**
-     * Create a new repository from a Doctrine Repository
-     *
-     * @param \Doctrine\Common\Persistence\ObjectRepository $repository
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
-    public function __construct(ObjectRepository $repository)
+    protected $entityManager;
+
+    /**
+     * @var string
+     */
+    protected $entityName;
+
+    /**
+     * Initialise a new repository
+     *
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager Entity manager instance
+     * @param \Doctrine\ORM\Mapping\ClassMetadata $classMetadata The class descriptor
+     */
+    public function __construct(EntityManagerInterface $entityManager, ClassMetadata $classMetadata)
     {
-        $this->decorated = $repository;
+        $this->entityName = $classMetadata->name;
+        $this->entityManager = $entityManager;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function count(?array $criteria = null): int
@@ -30,71 +47,95 @@ class Repository extends SimpleOrmDecorator implements RepositoryInterface
     }
 
     /**
-     * Find an entity by its primary key / identifier
-     *
-     * @param mixed $entityId The primary identifier for the entity
-     *
-     * @return mixed Associated entity on success, null if not found
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
+     * @inheritdoc
      */
     public function find($entityId)
     {
-        return $this->callMethod('find', $entityId);
+        return $this->entityManager->find($this->entityName, $entityId);
     }
 
     /**
-     * Get all records from a repository
+     * @inheritdoc
      *
-     * @return mixed[]
-     *
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function findAll(): array
     {
-        return $this->callMethod('findAll') ?? [];
+        return $this->callMethod('loadAll') ?? [];
     }
 
     /**
-     * Finds entities which match a set of criteria
+     * @inheritdoc
      *
-     * @param mixed[] $criteria Array of criteria to find by
-     *
-     * @return mixed[]
-     *
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
-    public function findBy(array $criteria): array
+    public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->callMethod('findBy', $criteria) ?? [];
+        return $this->callMethod('loadAll', $criteria, $orderBy, $limit, $offset) ?? [];
     }
 
     /**
-     * Finds a single entity by a set of criteria
+     * @inheritdoc
      *
-     * @param mixed[] $criteria Array of criteria
-     *
-     * @return mixed Associated entity on success, null if not found
-     *
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
-    public function findOneBy(array $criteria)
+    public function findOneBy(array $criteria, ?array $orderBy = null)
     {
-        return $this->callMethod('findOneBy', $criteria);
+        return $this->callMethod('load', $criteria, null, null, [], null, 1, $orderBy);
     }
 
     /**
-     * Creates a new QueryBuilder instance that is prepopulated for this entity name.
-     *
-     * @param string $alias
-     * @param string|null $indexBy
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
+     * @inheritdoc
+     */
+    public function getClassName(): string
+    {
+        return $this->entityName;
+    }
+
+    /**
+     * @inheritdoc
      */
     protected function createQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilder
     {
-        return $this->callMethod('createQueryBuilder', $alias, $indexBy);
+        return $this->entityManager->createQueryBuilder()
+            ->select($alias)
+            ->from($this->entityName, $alias, $indexBy);
+    }
+
+    /**
+     * Call a method on the entity manager and catch any exception
+     *
+     * @param string $method The method to call
+     * @param mixed ...$parameters The parameters to pass to the method
+     *
+     * @return mixed
+     *
+     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
+     */
+    private function callMethod(string $method, ...$parameters)
+    {
+        try {
+            // Get persister
+            $persister = $this->entityManager->getUnitOfWork()->getEntityPersister($this->entityName);
+
+            return \call_user_func_array([$persister, $method], $parameters ?? []);
+        } catch (DBALException $exception) {
+            // If this is a validation exception, throw it directly
+            if (($exception instanceof EntityValidationFailedExceptionInterface) === true) {
+                /**
+                 * @var \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface $exception
+                 *
+                 * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
+                 */
+                throw $exception;
+            }
+
+            // Wrap others in ORMException
+            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, $exception);
+        }
     }
 }

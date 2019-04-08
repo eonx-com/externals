@@ -5,7 +5,6 @@ namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
 use EoneoPay\Externals\Bridge\Laravel\Container;
 use Illuminate\Container\Container as IlluminateContainer;
-use Tests\EoneoPay\Externals\Bridge\Laravel\Stubs\ServiceStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 class ContainerTest extends TestCase
@@ -14,17 +13,23 @@ class ContainerTest extends TestCase
      * Container should use illuminate container to retrieve services.
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException If container item doesn't exist
      */
     public function testContainerForIlluminate(): void
     {
+        $closure = static function (): string {
+            return 'value';
+        };
+
         $illuminate = new IlluminateContainer();
-        $illuminate->singleton(ServiceStub::class, ServiceStub::class);
+        $illuminate->instance('test', $closure);
 
         $container = new Container($illuminate);
 
-        self::assertTrue($container->has(ServiceStub::class));
+        self::assertTrue($container->has('test'));
         self::assertFalse($container->has('invalid'));
 
-        self::assertInstanceOf(ServiceStub::class, $container->get(ServiceStub::class));
+        self::assertSame($closure, $container->get('test'));
     }
 }

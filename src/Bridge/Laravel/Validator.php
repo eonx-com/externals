@@ -10,7 +10,7 @@ use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Validation\PresenceVerifierInterface;
 
-class Validator implements ValidatorInterface
+final class Validator implements ValidatorInterface
 {
     /**
      * Validation factory instance
@@ -46,9 +46,7 @@ class Validator implements ValidatorInterface
     }
 
     /**
-     * Get messages from the last validation attempt
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function getFailures(): array
     {
@@ -57,12 +55,7 @@ class Validator implements ValidatorInterface
     }
 
     /**
-     * Validate the given data against the provided rules
-     *
-     * @param mixed[] $data Data to validate
-     * @param mixed[] $rules Rules to validate against
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function validate(array $data, array $rules): bool
     {

@@ -9,7 +9,7 @@ use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Logger as MonologLogger;
 
-class Logger implements LoggerInterface
+final class Logger implements LoggerInterface
 {
     /**
      * Monolog instance
@@ -32,12 +32,7 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * Adds a debug message to the log
-     *
-     * @param string $message The log message
-     * @param mixed[] $context Additional log context
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function debug(string $message, ?array $context = null): bool
     {
@@ -45,12 +40,7 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * Adds an error message to the log
-     *
-     * @param string $message The log message
-     * @param mixed[] $context Additional log context
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function error(string $message, ?array $context = null): bool
     {
@@ -58,12 +48,7 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * Record a caught exception with backtrace
-     *
-     * @param \Exception $exception The exception to handle
-     * @param string|null $level The log level for this exception
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function exception(Exception $exception, ?string $level = null): bool
     {
@@ -75,12 +60,7 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * Adds an informational message to the log
-     *
-     * @param string $message The log message
-     * @param mixed[] $context Additional log context
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function info(string $message, ?array $context = null): bool
     {
@@ -88,12 +68,7 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * Adds a notice to the log
-     *
-     * @param string $message The log message
-     * @param mixed[] $context Additional log context
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function notice(string $message, ?array $context = null): bool
     {
@@ -101,12 +76,7 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * Adds a warning to the log
-     *
-     * @param string $message The log message
-     * @param mixed[] $context Additional log context
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function warning(string $message, ?array $context = null): bool
     {

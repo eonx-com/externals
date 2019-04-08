@@ -4,11 +4,17 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\ORM\Query;
 
 use Doctrine\ORM\Query\FilterCollection as DoctrineFilterCollection;
+use EoneoPay\Externals\ORM\Exceptions\ORMException;
 use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
-use EoneoPay\Externals\ORM\SimpleOrmDecorator;
+use InvalidArgumentException;
 
-class FilterCollection extends SimpleOrmDecorator implements FilterCollectionInterface
+final class FilterCollection implements FilterCollectionInterface
 {
+    /**
+     * @var \Doctrine\ORM\Query\FilterCollection
+     */
+    private $collection;
+
     /**
      * Create a new filter collection from a Doctrine FilterCollection.
      *
@@ -16,20 +22,13 @@ class FilterCollection extends SimpleOrmDecorator implements FilterCollectionInt
      */
     public function __construct(DoctrineFilterCollection $filterCollection)
     {
-        $this->decorated = $filterCollection;
+        $this->collection = $filterCollection;
     }
 
     /**
-     * Disables a filter.
-     *
-     * @param string $name Name of the filter.
-     *
-     * @return void.
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
-     *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function disable($name): void
     {
@@ -37,19 +36,32 @@ class FilterCollection extends SimpleOrmDecorator implements FilterCollectionInt
     }
 
     /**
-     * Enables a filter from the collection.
-     *
-     * @param string $name Name of the filter.
-     *
-     * @return void
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
-     *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function enable($name): void
     {
         $this->callMethod('enable', $name);
+    }
+
+    /**
+     * Call a method on the entity manager and catch any exception
+     *
+     * @param string $method The method to call
+     * @param mixed ...$parameters The parameters to pass to the method
+     *
+     * @return mixed
+     *
+     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
+     */
+    protected function callMethod(string $method, ...$parameters)
+    {
+        try {
+            return \call_user_func_array([$this->collection, $method], $parameters ?? []);
+        } catch (InvalidArgumentException $exception) {
+            // Wrap exceptions in ORMException
+            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, $exception);
+        }
     }
 }

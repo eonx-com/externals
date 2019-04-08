@@ -7,7 +7,7 @@ use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
 use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Collection;
 
-class Response extends Collection implements ResponseInterface
+final class Response extends Collection implements ResponseInterface
 {
     /**
      * @var string
@@ -46,9 +46,7 @@ class Response extends Collection implements ResponseInterface
     }
 
     /**
-     * Get response content
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getContent(): string
     {
@@ -56,11 +54,7 @@ class Response extends Collection implements ResponseInterface
     }
 
     /**
-     * Get response header.
-     *
-     * @param string $key
-     *
-     * @return null|string
+     * @inheritdoc
      */
     public function getHeader(string $key): ?string
     {
@@ -68,9 +62,7 @@ class Response extends Collection implements ResponseInterface
     }
 
     /**
-     * Get response headers
-     *
-     * @return string[]
+     * @inheritdoc
      */
     public function getHeaders(): array
     {
@@ -78,9 +70,7 @@ class Response extends Collection implements ResponseInterface
     }
 
     /**
-     * Get response status code
-     *
-     * @return int
+     * @inheritdoc
      */
     public function getStatusCode(): int
     {
@@ -88,9 +78,7 @@ class Response extends Collection implements ResponseInterface
     }
 
     /**
-     * Determine if the response is successful or not
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isSuccessful(): bool
     {

@@ -16,8 +16,7 @@ use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 
-/** @SuppressWarnings(PHPMD.CouplingBetweenObjects) High coupling required for logging and exception handling */
-class Client implements ClientInterface
+final class Client implements ClientInterface
 {
     /**
      * @var \GuzzleHttp\Client
@@ -42,13 +41,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * Perform a request on a uri
-     *
-     * @param string $method The method to use for the request
-     * @param string $uri The uri to send the request to
-     * @param mixed[]|null $options The options to send with the request
-     *
-     * @return \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface A constructed api response
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */

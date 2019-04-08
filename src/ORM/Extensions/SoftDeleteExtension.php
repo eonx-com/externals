@@ -10,18 +10,10 @@ use EoneoPay\Externals\ORM\Subscribers\SoftDeleteEventSubscriber;
 use Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter;
 use LaravelDoctrine\Extensions\GedmoExtension;
 
-class SoftDeleteExtension extends GedmoExtension
+final class SoftDeleteExtension extends GedmoExtension
 {
     /**
-     * Add subscribers to doctrine event environment.
-     *
-     * @param \Doctrine\Common\EventManager $manager
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     * @param \Doctrine\Common\Annotations\Reader|null $reader
-     *
-     * @return void
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter) Inherited from LaravelDoctrineExtensions
+     * @inheritdoc
      */
     public function addSubscribers(
         EventManager $manager,
@@ -32,9 +24,7 @@ class SoftDeleteExtension extends GedmoExtension
     }
 
     /**
-     * Get list of filters provided by the extension.
-     *
-     * @return string[]
+     * @inheritdoc
      */
     public function getFilters(): array
     {

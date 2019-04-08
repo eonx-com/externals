@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\ResolveTargetEntityListener;
 use LaravelDoctrine\ORM\Extensions\Extension;
 
-class ResolveTargetEntityExtension implements Extension
+final class ResolveTargetEntityExtension implements Extension
 {
     /**
      * @var \Doctrine\ORM\Tools\ResolveTargetEntityListener
@@ -17,9 +17,9 @@ class ResolveTargetEntityExtension implements Extension
     private $rtel;
 
     /**
-     * ResolveTargetEntityExtension constructor.
+     * Create extension
      *
-     * @param \Doctrine\ORM\Tools\ResolveTargetEntityListener $rtel
+     * @param \Doctrine\ORM\Tools\ResolveTargetEntityListener $rtel The entity listener for this extension
      */
     public function __construct(ResolveTargetEntityListener $rtel)
     {

@@ -5,25 +5,21 @@ namespace Tests\EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
-use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
+use EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException;
 use EoneoPay\Utils\DateTime;
-use Tests\EoneoPay\Externals\DoctrineTestCase;
 use Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithTransformers;
 use Tests\EoneoPay\Externals\ORM\Stubs\MultiChildEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\MultiParentEntityStub;
 use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
+use Tests\EoneoPay\Externals\ORMTestCase;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Entity
- * @covers \EoneoPay\Externals\ORM\Traits\HasTransformers
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Entity itself is complex so lot of tests to perform
- * @SuppressWarnings(PHPMD.TooManyPublicMethods) Entity itself is complex so lot of tests to perform
  */
-class EntityTest extends DoctrineTestCase
+class EntityTest extends ORMTestCase
 {
     /**
      * Data to populate the entity with for testing
@@ -42,9 +38,7 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \Doctrine\Common\Annotations\AnnotationException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
     public function testAssociateMultiParentsWithMultiChildren(): void
     {
@@ -93,11 +87,11 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
     public function testAssociateMultiWithWrongAssociationException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidRelationshipException::class);
 
         $parent = new MultiParentEntityStub();
         $child = new MultiChildEntityStub(['annotation_name' => 'string']);
@@ -110,11 +104,11 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
     public function testAssociateMultiWithWrongAttributeException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidRelationshipException::class);
 
         $parent = new MultiParentEntityStub();
         $child = new MultiChildEntityStub(['annotation_name' => 'string']);
@@ -127,7 +121,7 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
     public function testAssociateParentWithChildren(): void
     {
@@ -152,11 +146,11 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
     public function testAssociateWithWrongAssociationException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidRelationshipException::class);
 
         $parent = new ParentEntityStub();
         $child = new ChildEntityStub(['annotation_name' => 'string']);
@@ -383,7 +377,7 @@ class EntityTest extends DoctrineTestCase
      */
     public function testToXmlReturnsRightString(): void
     {
-        $expected = function (?string $rootNode = null) {
+        $expected = static function (?string $rootNode = null): string {
             /** @noinspection SyntaxError Closing tag name added from sprintf */
             return \sprintf('<?xml version="1.0" encoding="UTF-8"?>
                 <%s>
