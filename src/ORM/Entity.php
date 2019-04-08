@@ -182,7 +182,7 @@ abstract class Entity implements EntityInterface
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
      */
-    protected function associate(string $attribute, ?EntityInterface $parent, ?string $association = null)
+    protected function associate(string $attribute, ?EntityInterface $parent = null, ?string $association = null)
     {
         // If attribute does not exist on entity, throw exception
         $this->checkEntityHasAttribute($attribute);
