@@ -3,11 +3,18 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
+use EoneoPay\Externals\Bridge\Laravel\EventDispatcher;
 use EoneoPay\Externals\Bridge\Laravel\Providers\EventDispatcherServiceProvider;
 use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
-use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
+use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
+use Illuminate\Events\Dispatcher as IlluminateDispatcher;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
+use Tests\EoneoPay\Externals\TestCase;
 
-class EventDispatcherServiceProviderTest extends LaravelBridgeProvidersTestCase
+/**
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Providers\EventDispatcherServiceProvider
+ */
+class EventDispatcherServiceProviderTest extends TestCase
 {
     /**
      * Test provider register container.
@@ -16,11 +23,23 @@ class EventDispatcherServiceProviderTest extends LaravelBridgeProvidersTestCase
      */
     public function testRegister(): void
     {
-        (new EventDispatcherServiceProvider($this->getApplication()))->register();
+        $application = new ApplicationStub();
 
+        // Bind illuminate dispatcher
+        $application->bind(
+            IlluminateDispatcherContract::class,
+            static function () use ($application): IlluminateDispatcher {
+                return new IlluminateDispatcher($application);
+            }
+        );
+
+        // Run registration
+        (new EventDispatcherServiceProvider($application))->register();
+
+        // Ensure services are bound
         self::assertInstanceOf(
-            EventDispatcherInterface::class,
-            $this->getApplication()->get(EventDispatcherInterface::class)
+            EventDispatcher::class,
+            $application->get(EventDispatcherInterface::class)
         );
     }
 }

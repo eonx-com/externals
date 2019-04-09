@@ -11,7 +11,7 @@ use EoneoPay\Externals\ORM\Interfaces\ValidatableInterface;
 use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 
-class ValidateEventSubscriber implements EventSubscriber
+final class ValidateEventSubscriber implements EventSubscriber
 {
     /**
      * Translator instance
@@ -40,9 +40,7 @@ class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
-     * Returns an array of events this subscriber wants to listen to.
-     *
-     * @return string[]
+     * @inheritdoc
      */
     public function getSubscribedEvents(): array
     {
@@ -53,13 +51,11 @@ class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
-     * Validate entity against rule set on insert
+     * Validate entities before persist
      *
-     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Event arguments
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException Inherited, if validation fails
      */
     public function prePersist(LifecycleEventArgs $eventArgs): void
     {
@@ -67,28 +63,23 @@ class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
-     * Validate entity against rule set on update
+     * Call validator before update
      *
-     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Event arguments
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException Inherited, if validation fails
      */
     public function preUpdate(LifecycleEventArgs $eventArgs): void
     {
         $this->callValidator($eventArgs);
     }
 
-    /** @noinspection PhpDocRedundantThrowsInspection Exception thrown dynamically */
     /**
      * Call validator on an object
      *
      * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
     private function callValidator(LifecycleEventArgs $eventArgs): void
     {

@@ -9,12 +9,12 @@ use EoneoPay\Externals\Request\Interfaces\RequestInterface;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\ServiceProvider;
 
-class RequestServiceProvider extends ServiceProvider
+final class RequestServiceProvider extends ServiceProvider
 {
     /**
-     * Register http request
+     * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @return void
+     * @inheritdoc
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Trusted proxies must be set statically
      */

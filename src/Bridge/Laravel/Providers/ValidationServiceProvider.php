@@ -8,12 +8,12 @@ use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Support\ServiceProvider;
 
-class ValidationServiceProvider extends ServiceProvider
+final class ValidationServiceProvider extends ServiceProvider
 {
     /**
-     * Register validator
+     * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @return void
+     * @inheritdoc
      */
     public function register(): void
     {

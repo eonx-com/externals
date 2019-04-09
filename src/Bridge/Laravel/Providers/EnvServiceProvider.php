@@ -7,12 +7,12 @@ use EoneoPay\Externals\Environment\Env;
 use EoneoPay\Externals\Environment\Interfaces\EnvInterface;
 use Illuminate\Support\ServiceProvider;
 
-class EnvServiceProvider extends ServiceProvider
+final class EnvServiceProvider extends ServiceProvider
 {
     /**
-     * Register env
+     * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @return void
+     * @inheritdoc
      */
     public function register(): void
     {

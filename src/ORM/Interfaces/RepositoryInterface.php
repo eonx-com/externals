@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\ORM\Interfaces;
 
-interface RepositoryInterface
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface RepositoryInterface extends ObjectRepository
 {
     /**
      * Counts entities by a set of criteria.
@@ -15,36 +17,12 @@ interface RepositoryInterface
     public function count(?array $criteria = null): int;
 
     /**
-     * Find a entity by its primary key / identifier
+     * Finds a single object by a set of criteria.
      *
-     * @param mixed $entityId The primary identifier for the entity
+     * @param mixed[] $criteria The criteria.
+     * @param string[]|null $orderBy
      *
-     * @return mixed Associated entity on success, null if not found
+     * @return mixed The entity if found, otherwise null.
      */
-    public function find($entityId);
-
-    /**
-     * Get all records from a repository
-     *
-     * @return mixed[]
-     */
-    public function findAll(): array;
-
-    /**
-     * Finds entitys which match a set of criteria
-     *
-     * @param mixed[] $criteria Array of criteria to find by
-     *
-     * @return mixed[]
-     */
-    public function findBy(array $criteria): array;
-
-    /**
-     * Finds a single entity by a set of criteria
-     *
-     * @param mixed[] $criteria Array of criteria
-     *
-     * @return mixed Associated entity on success, null if not found
-     */
-    public function findOneBy(array $criteria);
+    public function findOneBy(array $criteria, ?array $orderBy = null);
 }

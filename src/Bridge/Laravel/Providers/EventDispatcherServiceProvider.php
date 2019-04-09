@@ -7,12 +7,12 @@ use EoneoPay\Externals\Bridge\Laravel\EventDispatcher;
 use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
 use Illuminate\Support\ServiceProvider;
 
-class EventDispatcherServiceProvider extends ServiceProvider
+final class EventDispatcherServiceProvider extends ServiceProvider
 {
     /**
-     * Register event dispatcher into Laravel application.
+     * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @return void
+     * @inheritdoc
      */
     public function register(): void
     {

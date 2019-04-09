@@ -10,12 +10,14 @@ use EoneoPay\Externals\Filesystem\Interfaces\FilesystemInterface;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Support\ServiceProvider;
 
-class FilesystemServiceProvider extends ServiceProvider
+final class FilesystemServiceProvider extends ServiceProvider
 {
     /**
-     * Register filesystems
+     * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @return void
+     * @inheritdoc
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException If item is not found in container
      */
     public function register(): void
     {
@@ -65,6 +67,8 @@ class FilesystemServiceProvider extends ServiceProvider
      * @param string $driver The driver to check
      *
      * @return bool
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException If item is not found in container
      */
     private function driverExists(string $driver): bool
     {
@@ -78,6 +82,8 @@ class FilesystemServiceProvider extends ServiceProvider
      * Get the default cloud based file driver.
      *
      * @return string|null
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException If item is not found in container
      */
     private function getCloudDriver(): ?string
     {
@@ -88,6 +94,8 @@ class FilesystemServiceProvider extends ServiceProvider
      * Get the default file driver.
      *
      * @return string|null
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException If item is not found in container
      */
     private function getDefaultDriver(): ?string
     {
@@ -98,6 +106,8 @@ class FilesystemServiceProvider extends ServiceProvider
      * Get the disk file driver.
      *
      * @return string|null
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException If item is not found in container
      */
     private function getDiskDriver(): ?string
     {

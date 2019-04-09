@@ -3,45 +3,56 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
+use EoneoPay\Externals\Bridge\Laravel\Filesystem;
 use EoneoPay\Externals\Bridge\Laravel\Providers\FilesystemServiceProvider;
 use EoneoPay\Externals\Filesystem\Interfaces\CloudFilesystemInterface;
 use EoneoPay\Externals\Filesystem\Interfaces\DiskFilesystemInterface;
 use EoneoPay\Externals\Filesystem\Interfaces\FilesystemInterface;
 use Illuminate\Config\Repository as Config;
-use Tests\EoneoPay\Externals\LaravelBridgeProvidersTestCase;
+use Illuminate\Contracts\Foundation\Application;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
+use Tests\EoneoPay\Externals\TestCase;
 
-class FilesystemServiceProviderTest extends LaravelBridgeProvidersTestCase
+/**
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Providers\FilesystemServiceProvider
+ */
+class FilesystemServiceProviderTest extends TestCase
 {
     /**
      * Test default filesystem is set correctly
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException If item is not found in container
      */
     public function testDefaultFilesystem(): void
     {
         // Use cloud as default
-        (new FilesystemServiceProvider($this->getConfiguredApplication(['default' => 's3'])))->register();
+        $application = $this->getConfiguredApplication(['default' => 's3']);
+        (new FilesystemServiceProvider($application))->register();
         self::assertEquals(
-            $this->getApplication()->get(CloudFilesystemInterface::class),
-            $this->getApplication()->get(FilesystemInterface::class)
+            $application->get(CloudFilesystemInterface::class),
+            $application->get(FilesystemInterface::class)
         );
 
         // Use disk as default
-        (new FilesystemServiceProvider($this->getConfiguredApplication(['default' => 'local'])))->register();
+        $application = $this->getConfiguredApplication(['default' => 'local']);
+        (new FilesystemServiceProvider($application))->register();
         self::assertEquals(
-            $this->getApplication()->get(DiskFilesystemInterface::class),
-            $this->getApplication()->get(FilesystemInterface::class)
+            $application->get(DiskFilesystemInterface::class),
+            $application->get(FilesystemInterface::class)
         );
 
         // Use custom driver
-        (new FilesystemServiceProvider($this->getConfiguredApplication(['default' => 'custom'])))->register();
+        $application = $this->getConfiguredApplication(['default' => 'custom']);
+        (new FilesystemServiceProvider($application))->register();
         self::assertNotEquals(
-            $this->getApplication()->get(CloudFilesystemInterface::class),
-            $this->getApplication()->get(FilesystemInterface::class)
+            $application->get(CloudFilesystemInterface::class),
+            $application->get(FilesystemInterface::class)
         );
         self::assertNotEquals(
-            $this->getApplication()->get(DiskFilesystemInterface::class),
-            $this->getApplication()->get(FilesystemInterface::class)
+            $application->get(DiskFilesystemInterface::class),
+            $application->get(FilesystemInterface::class)
         );
     }
 
@@ -49,38 +60,41 @@ class FilesystemServiceProviderTest extends LaravelBridgeProvidersTestCase
      * Test provider bind filesystem into container.
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException If item is not found in container
      */
     public function testRegister(): void
     {
-        (new FilesystemServiceProvider($this->getConfiguredApplication()))->register();
+        $application = $this->getConfiguredApplication();
 
+        // Run registration
+        (new FilesystemServiceProvider($application))->register();
+
+        // Ensure services are bound
         self::assertInstanceOf(
-            CloudFilesystemInterface::class,
-            $this->getApplication()->get(CloudFilesystemInterface::class)
+            Filesystem::class,
+            $application->get(CloudFilesystemInterface::class)
         );
-
         self::assertInstanceOf(
-            DiskFilesystemInterface::class,
-            $this->getApplication()->get(DiskFilesystemInterface::class)
+            Filesystem::class,
+            $application->get(DiskFilesystemInterface::class)
         );
     }
 
     /** @noinspection ReturnTypeCanBeDeclaredInspection Application is nothing else than container */
 
     /**
-     * Create filesystem config
+     * Create configured application instance
      *
      * @param mixed[]|null $additional Additional configuration entries
      *
      * @return \Illuminate\Contracts\Foundation\Application
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      */
-    private function getConfiguredApplication(?array $additional = null)
+    private function getConfiguredApplication(?array $additional = null): Application
     {
-        $application = $this->getApplication();
+        $application = new ApplicationStub();
 
-        $application->bind('config', function () use ($additional) {
+        $application->bind('config', static function () use ($additional) {
             return new Config([
                 'filesystems' => \array_merge([
                     'disk' => 'local',

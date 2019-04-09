@@ -6,7 +6,7 @@ namespace EoneoPay\Externals\Bridge\Laravel;
 use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcher;
 
-class EventDispatcher implements EventDispatcherInterface
+final class EventDispatcher implements EventDispatcherInterface
 {
     /**
      * @var \Illuminate\Contracts\Events\Dispatcher
@@ -14,7 +14,7 @@ class EventDispatcher implements EventDispatcherInterface
     private $dispatcher;
 
     /**
-     * EventDispatcher constructor.
+     * Create event dispatcher
      *
      * @param \Illuminate\Contracts\Events\Dispatcher $dispatcher
      */
@@ -24,26 +24,15 @@ class EventDispatcher implements EventDispatcherInterface
     }
 
     /**
-     * Fire an event and call the listeners.
-     *
-     * @param  string|mixed $event
-     * @param  mixed $payload
-     * @param  bool $halt
-     *
-     * @return mixed[]|null
+     * @inheritdoc
      */
     public function dispatch($event, $payload = null, ?bool $halt = null): ?array
     {
-        return $this->dispatcher->dispatch($event, $payload ?? [], $halt ?? false);
+        return $this->dispatcher->dispatch($event, $payload, $halt ?? false);
     }
 
     /**
-     * Configure listener for given events.
-     *
-     * @param string[] $events
-     * @param string $listener
-     *
-     * @return void
+     * @inheritdoc
      */
     public function listen(array $events, string $listener): void
     {

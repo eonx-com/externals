@@ -10,7 +10,7 @@ use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Validation\PresenceVerifierInterface;
 
-class Validator implements ValidatorInterface
+final class Validator implements ValidatorInterface
 {
     /**
      * Validation factory instance
@@ -46,9 +46,7 @@ class Validator implements ValidatorInterface
     }
 
     /**
-     * Get messages from the last validation attempt
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function getFailures(): array
     {
@@ -57,12 +55,7 @@ class Validator implements ValidatorInterface
     }
 
     /**
-     * Validate the given data against the provided rules
-     *
-     * @param mixed[] $data Data to validate
-     * @param mixed[] $rules Rules to validate against
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function validate(array $data, array $rules): bool
     {
@@ -141,15 +134,8 @@ class Validator implements ValidatorInterface
      */
     private function instantiateRule(string $className): ?ValidationRuleInterface
     {
-        // If rule is invalid, skip, this is only here for safety since method is private
-        if (\class_exists($className) === false) {
-            // @codeCoverageIgnoreStart
-            return null;
-            // @codeCoverageIgnoreEnd
-        }
-
         // Instantiate class
-        $rule = new $className();
+        $rule = $this->instantiateRuleClass($className);
 
         // If class isn't a valid rule, skip, this is only here for safety since method is private
         if (($rule instanceof ValidationRuleInterface) === false) {
@@ -165,5 +151,26 @@ class Validator implements ValidatorInterface
         $this->validator->addReplacer($rule->getName(), $rule->getReplacements());
 
         return $rule;
+    }
+
+    /**
+     * Instantiate rule class if it's valid
+     *
+     * @param string $className
+     *
+     * @return \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface|null
+     */
+    private function instantiateRuleClass(string $className): ?ValidationRuleInterface
+    {
+        // If rule is invalid, skip, this is only here for safety since method is private
+        if (\class_exists($className) === false) {
+            return null; // @codeCoverageIgnore
+        }
+
+        // Instantiate class
+        $rule = new $className();
+
+        // Only return the rule if it's implementing the expected interface
+        return ($rule instanceof ValidationRuleInterface) === true ? $rule : null;
     }
 }

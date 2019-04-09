@@ -31,7 +31,7 @@ trait HasTransformers
      */
     protected function transformToDateTime(string $property): void
     {
-        if ($this->{$property} === null || $this->{$property} instanceof BaseDateTime) {
+        if ($this->{$property} === null || ($this->{$property} instanceof BaseDateTime) === true) {
             return;
         }
 

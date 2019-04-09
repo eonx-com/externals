@@ -8,7 +8,7 @@ use Dotenv\Environment\DotenvFactory;
 use Dotenv\Loader;
 use EoneoPay\Externals\Environment\Interfaces\EnvInterface;
 
-class Env implements EnvInterface
+final class Env implements EnvInterface
 {
     /**
      * Dotenv loader instance
@@ -26,12 +26,7 @@ class Env implements EnvInterface
     }
 
     /**
-     * Gets the value of an environment variable
-     *
-     * @param string $key The key to get
-     * @param mixed $default The value to return if the key isn't set
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function get(string $key, $default = null)
     {
@@ -51,11 +46,7 @@ class Env implements EnvInterface
     }
 
     /**
-     * Remove an environment variable
-     *
-     * @param string $key The key to remove
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function remove(string $key): bool
     {
@@ -66,12 +57,7 @@ class Env implements EnvInterface
     }
 
     /**
-     * Set an environment variable
-     *
-     * @param string $key The key to set
-     * @param mixed $value The value to assign to the key
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function set(string $key, $value): bool
     {
@@ -95,33 +81,32 @@ class Env implements EnvInterface
      */
     private function resolveKeywords(string $value)
     {
+        // By default the original value will be returned
+        $resolution = $value;
+
         // Handle php keywords - code coverage disabled due to phpdbg not seeing case statements
         switch (\mb_strtolower($value)) {
-            // @codeCoverageIgnoreStart
-            case 'false':
-            case '(false)':
-            // @codeCoverageIgnoreEnd
-                return false;
+            case 'false': // @codeCoverageIgnore
+            case '(false)': // @codeCoverageIgnore
+                $resolution = false;
+                break;
 
-            // @codeCoverageIgnoreStart
-            case 'true':
-            case '(true)':
-            // @codeCoverageIgnoreEnd
-                return true;
+            case 'true': // @codeCoverageIgnore
+            case '(true)': // @codeCoverageIgnore
+                $resolution = true;
+                break;
 
-            // @codeCoverageIgnoreStart
-            case 'empty':
-            case '(empty)':
-            // @codeCoverageIgnoreEnd
-                return '';
+            case 'empty': // @codeCoverageIgnore
+            case '(empty)': // @codeCoverageIgnore
+                $resolution = '';
+                break;
 
-            // @codeCoverageIgnoreStart
-            case 'null':
-            case '(null)':
-            // @codeCoverageIgnoreEnd
-                return null;
+            case 'null': // @codeCoverageIgnore
+            case '(null)': // @codeCoverageIgnore
+                $resolution = null;
+                break;
         }
 
-        return $value;
+        return $resolution;
     }
 }

@@ -4,144 +4,192 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\Client;
-use EoneoPay\Externals\HttpClient\Interfaces\InvalidApiResponseExceptionInterface;
-use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
-use EoneoPay\Utils\Interfaces\BaseExceptionInterface;
-use Tests\EoneoPay\Externals\HttpClientTestCase;
+use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
+use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
+use EoneoPay\Externals\Logger\Logger;
+use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Monolog\Handler\LogHandlerStub;
+use Tests\EoneoPay\Externals\TestCase;
 
-class ClientTest extends HttpClientTestCase
+/**
+ * @covers \EoneoPay\Externals\HttpClient\Client
+ */
+class ClientTest extends TestCase
 {
     /**
-     * Client should fallback content to empty string if runtime exception is thrown when getting body contents.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
-     */
-    public function testContentEmptyWhenRuntimeExceptionOnBody(): void
-    {
-        /** @var \Mockery\MockInterface $mockedBody */
-        $mockedBody = $this->mockStreamForRuntimeException();
-        $response = (new Client($this->mockGuzzleClientForResponse($mockedBody)))
-            ->request(self::METHOD, self::URI);
-
-        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
-        self::assertInstanceOf(ResponseInterface::class, $response);
-        self::assertEquals('', $response->getContent());
-    }
-
-    /**
-     * Client should throw invalid api response exception if status code if different than 200 range.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
-     */
-    public function testInvalidApiResponseExceptionWhenResponseNotSuccessful(): void
-    {
-        $this->expectException(InvalidApiResponseExceptionInterface::class);
-
-        $this->clientRequest('', 300);
-    }
-
-    /**
-     * Client should decode json content from response and response should return each field on demand.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
-     */
-    public function testJsonContentSuccessfullyDecoded(): void
-    {
-        $email = 'test@eoneopay.com.au';
-        $contents = \sprintf('{"email":"%s"}', $email);
-        $response = $this->clientRequest($contents);
-
-        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
-        self::assertInstanceOf(ResponseInterface::class, $response);
-        self::assertEquals($contents, $response->getContent());
-        self::assertEquals($email, $response->get('email'));
-    }
-
-    /**
-     * Client should return response interface successfully when no exceptions.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
-     */
-    public function testShouldReturnResponseInterface(): void
-    {
-        $contents = 'my contents';
-        $response = $this->clientRequest($contents);
-
-        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
-        self::assertInstanceOf(ResponseInterface::class, $response);
-        self::assertEquals($contents, $response->getContent());
-        self::assertEquals(200, $response->getStatusCode());
-        self::assertEquals([], $response->getHeaders());
-        self::assertNull($response->getHeader('header'));
-    }
-
-    /**
-     * Client should return response interface based on exception response when set.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
-     */
-    public function testShouldReturnResponseInterfaceBasedOnRequestExceptionResponse(): void
-    {
-        $contents = 'my contents';
-
-        /** @var \Mockery\MockInterface $mockedBody */
-        $mockedBody = $this->mockStreamForContents($contents);
-        $response = (new Client($this->mockGuzzleClientForRequestException($mockedBody)))
-            ->request(self::METHOD, self::URI);
-
-        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
-        self::assertInstanceOf(ResponseInterface::class, $response);
-        self::assertEquals($contents, $response->getContent());
-    }
-
-    /**
-     * Client should return response interface based on exception itself when no response set.
+     * Test exceptions are logged correctly
      *
      * @return void
      */
-    public function testShouldThrowExceptionWithResponseInterfaceBasedOnRequestException(): void
+    public function testExceptionLogging(): void
     {
+        $handler = new LogHandlerStub();
+
         try {
-            $response = (new Client($this->mockGuzzleClientForRequestException(), $this->mockLoggerForException()))
-                ->request(self::METHOD, self::URI);
-        } catch (InvalidApiResponseExceptionInterface $exception) {
-            $response = $exception->getResponse();
+            $this->createInstance(
+                new MockHandler([
+                    new RequestException('An error occured', new Request('GET', 'test'), new Response(500, [], 'error'))
+                ]),
+                new Logger(null, $handler)
+            )->request('get', 'test');
+        } catch (InvalidApiResponseException $exception) {
+            // Capture previous exception
+            $previous = $exception->getPrevious();
 
-            self::assertSame(BaseExceptionInterface::DEFAULT_ERROR_CODE_RUNTIME, $exception->getErrorCode());
-            self::assertSame(BaseExceptionInterface::DEFAULT_ERROR_SUB_CODE, $exception->getErrorSubCode());
+            self::assertCount(3, $handler->getLogs());
+            self::assertSame('API request sent', $handler->getLogs()[0]['message']);
+            self::assertSame(
+                \sprintf('Exception caught: %s', $previous === null ? '' : $previous->getMessage()),
+                $handler->getLogs()[1]['message']
+            );
+            self::assertSame('API response received', $handler->getLogs()[2]['message']);
+
+            // Return so the failure doesn't trigger, this will only trigger if exception isn't handled
+            return;
         }
 
-        self::assertInstanceOf(ResponseInterface::class, $response);
-        self::assertEquals(\sprintf('{"exception":"%s"}', self::EXCEPTION_MESSAGE), $response->getContent());
-        self::assertEquals(self::EXCEPTION_MESSAGE, $response->get('exception'));
+        self::fail('Expecting request exception but it was never thrown');
     }
 
     /**
-     * Client should decode xml content from response and response should return each field on demand.
+     * Test handling of a guzzle generic exception
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException If there is a request error
      */
-    public function testXmlContentSuccessfullyDecoded(): void
+    public function testHandlingGuzzleException(): void
     {
-        $email = 'test@eoneopay.com.au';
-        $contents = \sprintf('<data><email>%s</email></data>', $email);
-        $response = $this->clientRequest($contents);
+        $this->expectException(InvalidApiResponseException::class);
 
-        /** @noinspection UnnecessaryAssertionInspection Testing actual value returned */
-        self::assertInstanceOf(ResponseInterface::class, $response);
-        self::assertEquals($contents, $response->getContent());
-        self::assertEquals($email, $response->get('email'));
+        $this->createInstance(new MockHandler([new TransferException('An error occured')]))->request('get', 'test');
+    }
+
+    /**
+     * Test handling of a guzzle request exception
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException If there is a request error
+     */
+    public function testHandlingGuzzleRequestException(): void
+    {
+        $this->expectException(InvalidApiResponseException::class);
+
+        $this->createInstance(new MockHandler([
+            new RequestException('An error occured', new Request('GET', 'test'), new Response(500, [], 'error'))
+        ]))->request('get', 'test');
+    }
+
+    /**
+     * Test handling of request exception without response body
+     *
+     * @return void
+     */
+    public function testHandlingGuzzleRequestExceptionWithoutBody(): void
+    {
+        try {
+            $this->createInstance(new MockHandler([
+                new RequestException('An error occured', new Request('GET', 'test'))
+            ]))->request('get', 'test');
+        } catch (InvalidApiResponseException $exception) {
+            self::assertSame('{"exception":"An error occured"}', $exception->getResponse()->getContent());
+        }
+    }
+
+    /**
+     * Test json response processing
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException If there is a request error
+     */
+    public function testJsonResponseProcessing(): void
+    {
+        $response = $this->createInstance(
+            new MockHandler([new Response(200, [], '{"test":"1"}')])
+        )->request('get', 'test');
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('{"test":"1"}', $response->getContent());
+
+        // Make sure data can be accessed
+        self::assertSame('1', $response->get('test'));
+    }
+
+    /**
+     * Test logger logs request and response
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException If there is a request error
+     */
+    public function testLoggerLogsRequestResponse(): void
+    {
+        $handler = new LogHandlerStub();
+
+        // Send request
+        $this->createInstance(
+            new MockHandler([new Response(200, [], 'ok')]),
+            new Logger(null, $handler)
+        )->request('get', 'test');
+
+        self::assertCount(2, $handler->getLogs());
+        self::assertSame('API request sent', $handler->getLogs()[0]['message']);
+        self::assertSame('API response received', $handler->getLogs()[1]['message']);
+    }
+
+    /**
+     * Test processing a standard request
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException If there is a request error
+     */
+    public function testRequestProcessing(): void
+    {
+        $response = $this->createInstance(new MockHandler([new Response(200, [], 'ok')]))->request('get', 'test');
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('ok', $response->getContent());
+    }
+
+    /**
+     * Test xml response processing
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException If there is a request error
+     */
+    public function testXmlResponseProcessing(): void
+    {
+        $response = $this->createInstance(
+            new MockHandler([new Response(200, [], '<?xml version="1.0"?><data><test>1</test></data>')])
+        )->request('get', 'test');
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('<?xml version="1.0"?><data><test>1</test></data>', $response->getContent());
+
+        // Make sure data can be accessed
+        self::assertSame('1', $response->get('test'));
+    }
+
+    /**
+     * Create client instance
+     *
+     * @param \GuzzleHttp\Handler\MockHandler $handler Guzzle mock handler
+     * @param \EoneoPay\Externals\Logger\Interfaces\LoggerInterface|null $logger Logger instance to use
+     *
+     * @return \EoneoPay\Externals\HttpClient\Client
+     */
+    private function createInstance(MockHandler $handler, ?LoggerInterface $logger = null): Client
+    {
+        // Create guzzle with mock response
+        return new Client(new Guzzle(['handler' => $handler]), $logger);
     }
 }

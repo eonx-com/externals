@@ -5,9 +5,11 @@ namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
 use EoneoPay\Externals\Bridge\Laravel\EventDispatcher;
 use Illuminate\Events\Dispatcher as IlluminateDispatcher;
-use Mockery\MockInterface;
 use Tests\EoneoPay\Externals\TestCase;
 
+/**
+ * @covers \EoneoPay\Externals\Bridge\Laravel\EventDispatcher
+ */
 class EventDispatcherTest extends TestCase
 {
     /**
@@ -17,8 +19,7 @@ class EventDispatcherTest extends TestCase
      */
     public function testDispatch(): void
     {
-        $illuminateDispatcher = new IlluminateDispatcher();
-        $eventDispatcher = new EventDispatcher($illuminateDispatcher);
+        $eventDispatcher = new EventDispatcher(new IlluminateDispatcher());
 
         self::assertIsArray($eventDispatcher->dispatch('my-event'));
         self::assertNull($eventDispatcher->dispatch('my-event', null, true));
@@ -31,33 +32,15 @@ class EventDispatcherTest extends TestCase
      */
     public function testListen(): void
     {
-        /** @var \Illuminate\Events\Dispatcher $illuminateDispatcher */
-        $illuminateDispatcher = $this->mockIlluminateDispatcherForListen();
-        (new EventDispatcher($illuminateDispatcher))->listen([], 'my-listener');
+        $dispatcher = new IlluminateDispatcher();
+        $eventDispatcher = new EventDispatcher($dispatcher);
 
-        // Assertions done within Mockery
-        self::assertTrue(true);
-    }
+        // Ensure listener doesn't exist
+        self::assertFalse($dispatcher->hasListeners('test'));
 
-    /**
-     * Mock IlluminateDispatcher to test listen.
-     *
-     * @return \Mockery\MockInterface
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess) Inherited from Mockery
-     */
-    private function mockIlluminateDispatcherForListen(): MockInterface
-    {
-        $dispatcher = \Mockery::mock(IlluminateDispatcher::class);
+        $eventDispatcher->listen(['test'], 'my-listener');
 
-        $dispatcher
-            ->shouldReceive('listen')
-            ->once()
-            ->withArgs(function ($events, $listener): bool {
-                return \is_array($events) && $listener === 'my-listener';
-            })
-            ->andReturnNull();
-
-        return $dispatcher;
+        // Ensure listener was added
+        self::assertTrue($dispatcher->hasListeners('test'));
     }
 }

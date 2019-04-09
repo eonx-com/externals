@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\ORM;
 
-use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
+use EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\XmlConverter;
 
 /**
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity covered by unit tests
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity required to enable smaller entities in application
  */
 abstract class Entity implements EntityInterface
 {
@@ -33,47 +33,21 @@ abstract class Entity implements EntityInterface
     abstract public function toArray(): array;
 
     /**
-     * Allow getX() and setX($value) to get and set column values
-     *
-     * This method searches case insensitive
-     *
-     * @param string $method The method being called
-     * @param mixed[] $parameters Parameters passed to the method
-     *
-     * @return mixed Value or null on getX(), self on setX(value)
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist or is immutable
      */
     public function __call(string $method, array $parameters)
     {
-        // Set available types
-        $types = ['get', 'has', 'is', 'set'];
-
-        // Break calling method into type (get, has, is, set) and attribute
-        \preg_match('/^(' . \implode('|', $types) . ')([a-zA-Z][\w]+)$/i', $method, $matches);
-
-        $type = \mb_strtolower($matches[1] ?? '');
-        $property = $this->resolveProperty($matches[2] ?? '');
-
-        // The property being accessed must exist and the type must be valid if one of these things
-        // aren't true throw an exception
-        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
-            throw new InvalidMethodCallException(
-                \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
-            );
-        }
+        // Extract type and property from method
+        [$type, $property] = $this->getTypeAndPropertyFromMethod($method);
 
         // Perform action - code coverage disabled due to phpdbg not seeing case statements
         switch ($type) {
             case 'get': // @codeCoverageIgnore
-                return $this->get($property);
-
             case 'has': // @codeCoverageIgnore
-                return $this->has($property);
-
             case 'is': // @codeCoverageIgnore
-                // Always return a boolean
-                return (bool)$this->get($property);
+                return ($type === 'is') ? (bool)$this->get($property) : $this->{$type}($property);
 
             case 'set': // @codeCoverageIgnore
                 // Return original instance for fluency
@@ -85,11 +59,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * Populate a entity from an array of data
-     *
-     * @param mixed[] $data The data to fill the entity with
-     *
-     * @return void
+     * @inheritdoc
      */
     public function fill(array $data): void
     {
@@ -100,9 +70,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * Get a list of attributes or keys which are able to be filled, by default all fields can be set
-     *
-     * @return string[]
+     * @inheritdoc
      */
     public function getFillableProperties(): array
     {
@@ -110,9 +78,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * Get entity id.
-     *
-     * @return int|string|null
+     * @inheritdoc
      */
     public function getId()
     {
@@ -128,9 +94,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * Return contents for serializing as json
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function jsonSerialize(): array
     {
@@ -138,9 +102,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * Serialize entity as json
-     *
-     * @return string
+     * @inheritdoc
      */
     public function toJson(): string
     {
@@ -148,11 +110,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * Serialize entity as xml
-     *
-     * @param string|null $rootNode The name of the root node
-     *
-     * @return string|null
+     * @inheritdoc
      */
     public function toXml(?string $rootNode = null): ?string
     {
@@ -175,23 +133,29 @@ abstract class Entity implements EntityInterface
      * Associate an entity in a bidirectional way from the owning side
      *
      * @param string $attribute The attribute on the entity for the many to one association
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $parent The entity to associate
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $parent The entity to associate
      * @param string|null $association The attribute on the parent for the one to many collection
      *
      * @return mixed The original entity for fluency
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException If relationship property does not exist
      */
-    protected function associate(string $attribute, EntityInterface $parent, ?string $association = null)
+    protected function associate(string $attribute, ?EntityInterface $parent = null, ?string $association = null)
     {
         // If attribute does not exist on entity, throw exception
-        $this->checkEntityHasAttribute($attribute);
+        if (\property_exists($this, $attribute) === false) {
+            throw new InvalidRelationshipException(\sprintf(
+                'Attempted to create relationship on property %s::%s but the property does not exist',
+                \get_class($this),
+                $attribute
+            ));
+        }
 
         // Get current attribute value
-        $currentValue = $this->getValue($attribute);
+        $current = $this->getValue($attribute);
 
-        // If attribute value is already parent, return
-        if ($currentValue === $parent) {
+        // If current property value is already the parent, return
+        if ($current === $parent) {
             return $this;
         }
 
@@ -200,18 +164,22 @@ abstract class Entity implements EntityInterface
         // If foreign key column explicitly defined assign parent id
         $foreignKey = \sprintf('%sId', $attribute);
         if (\property_exists($this, $foreignKey)) {
-            $this->{$foreignKey} = $parent->getId();
+            $this->{$foreignKey} = ($parent instanceof EntityInterface) === true ? $parent->getId() : null;
         }
 
         // If association set, handle it
         if ($association !== null) {
             try {
-                $this->handleReverseAssociation($association, $parent, $currentValue);
+                $this->handleReverseAssociation($association, $current, $parent);
             } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidMethodCallException $exception) {
                 // We have to throw a different exception otherwise it's caught higher and it dies silently.
-                throw new InvalidArgumentException(
-                    \sprintf('Property %s::%s does not exist', \get_class($parent), $association),
-                    null,
+                throw new InvalidRelationshipException(
+                    \sprintf(
+                        'Attempted to create relationship on property %s::%s but the property does not exist',
+                        ($parent instanceof EntityInterface) === true ? \get_class($parent) : $attribute,
+                        $association
+                    ),
+                    0,
                     $exception
                 );
             }
@@ -229,44 +197,15 @@ abstract class Entity implements EntityInterface
      *
      * @return mixed The original entity for fluency
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException If relationship property does not exist
      */
     protected function associateMultiple(string $attribute, EntityInterface $parent, ?string $association = null)
     {
-        // If attribute does not exist on entity, throw exception
-        $this->checkEntityHasAttribute($attribute);
+        $this->addToCollection($attribute, $parent, $this);
 
-        // If attribute contains this item, return
-        if ($this->{$attribute}->contains($parent)) {
-            return $this;
-        }
-
-        // Add parent if not exists
-        $this->{$attribute}->add($parent);
-
-        // If no association given, return
-        if ($association === null) {
-            return $this;
-        }
-
-        // Determine parent collection method
-        $collection = \sprintf('get%s', \ucfirst($association));
-
-        try {
-            // If parent collection contains this item, return
-            if ($parent->{$collection}()->contains($this)) {
-                return $this;
-            }
-
-            // Add entity to parent collection
-            $parent->{$collection}()->add($this);
-        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidMethodCallException $exception) {
-            // We have to throw a different exception otherwise it's caught higher and it dies silently.
-            throw new InvalidArgumentException(
-                \sprintf('Property %s::%s does not exist', \get_class($parent), $association),
-                null,
-                $exception
-            );
+        // Add bi-directional if association is provided
+        if ($association !== null) {
+            $this->addToCollection($association, $this, $parent);
         }
 
         return $this;
@@ -312,23 +251,39 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * If attribute does not exist on entity, throw exception
+     * Update a collection with an entity
      *
-     * @param string $attribute
+     * @param string $attribute The attribute which contains the collection
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $child The entity to add to the collection
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $parent The entity to add the child to
      *
-     * @return void
+     * @return static
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException If attribute does not exist
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException If relationship property does not exist
      */
-    private function checkEntityHasAttribute(string $attribute): void
+    private function addToCollection(string $attribute, EntityInterface $child, EntityInterface $parent)
     {
-        if (\property_exists($this, $attribute) === false) {
-            throw new InvalidArgumentException(\sprintf(
-                'Property %s::%s does not exist',
-                \get_class($this),
-                $attribute
-            ));
+        // Determine parent collection method
+        $collection = \sprintf('get%s', \ucfirst($attribute));
+
+        try {
+            // If parent collection contains this item, return
+            if ($parent->{$collection}()->contains($child)) {
+                return $this;
+            }
+
+            // Add entity to parent collection
+            $parent->{$collection}()->add($child);
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidMethodCallException $exception) {
+            // We have to throw a different exception otherwise it's caught higher and it dies silently.
+            throw new InvalidRelationshipException(
+                \sprintf('Property %s::%s does not exist', \get_class($parent), $attribute),
+                0,
+                $exception
+            );
         }
+
+        return $this;
     }
 
     /**
@@ -356,6 +311,35 @@ abstract class Entity implements EntityInterface
     }
 
     /**
+     * Get type and property from method
+     *
+     * @param string $method The method being called
+     *
+     * @return string[]
+     */
+    private function getTypeAndPropertyFromMethod(string $method): array
+    {
+        // Set available types
+        $types = ['get', 'has', 'is', 'set'];
+
+        // Break calling method into type (get, has, is, set) and attribute
+        \preg_match('/^(' . \implode('|', $types) . ')([a-zA-Z][\w]+)$/i', $method, $matches);
+
+        $type = \mb_strtolower($matches[1] ?? '');
+        $property = $this->resolveProperty($matches[2] ?? '');
+
+        // The property being accessed must exist and the type must be valid if one of these things
+        // aren't true throw an exception
+        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
+            throw new InvalidMethodCallException(
+                \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
+            );
+        }
+
+        return [$type, $property];
+    }
+
+    /**
      * Get property value via getter
      *
      * @param string $property The property to get
@@ -369,38 +353,33 @@ abstract class Entity implements EntityInterface
         return $this->{$getter}();
     }
 
-    /** @noinspection PhpDocRedundantThrowsInspection */
-
     /**
      * Handle reverse association.
      *
      * @param string $association
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $parent
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $currentValue
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $existing The existing parent
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $new The new parent relationship
      *
      * @return void
      */
     private function handleReverseAssociation(
         string $association,
-        EntityInterface $parent,
-        ?EntityInterface $currentValue = null
+        ?EntityInterface $existing = null,
+        ?EntityInterface $new = null
     ): void {
         // Determine collection method
         $collection = \sprintf('get%s', \ucfirst($association));
 
-        // Check if this is already in collection
-        $exists = $parent->{$collection}()->contains($this);
-
-        // If attribute is not this, remove existing association
-        if ($currentValue !== null &&
-            $currentValue !== $this &&
-            $currentValue->{$collection}()->contains($this)) {
-            $currentValue->{$collection}()->removeElement($this);
+        // If there is a existing parent, remove
+        if (($existing instanceof EntityInterface) === true &&
+            $existing !== $this &&
+            $existing->{$collection}()->contains($this)) {
+            $existing->{$collection}()->removeElement($this);
         }
 
-        // Add to collection if it doesn't already exist
-        if ($exists === false) {
-            $parent->$collection()->add($this);
+        // Add to new parent if applicable
+        if (($new instanceof EntityInterface) === true && $new->{$collection}()->contains($this) === false) {
+            $new->$collection()->add($this);
         }
     }
 
@@ -468,8 +447,6 @@ abstract class Entity implements EntityInterface
      * @param string $property The property to resolve
      *
      * @return string|null
-     *
-     * @codeCoverageIgnore This method just passes through to additional methods and is called basically everywhere
      */
     private function resolveProperty(string $property): ?string
     {
@@ -489,10 +466,10 @@ abstract class Entity implements EntityInterface
      */
     private function set(string $property, $value)
     {
-        $resolved = $this->resolveProperty($property);
+        $resolved = (string)$this->resolveProperty($property);
 
-        // If property is not found or not fillable, return
-        if ($resolved === null || $this->isFillable($resolved) === false) {
+        // If property doesn't exist or is not fillable, return
+        if ($this->has($property) === false || $this->isFillable($resolved) === false) {
             return $this;
         }
 

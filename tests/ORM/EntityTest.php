@@ -5,25 +5,22 @@ namespace Tests\EoneoPay\Externals\ORM;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
-use EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
-use EoneoPay\Utils\DateTime;
-use Tests\EoneoPay\Externals\DoctrineTestCase;
-use Tests\EoneoPay\Externals\ORM\Stubs\ChildEntityStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\EntityStubWithTransformers;
-use Tests\EoneoPay\Externals\ORM\Stubs\MultiChildEntityStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\MultiParentEntityStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\ParentEntityStub;
+use EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException;
+use Tests\EoneoPay\Externals\ORMTestCase;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidRelationshipStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Entity
- * @covers \EoneoPay\Externals\ORM\Traits\HasTransformers
  *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Entity itself is complex so lot of tests to perform
- * @SuppressWarnings(PHPMD.TooManyPublicMethods) Entity itself is complex so lot of tests to perform
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) All test cases must be public
  */
-class EntityTest extends DoctrineTestCase
+class EntityTest extends ORMTestCase
 {
     /**
      * Data to populate the entity with for testing
@@ -42,14 +39,12 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \Doctrine\Common\Annotations\AnnotationException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
     public function testAssociateMultiParentsWithMultiChildren(): void
     {
-        $parent = new MultiParentEntityStub();
-        $child = new MultiChildEntityStub(['annotation_name' => 'string', 'value' => 'my-value']);
+        $parent = new MultiParentStub();
+        $child = new MultiChildStub(['annotation_name' => 'string', 'value' => 'my-value']);
 
         $child->addParent($parent);
 
@@ -80,7 +75,7 @@ class EntityTest extends DoctrineTestCase
         $this->getEntityManager()->flush();
         $this->getDoctrineEntityManager()->clear();
 
-        $childRetrieve = $this->getEntityManager()->getRepository(MultiChildEntityStub::class)->findOneBy([
+        $childRetrieve = $this->getEntityManager()->getRepository(MultiChildStub::class)->findOneBy([
             'value' => 'my-value'
         ]);
 
@@ -93,14 +88,14 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
     public function testAssociateMultiWithWrongAssociationException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidRelationshipException::class);
 
-        $parent = new MultiParentEntityStub();
-        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+        $parent = new MultiParentStub();
+        $child = new MultiChildStub(['annotation_name' => 'string']);
 
         $child->addParentWithWrongAssociation($parent);
     }
@@ -110,14 +105,14 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
     public function testAssociateMultiWithWrongAttributeException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidRelationshipException::class);
 
-        $parent = new MultiParentEntityStub();
-        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+        $parent = new MultiParentStub();
+        $child = new MultiChildStub(['annotation_name' => 'string']);
 
         $child->addParentWithWrongAttribute($parent);
     }
@@ -127,17 +122,17 @@ class EntityTest extends DoctrineTestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
     public function testAssociateParentWithChildren(): void
     {
-        $parent = new ParentEntityStub();
-        $child = new ChildEntityStub(['annotation_name' => 'string']);
+        $parent = new ParentStub();
+        $child = new ChildStub(['annotation_name' => 'string']);
 
         $child->setParent($parent);
 
         // Test parent is parent class
-        self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
+        self::assertInstanceOf(ParentStub::class, $child->getParent());
         // Test parent contains child
         self::assertTrue($parent->getChildren()->contains($child));
 
@@ -148,18 +143,32 @@ class EntityTest extends DoctrineTestCase
     }
 
     /**
+     * Test associate on invalid property throws an exception
+     *
+     * @return void
+     */
+    public function testAssociateThrowsExceptionWithInvalidProperty(): void
+    {
+        $child = new InvalidRelationshipStub();
+
+        $this->expectException(InvalidRelationshipException::class);
+
+        $child->setParent(new ParentStub());
+    }
+
+    /**
      * Entity should throw exception when trying to associate on a wrong association.
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidArgumentException
+     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
     public function testAssociateWithWrongAssociationException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidRelationshipException::class);
 
-        $parent = new ParentEntityStub();
-        $child = new ChildEntityStub(['annotation_name' => 'string']);
+        $parent = new ParentStub();
+        $child = new ChildStub(['annotation_name' => 'string']);
 
         $child->setInvalidParent($parent);
     }
@@ -173,6 +182,32 @@ class EntityTest extends DoctrineTestCase
     {
         $entity = new EntityStub(self::$data);
         self::assertSame(self::$data, $this->getEntityContents($entity));
+    }
+
+    /**
+     * Test associate allows disassociation
+     *
+     * @return void
+     * */
+    public function testDisassociateAssociation(): void
+    {
+        $parent = new ParentStub();
+        $child = new ChildStub(['annotation_name' => 'string']);
+
+        $child->setParent($parent);
+
+        // Test parent is set
+        self::assertInstanceOf(ParentStub::class, $child->getParent());
+        // Test parent contains child
+        self::assertTrue($parent->getChildren()->contains($child));
+
+        // Disassociate
+        $child->setParent(null);
+
+        // Test parent is unset
+        self::assertNull($child->getParent());
+        // Test parent no longer contains child
+        self::assertFalse($parent->getChildren()->contains($child));
     }
 
     /**
@@ -210,29 +245,6 @@ class EntityTest extends DoctrineTestCase
     }
 
     /**
-     * Test HasTransformers trait transforms the properties as expected.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException If string passed to constructor is not valid
-     */
-    public function testHasTransformersTraitWorksAsExcepted(): void
-    {
-        $entity = new EntityStubWithTransformers();
-
-        self::assertFalse($entity->setBool(null)->getBool());
-        self::assertTrue($entity->setBool('true')->getBool());
-        self::assertTrue($entity->setBool(true)->getBool());
-
-        self::assertNull($entity->setDatetime(null)->getDatetime());
-        self::assertInstanceOf(DateTime::class, $entity->setDatetime('now')->getDatetime());
-        self::assertInstanceOf(DateTime::class, $entity->setDatetime(new DateTime())->getDatetime());
-
-        self::assertEquals('', $entity->setString(null)->getString());
-        self::assertEquals('equals', $entity->setString('equals')->getString());
-    }
-
-    /**
      * Test instanceOfRuleAsString build correctly the string representation of the validation rule.
      *
      * @return void
@@ -245,7 +257,7 @@ class EntityTest extends DoctrineTestCase
         );
 
         self::assertEquals(
-            'instance_of:Tests\EoneoPay\Externals\ORM\Stubs\EntityStub',
+            'instance_of:Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub',
             (new EntityStub())->getInstanceOfRuleForTest(EntityStub::class)
         );
     }
@@ -326,7 +338,7 @@ class EntityTest extends DoctrineTestCase
         $entity = new EntityStub();
 
         $expected = [
-            'Tests\EoneoPay\Externals\ORM\Stubs\InvalidClass' => 'name', // This class is invalid
+            'Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidClass' => 'name', // This class is invalid
             Column::class => 'name',
             Id::class => 'invalid' // This attribute is invalid
         ];
@@ -383,8 +395,7 @@ class EntityTest extends DoctrineTestCase
      */
     public function testToXmlReturnsRightString(): void
     {
-        $expected = function (?string $rootNode = null) {
-            /** @noinspection SyntaxError Closing tag name added from sprintf */
+        $expected = static function (?string $rootNode = null): string {
             return \sprintf('<?xml version="1.0" encoding="UTF-8"?>
                 <%s>
                     <entityId></entityId>
@@ -417,7 +428,7 @@ class EntityTest extends DoctrineTestCase
     public function testUniqueRuleAsStringMethod(): void
     {
         self::assertEquals(
-            'unique:Tests\EoneoPay\Externals\ORM\Stubs\EntityStub,email,,entityId,where1,value1',
+            'unique:Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub,email,,entityId,where1,value1',
             (new EntityStub())->getEmailUniqueRuleForTest(['where1' => 'value1'])
         );
     }

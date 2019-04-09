@@ -8,7 +8,7 @@ use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
 use EoneoPay\Utils\Exceptions\RuntimeException;
 use Throwable;
 
-class InvalidApiResponseException extends RuntimeException implements InvalidApiResponseExceptionInterface
+final class InvalidApiResponseException extends RuntimeException implements InvalidApiResponseExceptionInterface
 {
     /**
      * @var \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface

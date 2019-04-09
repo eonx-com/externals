@@ -6,20 +6,16 @@ namespace EoneoPay\Externals\ORM;
 use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use EoneoPay\Externals\ORM\Exceptions\ORMException;
-use EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException;
+use EoneoPay\Externals\ORM\Exceptions\RepositoryClassDoesNotImplementInterfaceException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
 use EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface;
 use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
 use EoneoPay\Externals\ORM\Interfaces\RepositoryInterface;
 use EoneoPay\Externals\ORM\Query\FilterCollection;
-use EoneoPay\Utils\Generator;
 use Exception;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects) EntityManager is complicated
- */
-class EntityManager implements EntityManagerInterface
+final class EntityManager implements EntityManagerInterface
 {
     /**
      * Doctrine entity manager
@@ -41,22 +37,18 @@ class EntityManager implements EntityManagerInterface
     /**
      * @inheritdoc
      *
-     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      */
     public function findByIds(string $class, array $ids): array
     {
-        /** @var \Doctrine\ORM\QueryBuilder $builder */
-        $builder = $this->callMethod('createQueryBuilder');
-
+        $builder = $this->entityManager->createQueryBuilder();
         $builder->select('e');
         $builder->from($class, 'e');
 
-        /** @var \Doctrine\ORM\Mapping\ClassMetadataInfo $meta */
-        $meta = $this->callMethod('getClassMetadata', $class);
+        $metadata = $this->entityManager->getClassMetadata($class);
 
         try {
-            $field = \sprintf('e.%s', $meta->getSingleIdentifierFieldName());
+            $field = \sprintf('e.%s', $metadata->getSingleIdentifierFieldName());
             // @codeCoverageIgnoreStart
         } catch (MappingException $exception) {
             // Exception only thrown when composite identifiers are used
@@ -71,9 +63,7 @@ class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * Flush unit of work to the database
-     *
-     * @return void
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
@@ -84,50 +74,7 @@ class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * Generate a unique value based on provided field.
-     *
-     * @param string $entityClass
-     * @param string $field
-     * @param int|null $length
-     *
-     * @return string
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException
-     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException
-     */
-    public function generateRandomUniqueValue(
-        string $entityClass,
-        string $field,
-        ?int $length = null
-    ): string {
-        $generated = new Generator();
-        $uniqueValue = null;
-
-        // 100 attempts for uniqueness
-        for ($attempts = 0; $attempts < 100; $attempts++) {
-            $randomValue = $generated->randomString($length ?? 16);
-
-            // Check repository if the value has already been used
-            if ($this->getRepository($entityClass)->count([$field => $randomValue]) === 0) {
-                $uniqueValue = $randomValue;
-                break;
-            }
-        }
-
-        if ($uniqueValue === null) {
-            // @codeCoverageIgnoreStart
-            // Unable to test without undetermined loop size
-            throw new ORMException('Uniqueness could not be obtained');
-            // @codeCoverageIgnoreEnd
-        }
-
-        return $uniqueValue;
-    }
-
-    /**
-     * Gets the filters attached to the entity manager.
-     *
-     * @return \EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface
+     * @inheritdoc
      */
     public function getFilters(): FilterCollectionInterface
     {
@@ -135,41 +82,34 @@ class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * Gets the repository from an entity class. If custom repository is defined and annotation is set,
-     * the custom repository will be returned with the ability to use query builder.
+     * @inheritdoc
      *
-     * @param string $class The class name of the entity to generate a repository for
-     *
-     * @return \EoneoPay\Externals\ORM\Interfaces\RepositoryInterface
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassNotFoundException If repository is not found for entity
+     * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassDoesNotImplementInterfaceException If wrong interface
      */
     public function getRepository(string $class): RepositoryInterface
     {
-        $metaDataClass = $this->entityManager->getClassMetadata($class);
-        $customRepository = $metaDataClass->customRepositoryClassName;
+        // Create repository
+        $repository = $this->entityManager->getRepository($class);
 
-        if (empty($metaDataClass->customRepositoryClassName)) {
-            return new Repository($this->entityManager->getRepository($class));
+        // If repository doesn't implement interface, throw exception
+        if (($repository instanceof RepositoryInterface) === false) {
+            throw new RepositoryClassDoesNotImplementInterfaceException(\sprintf(
+                'Repository %s does not implement interface %s',
+                \get_class($repository),
+                RepositoryInterface::class
+            ));
         }
 
-        if (\class_exists($customRepository) === false) {
-            throw new RepositoryClassNotFoundException(\sprintf('%s not found', $customRepository));
-        }
-
-        $repositoryClass = $this->entityManager->getConfiguration()->getDefaultRepositoryClassName();
-
-        return new $metaDataClass->customRepositoryClassName(
-            new $repositoryClass($this->entityManager, $metaDataClass)
-        );
+        /**
+         * @var \EoneoPay\Externals\ORM\Interfaces\RepositoryInterface $repository
+         *
+         * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
+         */
+        return $repository;
     }
 
     /**
-     * Merge entity to the database, similar to REPLACE in SQL
-     *
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to merge to the database
-     *
-     * @return void
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
@@ -180,11 +120,7 @@ class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * Persist entity to the database
-     *
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to persist to the database
-     *
-     * @return void
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
@@ -195,11 +131,7 @@ class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * Remove entity from the database.
-     *
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to remove from the database
-     *
-     * @return void
+     * @inheritdoc
      *
      * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error

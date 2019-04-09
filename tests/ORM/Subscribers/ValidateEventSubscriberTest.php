@@ -3,126 +3,109 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\ORM\Subscribers;
 
-use Doctrine\ORM\Events;
-use EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use EoneoPay\Externals\Bridge\Laravel\Validator;
 use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
-use Tests\EoneoPay\Externals\ORM\Stubs\EntityStub;
-use Tests\EoneoPay\Externals\ORM\Stubs\EntityWithRulesStub;
-use Tests\EoneoPay\Externals\SubscribersTestCase;
+use Illuminate\Translation\ArrayLoader;
+use Illuminate\Translation\Translator;
+use Illuminate\Validation\Factory;
+use Tests\EoneoPay\Externals\ORMTestCase;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ValidatableStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Exceptions\EntityValidationFailedExceptionStub;
+use Tests\EoneoPay\Externals\Stubs\Translator\TranslatorStub;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\ORM\EntityManagerStub;
 
-class ValidateEventSubscriberTest extends SubscribersTestCase
+/**
+ * @covers \EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber
+ */
+class ValidateEventSubscriberTest extends ORMTestCase
 {
     /**
-     * Subscriber should return prePersist and preUpdate events.
+     * EventSubscriber should return expected list of events.
      *
      * @return void
      */
-    public function testGetSubscribedEvents(): void
+    public function testGetSubscribedEventsReturnsExpectedListOfEvents(): void
     {
-        /** @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator */
-        $validator = $this->mockValidator();
-        /** @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator */
-        $translator = $this->mockTranslator();
+        $expected = ['prePersist', 'preUpdate'];
 
-        self::assertEquals(
-            [Events::prePersist, Events::preUpdate],
-            (new ValidateEventSubscriber($translator, $validator))->getSubscribedEvents()
-        );
+        self::assertEquals($expected, $this->createInstance()->getSubscribedEvents());
     }
 
     /**
-     * Subscriber should not call validate if event object does not have getRules method.
+     * Test no exception is thrown if entity is not validatable
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
-    public function testShouldNotValidateIfNoGetRulesMethod(): void
+    public function testValidatorContinuesIfEntityNotValidatable(): void
     {
-        $this->processNotValidateTest(new EntityStub());
+        $this->createInstance()->prePersist(new LifecycleEventArgs(
+            new EntityStub(),
+            new EntityManagerStub()
+        ));
+
+        // If no exception was thrown we're golden
+        $this->addToAssertionCount(1);
     }
 
     /**
-     * Subscriber should not call validate if event object is not EntityInterface.
+     * Test no exception is thrown if validation passes
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
-    public function testShouldNotValidateIfNotEntityInterface(): void
+    public function testValidatorContinuesIfValidationPasses(): void
     {
-        $this->processNotValidateTest(new \stdClass());
+        $this->createInstance()->prePersist(new LifecycleEventArgs(
+            new ValidatableStub(['integer' => 1, 'string' => 'string']),
+            new EntityManagerStub()
+        ));
+
+        // If no exception was thrown we're golden
+        $this->addToAssertionCount(1);
     }
 
     /**
-     * Subscriber should throw EntityValidationException if validation fails.
+     * Test validation throws exception if validation fails pre-persist
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
-    public function testShouldThrowEntityValidationExceptionIfValidationFails(): void
+    public function testValidatorThrowsExceptionIfPrePersistValidationFails(): void
     {
-        $this->expectException(EntityValidationFailedException::class);
+        $this->expectException(EntityValidationFailedExceptionStub::class);
 
-        $object = (new EntityWithRulesStub())->setRules();
-
-        $validator = $this->mockValidator();
-        $validator
-            ->shouldReceive('validate')
-            ->once()
-            ->with(['entityId' => null], $object->getRules())
-            ->andReturn(false);
-        $validator
-            ->shouldReceive('getFailures')
-            ->once()
-            ->withNoArgs()
-            ->andReturn([]);
-
-        $translator = $this->mockTranslator();
-        $translator
-            ->shouldReceive('trans')
-            ->once()
-            ->with('exceptions.validation.failed')
-            ->andReturn('exceptions.validation.failed');
-
-        /** @var \Doctrine\ORM\Event\LifecycleEventArgs $lifeCycleEvent */
-        $lifeCycleEvent = $this->mockLifeCycleEvent($object);
-
-        /** @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator */
-        /** @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator */
-        (new ValidateEventSubscriber($translator, $validator))->preUpdate($lifeCycleEvent);
+        $this->createInstance()->prePersist(new LifecycleEventArgs(
+            new ValidatableStub(),
+            new EntityManagerStub()
+        ));
     }
 
     /**
-     * Subscriber should validate if event object is EntityInterface and getRules returns an array.
+     * Test validation throws exception if validation fails pre-update
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\EntityValidationFailedException If validation fails
      */
-    public function testShouldValidateIfInterfaceAndGetRulesIsArray(): void
+    public function testValidatorThrowsExceptionIfPreUpdateValidationFails(): void
     {
-        $object = (new EntityWithRulesStub())->setRules();
+        $this->expectException(EntityValidationFailedExceptionStub::class);
 
-        $validator = $this->mockValidator();
-        $validator
-            ->shouldReceive('validate')
-            ->once()
-            ->with(['entityId' => null], $object->getRules())
-            ->andReturn(true);
+        $this->createInstance()->preUpdate(new LifecycleEventArgs(
+            new ValidatableStub(),
+            new EntityManagerStub()
+        ));
+    }
 
-        $translator = $this->mockTranslator();
-        $translator->shouldNotReceive('trans');
+    /**
+     * Create validate subscriber instance
+     *
+     * @return \EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber
+     */
+    private function createInstance(): ValidateEventSubscriber
+    {
+        $loader = new ArrayLoader();
+        $loader->addMessages('en', 'validation', ['required' => ':attribute is required']);
+        $translator = new Translator($loader, 'en');
 
-        /** @var \Doctrine\ORM\Event\LifecycleEventArgs $lifeCycleEvent */
-        $lifeCycleEvent = $this->mockLifeCycleEvent($object);
-
-        /** @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface $validator */
-        /** @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface $translator */
-        (new ValidateEventSubscriber($translator, $validator))->preUpdate($lifeCycleEvent);
-
-        // This will only run if validation passes as an exception will be thrown
-        self::assertTrue(true);
+        return new ValidateEventSubscriber(new TranslatorStub(), new Validator(new Factory($translator)));
     }
 }

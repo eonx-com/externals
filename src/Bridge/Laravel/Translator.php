@@ -6,7 +6,7 @@ namespace EoneoPay\Externals\Bridge\Laravel;
 use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 
-class Translator implements TranslatorInterface
+final class Translator implements TranslatorInterface
 {
     /**
      * Contracted translator instance
@@ -26,13 +26,7 @@ class Translator implements TranslatorInterface
     }
 
     /**
-     * Get a value from the language file
-     *
-     * @param string $key The key to fetch the message for
-     * @param mixed[]|null $replace Attributes to replace within the message
-     * @param string|null $locale The locale to fetch the key from
-     *
-     * @return string|string[]|null
+     * @inheritdoc
      */
     public function get(string $key, ?array $replace = null, ?string $locale = null)
     {
@@ -40,18 +34,12 @@ class Translator implements TranslatorInterface
     }
 
     /**
-     * Get a value from the language file and ensure a string is always returned
-     *
-     * @param string $key The key to fetch the message for
-     * @param mixed[]|null $replace Attributes to replace within the message
-     * @param string|null $locale The locale to fetch the key from
-     *
-     * @return string|null
+     * @inheritdoc
      */
-    public function trans(string $key, ?array $replace = null, ?string $locale = null): ?string
+    public function trans(string $key, ?array $replace = null, ?string $locale = null): string
     {
         $translated = $this->get($key, $replace ?? [], $locale);
 
-        return \is_array($translated) ? \implode(', ', $translated) : $translated;
+        return \is_array($translated) ? \implode(', ', $translated) : (string)$translated;
     }
 }

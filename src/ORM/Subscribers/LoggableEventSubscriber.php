@@ -11,7 +11,7 @@ use Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry;
 use Gedmo\Loggable\LoggableListener as BaseLoggableListener;
 use Gedmo\Loggable\Mapping\Event\LoggableAdapter;
 
-class LoggableEventSubscriber extends BaseLoggableListener
+final class LoggableEventSubscriber extends BaseLoggableListener
 {
     /**
      * Closure to resolve username.
@@ -33,17 +33,25 @@ class LoggableEventSubscriber extends BaseLoggableListener
     }
 
     /**
-     * Get configuration for given object manager and class.
+     * @inheritdoc
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager
-     * @param string $class
+     * @throws \Exception Underlying extension throws exception on failure
+     */
+    public function createLogEntry($action, $object, LoggableAdapter $loggableAdapter): ?AbstractLogEntry
+    {
+        $logEntry = parent::createLogEntry($action, $object, $loggableAdapter);
+
+        if ($logEntry !== null) {
+            $logEntry->setUsername(\call_user_func($this->usernameResolver) ?? 'not_set');
+        }
+
+        return $logEntry;
+    }
+
+    /**
+     * @inheritdoc
      *
-     * @return mixed[]
-     *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
-     *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache extension isn't loaded
      */
     public function getConfiguration(ObjectManager $objectManager, $class): array
     {
@@ -61,38 +69,13 @@ class LoggableEventSubscriber extends BaseLoggableListener
     }
 
     /**
-     * Create a new Log instance
-     *
-     * @param string $action
-     * @param mixed $object
-     * @param \Gedmo\Loggable\Mapping\Event\LoggableAdapter $loggableAdapter
-     *
-     * @return \Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry|null
-     *
-     * @throws \Exception Underlying extension throws exception on failure
-     *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     */
-    protected function createLogEntry($action, $object, LoggableAdapter $loggableAdapter): ?AbstractLogEntry
-    {
-        $logEntry = parent::createLogEntry($action, $object, $loggableAdapter);
-
-        if ($logEntry !== null) {
-            $logEntry->setUsername(\call_user_func($this->usernameResolver) ?? 'not_set');
-        }
-
-        return $logEntry;
-    }
-
-    /**
      * Get fillable properties for given entity.
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity
      *
      * @return string[]
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache extension isn't loaded
      */
     private function getEntityFillable(EntityInterface $entity): array
     {

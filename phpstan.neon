@@ -4,29 +4,14 @@ parameters:
             message: '#Call to an undefined method Illuminate\\Contracts\\Filesystem\\Filesystem::path\(\).#'
             path: src/Bridge/Laravel/Filesystem.php
         -
-            message: '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
-            path: tests
-        -
-            message: '#Class Tests\\EoneoPay\\Externals\\ORM\\Stubs\\InvalidClass not found.#'
-            path: tests/ORM/Stubs/EntityStub.php
-        -
-            message: '#Method Tests\\EoneoPay\\Externals\\HttpClientTestCase::mock[\w]+\(\) should return [A-Z][\w\\]+ but returns Mockery\\MockInterface.#'
-            path: tests/HttpClientTestCase.php
-        -
-            message: '#Method Tests\\EoneoPay\\Externals\\LaravelBridgeProvidersTestCase::getApplication\(\) should return Illuminate\\Contracts\\Foundation\\Application but returns Illuminate\\Container\\Container.#'
-            path: tests/LaravelBridgeProvidersTestCase.php
+            message: '#Class Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities\\InvalidClass not found.#'
+            path: tests/Stubs/ORM/Entities/EntityStub.php
         -
             message: '/Parameter #1 \$function of function call_user_func_array expects callable\(\): mixed, array\([A-Z][\w\\]+|mixed, string\) given./'
             path: src/Bridge/Laravel/Filesystem.php
         -
+            message: '/Parameter #1 \$function of function call_user_func_array expects callable\(\): mixed, array\(Illuminate\\Container\\Container, string\) given./'
+            path: tests/Stubs/Vendor/Illuminate/Contracts/Foundation/ApplicationStub.php
+        -
             message: '/Parameter #1 \$function of function call_user_func_array expects callable\(\): mixed, array\([\w\\]+, string\) given./'
             path: src/ORM
-        -
-            message: '/Parameter #\d \$[a-z][\w]+ of class EoneoPay\\Externals\\[A-Z][\w\\]+ constructor expects [A-Z][\w\\]+, Mockery\\MockInterface given./'
-            path: tests
-        -
-            message: '/Parameter #\d \$[a-z][\w]+ of method EoneoPay\\Externals\\[A-Z][\w\\]+::[a-z][\w]+\(\) expects [A-Z][\w\\]+, Mockery\\MockInterface given./'
-            path: tests/ORM/Extensions/SoftDeleteExtensionTest.php
-        -
-            message: '#Property Tests\\EoneoPay\\Externals\\LaravelBridgeProvidersTestCase::\$app \(Illuminate\\Contracts\\Foundation\\Application\) does not accept Illuminate\\Container\\Container.#'
-            path: tests/LaravelBridgeProvidersTestCase.php
