@@ -149,6 +149,17 @@ class SoftDeleteEventSubscriberTest extends ORMTestCase
         // Disable soft-delete filter and find again
         $entityManager->getFilters()->disable('soft-deleteable');
         $deleted = $repository->find($entity->getEntityId());
+
+        // Ensure delete is an entity
+        if (($deleted instanceof EntityStub) === false) {
+            self::fail(\sprintf(
+                'Deleted entity expected to be an entity stub but %s found',
+                $deleted === null ? 'null' : \get_class($deleted)
+            ));
+
+            return;
+        }
+
         self::assertSame($entity->getEntityId(), $deleted->getEntityId());
 
         // Remove deleted entity entirely

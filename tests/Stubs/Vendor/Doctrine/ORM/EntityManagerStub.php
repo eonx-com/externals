@@ -6,6 +6,10 @@ namespace Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\ORM;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyMethods) This class is implemented from a Doctrine interface
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) This class is implemented from a Doctrine interface
+ */
 class EntityManagerStub implements EntityManagerInterface
 {
     /**
@@ -95,7 +99,7 @@ class EntityManagerStub implements EntityManagerInterface
     /**
      * @inheritdoc
      */
-    public function find($className, $id)
+    public function find($className, $entityId)
     {
     }
 
@@ -188,7 +192,7 @@ class EntityManagerStub implements EntityManagerInterface
     /**
      * @inheritdoc
      */
-    public function getReference($entityName, $id)
+    public function getReference($entityName, $entityId)
     {
     }
 

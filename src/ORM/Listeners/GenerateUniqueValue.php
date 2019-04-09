@@ -50,21 +50,25 @@ final class GenerateUniqueValue
     }
 
     /**
-     * @inheritdoc
+     * Generate unique value for property if required
+     *
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Event arguments
+     *
+     * @return void
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassDoesNotImplementInterfaceException If wrong interface
      * @throws \EoneoPay\Externals\ORM\Exceptions\UniqueValueNotGeneratedException If value can't be generated
      */
-    public function prePersist(LifecycleEventArgs $lifecycleEventArgs): void
+    public function prePersist(LifecycleEventArgs $eventArgs): void
     {
-        $entity = $this->checkEntity($lifecycleEventArgs->getEntity());
+        $entity = $this->checkEntity($eventArgs->getEntity());
 
         if (($entity instanceof GenerateUniqueValueInterface) === false) {
             return;
         }
 
         // Generate value, will throw exception if not possible
-        $randomValue = $this->generateValue($entity, $lifecycleEventArgs);
+        $randomValue = $this->generateValue($entity, $eventArgs);
 
         // Set value
         $setter = \sprintf('set%s', \ucfirst($entity->getGeneratedProperty()));
@@ -99,17 +103,17 @@ final class GenerateUniqueValue
      * Generate a random value for this entity
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\Listeners\GenerateUniqueValueInterface $entity Entity to generate for
-     * @param \Doctrine\ORM\Event\LifecycleEventArgs $lifecycleEventArgs Life cycle call back arguments
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Life cycle call back arguments
      *
      * @return string
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassDoesNotImplementInterfaceException If wrong interface
      * @throws \EoneoPay\Externals\ORM\Exceptions\UniqueValueNotGeneratedException If value can't be generated
      */
-    private function generateValue(GenerateUniqueValueInterface $entity, LifecycleEventArgs $lifecycleEventArgs): string
+    private function generateValue(GenerateUniqueValueInterface $entity, LifecycleEventArgs $eventArgs): string
     {
         // Get entity manager instance and repository
-        $entityManager = new EntityManager($lifecycleEventArgs->getEntityManager());
+        $entityManager = new EntityManager($eventArgs->getEntityManager());
         $repository = $entityManager->getRepository(\get_class($entity));
 
         // Configure static settings

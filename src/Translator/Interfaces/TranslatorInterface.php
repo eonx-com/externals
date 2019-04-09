@@ -12,7 +12,7 @@ interface TranslatorInterface
      * @param mixed[]|null $replace Attributes to replace within the message
      * @param string|null $locale The locale to fetch the key from
      *
-     * @return string|array|null
+     * @return string|string[]|null
      */
     public function get(string $key, ?array $replace = null, ?string $locale = null);
 
@@ -23,7 +23,7 @@ interface TranslatorInterface
      * @param mixed[]|null $replace Attributes to replace within the message
      * @param string|null $locale The locale to fetch the key from
      *
-     * @return string|null
+     * @return string
      */
-    public function trans(string $key, ?array $replace = null, ?string $locale = null): ?string;
+    public function trans(string $key, ?array $replace = null, ?string $locale = null): string;
 }

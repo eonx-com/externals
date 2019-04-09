@@ -8,6 +8,12 @@ use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) This class is implemented from a Laravel interface
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount) This class is implemented from a Laravel interface
+ * @SuppressWarnings(PHPMD.TooManyMethods) This class is implemented from a Laravel interface
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) This class is implemented from a Laravel interface
+ */
 class ApplicationStub implements Application, ArrayAccess
 {
     /**
@@ -35,7 +41,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function afterResolving($abstract, Closure $callback = null): void
+    public function afterResolving($abstract, ?Closure $callback = null): void
     {
     }
 
@@ -118,7 +124,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function call($callback, array $parameters = null, $defaultMethod = null)
+    public function call($callback, ?array $parameters = null, $defaultMethod = null)
     {
     }
 
@@ -203,9 +209,9 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function get($id)
+    public function get($containerId)
     {
-        return $this->callMethod('get', [$id]);
+        return $this->callMethod('get', [$containerId]);
     }
 
     /**
@@ -260,7 +266,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function has($id)
+    public function has($containerId)
     {
     }
 
@@ -303,7 +309,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function make($abstract, array $parameters = null)
+    public function make($abstract, ?array $parameters = null)
     {
         if ($parameters === null) {
             $parameters = [];
@@ -379,7 +385,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function resolving($abstract, Closure $callback = null): void
+    public function resolving($abstract, ?Closure $callback = null): void
     {
     }
 

@@ -10,6 +10,9 @@ use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\XmlConverter;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity required to enable smaller entities in application
+ */
 abstract class Entity implements EntityInterface
 {
     /**
@@ -36,22 +39,8 @@ abstract class Entity implements EntityInterface
      */
     public function __call(string $method, array $parameters)
     {
-        // Set available types
-        $types = ['get', 'has', 'is', 'set'];
-
-        // Break calling method into type (get, has, is, set) and attribute
-        \preg_match('/^(' . \implode('|', $types) . ')([a-zA-Z][\w]+)$/i', $method, $matches);
-
-        $type = \mb_strtolower($matches[1] ?? '');
-        $property = $this->resolveProperty($matches[2] ?? '');
-
-        // The property being accessed must exist and the type must be valid if one of these things
-        // aren't true throw an exception
-        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
-            throw new InvalidMethodCallException(
-                \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
-            );
-        }
+        // Extract type and property from method
+        [$type, $property] = $this->getTypeAndPropertyFromMethod($method);
 
         // Perform action - code coverage disabled due to phpdbg not seeing case statements
         switch ($type) {
@@ -187,7 +176,7 @@ abstract class Entity implements EntityInterface
                 throw new InvalidRelationshipException(
                     \sprintf(
                         'Attempted to create relationship on property %s::%s but the property does not exist',
-                        \get_class($parent),
+                        ($parent instanceof EntityInterface) === true ? \get_class($parent) : $attribute,
                         $association
                     ),
                     0,
@@ -322,6 +311,35 @@ abstract class Entity implements EntityInterface
     }
 
     /**
+     * Get type and property from method
+     *
+     * @param string $method The method being called
+     *
+     * @return string[]
+     */
+    private function getTypeAndPropertyFromMethod(string $method): array
+    {
+        // Set available types
+        $types = ['get', 'has', 'is', 'set'];
+
+        // Break calling method into type (get, has, is, set) and attribute
+        \preg_match('/^(' . \implode('|', $types) . ')([a-zA-Z][\w]+)$/i', $method, $matches);
+
+        $type = \mb_strtolower($matches[1] ?? '');
+        $property = $this->resolveProperty($matches[2] ?? '');
+
+        // The property being accessed must exist and the type must be valid if one of these things
+        // aren't true throw an exception
+        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
+            throw new InvalidMethodCallException(
+                \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
+            );
+        }
+
+        return [$type, $property];
+    }
+
+    /**
      * Get property value via getter
      *
      * @param string $property The property to get
@@ -448,7 +466,7 @@ abstract class Entity implements EntityInterface
      */
     private function set(string $property, $value)
     {
-        $resolved = $this->resolveProperty($property);
+        $resolved = (string)$this->resolveProperty($property);
 
         // If property doesn't exist or is not fillable, return
         if ($this->has($property) === false || $this->isFillable($resolved) === false) {

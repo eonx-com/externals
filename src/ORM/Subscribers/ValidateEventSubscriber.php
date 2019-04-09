@@ -51,7 +51,11 @@ final class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritdoc
+     * Validate entities before persist
+     *
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Event arguments
+     *
+     * @return void
      */
     public function prePersist(LifecycleEventArgs $eventArgs): void
     {
@@ -59,7 +63,11 @@ final class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritdoc
+     * Call validator before update
+     *
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Event arguments
+     *
+     * @return void
      */
     public function preUpdate(LifecycleEventArgs $eventArgs): void
     {

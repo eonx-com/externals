@@ -178,6 +178,4 @@ class EntityManagerTest extends ORMTestCase
         self::assertCount(1, $repository->findBy(['string' => 'string']));
         self::assertEquals(1, $repository->count());
     }
-
-
 }

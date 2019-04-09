@@ -17,6 +17,8 @@ use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Entity
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) All test cases must be public
  */
 class EntityTest extends ORMTestCase
 {

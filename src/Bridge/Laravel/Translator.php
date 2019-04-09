@@ -36,10 +36,10 @@ final class Translator implements TranslatorInterface
     /**
      * @inheritdoc
      */
-    public function trans(string $key, ?array $replace = null, ?string $locale = null): ?string
+    public function trans(string $key, ?array $replace = null, ?string $locale = null): string
     {
         $translated = $this->get($key, $replace ?? [], $locale);
 
-        return \is_array($translated) ? \implode(', ', $translated) : $translated;
+        return \is_array($translated) ? \implode(', ', $translated) : (string)$translated;
     }
 }

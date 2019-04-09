@@ -86,14 +86,14 @@ class LoggableEventSubscriberTest extends ORMTestCase
             ->createLogEntry('insert', new EntityStub(), $adapter);
 
         self::assertInstanceOf(LogEntry::class, $entry);
-        self::assertSame('1', $entry->getUsername());
+        self::assertSame('1', ($entry instanceof LogEntry) === true ? $entry->getUsername() : '');
 
         // Test default is set if username resolver returns null
         $entry = $this->createInstance()
             ->createLogEntry('insert', new EntityStub(), $adapter);
 
         self::assertInstanceOf(LogEntry::class, $entry);
-        self::assertSame('not_set', $entry->getUsername());
+        self::assertSame('not_set', ($entry instanceof LogEntry) === true ? $entry->getUsername() : '');
     }
 
     /**

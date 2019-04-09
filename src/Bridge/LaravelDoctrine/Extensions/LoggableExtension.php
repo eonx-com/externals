@@ -77,7 +77,10 @@ final class LoggableExtension extends GedmoExtension
                 return null;
             }
 
-            return $this->auth->user()->getId();
+            // Get user id from guard
+            $userId = $this->auth->user()->getId();
+
+            return \is_int($userId) ? (string)$userId : null;
         };
     }
 }

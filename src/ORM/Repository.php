@@ -91,7 +91,12 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * @inheritdoc
+     * Create query build instance
+     *
+     * @param string $alias The select alias
+     * @param string|null $indexBy The index to use
+     *
+     * @return \Doctrine\ORM\QueryBuilder
      */
     protected function createQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilder
     {

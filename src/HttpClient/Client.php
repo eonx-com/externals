@@ -14,7 +14,6 @@ use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\StreamInterface;
-use RuntimeException;
 
 final class Client implements ClientInterface
 {
@@ -91,7 +90,7 @@ final class Client implements ClientInterface
         try {
             return $body->getContents();
             // @codeCoverageIgnoreStart
-        } catch (RuntimeException $exception) {
+        } catch (Exception $exception) {
             // This exception is unlikely as the stream is retrieved directly from Guzzle
             $this->logException($exception);
 

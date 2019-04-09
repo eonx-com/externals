@@ -38,10 +38,13 @@ class ClientTest extends TestCase
                 new Logger(null, $handler)
             )->request('get', 'test');
         } catch (InvalidApiResponseException $exception) {
+            // Capture previous exception
+            $previous = $exception->getPrevious();
+
             self::assertCount(3, $handler->getLogs());
             self::assertSame('API request sent', $handler->getLogs()[0]['message']);
             self::assertSame(
-                \sprintf('Exception caught: %s', $exception->getPrevious()->getMessage()),
+                \sprintf('Exception caught: %s', $previous === null ? '' : $previous->getMessage()),
                 $handler->getLogs()[1]['message']
             );
             self::assertSame('API response received', $handler->getLogs()[2]['message']);

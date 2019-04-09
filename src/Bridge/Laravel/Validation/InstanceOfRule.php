@@ -18,6 +18,8 @@ final class InstanceOfRule implements ValidationRuleInterface
 
     /**
      * @inheritdoc
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable) Closure signature is defined by Laravel validator
      */
     public function getReplacements(): Closure
     {
@@ -34,6 +36,8 @@ final class InstanceOfRule implements ValidationRuleInterface
 
     /**
      * @inheritdoc
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable) Closure signature is defined by Laravel validator
      */
     public function getRule(): Closure
     {

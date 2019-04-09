@@ -18,7 +18,7 @@ class TranslatorStub implements TranslatorInterface
     /**
      * @inheritdoc
      */
-    public function trans(string $key, ?array $replace = null, ?string $locale = null): ?string
+    public function trans(string $key, ?array $replace = null, ?string $locale = null): string
     {
         return '';
     }

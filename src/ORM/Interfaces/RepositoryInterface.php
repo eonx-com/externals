@@ -22,7 +22,7 @@ interface RepositoryInterface extends ObjectRepository
      * @param mixed[] $criteria The criteria.
      * @param string[]|null $orderBy
      *
-     * @return object|null The object.
+     * @return mixed The entity if found, otherwise null.
      */
     public function findOneBy(array $criteria, ?array $orderBy = null);
 }

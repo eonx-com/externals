@@ -23,7 +23,7 @@ class CoversTest extends TestCase
     public function testAllTestsContainCoversAnnotation(): void
     {
         // Get all test files in the tests directory
-        $path = \realpath(\dirname(__DIR__));
+        $path = \realpath(\dirname(__DIR__)) ?: \dirname(__DIR__);
         $filenames = $this->getTestFilenames($path);
 
         // Group all failures together

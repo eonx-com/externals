@@ -130,6 +130,8 @@ abstract class ORMTestCase extends TestCase
      * Get doctrine entity manager.
      *
      * @return \Doctrine\ORM\EntityManagerInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Constructor of EntityManager is protected so static method must be used
      */
     protected function getDoctrineEntityManager(): DoctrineEntityManagerInterface
     {
