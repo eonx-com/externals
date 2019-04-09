@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\Externals\ORM\Extensions;
+namespace Tests\EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions;
 
 use Closure;
+use EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\LoggableExtension;
 use EoneoPay\Externals\Environment\Env;
-use EoneoPay\Externals\ORM\Extensions\LoggableExtension;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\ORM\Subscribers\LoggableEventSubscriber;
 use ReflectionClass;
 use Tests\EoneoPay\Externals\Stubs\Auth\AuthStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
@@ -15,7 +16,7 @@ use Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\ORM\EntityManagerStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
- * @covers \EoneoPay\Externals\ORM\Extensions\LoggableExtension
+ * @covers \EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\LoggableExtension
  */
 class LoggableExtensionTest extends TestCase
 {
@@ -34,6 +35,7 @@ class LoggableExtensionTest extends TestCase
         $loggable->addSubscribers($eventManager, new EntityManagerStub());
 
         self::assertCount(1, $eventManager->getSubscribers());
+        self::assertInstanceOf(LoggableEventSubscriber::class, $eventManager->getSubscribers()[0]);
     }
 
     /**

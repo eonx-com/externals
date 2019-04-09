@@ -6,16 +6,16 @@ namespace Tests\EoneoPay\Externals\Stubs\ORM\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @method null|ParentEntityStub getParent()
+ * @method null|ParentStub getParent()
  *
  * @ORM\Entity()
  */
 class InvalidRelationshipStub extends EntityStub
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub")
+     * @ORM\ManyToOne(targetEntity="ParentStub")
      *
-     * @var \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub
+     * @var \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub
      */
     protected $parent;
 
@@ -29,13 +29,13 @@ class InvalidRelationshipStub extends EntityStub
     /**
      * Set parent.
      *
-     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub $parent
+     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub $parent
      *
      * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidRelationshipStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException If attribute doesn't exist on entity
      */
-    public function setParent(ParentEntityStub $parent): self
+    public function setParent(ParentStub $parent): self
     {
         return $this->associate('invalid', $parent);
     }

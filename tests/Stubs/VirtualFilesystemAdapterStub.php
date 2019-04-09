@@ -321,17 +321,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      */
     public function writeStream($path, $resource, Config $config)
     {
-        $location = $this->applyPathPrefix($path);
-        $this->ensureDirectory(\dirname($location));
-        $stream = \fopen($location, 'w+b');
-
-        if ($stream === false) {
-            return false;
-        }
-
-        \stream_copy_to_stream($resource, $stream);
-
-        if (\fclose($stream) === false) {
+        if ($this->writeResourceToStream($path, $resource) === false) {
             return false;
         }
 
@@ -491,5 +481,29 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     protected function normalizeFileInfo(SplFileInfo $file): ?array
     {
         return $file->isLink() === false ? $this->mapFileInfo($file) : null;
+    }
+
+    /**
+     * Write a resource to a stream
+     *
+     * @param string $path The path to write to
+     * @param mixed $resource The resource to write
+     *
+     * @return bool
+     */
+    private function writeResourceToStream(string $path, $resource): bool
+    {
+        $location = $this->applyPathPrefix($path);
+        $this->ensureDirectory(\dirname($location));
+
+        $stream = \fopen($location, 'w+b');
+
+        if ($stream === false) {
+            return false;
+        }
+
+        \stream_copy_to_stream($resource, $stream);
+
+        return \fclose($stream);
     }
 }

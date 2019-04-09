@@ -49,6 +49,9 @@ final class Client implements ClientInterface
     {
         $this->logRequest($method, $uri, $options);
 
+        // Define exception in case request fails
+        $exception = null;
+
         try {
             $request = $this->client->request($method, $uri, $options ?? []);
             $content = $this->getBodyContents($request->getBody());
@@ -61,18 +64,16 @@ final class Client implements ClientInterface
             );
         } catch (RequestException $exception) {
             $response = $this->handleRequestException($exception);
-            // @codeCoverageIgnoreStart
-        } /** @noinspection BadExceptionsProcessingInspection */ catch (GuzzleException $exception) {
-            // Covers any other guzzle exception, only here for safety so intentionally ignored
-            $response = new Response(null, 500);
-            // @codeCoverageIgnoreEnd
+        } catch (GuzzleException $exception) {
+            // Covers any other guzzle exception
+            $response = new Response(['content' => $exception->getMessage()], 500);
         }
 
         $this->logResponse($response);
 
         // If response is unsuccessful, throw exception
         if ($response->isSuccessful() === false) {
-            throw new InvalidApiResponseException($response, $exception ?? null);
+            throw new InvalidApiResponseException($response, $exception);
         }
 
         return $response;
@@ -89,10 +90,13 @@ final class Client implements ClientInterface
     {
         try {
             return $body->getContents();
+            // @codeCoverageIgnoreStart
         } catch (RuntimeException $exception) {
+            // This exception is unlikely as the stream is retrieved directly from Guzzle
             $this->logException($exception);
 
             return '';
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -210,23 +214,22 @@ final class Client implements ClientInterface
      */
     private function processResponseContent(string $content): ?array
     {
-        // If contents is json, decode it
-        if ($this->isJson($content) === true) {
-            return \json_decode($content, true);
-        }
-
         // If content is xml, decode it
         if ($this->isXml($content) === true) {
             try {
                 return (new XmlConverter())->xmlToArray($content);
                 // @codeCoverageIgnoreStart
             } catch (InvalidXmlException $exception) {
+                // This exception is unlikely as the `isXML()` method would return false
+                // if the content contains invalid/unparseable XML
                 $this->logException($exception);
+                // @codeCoverageIgnoreEnd
             }
-            // @codeCoverageIgnoreEnd
         }
 
-        // Return result as array
-        return ['content' => $content];
+        // If contents is json, decode it otherwise encase in array
+        return $this->isJson($content) === true ?
+            \json_decode($content, true) :
+            ['content' => $content];
     }
 }

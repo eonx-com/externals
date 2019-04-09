@@ -12,7 +12,7 @@ use EoneoPay\Externals\ORM\Entity;
  *
  * @ORM\Entity()
  */
-class MultiChildEntityStub extends Entity
+class MultiChildStub extends Entity
 {
     /**
      * @ORM\Id()
@@ -26,7 +26,7 @@ class MultiChildEntityStub extends Entity
     /**
      * @ORM\ManyToMany(
      *     inversedBy="children",
-     *     targetEntity="Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentEntityStub"
+     *     targetEntity="MultiParentStub"
      * )
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -55,13 +55,13 @@ class MultiChildEntityStub extends Entity
     /**
      * Add parent.
      *
-     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentEntityStub $parent
+     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentStub $parent
      *
-     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildEntityStub
+     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
-    public function addParent(MultiParentEntityStub $parent): self
+    public function addParent(MultiParentStub $parent): self
     {
         return $this->associateMultiple('parents', $parent, 'children');
     }
@@ -69,13 +69,13 @@ class MultiChildEntityStub extends Entity
     /**
      * Add parent with no association.
      *
-     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentEntityStub $parent
+     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentStub $parent
      *
-     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildEntityStub
+     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
-    public function addParentWithNoAssociation(MultiParentEntityStub $parent): self
+    public function addParentWithNoAssociation(MultiParentStub $parent): self
     {
         return $this->associateMultiple('parents', $parent);
     }
@@ -83,13 +83,13 @@ class MultiChildEntityStub extends Entity
     /**
      * Add parent with wrong association for test purposes.
      *
-     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentEntityStub $parent
+     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentStub $parent
      *
-     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildEntityStub
+     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
-    public function addParentWithWrongAssociation(MultiParentEntityStub $parent): self
+    public function addParentWithWrongAssociation(MultiParentStub $parent): self
     {
         return $this->associateMultiple('parents', $parent, 'invalid');
     }
@@ -97,13 +97,13 @@ class MultiChildEntityStub extends Entity
     /**
      * Add parent with wrong attribute for test purposes.
      *
-     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentEntityStub $parent
+     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentStub $parent
      *
-     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildEntityStub
+     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException
      */
-    public function addParentWithWrongAttribute(MultiParentEntityStub $parent): self
+    public function addParentWithWrongAttribute(MultiParentStub $parent): self
     {
         return $this->associateMultiple('invalid', $parent, 'children');
     }

@@ -5,9 +5,6 @@ namespace Tests\EoneoPay\Externals\Stubs\Translator;
 
 use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 
-/**
- * @coversNothing
- */
 class TranslatorStub implements TranslatorInterface
 {
     /**

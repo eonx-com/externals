@@ -11,33 +11,29 @@ class EntityManagerStub implements EntityManagerInterface
     /**
      * @inheritdoc
      */
-    public function beginTransaction()
+    public function beginTransaction(): void
     {
-        // TODO: Implement beginTransaction() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function clear($objectName = null)
+    public function clear($objectName = null): void
     {
-        // TODO: Implement clear() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function close()
+    public function close(): void
     {
-        // TODO: Implement close() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function commit()
+    public function commit(): void
     {
-        // TODO: Implement commit() method.
     }
 
     /**
@@ -45,15 +41,13 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function contains($object)
     {
-        // TODO: Implement contains() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function copy($entity, $deep = false)
+    public function copy($entity, $deep = null)
     {
-        // TODO: Implement copy() method.
     }
 
     /**
@@ -61,7 +55,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function createNamedNativeQuery($name)
     {
-        // TODO: Implement createNamedNativeQuery() method.
     }
 
     /**
@@ -69,7 +62,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function createNamedQuery($name)
     {
-        // TODO: Implement createNamedQuery() method.
     }
 
     /**
@@ -77,15 +69,13 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function createNativeQuery($sql, ResultSetMapping $rsm)
     {
-        // TODO: Implement createNativeQuery() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function createQuery($dql = '')
+    public function createQuery($dql = null)
     {
-        // TODO: Implement createQuery() method.
     }
 
     /**
@@ -93,15 +83,13 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function createQueryBuilder()
     {
-        // TODO: Implement createQueryBuilder() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function detach($object)
+    public function detach($object): void
     {
-        // TODO: Implement detach() method.
     }
 
     /**
@@ -109,15 +97,13 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function find($className, $id)
     {
-        // TODO: Implement find() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function flush()
+    public function flush(): void
     {
-        // TODO: Implement flush() method.
     }
 
     /**
@@ -125,7 +111,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getCache()
     {
-        // TODO: Implement getCache() method.
     }
 
     /**
@@ -133,7 +118,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getClassMetadata($className)
     {
-        // TODO: Implement getClassMetadata() method.
     }
 
     /**
@@ -141,7 +125,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getConfiguration()
     {
-        // TODO: Implement getConfiguration() method.
     }
 
     /**
@@ -149,7 +132,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getConnection()
     {
-        // TODO: Implement getConnection() method.
     }
 
     /**
@@ -157,7 +139,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getEventManager()
     {
-        // TODO: Implement getEventManager() method.
     }
 
     /**
@@ -165,7 +146,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getExpressionBuilder()
     {
-        // TODO: Implement getExpressionBuilder() method.
     }
 
     /**
@@ -173,7 +153,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getFilters()
     {
-        // TODO: Implement getFilters() method.
     }
 
     /**
@@ -183,7 +162,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getHydrator($hydrationMode)
     {
-        // TODO: Implement getHydrator() method.
     }
 
     /**
@@ -191,7 +169,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getMetadataFactory()
     {
-        // TODO: Implement getMetadataFactory() method.
     }
 
     /**
@@ -199,7 +176,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getPartialReference($entityName, $identifier)
     {
-        // TODO: Implement getPartialReference() method.
     }
 
     /**
@@ -207,7 +183,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getProxyFactory()
     {
-        // TODO: Implement getProxyFactory() method.
     }
 
     /**
@@ -215,7 +190,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getReference($entityName, $id)
     {
-        // TODO: Implement getReference() method.
     }
 
     /**
@@ -223,7 +197,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getRepository($className)
     {
-        // TODO: Implement getRepository() method.
     }
 
     /**
@@ -231,7 +204,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function getUnitOfWork()
     {
-        // TODO: Implement getUnitOfWork() method.
     }
 
     /**
@@ -239,15 +211,13 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function hasFilters()
     {
-        // TODO: Implement hasFilters() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function initializeObject($obj)
+    public function initializeObject($obj): void
     {
-        // TODO: Implement initializeObject() method.
     }
 
     /**
@@ -255,7 +225,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function isFiltersStateClean()
     {
-        // TODO: Implement isFiltersStateClean() method.
     }
 
     /**
@@ -263,15 +232,13 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function isOpen()
     {
-        // TODO: Implement isOpen() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function lock($entity, $lockMode, $lockVersion = null)
+    public function lock($entity, $lockMode, $lockVersion = null): void
     {
-        // TODO: Implement lock() method.
     }
 
     /**
@@ -279,7 +246,6 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function merge($object)
     {
-        // TODO: Implement merge() method.
     }
 
     /**
@@ -287,39 +253,34 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function newHydrator($hydrationMode)
     {
-        // TODO: Implement newHydrator() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function persist($object)
+    public function persist($object): void
     {
-        // TODO: Implement persist() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function refresh($object)
+    public function refresh($object): void
     {
-        // TODO: Implement refresh() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function remove($object)
+    public function remove($object): void
     {
-        // TODO: Implement remove() method.
     }
 
     /**
      * @inheritdoc
      */
-    public function rollback()
+    public function rollback(): void
     {
-        // TODO: Implement rollback() method.
     }
 
     /**
@@ -327,6 +288,5 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function transactional($func)
     {
-        // TODO: Implement transactional() method.
     }
 }

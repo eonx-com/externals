@@ -12,12 +12,12 @@ use EoneoPay\Externals\ORM\Entity;
  *
  * @ORM\Entity()
  */
-class MultiParentEntityStub extends Entity
+class MultiParentStub extends Entity
 {
     /**
      * @ORM\ManyToMany(
      *     mappedBy="parents",
-     *     targetEntity="Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildEntityStub"
+     *     targetEntity="MultiChildStub"
      * )
      *
      * @var \Doctrine\Common\Collections\ArrayCollection

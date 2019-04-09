@@ -8,12 +8,12 @@ use Doctrine\ORM\Mapping\Id;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException;
 use Tests\EoneoPay\Externals\ORMTestCase;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildEntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidRelationshipStub;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildEntityStub;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentEntityStub;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Entity
@@ -41,8 +41,8 @@ class EntityTest extends ORMTestCase
      */
     public function testAssociateMultiParentsWithMultiChildren(): void
     {
-        $parent = new MultiParentEntityStub();
-        $child = new MultiChildEntityStub(['annotation_name' => 'string', 'value' => 'my-value']);
+        $parent = new MultiParentStub();
+        $child = new MultiChildStub(['annotation_name' => 'string', 'value' => 'my-value']);
 
         $child->addParent($parent);
 
@@ -73,7 +73,7 @@ class EntityTest extends ORMTestCase
         $this->getEntityManager()->flush();
         $this->getDoctrineEntityManager()->clear();
 
-        $childRetrieve = $this->getEntityManager()->getRepository(MultiChildEntityStub::class)->findOneBy([
+        $childRetrieve = $this->getEntityManager()->getRepository(MultiChildStub::class)->findOneBy([
             'value' => 'my-value'
         ]);
 
@@ -92,8 +92,8 @@ class EntityTest extends ORMTestCase
     {
         $this->expectException(InvalidRelationshipException::class);
 
-        $parent = new MultiParentEntityStub();
-        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+        $parent = new MultiParentStub();
+        $child = new MultiChildStub(['annotation_name' => 'string']);
 
         $child->addParentWithWrongAssociation($parent);
     }
@@ -109,8 +109,8 @@ class EntityTest extends ORMTestCase
     {
         $this->expectException(InvalidRelationshipException::class);
 
-        $parent = new MultiParentEntityStub();
-        $child = new MultiChildEntityStub(['annotation_name' => 'string']);
+        $parent = new MultiParentStub();
+        $child = new MultiChildStub(['annotation_name' => 'string']);
 
         $child->addParentWithWrongAttribute($parent);
     }
@@ -124,13 +124,13 @@ class EntityTest extends ORMTestCase
      */
     public function testAssociateParentWithChildren(): void
     {
-        $parent = new ParentEntityStub();
-        $child = new ChildEntityStub(['annotation_name' => 'string']);
+        $parent = new ParentStub();
+        $child = new ChildStub(['annotation_name' => 'string']);
 
         $child->setParent($parent);
 
         // Test parent is parent class
-        self::assertInstanceOf(ParentEntityStub::class, $child->getParent());
+        self::assertInstanceOf(ParentStub::class, $child->getParent());
         // Test parent contains child
         self::assertTrue($parent->getChildren()->contains($child));
 
@@ -151,7 +151,7 @@ class EntityTest extends ORMTestCase
 
         $this->expectException(InvalidRelationshipException::class);
 
-        $child->setParent(new ParentEntityStub());
+        $child->setParent(new ParentStub());
     }
 
     /**
@@ -165,8 +165,8 @@ class EntityTest extends ORMTestCase
     {
         $this->expectException(InvalidRelationshipException::class);
 
-        $parent = new ParentEntityStub();
-        $child = new ChildEntityStub(['annotation_name' => 'string']);
+        $parent = new ParentStub();
+        $child = new ChildStub(['annotation_name' => 'string']);
 
         $child->setInvalidParent($parent);
     }
@@ -180,6 +180,32 @@ class EntityTest extends ORMTestCase
     {
         $entity = new EntityStub(self::$data);
         self::assertSame(self::$data, $this->getEntityContents($entity));
+    }
+
+    /**
+     * Test associate allows disassociation
+     *
+     * @return void
+     * */
+    public function testDisassociateAssociation(): void
+    {
+        $parent = new ParentStub();
+        $child = new ChildStub(['annotation_name' => 'string']);
+
+        $child->setParent($parent);
+
+        // Test parent is set
+        self::assertInstanceOf(ParentStub::class, $child->getParent());
+        // Test parent contains child
+        self::assertTrue($parent->getChildren()->contains($child));
+
+        // Disassociate
+        $child->setParent(null);
+
+        // Test parent is unset
+        self::assertNull($child->getParent());
+        // Test parent no longer contains child
+        self::assertFalse($parent->getChildren()->contains($child));
     }
 
     /**

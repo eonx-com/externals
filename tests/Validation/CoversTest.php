@@ -1,12 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\App\Validation;
+namespace Tests\EoneoPay\Externals\Validation;
 
 use PHPUnit\Framework\TestCase;
+use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RegexIterator;
+use SplFileInfo;
 
 /**
  * @coversNothing
@@ -66,8 +68,13 @@ class CoversTest extends TestCase
      */
     private function getTestFilenames(string $path): array
     {
+        // Filter stubs
+        $filter = static function (SplFileInfo $file) {
+            return \strpos($file->getPathname(), '/tests/Stubs') === false;
+        };
+
         $directory = new RecursiveDirectoryIterator($path);
-        $iterator = new RecursiveIteratorIterator($directory);
+        $iterator = new RecursiveIteratorIterator(new RecursiveCallbackFilterIterator($directory, $filter));
         $matches = new RegexIterator($iterator, '/.*\.php$/', RegexIterator::GET_MATCH);
 
         $filenames = [];

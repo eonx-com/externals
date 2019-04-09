@@ -20,8 +20,6 @@ class OrmServiceProviderTest extends ORMTestCase
      * Test provider extend entity manager in container using our entity manager.
      *
      * @return void
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException If item isn't found in container
      */
     public function testRegister(): void
     {
@@ -47,7 +45,10 @@ class OrmServiceProviderTest extends ORMTestCase
         // Ensure services are bound
         self::assertInstanceOf(EntityManagerInterface::class, $application->get('em'));
 
-        // Ensure the ResolveTargetEntityListener fires
-        $application->make(ResolveTargetEntityListener::class);
+        // Test resolve target entity listener
+        self::assertInstanceOf(
+            ResolveTargetEntityListener::class,
+            $application->get(ResolveTargetEntityListener::class)
+        );
     }
 }

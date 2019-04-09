@@ -7,6 +7,9 @@ use EoneoPay\Externals\Bridge\Laravel\EventDispatcher;
 use Illuminate\Events\Dispatcher as IlluminateDispatcher;
 use Tests\EoneoPay\Externals\TestCase;
 
+/**
+ * @covers \EoneoPay\Externals\Bridge\Laravel\EventDispatcher
+ */
 class EventDispatcherTest extends TestCase
 {
     /**

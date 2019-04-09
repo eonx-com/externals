@@ -15,4 +15,14 @@ interface RepositoryInterface extends ObjectRepository
      * @return int The cardinality of the objects that match the given criteria.
      */
     public function count(?array $criteria = null): int;
+
+    /**
+     * Finds a single object by a set of criteria.
+     *
+     * @param mixed[] $criteria The criteria.
+     * @param string[]|null $orderBy
+     *
+     * @return object|null The object.
+     */
+    public function findOneBy(array $criteria, ?array $orderBy = null);
 }

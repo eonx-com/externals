@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity()
  */
-class GetFillableEntityStub extends EntityStub
+class FillableStub extends EntityStub
 {
     /**
      * Get entity fillable properties.

@@ -9,7 +9,7 @@ use EoneoPay\Externals\ORM\Entity;
 /**
  * @ORM\Entity(repositoryClass="\Tests\EoneoPay\Externals\Stubs\ORM\Repositories\InvalidRepositoryInterfaceStub")
  */
-class InvalidRepositoryEntityStub extends Entity
+class InvalidRepositoryStub extends Entity
 {
     /**
      * Primary id

@@ -175,7 +175,7 @@ abstract class Entity implements EntityInterface
         // If foreign key column explicitly defined assign parent id
         $foreignKey = \sprintf('%sId', $attribute);
         if (\property_exists($this, $foreignKey)) {
-            $this->{$foreignKey} = $parent !== null ? null : $parent->getId();
+            $this->{$foreignKey} = ($parent instanceof EntityInterface) === true ? $parent->getId() : null;
         }
 
         // If association set, handle it

@@ -35,7 +35,23 @@ final class LoggableEventSubscriber extends BaseLoggableListener
     /**
      * @inheritdoc
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \Exception Underlying extension throws exception on failure
+     */
+    public function createLogEntry($action, $object, LoggableAdapter $loggableAdapter): ?AbstractLogEntry
+    {
+        $logEntry = parent::createLogEntry($action, $object, $loggableAdapter);
+
+        if ($logEntry !== null) {
+            $logEntry->setUsername(\call_user_func($this->usernameResolver) ?? 'not_set');
+        }
+
+        return $logEntry;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache extension isn't loaded
      */
     public function getConfiguration(ObjectManager $objectManager, $class): array
     {
@@ -53,29 +69,13 @@ final class LoggableEventSubscriber extends BaseLoggableListener
     }
 
     /**
-     * @inheritdoc
-     *
-     * @throws \Exception Underlying extension throws exception on failure
-     */
-    protected function createLogEntry($action, $object, LoggableAdapter $loggableAdapter): ?AbstractLogEntry
-    {
-        $logEntry = parent::createLogEntry($action, $object, $loggableAdapter);
-
-        if ($logEntry !== null) {
-            $logEntry->setUsername(\call_user_func($this->usernameResolver) ?? 'not_set');
-        }
-
-        return $logEntry;
-    }
-
-    /**
      * Get fillable properties for given entity.
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity
      *
      * @return string[]
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache extension isn't loaded
      */
     private function getEntityFillable(EntityInterface $entity): array
     {

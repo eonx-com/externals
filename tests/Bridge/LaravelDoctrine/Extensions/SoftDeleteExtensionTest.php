@@ -1,16 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\Externals\ORM\Extensions;
+namespace Tests\EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions;
 
-use EoneoPay\Externals\ORM\Extensions\SoftDeleteExtension;
+use EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\SoftDeleteExtension;
+use EoneoPay\Externals\ORM\Subscribers\SoftDeleteEventSubscriber;
 use Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\Common\EventManagerStub;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\ORM\EntityManagerStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
- * @covers \EoneoPay\Externals\ORM\Extensions\SoftDeleteExtension
+ * @covers \EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\SoftDeleteExtension
  */
 class SoftDeleteExtensionTest extends TestCase
 {
@@ -29,6 +30,7 @@ class SoftDeleteExtensionTest extends TestCase
         $softDeleteable->addSubscribers($eventManager, new EntityManagerStub());
 
         self::assertCount(1, $eventManager->getSubscribers());
+        self::assertInstanceOf(SoftDeleteEventSubscriber::class, $eventManager->getSubscribers()[0]);
     }
 
     /**

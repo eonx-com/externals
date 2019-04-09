@@ -6,19 +6,19 @@ namespace Tests\EoneoPay\Externals\Stubs\ORM\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @method null|ParentEntityStub getParent()
+ * @method null|ParentStub getParent()
  *
  * @ORM\Entity()
  */
-class ChildEntityStub extends EntityStub
+class ChildStub extends EntityStub
 {
     /**
      * @ORM\ManyToOne(
      *     inversedBy="children",
-     *     targetEntity="Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub"
+     *     targetEntity="ParentStub"
      * )
      *
-     * @var \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub
+     * @var \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub
      */
     protected $parent;
 
@@ -32,10 +32,10 @@ class ChildEntityStub extends EntityStub
     /**
      * @ORM\ManyToOne(
      *     inversedBy="childrenPersist",
-     *     targetEntity="Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub"
+     *     targetEntity="ParentStub"
      * )
      *
-     * @var \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub
+     * @var \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub
      */
     protected $parentPersist;
 
@@ -48,7 +48,7 @@ class ChildEntityStub extends EntityStub
     {
         parent::__construct($data);
 
-        $this->parent = new ParentEntityStub();
+        $this->parent = new ParentStub();
         $this->parent->getChildren()->add($this);
     }
 
@@ -71,13 +71,13 @@ class ChildEntityStub extends EntityStub
     /**
      * Set parent with invalid relation.
      *
-     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub $parent
+     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub $parent
      *
-     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildEntityStub
+     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException If attribute doesn't exist on entity
      */
-    public function setInvalidParent(ParentEntityStub $parent): self
+    public function setInvalidParent(ParentStub $parent): self
     {
         return $this->associate('parent', $parent, 'invalid');
     }
@@ -85,13 +85,13 @@ class ChildEntityStub extends EntityStub
     /**
      * Set parent.
      *
-     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub $parent
+     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub|null $parent
      *
-     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildEntityStub
+     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException If attribute doesn't exist on entity
      */
-    public function setParent(ParentEntityStub $parent): self
+    public function setParent(?ParentStub $parent): self
     {
         return $this->associate('parent', $parent, 'children');
     }
@@ -99,13 +99,13 @@ class ChildEntityStub extends EntityStub
     /**
      * Set parent persist.
      *
-     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentEntityStub $parent
+     * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub $parent
      *
-     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildEntityStub
+     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildStub
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException If attribute doesn't exist on entity
      */
-    public function setParentPersist(ParentEntityStub $parent): self
+    public function setParentPersist(ParentStub $parent): self
     {
         return $this->associate('parentPersist', $parent, 'childrenPersist');
     }

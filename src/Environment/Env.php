@@ -81,33 +81,32 @@ final class Env implements EnvInterface
      */
     private function resolveKeywords(string $value)
     {
+        // By default the original value will be returned
+        $resolution = $value;
+
         // Handle php keywords - code coverage disabled due to phpdbg not seeing case statements
         switch (\mb_strtolower($value)) {
-            // @codeCoverageIgnoreStart
-            case 'false':
-            case '(false)':
-                // @codeCoverageIgnoreEnd
-                return false;
+            case 'false': // @codeCoverageIgnore
+            case '(false)': // @codeCoverageIgnore
+                $resolution = false;
+                break;
 
-            // @codeCoverageIgnoreStart
-            case 'true':
-            case '(true)':
-                // @codeCoverageIgnoreEnd
-                return true;
+            case 'true': // @codeCoverageIgnore
+            case '(true)': // @codeCoverageIgnore
+                $resolution = true;
+                break;
 
-            // @codeCoverageIgnoreStart
-            case 'empty':
-            case '(empty)':
-                // @codeCoverageIgnoreEnd
-                return '';
+            case 'empty': // @codeCoverageIgnore
+            case '(empty)': // @codeCoverageIgnore
+                $resolution = '';
+                break;
 
-            // @codeCoverageIgnoreStart
-            case 'null':
-            case '(null)':
-                // @codeCoverageIgnoreEnd
-                return null;
+            case 'null': // @codeCoverageIgnore
+            case '(null)': // @codeCoverageIgnore
+                $resolution = null;
+                break;
         }
 
-        return $value;
+        return $resolution;
     }
 }

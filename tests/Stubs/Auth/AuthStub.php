@@ -6,9 +6,6 @@ namespace Tests\EoneoPay\Externals\Stubs\Auth;
 use EoneoPay\Externals\Auth\Interfaces\AuthInterface;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 
-/**
- * @coversNothing
- */
 class AuthStub implements AuthInterface
 {
     /**

@@ -11,7 +11,7 @@ use Tests\EoneoPay\Externals\Stubs\ORM\Exceptions\EntityValidationFailedExceptio
 /**
  * @ORM\Entity()
  */
-class ValidationRulesEntityStub extends Entity implements ValidatableInterface
+class ValidationRulesStub extends Entity implements ValidatableInterface
 {
     /**
      * Primary id
@@ -48,7 +48,7 @@ class ValidationRulesEntityStub extends Entity implements ValidatableInterface
     /**
      * Initialise validation rules.
      *
-     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ValidationRulesEntityStub
+     * @return \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ValidationRulesStub
      */
     public function setRules(): self
     {

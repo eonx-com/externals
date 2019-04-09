@@ -7,12 +7,12 @@ use EoneoPay\Externals\ORM\Exceptions\ORMException;
 use EoneoPay\Externals\ORM\Exceptions\RepositoryClassDoesNotImplementInterfaceException;
 use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
 use Tests\EoneoPay\Externals\ORMTestCase;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\CustomRepositoryEntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\CustomRepositoryStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\GetFillableEntityStub;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidRepositoryEntityStub;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\NoEntityAnnotationEntityStub;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ValidatableEntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\FillableStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidRepositoryStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\NoEntityAnnotationStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ValidatableStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Exceptions\EntityValidationFailedExceptionStub;
 
 /**
@@ -27,7 +27,7 @@ class EntityManagerTest extends ORMTestCase
      */
     public function testCustomRepository(): void
     {
-        $repository = $this->getEntityManager()->getRepository(CustomRepositoryEntityStub::class);
+        $repository = $this->getEntityManager()->getRepository(CustomRepositoryStub::class);
 
         self::assertTrue(\method_exists($repository, 'createQueryBuilder'));
     }
@@ -41,7 +41,7 @@ class EntityManagerTest extends ORMTestCase
     {
         $this->expectException(ORMException::class);
 
-        $this->getEntityManager()->persist(new NoEntityAnnotationEntityStub());
+        $this->getEntityManager()->persist(new NoEntityAnnotationStub());
         $this->getEntityManager()->flush();
     }
 
@@ -67,7 +67,7 @@ class EntityManagerTest extends ORMTestCase
     {
         $this->expectException(RepositoryClassDoesNotImplementInterfaceException::class);
 
-        $this->getEntityManager()->getRepository(InvalidRepositoryEntityStub::class);
+        $this->getEntityManager()->getRepository(InvalidRepositoryStub::class);
     }
 
     /**
@@ -97,7 +97,7 @@ class EntityManagerTest extends ORMTestCase
     public function testPersistAndRemoveSuccessful(): void
     {
         // Use entity with getFillable to cover LoggableEventSubscriber
-        $entity = new GetFillableEntityStub(['string' => 'string', 'integer' => 1]);
+        $entity = new FillableStub(['string' => 'string', 'integer' => 1]);
 
         // Persist entity into database
         $this->getEntityManager()->persist($entity);
@@ -129,7 +129,7 @@ class EntityManagerTest extends ORMTestCase
     {
         $this->expectException(EntityValidationFailedExceptionStub::class);
 
-        $this->getEntityManager()->persist(new ValidatableEntityStub());
+        $this->getEntityManager()->persist(new ValidatableStub());
         $this->getEntityManager()->flush();
     }
 

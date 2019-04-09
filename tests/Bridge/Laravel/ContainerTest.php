@@ -7,6 +7,9 @@ use EoneoPay\Externals\Bridge\Laravel\Container;
 use Illuminate\Container\Container as IlluminateContainer;
 use Tests\EoneoPay\Externals\TestCase;
 
+/**
+ * @covers \EoneoPay\Externals\Bridge\Laravel\Container
+ */
 class ContainerTest extends TestCase
 {
     /**

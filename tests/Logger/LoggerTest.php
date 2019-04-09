@@ -7,6 +7,9 @@ use EoneoPay\Externals\Logger\Logger;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Monolog\Handler\LogHandlerStub;
 use Tests\EoneoPay\Externals\TestCase;
 
+/**
+ * @covers \EoneoPay\Externals\Logger\Logger
+ */
 class LoggerTest extends TestCase
 {
     /**

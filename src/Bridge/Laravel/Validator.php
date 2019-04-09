@@ -134,15 +134,8 @@ final class Validator implements ValidatorInterface
      */
     private function instantiateRule(string $className): ?ValidationRuleInterface
     {
-        // If rule is invalid, skip, this is only here for safety since method is private
-        if (\class_exists($className) === false) {
-            // @codeCoverageIgnoreStart
-            return null;
-            // @codeCoverageIgnoreEnd
-        }
-
         // Instantiate class
-        $rule = new $className();
+        $rule = $this->instantiateRuleClass($className);
 
         // If class isn't a valid rule, skip, this is only here for safety since method is private
         if (($rule instanceof ValidationRuleInterface) === false) {
@@ -158,5 +151,26 @@ final class Validator implements ValidatorInterface
         $this->validator->addReplacer($rule->getName(), $rule->getReplacements());
 
         return $rule;
+    }
+
+    /**
+     * Instantiate rule class if it's valid
+     *
+     * @param string $className
+     *
+     * @return \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface|null
+     */
+    private function instantiateRuleClass(string $className): ?ValidationRuleInterface
+    {
+        // If rule is invalid, skip, this is only here for safety since method is private
+        if (\class_exists($className) === false) {
+            return null; // @codeCoverageIgnore
+        }
+
+        // Instantiate class
+        $rule = new $className();
+
+        // Only return the rule if it's implementing the expected interface
+        return ($rule instanceof ValidationRuleInterface) === true ? $rule : null;
     }
 }

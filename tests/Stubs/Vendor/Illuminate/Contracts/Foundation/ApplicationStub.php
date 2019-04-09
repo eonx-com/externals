@@ -6,7 +6,6 @@ namespace Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation;
 use ArrayAccess;
 use Closure;
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 
 class ApplicationStub implements Application, ArrayAccess
@@ -58,15 +57,19 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function bind($abstract, $concrete = null, $shared = false)
+    public function bind($abstract, $concrete = null, $shared = null)
     {
+        if ($shared === null) {
+            $shared = false;
+        }
+
         return $this->callMethod('bind', [$abstract, $concrete, $shared]);
     }
 
     /**
      * @inheritdoc
      */
-    public function bindIf($abstract, $concrete = null, $shared = false): void
+    public function bindIf($abstract, $concrete = null, $shared = null): void
     {
     }
 
@@ -94,7 +97,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function bootstrapPath($path = '')
+    public function bootstrapPath($path = null)
     {
     }
 
@@ -115,14 +118,14 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function call($callback, array $parameters = [], $defaultMethod = null)
+    public function call($callback, array $parameters = null, $defaultMethod = null)
     {
     }
 
     /**
      * @inheritdoc
      */
-    public function configPath($path = '')
+    public function configPath($path = null)
     {
     }
 
@@ -136,7 +139,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function databasePath($path = '')
+    public function databasePath($path = null)
     {
     }
 
@@ -300,8 +303,12 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function make($abstract, array $parameters = [])
+    public function make($abstract, array $parameters = null)
     {
+        if ($parameters === null) {
+            $parameters = [];
+        }
+
         return $this->callMethod('make', [$abstract, $parameters]);
     }
 
@@ -337,7 +344,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function register($provider, $force = false)
+    public function register($provider, $force = null)
     {
     }
 
@@ -379,7 +386,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * @inheritdoc
      */
-    public function resourcePath($path = '')
+    public function resourcePath($path = null)
     {
     }
 
@@ -478,10 +485,6 @@ class ApplicationStub implements Application, ArrayAccess
      */
     private function callMethod(string $method, ?array $parameters = null)
     {
-        try {
-            return \call_user_func_array([$this->container, $method], $parameters ?? []);
-        } catch (BindingResolutionException $exception) {
-            return false;
-        }
+        return \call_user_func_array([$this->container, $method], $parameters ?? []);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\ORM\Traits;
 
 use EoneoPay\Utils\DateTime;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\TransformerEntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\TransformerStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
@@ -21,7 +21,7 @@ class HasTransformersTest extends TestCase
      */
     public function testHasTransformersTraitWorksAsExcepted(): void
     {
-        $entity = new TransformerEntityStub();
+        $entity = new TransformerStub();
 
         self::assertFalse($entity->setBool(null)->getBool());
         self::assertTrue($entity->setBool('true')->getBool());

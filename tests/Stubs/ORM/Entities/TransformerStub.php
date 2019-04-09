@@ -14,7 +14,7 @@ use EoneoPay\Externals\ORM\Traits\HasTransformers;
  * @method self setDatetime($datetime)
  * @method self setString($string)
  */
-class TransformerEntityStub extends Entity
+class TransformerStub extends Entity
 {
     use HasTransformers;
 

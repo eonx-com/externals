@@ -10,7 +10,7 @@ use Tests\EoneoPay\Externals\Stubs\ORM\Exceptions\EntityValidationFailedExceptio
 /**
  * @ORM\Entity()
  */
-class ValidatableEntityStub extends EntityStub implements ValidatableInterface
+class ValidatableStub extends EntityStub implements ValidatableInterface
 {
     /**
      * {@inheritdoc}

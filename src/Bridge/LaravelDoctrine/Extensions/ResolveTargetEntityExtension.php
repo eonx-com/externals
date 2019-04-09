@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\Externals\Bridge\Laravel\ORM;
+namespace EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\EventManager;

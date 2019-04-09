@@ -5,7 +5,6 @@ namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\ORM\Tools\ResolveTargetEntityListener;
-use EoneoPay\Externals\Bridge\Laravel\ORM\ResolveTargetEntityExtension;
 use EoneoPay\Externals\ORM\EntityManager;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
 use Illuminate\Contracts\Container\Container;
@@ -39,7 +38,5 @@ final class OrmServiceProvider extends ServiceProvider
 
             return $listener;
         });
-
-        $this->app->singleton(ResolveTargetEntityExtension::class);
     }
 }

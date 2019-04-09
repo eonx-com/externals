@@ -60,7 +60,9 @@ final class SoftDeleteEventSubscriber extends SoftDeleteableListener
     }
 
     /**
-     * @inheritdoc
+     * Detach soft deleted items from entity manager
+     *
+     * @param \Doctrine\Common\EventArgs $args Lifecycle event args used by flush
      */
     public function postFlush(EventArgs $args): void
     {

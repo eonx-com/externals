@@ -14,12 +14,14 @@ use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Tools\ResolveTargetEntityListener;
 use Doctrine\ORM\Tools\SchemaTool;
 use EoneoPay\Externals\Bridge\Laravel\Translator;
 use EoneoPay\Externals\Bridge\Laravel\Validator;
+use EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\ResolveTargetEntityExtension;
+use EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\SoftDeleteExtension;
 use EoneoPay\Externals\ORM\Entity;
 use EoneoPay\Externals\ORM\EntityManager;
-use EoneoPay\Externals\ORM\Extensions\SoftDeleteExtension;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
 use EoneoPay\Externals\ORM\Listeners\GenerateUniqueValue;
 use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
@@ -30,7 +32,7 @@ use Illuminate\Translation\Translator as IlluminateTranslator;
 use Illuminate\Validation\Factory;
 use ReflectionClass;
 use ReflectionException;
-use Tests\EoneoPay\Externals\Stubs\ORM\Extensions\LoggableExtensionStub;
+use Tests\EoneoPay\Externals\Stubs\Bridge\LaravelDoctrine\Extensions\LoggableExtensionStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Repositories\RepositoryStub;
 
 /**
@@ -272,6 +274,7 @@ abstract class ORMTestCase extends TestCase
     private function getLaravelDoctrineExtensions(): array
     {
         return [
+            new ResolveTargetEntityExtension(new ResolveTargetEntityListener()),
             new SoftDeleteExtension(),
             new LoggableExtensionStub()
         ];

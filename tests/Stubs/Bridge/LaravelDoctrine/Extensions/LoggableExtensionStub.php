@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\Externals\Stubs\ORM\Extensions;
+namespace Tests\EoneoPay\Externals\Stubs\Bridge\LaravelDoctrine\Extensions;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\EventManager;
@@ -12,15 +12,7 @@ use LaravelDoctrine\Extensions\GedmoExtension;
 class LoggableExtensionStub extends GedmoExtension
 {
     /**
-     * Add loggable subscriber to Doctrine events system.
-     *
-     * @param \Doctrine\Common\EventManager $manager
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     * @param \Doctrine\Common\Annotations\Reader|null $reader
-     *
-     * @return void
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter) Inherited from LaravelDoctrine extensions
+     * @inheritdoc
      */
     public function addSubscribers(
         EventManager $manager,
@@ -35,9 +27,7 @@ class LoggableExtensionStub extends GedmoExtension
     }
 
     /**
-     * Get filters provided by the extension.
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function getFilters(): array
     {

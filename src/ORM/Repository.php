@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\ORM;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use EoneoPay\Externals\ORM\Exceptions\ORMException;
-use EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface;
 use EoneoPay\Externals\ORM\Interfaces\RepositoryInterface;
+use Exception;
 
 abstract class Repository implements RepositoryInterface
 {
@@ -38,7 +37,6 @@ abstract class Repository implements RepositoryInterface
     /**
      * @inheritdoc
      *
-     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function count(?array $criteria = null): int
@@ -57,7 +55,6 @@ abstract class Repository implements RepositoryInterface
     /**
      * @inheritdoc
      *
-     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function findAll(): array
@@ -68,7 +65,6 @@ abstract class Repository implements RepositoryInterface
     /**
      * @inheritdoc
      *
-     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
@@ -79,7 +75,6 @@ abstract class Repository implements RepositoryInterface
     /**
      * @inheritdoc
      *
-     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     public function findOneBy(array $criteria, ?array $orderBy = null)
@@ -108,12 +103,11 @@ abstract class Repository implements RepositoryInterface
     /**
      * Call a method on the entity manager and catch any exception
      *
-     * @param string $method The method to call
+     * @param string $method The method torc/ORM/Subscribers/SoftDeleteEventSubscriber.php call
      * @param mixed ...$parameters The parameters to pass to the method
      *
      * @return mixed
      *
-     * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
     private function callMethod(string $method, ...$parameters)
@@ -123,18 +117,8 @@ abstract class Repository implements RepositoryInterface
             $persister = $this->entityManager->getUnitOfWork()->getEntityPersister($this->entityName);
 
             return \call_user_func_array([$persister, $method], $parameters ?? []);
-        } catch (DBALException $exception) {
-            // If this is a validation exception, throw it directly
-            if (($exception instanceof EntityValidationFailedExceptionInterface) === true) {
-                /**
-                 * @var \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface $exception
-                 *
-                 * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
-                 */
-                throw $exception;
-            }
-
-            // Wrap others in ORMException
+        } catch (Exception $exception) {
+            // Wrap all thrown exceptions as an ORM exception
             throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, $exception);
         }
     }

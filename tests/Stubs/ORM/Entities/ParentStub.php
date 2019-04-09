@@ -11,12 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity()
  */
-class ParentEntityStub extends EntityStub
+class ParentStub extends EntityStub
 {
     /**
      * @ORM\OneToMany(
      *     mappedBy="parent",
-     *     targetEntity="Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildEntityStub"
+     *     targetEntity="ChildStub"
      * )
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -26,7 +26,7 @@ class ParentEntityStub extends EntityStub
     /**
      * @ORM\OneToMany(
      *     mappedBy="parentPersist",
-     *     targetEntity="Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildEntityStub"
+     *     targetEntity="ChildStub"
      * )
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
