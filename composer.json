@@ -7,7 +7,7 @@
   "license": "BSD-3-Clause",
   "type": "library",
   "require": {
-    "php": ">=7.1",
+    "php": ">=7.2",
     "eoneopay/utils": "dev-master",
     "ext-json": "*",
     "ext-libxml": "*",
