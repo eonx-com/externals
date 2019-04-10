@@ -26,12 +26,20 @@ final class Logger implements LoggerInterface
      *
      * @param string|null $streamName The log stream name
      * @param \Monolog\Handler\HandlerInterface|null $handler The handler to use for logging
+     * @param \Monolog\Processor\ProcessorInterface[]|null $processors
      */
-    public function __construct(?string $streamName = null, ?HandlerInterface $handler = null)
-    {
+    public function __construct(
+        ?string $streamName = null,
+        ?HandlerInterface $handler = null,
+        ?array $processors = null
+    ) {
         // Instantiate logger and set handler
         $this->monolog = new MonologLogger($streamName ?? 'Application');
         $this->monolog->pushHandler($handler ?? new SyslogHandler('ErrorLog'));
+
+        foreach ($processors ?? [] as $processor) {
+            $this->monolog->pushProcessor($processor);
+        }
     }
 
     /**
