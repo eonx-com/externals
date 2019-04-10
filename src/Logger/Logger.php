@@ -9,6 +9,9 @@ use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Logger as MonologLogger;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) Methods are dictated by PSR logger interface
+ */
 final class Logger implements LoggerInterface
 {
     /**
@@ -34,17 +37,41 @@ final class Logger implements LoggerInterface
     /**
      * @inheritdoc
      */
-    public function debug(string $message, ?array $context = null): bool
+    public function alert($message, ?array $context = null)
     {
-        return $this->write('debug', $message, $context ?? []);
+        return $this->log('alert', $message, $context ?? []);
     }
 
     /**
      * @inheritdoc
      */
-    public function error(string $message, ?array $context = null): bool
+    public function critical($message, ?array $context = null)
     {
-        return $this->write('error', $message, $context ?? []);
+        return $this->log('critical', $message, $context ?? []);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function debug($message, ?array $context = null): bool
+    {
+        return $this->log('debug', $message, $context ?? []);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function emergency($message, ?array $context = null)
+    {
+        return $this->log('emergency', $message, $context ?? []);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function error($message, ?array $context = null): bool
+    {
+        return $this->log('error', $message, $context ?? []);
     }
 
     /**
@@ -52,7 +79,7 @@ final class Logger implements LoggerInterface
      */
     public function exception(Exception $exception, ?string $level = null): bool
     {
-        return $this->write(
+        return $this->log(
             $level ?? 'notice',
             \sprintf('Exception caught: %s', $exception->getMessage()),
             $exception->getTrace()
@@ -62,47 +89,40 @@ final class Logger implements LoggerInterface
     /**
      * @inheritdoc
      */
-    public function info(string $message, ?array $context = null): bool
+    public function info($message, ?array $context = null): bool
     {
-        return $this->write('info', $message, $context ?? []);
+        return $this->log('info', $message, $context ?? []);
     }
 
     /**
      * @inheritdoc
      */
-    public function notice(string $message, ?array $context = null): bool
-    {
-        return $this->write('notice', $message, $context ?? []);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function warning(string $message, ?array $context = null): bool
-    {
-        return $this->write('warning', $message, $context ?? []);
-    }
-
-    /**
-     * Write a log and return the result
-     *
-     * @param string $type The log type
-     * @param string $message The log message
-     * @param mixed[] $context Additional log context
-     *
-     * @return bool
-     */
-    private function write(string $type, string $message, ?array $context = null): bool
+    public function log($level, $message, ?array $context = null): bool
     {
         try {
-            return $this->monolog->{$type}($message, $context ?? []);
+            return $this->monolog->{$level}($message, $context ?? []);
         } catch (Exception $exception) {
-            // Logger is unavailable, write to php error log
-            /** @noinspection ForgottenDebugOutputInspection */
+            /** @noinspection ForgottenDebugOutputInspection This is only a fallback if logger is unavailable */
             \error_log($exception->getMessage());
         }
 
         // Log wasn't written
         return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function notice($message, ?array $context = null): bool
+    {
+        return $this->log('notice', $message, $context ?? []);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function warning($message, ?array $context = null): bool
+    {
+        return $this->log('warning', $message, $context ?? []);
     }
 }

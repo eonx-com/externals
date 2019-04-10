@@ -24,7 +24,7 @@ class LoggerTest extends TestCase
         $message = 'my message';
         $context = ['attr' => 'value'];
 
-        foreach (['debug', 'error', 'info', 'notice', 'warning'] as $method) {
+        foreach (['alert', 'critical', 'debug', 'emergency', 'error', 'info', 'notice', 'warning'] as $method) {
             self::assertTrue($logger->$method($message, $context));
         }
 
