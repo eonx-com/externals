@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Logger;
 
 use EoneoPay\Externals\Logger\Logger;
+use Monolog\Processor\ProcessorInterface;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Monolog\Handler\LogHandlerStub;
 use Tests\EoneoPay\Externals\TestCase;
 
@@ -56,6 +57,40 @@ class LoggerTest extends TestCase
 
         self::assertArrayHasKey('message', $log);
         self::assertEquals(\sprintf('Exception caught: %s', $message), $log['message']);
+    }
+
+    /**
+     * Test logger processors
+     *
+     * @return void
+     */
+    public function testLogProcessors(): void
+    {
+        $handler = new LogHandlerStub();
+        $processor = new class implements ProcessorInterface {
+            /**
+             * @inheritdoc
+             */
+            public function __invoke(array $record): array
+            {
+                $record['extra']['details'] = 'Details';
+
+                return $record;
+            }
+        };
+
+        $logger = new Logger(null, $handler, [$processor]);
+        $logger->warning('Message');
+
+        $logs = $handler->getLogs();
+
+        self::assertCount(1, $logs);
+
+        $log = \reset($logs);
+
+        self::assertArrayHasKey('extra', $log);
+        self::assertArrayHasKey('details', $log['extra']);
+        self::assertSame('Details', $log['extra']['details']);
     }
 
     /**
