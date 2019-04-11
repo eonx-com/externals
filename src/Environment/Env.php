@@ -26,7 +26,7 @@ final class Env implements EnvInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function get(string $key, $default = null)
     {
@@ -46,7 +46,7 @@ final class Env implements EnvInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function remove(string $key): bool
     {
@@ -57,7 +57,7 @@ final class Env implements EnvInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function set(string $key, $value): bool
     {

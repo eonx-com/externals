@@ -11,7 +11,7 @@ use Illuminate\Validation\Validator;
 final class EmptyWithRule implements ValidationRuleInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName(): string
     {
@@ -19,7 +19,7 @@ final class EmptyWithRule implements ValidationRuleInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable) Closure signature is defined by Laravel validator
      */
@@ -37,7 +37,7 @@ final class EmptyWithRule implements ValidationRuleInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable) Closure signature is defined by Laravel validator
      */

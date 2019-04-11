@@ -1,3 +1,5 @@
+includes:
+	- vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
     ignoreErrors:
         -
@@ -15,3 +17,10 @@ parameters:
         -
             message: '/Parameter #1 \$function of function call_user_func_array expects callable\(\): mixed, array\([\w\\]+, string\) given./'
             path: src/ORM
+        -
+            message: '#Variable property access on \$this\(EoneoPay\\Externals\\ORM\\Entity\).#'
+            path: src/ORM/Entity.php
+        -
+            message: '#Variable property access on \$this\(Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities\\EntityStub|TransformerStub\).#'
+            path: src/ORM/Traits/HasTransformers.php
+

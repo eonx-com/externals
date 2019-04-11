@@ -8,7 +8,7 @@ use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 class TranslatorStub implements TranslatorInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function get(string $key, ?array $replace = null, ?string $locale = null)
     {
@@ -16,7 +16,7 @@ class TranslatorStub implements TranslatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function trans(string $key, ?array $replace = null, ?string $locale = null): string
     {

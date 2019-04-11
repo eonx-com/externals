@@ -33,7 +33,7 @@ class CustomRepositoryStub extends Entity
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getIdProperty(): string
     {

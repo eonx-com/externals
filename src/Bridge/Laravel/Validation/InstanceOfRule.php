@@ -9,7 +9,7 @@ use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
 final class InstanceOfRule implements ValidationRuleInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName(): string
     {
@@ -17,7 +17,7 @@ final class InstanceOfRule implements ValidationRuleInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable) Closure signature is defined by Laravel validator
      */
@@ -35,7 +35,7 @@ final class InstanceOfRule implements ValidationRuleInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable) Closure signature is defined by Laravel validator
      */

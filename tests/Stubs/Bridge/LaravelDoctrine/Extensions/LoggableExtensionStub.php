@@ -12,7 +12,7 @@ use LaravelDoctrine\Extensions\GedmoExtension;
 class LoggableExtensionStub extends GedmoExtension
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addSubscribers(
         EventManager $manager,
@@ -27,7 +27,7 @@ class LoggableExtensionStub extends GedmoExtension
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFilters(): array
     {

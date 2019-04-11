@@ -26,7 +26,7 @@ final class FilterCollection implements FilterCollectionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
      */
@@ -36,7 +36,7 @@ final class FilterCollection implements FilterCollectionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
      */

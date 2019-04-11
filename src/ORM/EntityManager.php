@@ -35,7 +35,7 @@ final class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      */
@@ -63,7 +63,7 @@ final class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
@@ -74,7 +74,7 @@ final class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFilters(): FilterCollectionInterface
     {
@@ -82,7 +82,7 @@ final class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassDoesNotImplementInterfaceException If wrong interface
      */
@@ -109,7 +109,7 @@ final class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
@@ -120,7 +120,7 @@ final class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
@@ -131,7 +131,7 @@ final class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Interfaces\Exceptions\EntityValidationFailedExceptionInterface Validation failure
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error

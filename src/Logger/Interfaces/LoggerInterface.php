@@ -14,7 +14,7 @@ interface LoggerInterface extends BaseInterface
      * @param \Exception $exception The exception to handle
      * @param string|null $level The log level for this exception
      *
-     * @return bool
+     * @return void
      */
-    public function exception(Exception $exception, ?string $level = null): bool;
+    public function exception(Exception $exception, ?string $level = null): void;
 }

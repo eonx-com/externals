@@ -27,7 +27,7 @@ final class ResolveTargetEntityExtension implements Extension
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addSubscribers(
         EventManager $eventManager,
@@ -38,7 +38,7 @@ final class ResolveTargetEntityExtension implements Extension
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFilters(): array
     {

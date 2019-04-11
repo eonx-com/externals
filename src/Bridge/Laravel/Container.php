@@ -24,18 +24,22 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable) Parameter is inherited from interface
      */
-    public function get($serviceId)
+    public function get($id)
     {
-        return $this->container->get($serviceId);
+        return $this->container->get($id);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable) Parameter is inherited from interface
      */
-    public function has($serviceId): bool
+    public function has($id): bool
     {
-        return $this->container->has($serviceId);
+        return $this->container->has($id);
     }
 }

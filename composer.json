@@ -11,7 +11,8 @@
     "eoneopay/utils": "dev-master",
     "ext-json": "*",
     "ext-libxml": "*",
-    "ext-simplexml": "*"
+    "ext-simplexml": "*",
+    "phpstan/phpstan-strict-rules": "^0.11.0"
   },
   "require-dev": {
     "eoneopay/standards": "dev-master",

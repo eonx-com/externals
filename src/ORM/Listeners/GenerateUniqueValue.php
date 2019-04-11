@@ -70,9 +70,14 @@ final class GenerateUniqueValue
         // Generate value, will throw exception if not possible
         $randomValue = $this->generateValue($entity, $eventArgs);
 
-        // Set value
-        $setter = \sprintf('set%s', \ucfirst($entity->getGeneratedProperty()));
-        $entity->{$setter}($randomValue);
+        $setter = [$entity, \sprintf('set%s', \ucfirst($entity->getGeneratedProperty()))];
+
+        // If setter isn't callable, abort
+        if (\is_callable($setter) === false) {
+            return;
+        }
+
+        $setter($randomValue);
 
         if (($entity instanceof GenerateUniqueValueWithCallbackInterface) === true) {
             /**

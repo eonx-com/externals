@@ -30,7 +30,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function append(string $filename, string $contents): bool
     {
@@ -38,7 +38,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function exists(string $filename): bool
     {
@@ -46,7 +46,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function files(?string $directory = null, ?bool $recursive = null): array
     {
@@ -54,7 +54,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function path(?string $filename = null): string
     {
@@ -65,7 +65,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException If file is not found
      */
@@ -80,7 +80,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function remove(string $filename): bool
     {
@@ -88,7 +88,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function write(string $filename, string $contents): bool
     {

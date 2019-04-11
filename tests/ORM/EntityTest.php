@@ -79,6 +79,17 @@ class EntityTest extends ORMTestCase
             'value' => 'my-value'
         ]);
 
+        // Check we have the right type
+        if (($childRetrieve instanceof MultiChildStub) === false) {
+            self::fail(\sprintf(
+                'Many to many association failed, expected %s received %s',
+                MultiChildStub::class,
+                $childRetrieve === null ? 'null' : \get_class($childRetrieve)
+            ));
+
+            return;
+        }
+
         // Test parent is added to child collection
         self::assertEquals(1, $childRetrieve->getParents()->count());
     }

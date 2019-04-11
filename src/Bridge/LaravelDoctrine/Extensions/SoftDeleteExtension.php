@@ -13,7 +13,7 @@ use LaravelDoctrine\Extensions\GedmoExtension;
 final class SoftDeleteExtension extends GedmoExtension
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addSubscribers(
         EventManager $manager,
@@ -24,7 +24,7 @@ final class SoftDeleteExtension extends GedmoExtension
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFilters(): array
     {

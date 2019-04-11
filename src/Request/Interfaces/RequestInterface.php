@@ -60,7 +60,7 @@ interface RequestInterface
      *
      * @param mixed[] $data The data to merge into the request
      *
-     * @return static
+     * @return \EoneoPay\Externals\Request\Interfaces\RequestInterface
      */
     public function merge(array $data);
 
@@ -69,7 +69,7 @@ interface RequestInterface
      *
      * @param mixed[] $data The data to replace in the request
      *
-     * @return static
+     * @return \EoneoPay\Externals\Request\Interfaces\RequestInterface
      */
     public function replace(array $data);
 
@@ -79,7 +79,7 @@ interface RequestInterface
      * @param string $key The key to set
      * @param mixed $value The value to set against the header
      *
-     * @return static
+     * @return \EoneoPay\Externals\Request\Interfaces\RequestInterface
      */
     public function setHeader(string $key, $value);
 

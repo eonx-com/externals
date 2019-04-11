@@ -15,7 +15,7 @@ final class FilesystemServiceProvider extends ServiceProvider
     /**
      * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException If item is not found in container
      */

@@ -13,7 +13,7 @@ final class ValidationServiceProvider extends ServiceProvider
     /**
      * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register(): void
     {

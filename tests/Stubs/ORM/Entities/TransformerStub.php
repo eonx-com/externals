@@ -48,7 +48,7 @@ class TransformerStub extends Entity
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getIdProperty(): string
     {

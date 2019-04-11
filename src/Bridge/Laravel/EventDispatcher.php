@@ -24,7 +24,7 @@ final class EventDispatcher implements EventDispatcherInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function dispatch($event, $payload = null, ?bool $halt = null): ?array
     {
@@ -32,7 +32,7 @@ final class EventDispatcher implements EventDispatcherInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function listen(array $events, string $listener): void
     {

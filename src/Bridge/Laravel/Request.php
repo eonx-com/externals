@@ -38,7 +38,7 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getClientIp(): ?string
     {
@@ -46,7 +46,7 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getHeader(string $key, $default = null)
     {
@@ -54,7 +54,7 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getHost(): string
     {
@@ -62,7 +62,7 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUser(): ?string
     {
@@ -70,7 +70,7 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function has(string $key): bool
     {
@@ -78,7 +78,7 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function input(?string $key = null, $default = null)
     {
@@ -86,9 +86,9 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function merge(array $data): self
+    public function merge(array $data): RequestInterface
     {
         $this->request->merge($data);
 
@@ -96,9 +96,9 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function replace(array $data): self
+    public function replace(array $data): RequestInterface
     {
         $this->request->replace($data);
 
@@ -106,9 +106,9 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function setHeader(string $key, $value): self
+    public function setHeader(string $key, $value): RequestInterface
     {
         $this->request->headers->set($key, $value);
 
@@ -116,7 +116,7 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toArray(): array
     {

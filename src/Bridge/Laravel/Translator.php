@@ -26,7 +26,7 @@ final class Translator implements TranslatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function get(string $key, ?array $replace = null, ?string $locale = null)
     {
@@ -34,7 +34,7 @@ final class Translator implements TranslatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function trans(string $key, ?array $replace = null, ?string $locale = null): string
     {

@@ -40,7 +40,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */

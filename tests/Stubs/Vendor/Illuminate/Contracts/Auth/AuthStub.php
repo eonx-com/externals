@@ -42,15 +42,18 @@ class AuthStub implements Factory
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function guard($name = null)
     {
-        $this->guards[] = $name;
+        // Only set if name is passed
+        if ($name !== null) {
+            $this->guards[] = $name;
+        }
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function shouldUse($name): void
     {

@@ -36,7 +36,7 @@ class GenerateUniqueValueStub extends Entity implements GenerateUniqueValueInter
     protected $generatedValue;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function areGeneratorsEnabled(): bool
     {
@@ -44,21 +44,21 @@ class GenerateUniqueValueStub extends Entity implements GenerateUniqueValueInter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function disableGenerators()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function enableGenerators()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGeneratedProperty(): string
     {
@@ -66,7 +66,7 @@ class GenerateUniqueValueStub extends Entity implements GenerateUniqueValueInter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGeneratedPropertyLength(): int
     {
@@ -74,7 +74,7 @@ class GenerateUniqueValueStub extends Entity implements GenerateUniqueValueInter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasGeneratedPropertyCheckDigit(): bool
     {
@@ -82,7 +82,7 @@ class GenerateUniqueValueStub extends Entity implements GenerateUniqueValueInter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toArray(): array
     {
@@ -93,7 +93,7 @@ class GenerateUniqueValueStub extends Entity implements GenerateUniqueValueInter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getIdProperty(): string
     {

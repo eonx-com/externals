@@ -57,7 +57,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function copy($path, $newpath): bool
     {
@@ -69,7 +69,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createDir($dirname, Config $config)
     {
@@ -80,7 +80,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function delete($path): bool
     {
@@ -90,7 +90,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteDir($dirname): bool
     {
@@ -112,18 +112,25 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getMetadata($path)
     {
         $location = $this->applyPathPrefix($path);
         $info = new SplFileInfo($location);
 
-        return $this->normalizeFileInfo($info);
+        $metadata = $this->normalizeFileInfo($info);
+
+        // If no metadata was found, return false
+        if ($metadata === null) {
+            $metadata = false;
+        }
+
+        return $metadata;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Flysystem requires Util methods to be statically accessed
      */
@@ -138,7 +145,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getSize($path)
     {
@@ -146,7 +153,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getTimestamp($path)
     {
@@ -154,14 +161,17 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getVisibility($path)
     {
         $location = $this->applyPathPrefix($path);
+
         \clearstatcache(false, $location);
+
         $permissions = \octdec(\substr(\sprintf('%o', \fileperms($location)), -4));
-        $visibility = ($permissions & 0044) ?
+
+        $visibility = ($permissions & 0044) === 0044 ?
             AdapterInterface::VISIBILITY_PUBLIC :
             AdapterInterface::VISIBILITY_PRIVATE;
 
@@ -169,7 +179,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function has($path): bool
     {
@@ -179,7 +189,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function listContents($directory = '', $recursive = null): array
     {
@@ -197,7 +207,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         foreach ($iterator as $file) {
             $path = $this->getFilePath($file);
 
-            if (\preg_match('#(^|/|\\\\)\.{1,2}$#', $path)) {
+            if (\preg_match('#(^|/|\\\\)\.{1,2}$#', $path) !== 0) {
                 continue;
             }
 
@@ -208,7 +218,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function read($path)
     {
@@ -223,7 +233,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function readStream($path)
     {
@@ -234,7 +244,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Flysystem requires Util methods to be statically accessed
      */
@@ -249,7 +259,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setVisibility($path, $visibility)
     {
@@ -265,7 +275,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Flysystem requires Util methods to be statically accessed
      */
@@ -285,7 +295,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function updateStream($path, $resource, Config $config)
     {
@@ -293,7 +303,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function write($path, $contents, Config $config)
     {
@@ -317,7 +327,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function writeStream($path, $resource, Config $config)
     {

@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods) This class is implemented from a Doctrine interface
@@ -13,154 +15,159 @@ use Doctrine\ORM\Query\ResultSetMapping;
 class EntityManagerStub implements EntityManagerInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function beginTransaction(): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function clear($objectName = null): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function close(): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function commit(): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function contains($object)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function copy($entity, $deep = null)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createNamedNativeQuery($name)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createNamedQuery($name)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createNativeQuery($sql, ResultSetMapping $rsm)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createQuery($dql = null)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createQueryBuilder()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function detach($object): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable) Parameter is inherited from interface
      */
-    public function find($className, $entityId)
+    public function find($className, $id)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function flush(): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getCache()
     {
     }
 
     /**
-     * @inheritdoc
+     * @param mixed $className
+     *
+     * @return \Doctrine\ORM\Mapping\ClassMetadata
      */
-    public function getClassMetadata($className)
+    public function getClassMetadata($className): ClassMetadata
     {
+        return new ClassMetadata($className ?? EntityStub::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getConnection()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getEventManager()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getExpressionBuilder()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFilters()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @deprecated
      */
@@ -169,126 +176,128 @@ class EntityManagerStub implements EntityManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getMetadataFactory()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPartialReference($entityName, $identifier)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getProxyFactory()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable) Parameter is inherited from interface
      */
-    public function getReference($entityName, $entityId)
+    public function getReference($entityName, $id)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRepository($className)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUnitOfWork()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasFilters()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function initializeObject($obj): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isFiltersStateClean()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isOpen()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function lock($entity, $lockMode, $lockVersion = null): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function merge($object)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function newHydrator($hydrationMode)
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function persist($object): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function refresh($object): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function remove($object): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rollback(): void
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function transactional($func)
     {

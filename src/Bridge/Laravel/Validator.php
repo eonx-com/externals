@@ -46,7 +46,7 @@ final class Validator implements ValidatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFailures(): array
     {
@@ -55,7 +55,7 @@ final class Validator implements ValidatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function validate(array $data, array $rules): bool
     {

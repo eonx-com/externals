@@ -36,7 +36,7 @@ class GenerateUniqueValueWithCallbackStub extends Entity implements GenerateUniq
     protected $generatedValue;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function areGeneratorsEnabled(): bool
     {
@@ -44,21 +44,21 @@ class GenerateUniqueValueWithCallbackStub extends Entity implements GenerateUniq
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function disableGenerators()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function enableGenerators()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGeneratedProperty(): string
     {
@@ -66,7 +66,7 @@ class GenerateUniqueValueWithCallbackStub extends Entity implements GenerateUniq
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGeneratedPropertyCallback(string $generatedValue): void
     {
@@ -74,7 +74,7 @@ class GenerateUniqueValueWithCallbackStub extends Entity implements GenerateUniq
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGeneratedPropertyLength(): int
     {
@@ -82,7 +82,7 @@ class GenerateUniqueValueWithCallbackStub extends Entity implements GenerateUniq
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasGeneratedPropertyCheckDigit(): bool
     {
@@ -90,7 +90,7 @@ class GenerateUniqueValueWithCallbackStub extends Entity implements GenerateUniq
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toArray(): array
     {
@@ -101,7 +101,7 @@ class GenerateUniqueValueWithCallbackStub extends Entity implements GenerateUniq
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getIdProperty(): string
     {
