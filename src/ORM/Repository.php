@@ -35,7 +35,7 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
@@ -45,15 +45,17 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable) Parameter is inherited from interface
      */
-    public function find($entityId)
+    public function find($id)
     {
-        return $this->entityManager->find($this->entityName, $entityId);
+        return $this->entityManager->find($this->entityName, $id);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
@@ -63,7 +65,7 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
@@ -73,7 +75,7 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If EntityManager has an error
      */
@@ -83,7 +85,7 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getClassName(): string
     {

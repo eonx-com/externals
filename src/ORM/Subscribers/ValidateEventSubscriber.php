@@ -40,7 +40,7 @@ final class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getSubscribedEvents(): array
     {
@@ -123,11 +123,15 @@ final class ValidateEventSubscriber implements EventSubscriber
     {
         $contents = [];
         foreach ($entity->getProperties() as $property) {
-            $getter = \sprintf('get%s', \ucfirst($property));
+            $getter = [$entity, \sprintf('get%s', \ucfirst($property))];
 
+            // If getter isn't available, continue - this is only here for safety since base entity provides __call
+            if (\is_callable($getter) === false) {
+                continue; // @codeCoverageIgnore
+            }
 
             // Remove backticks from column name
-            $contents[\trim($property, '`')] = $entity->$getter();
+            $contents[\trim($property, '`')] = $getter();
         }
 
         return $contents;

@@ -33,7 +33,7 @@ class InvalidRepositoryStub extends Entity
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getIdProperty(): string
     {

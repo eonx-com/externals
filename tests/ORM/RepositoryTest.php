@@ -5,9 +5,9 @@ namespace Tests\EoneoPay\Externals\ORM;
 
 use EoneoPay\Externals\ORM\Exceptions\ORMException;
 use EoneoPay\Externals\ORM\Interfaces\RepositoryInterface;
-use Tests\EoneoPay\Externals\ORMTestCase;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Repositories\RepositoryStub;
+use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Repository

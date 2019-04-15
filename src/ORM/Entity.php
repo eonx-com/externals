@@ -33,21 +33,35 @@ abstract class Entity implements EntityInterface
     abstract public function toArray(): array;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist or is immutable
      */
     public function __call(string $method, array $parameters)
     {
-        // Extract type and property from method
-        [$type, $property] = $this->getTypeAndPropertyFromMethod($method);
+        // Set available types
+        $types = ['get', 'has', 'is', 'set'];
+
+        // Break calling method into type (get, has, is, set) and attribute
+        \preg_match('/^(' . \implode('|', $types) . ')([a-zA-Z][\w]+)$/i', $method, $matches);
+
+        $type = \mb_strtolower($matches[1] ?? '');
+        $property = $this->resolveProperty($matches[2] ?? '');
+
+        // The property being accessed must exist and the type must be valid if one of these things
+        // aren't true throw an exception
+        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
+            throw new InvalidMethodCallException(
+                \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
+            );
+        }
 
         // Perform action - code coverage disabled due to phpdbg not seeing case statements
         switch ($type) {
             case 'get': // @codeCoverageIgnore
             case 'has': // @codeCoverageIgnore
             case 'is': // @codeCoverageIgnore
-                return ($type === 'is') ? (bool)$this->get($property) : $this->{$type}($property);
+                return $this->callGettableMethod($type, $property);
 
             case 'set': // @codeCoverageIgnore
                 // Return original instance for fluency
@@ -59,7 +73,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function fill(array $data): void
     {
@@ -70,7 +84,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFillableProperties(): array
     {
@@ -78,7 +92,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -86,7 +100,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getProperties(): array
     {
@@ -94,7 +108,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function jsonSerialize(): array
     {
@@ -102,7 +116,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toJson(): string
     {
@@ -110,7 +124,7 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toXml(?string $rootNode = null): ?string
     {
@@ -264,18 +278,20 @@ abstract class Entity implements EntityInterface
     private function addToCollection(string $attribute, EntityInterface $child, EntityInterface $parent)
     {
         // Determine parent collection method
-        $collection = \sprintf('get%s', \ucfirst($attribute));
+        $collection = [$parent, \sprintf('get%s', \ucfirst($attribute))];
 
         try {
-            // If parent collection contains this item, return
-            if ($parent->{$collection}()->contains($child)) {
-                return $this;
-            }
+            // Is callable will always return true since __call is used, so try/catch
+            if (\is_callable($collection) === true) {
+                // If parent collection contains this item, return
+                if ($collection()->contains($child)) {
+                    return $this;
+                }
 
-            // Add entity to parent collection
-            $parent->{$collection}()->add($child);
-        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidMethodCallException $exception) {
-            // We have to throw a different exception otherwise it's caught higher and it dies silently.
+                // Add entity to parent collection
+                $collection()->add($child);
+            }
+        } catch (InvalidMethodCallException $exception) {
             throw new InvalidRelationshipException(
                 \sprintf('Property %s::%s does not exist', \get_class($parent), $attribute),
                 0,
@@ -284,6 +300,29 @@ abstract class Entity implements EntityInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Perform a gettable call on an entity
+     *
+     * @param string $method The method being called
+     * @param string $property The property the method is being called on
+     *
+     * @return mixed The property value, or null/false if method isn't callable
+     */
+    private function callGettableMethod(string $method, string $property)
+    {
+        // Determine callable method
+        $callable = [$this, $method === 'is' ? 'get' : $method];
+
+        // Only call method if it's callable
+        if (\is_callable($callable) === true) {
+            return ($method === 'is') ? (bool)$callable($property) : $callable($property);
+        }
+
+        // If call didn't happen, return null/false depending on type - this is unlikely since the
+        // property is verified via the __call method and has() and get() exist in this class
+        return $method === 'get' ? null : false; // @codeCoverageIgnore
     }
 
     /**
@@ -297,7 +336,7 @@ abstract class Entity implements EntityInterface
     {
         $resolved = $this->resolveProperty($property);
 
-        return $resolved ? $this->{$resolved} : null;
+        return $resolved !== null ? $this->{$resolved} : null;
     }
 
     /**
@@ -311,35 +350,6 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * Get type and property from method
-     *
-     * @param string $method The method being called
-     *
-     * @return string[]
-     */
-    private function getTypeAndPropertyFromMethod(string $method): array
-    {
-        // Set available types
-        $types = ['get', 'has', 'is', 'set'];
-
-        // Break calling method into type (get, has, is, set) and attribute
-        \preg_match('/^(' . \implode('|', $types) . ')([a-zA-Z][\w]+)$/i', $method, $matches);
-
-        $type = \mb_strtolower($matches[1] ?? '');
-        $property = $this->resolveProperty($matches[2] ?? '');
-
-        // The property being accessed must exist and the type must be valid if one of these things
-        // aren't true throw an exception
-        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
-            throw new InvalidMethodCallException(
-                \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
-            );
-        }
-
-        return [$type, $property];
-    }
-
-    /**
      * Get property value via getter
      *
      * @param string $property The property to get
@@ -348,9 +358,9 @@ abstract class Entity implements EntityInterface
      */
     private function getValue(string $property)
     {
-        $getter = \sprintf('get%s', \ucfirst($property));
+        $getter = [$this, \sprintf('get%s', \ucfirst($property))];
 
-        return $this->{$getter}();
+        return \is_callable($getter) === true ? $getter() : null;
     }
 
     /**
@@ -367,19 +377,24 @@ abstract class Entity implements EntityInterface
         ?EntityInterface $existing = null,
         ?EntityInterface $new = null
     ): void {
-        // Determine collection method
-        $collection = \sprintf('get%s', \ucfirst($association));
+        // Determine collection methods
+        $getter = \sprintf('get%s', \ucfirst($association));
+        $existingCollection = [$existing, $getter];
+        $newCollection = [$new, $getter];
 
         // If there is a existing parent, remove
         if (($existing instanceof EntityInterface) === true &&
             $existing !== $this &&
-            $existing->{$collection}()->contains($this)) {
-            $existing->{$collection}()->removeElement($this);
+            \is_callable($existingCollection) === true &&
+            $existingCollection()->contains($this) === true) {
+            $existingCollection()->removeElement($this);
         }
 
         // Add to new parent if applicable
-        if (($new instanceof EntityInterface) === true && $new->{$collection}()->contains($this) === false) {
-            $new->$collection()->add($this);
+        if (($new instanceof EntityInterface) === true &&
+            \is_callable($newCollection) === true &&
+            $newCollection()->contains($this) === false) {
+            $newCollection()->add($this);
         }
     }
 
@@ -405,7 +420,16 @@ abstract class Entity implements EntityInterface
      */
     private function invokeEntityMethod(string $method, ?array $default = null): array
     {
-        return \method_exists($this, $method) && \is_array($this->{$method}()) ? $this->{$method}() : $default ?? [];
+        $callable = [$this, $method];
+
+        // If method is missing, not callable or doesn't return an array, use default
+        if (\method_exists($this, $method) === false ||
+            \is_callable($callable) === false ||
+            \is_array($callable()) === false) {
+            return $default ?? [];
+        }
+
+        return $callable();
     }
 
     /**
@@ -475,12 +499,16 @@ abstract class Entity implements EntityInterface
 
         // Set property value, prefer setter over direct set
         $setter = \sprintf('set%s', \ucfirst($resolved));
-        \method_exists($this, $setter) ? $this->{$setter}($value) : $this->{$resolved} = $value;
+        $callable = [$this, $setter];
+        \method_exists($this, $setter) === true && \is_callable($callable) === true ?
+            $callable($value) :
+            $this->{$resolved} = $value;
 
         // Run transformer if applicable
         $method = \sprintf('transform%s', \ucfirst($resolved));
-        if (\method_exists($this, $method)) {
-            $this->{$method}();
+        $callable = [$this, $method];
+        if (\method_exists($this, $method) === true && \is_callable($callable) === true) {
+            $callable();
         }
 
         return $this;

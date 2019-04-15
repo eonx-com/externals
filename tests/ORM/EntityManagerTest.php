@@ -5,8 +5,9 @@ namespace Tests\EoneoPay\Externals\ORM;
 
 use EoneoPay\Externals\ORM\Exceptions\ORMException;
 use EoneoPay\Externals\ORM\Exceptions\RepositoryClassDoesNotImplementInterfaceException;
-use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
-use Tests\EoneoPay\Externals\ORMTestCase;
+use EoneoPay\Externals\ORM\Query\FilterCollection;
+use Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter;
+use ReflectionClass;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\CustomRepositoryStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\FillableStub;
@@ -14,9 +15,12 @@ use Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidRepositoryStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\NoEntityAnnotationStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ValidatableStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Exceptions\EntityValidationFailedExceptionStub;
+use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 
 /**
  * @covers \EoneoPay\Externals\ORM\EntityManager
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Coupling is required to fully test entity manager
  */
 class EntityManagerTest extends ORMTestCase
 {
@@ -49,13 +53,22 @@ class EntityManagerTest extends ORMTestCase
      * Test entity manager get filters returns our filters collection.
      *
      * @return void
+     *
+     * @throws \ReflectionException If class or property don't exist
      */
     public function testGetFiltersReturnRightCollection(): void
     {
         $filters = $this->getEntityManager()->getFilters();
 
-        /** @noinspection UnnecessaryAssertionInspection Test of actual returned instance */
-        self::assertInstanceOf(FilterCollectionInterface::class, $filters);
+        // Expose the underlying filters method
+        $class = new ReflectionClass(FilterCollection::class);
+        $collection = $class->getProperty('collection');
+        $collection->setAccessible(true);
+
+        $filterCollection = $collection->getValue($filters);
+
+        self::assertCount(1, $filterCollection->getEnabledFilters());
+        self::assertInstanceOf(SoftDeleteableFilter::class, $filterCollection->getEnabledFilters()['soft-deleteable']);
     }
 
     /**

@@ -26,7 +26,15 @@ class LoggerTest extends TestCase
         $context = ['attr' => 'value'];
 
         foreach (['alert', 'critical', 'debug', 'emergency', 'error', 'info', 'notice', 'warning'] as $method) {
-            self::assertTrue($logger->$method($message, $context));
+            $callable = [$logger, $method];
+
+            if (\is_callable($callable) === false) {
+                self::fail(\sprintf('Unable to call %s on %s', $method, Logger::class));
+
+                continue;
+            }
+
+            $callable($message, $context);
         }
 
         foreach ($handler->getLogs() as $log) {
@@ -35,6 +43,8 @@ class LoggerTest extends TestCase
             self::assertEquals($message, $log['message']);
             self::assertEquals($context, $log['context']);
         }
+
+        $this->addToAssertionCount(1);
     }
 
     /**
@@ -67,9 +77,10 @@ class LoggerTest extends TestCase
     public function testLogProcessors(): void
     {
         $handler = new LogHandlerStub();
-        $processor = new class implements ProcessorInterface {
+        $processor = new class implements ProcessorInterface
+        {
             /**
-             * @inheritdoc
+             * {@inheritdoc}
              */
             public function __invoke(array $record): array
             {
@@ -94,12 +105,14 @@ class LoggerTest extends TestCase
     }
 
     /**
-     * Test logger returns false if Monolog throws an exception
+     * Test logger handles Monolog exceptions
      *
      * @return void
      */
-    public function testLoggerReturnsFalseWhenMonologExceptionThrown(): void
+    public function testLoggerContinuesWhenMonologExceptionThrown(): void
     {
-        self::assertFalse((new Logger(null, new LogHandlerStub(false)))->error('message'));
+        (new Logger(null, new LogHandlerStub(false)))->error('message');
+
+        $this->addToAssertionCount(1);
     }
 }

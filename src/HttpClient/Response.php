@@ -46,7 +46,7 @@ final class Response extends Collection implements ResponseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getContent(): string
     {
@@ -54,7 +54,7 @@ final class Response extends Collection implements ResponseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getHeader(string $key): ?string
     {
@@ -62,7 +62,7 @@ final class Response extends Collection implements ResponseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getHeaders(): array
     {
@@ -70,7 +70,7 @@ final class Response extends Collection implements ResponseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getStatusCode(): int
     {
@@ -78,7 +78,7 @@ final class Response extends Collection implements ResponseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isSuccessful(): bool
     {

@@ -6,7 +6,7 @@ namespace Tests\EoneoPay\Externals\Stubs;
 class UnwritableFilesystemStub extends VirtualFilesystemAdapterStub
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */

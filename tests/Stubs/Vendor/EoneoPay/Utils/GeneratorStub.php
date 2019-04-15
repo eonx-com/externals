@@ -8,7 +8,7 @@ use EoneoPay\Utils\Interfaces\GeneratorInterface;
 class GeneratorStub implements GeneratorInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function randomInteger(?int $minimum = null, ?int $maximum = null): int
     {
@@ -16,7 +16,7 @@ class GeneratorStub implements GeneratorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function randomString(?int $length = null, ?int $flags = null): string
     {

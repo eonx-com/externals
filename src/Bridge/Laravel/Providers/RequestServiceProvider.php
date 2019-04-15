@@ -14,7 +14,7 @@ final class RequestServiceProvider extends ServiceProvider
     /**
      * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Trusted proxies must be set statically
      */

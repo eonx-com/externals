@@ -29,7 +29,7 @@ class AuthStub extends Auth
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function user(): ?EntityInterface
     {

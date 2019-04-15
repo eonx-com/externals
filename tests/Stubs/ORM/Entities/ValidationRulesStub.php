@@ -66,7 +66,7 @@ class ValidationRulesStub extends Entity implements ValidatableInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getIdProperty(): string
     {

@@ -43,51 +43,51 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function alert($message, ?array $context = null)
+    public function alert($message, ?array $context = null): void
     {
-        return $this->log('alert', $message, $context ?? []);
+        $this->log('alert', $message, $context ?? []);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function critical($message, ?array $context = null)
+    public function critical($message, ?array $context = null): void
     {
-        return $this->log('critical', $message, $context ?? []);
+        $this->log('critical', $message, $context ?? []);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function debug($message, ?array $context = null): bool
+    public function debug($message, ?array $context = null): void
     {
-        return $this->log('debug', $message, $context ?? []);
+        $this->log('debug', $message, $context ?? []);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function emergency($message, ?array $context = null)
+    public function emergency($message, ?array $context = null): void
     {
-        return $this->log('emergency', $message, $context ?? []);
+        $this->log('emergency', $message, $context ?? []);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function error($message, ?array $context = null): bool
+    public function error($message, ?array $context = null): void
     {
-        return $this->log('error', $message, $context ?? []);
+        $this->log('error', $message, $context ?? []);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function exception(Exception $exception, ?string $level = null): bool
+    public function exception(Exception $exception, ?string $level = null): void
     {
-        return $this->log(
+        $this->log(
             $level ?? 'notice',
             \sprintf('Exception caught: %s', $exception->getMessage()),
             $exception->getTrace()
@@ -95,42 +95,43 @@ final class Logger implements LoggerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function info($message, ?array $context = null): bool
+    public function info($message, ?array $context = null): void
     {
-        return $this->log('info', $message, $context ?? []);
+        $this->log('info', $message, $context ?? []);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function log($level, $message, ?array $context = null): bool
+    public function log($level, $message, ?array $context = null): void
     {
         try {
-            return $this->monolog->{$level}($message, $context ?? []);
+            $callable = [$this->monolog, $level];
+
+            if (\is_callable($callable) === true) {
+                $callable($message, $context ?? []);
+            }
         } catch (Exception $exception) {
             /** @noinspection ForgottenDebugOutputInspection This is only a fallback if logger is unavailable */
             \error_log($exception->getMessage());
         }
-
-        // Log wasn't written
-        return false;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function notice($message, ?array $context = null): bool
+    public function notice($message, ?array $context = null): void
     {
-        return $this->log('notice', $message, $context ?? []);
+        $this->log('notice', $message, $context ?? []);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function warning($message, ?array $context = null): bool
+    public function warning($message, ?array $context = null): void
     {
-        return $this->log('warning', $message, $context ?? []);
+        $this->log('warning', $message, $context ?? []);
     }
 }

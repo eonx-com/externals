@@ -25,7 +25,7 @@ final class SoftDeleteEventSubscriber extends SoftDeleteableListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \Exception If there is a database error
      */
@@ -50,7 +50,7 @@ final class SoftDeleteEventSubscriber extends SoftDeleteableListener
             $meta = $objectManager->getClassMetadata(\get_class($object));
             $config = $this->getConfiguration($objectManager, $meta->name);
 
-            if ($config['softDeleteable'] ?? false) {
+            if (($config['softDeleteable'] ?? false) === true) {
                 $this->softDeletedObjects[] = $object;
             }
         }

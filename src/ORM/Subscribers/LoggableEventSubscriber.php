@@ -33,7 +33,7 @@ final class LoggableEventSubscriber extends BaseLoggableListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \Exception Underlying extension throws exception on failure
      */
@@ -49,7 +49,7 @@ final class LoggableEventSubscriber extends BaseLoggableListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache extension isn't loaded
      */
@@ -58,7 +58,7 @@ final class LoggableEventSubscriber extends BaseLoggableListener
         $config = parent::getConfiguration($objectManager, $class);
         $entity = new $class();
 
-        if (($entity instanceof EntityInterface) === false || empty($this->getEntityFillable($entity))) {
+        if (($entity instanceof EntityInterface) === false || \count($this->getEntityFillable($entity)) === 0) {
             return $config;
         }
 

@@ -26,7 +26,7 @@ final class FilterCollection implements FilterCollectionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
      */
@@ -36,7 +36,7 @@ final class FilterCollection implements FilterCollectionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
      */
@@ -55,7 +55,7 @@ final class FilterCollection implements FilterCollectionInterface
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If database returns an error
      */
-    protected function callMethod(string $method, ...$parameters)
+    private function callMethod(string $method, ...$parameters)
     {
         try {
             return \call_user_func_array([$this->collection, $method], $parameters ?? []);

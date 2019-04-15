@@ -10,9 +10,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
 
 /**
- * @method int getInteger()
- * @method string getEntityId()
- * @method string getString()
+ * @method int|null getInteger()
+ * @method string|null getEntityId()
+ * @method string|null getString()
  * @method bool hasString()
  * @method bool isString()
  * @method self setInteger(int $integer)
@@ -21,7 +21,7 @@ use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
  *
  * The following methods are only used for testing validity of __call
  * @method string|null getAnnotationName()
- * @method null getInvalid()
+ * @method null|null getInvalid()
  * @method self setAnnotationName(string $name)
  * @method null whenString()
  *
@@ -127,7 +127,7 @@ class EntityStub extends Entity
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getIdProperty(): string
     {

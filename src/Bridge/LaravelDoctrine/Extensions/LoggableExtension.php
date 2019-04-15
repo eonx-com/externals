@@ -37,7 +37,7 @@ final class LoggableExtension extends GedmoExtension
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addSubscribers(
         EventManager $manager,
@@ -48,7 +48,7 @@ final class LoggableExtension extends GedmoExtension
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFilters(): array
     {
@@ -64,7 +64,7 @@ final class LoggableExtension extends GedmoExtension
     {
         return function (): ?string {
             // Handle command context
-            if ($this->env->get('APP_CONSOLE', false)) {
+            if ((bool)$this->env->get('APP_CONSOLE', false) === true) {
                 return 'console';
             }
 

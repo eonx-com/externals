@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\EoneoPay\Externals;
+namespace Tests\EoneoPay\Externals\TestCases;
 
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -34,6 +34,7 @@ use ReflectionClass;
 use ReflectionException;
 use Tests\EoneoPay\Externals\Stubs\Bridge\LaravelDoctrine\Extensions\LoggableExtensionStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Repositories\RepositoryStub;
+use Tests\EoneoPay\Externals\TestCase;
 
 /**
  * @coversNothing
@@ -59,8 +60,8 @@ abstract class ORMTestCase extends TestCase
      */
     private static $paths = [
         // Paths to your entities folder and stubs folder
-        __DIR__ . '/Stubs/ORM/Entities',
-        __DIR__ . '/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity'
+        __DIR__ . '/../Stubs/ORM/Entities',
+        __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity'
     ];
 
     /**
@@ -163,13 +164,10 @@ abstract class ORMTestCase extends TestCase
             ));
         }
 
-        // Only load entities if driver loaded
-        if (($annotationDriver instanceof AnnotationDriver) === true) {
-            // NOTE: driver for application Entity can be different, Yaml, Xml or whatever
-            // register annotation driver for our application Entity fully qualified namespace
-            $driverChain->addDriver($annotationDriver, 'Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities');
-            $driverChain->addDriver($annotationDriver, 'Gedmo\\Loggable\\Entity');
-        }
+        // NOTE: driver for application Entity can be different, Yaml, Xml or whatever
+        // register annotation driver for our application Entity fully qualified namespace
+        $driverChain->addDriver($annotationDriver, 'Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities');
+        $driverChain->addDriver($annotationDriver, 'Gedmo\\Loggable\\Entity');
 
         // General ORM configuration
         $config = new Configuration();

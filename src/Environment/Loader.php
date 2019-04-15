@@ -48,7 +48,7 @@ final class Loader implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\Environment\Exceptions\InvalidPathException If env path is invalid
      */
@@ -58,7 +58,7 @@ final class Loader implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\Environment\Exceptions\InvalidPathException If env path is invalid
      */
@@ -119,12 +119,18 @@ final class Loader implements LoaderInterface
             return;
         }
 
-        // Use dot env loader and wrap path exception
-        try {
-            $method = $overload === true ? 'overload' : 'load';
+        // Use dot env loader
+        $loader = new DotEnvLoader([\sprintf('%s/%s', $this->path, $this->env)], new DotenvFactory());
+        $dotenv = new Dotenv($loader);
 
-            $loader = new DotEnvLoader([\sprintf('%s/%s', $this->path, $this->env)], new DotenvFactory());
-            (new Dotenv($loader))->{$method}();
+        // Attempt to call load() or overload() and wrap any exceptions found
+        try {
+            $callable = [$dotenv, $overload === true ? 'overload' : 'load'];
+
+            // Only call method if it's callable
+            if (\is_callable($callable)) {
+                $callable();
+            }
         } catch (DotEnvException $exception) {
             throw new InvalidPathException($exception->getMessage(), $exception->getCode(), $exception);
         }

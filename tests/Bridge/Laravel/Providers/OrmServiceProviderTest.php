@@ -8,8 +8,8 @@ use EoneoPay\Externals\Bridge\Laravel\Providers\OrmServiceProvider;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
 use Illuminate\Config\Repository;
 use stdClass;
-use Tests\EoneoPay\Externals\ORMTestCase;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
+use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 
 /**
  * @covers \EoneoPay\Externals\Bridge\Laravel\Providers\OrmServiceProvider

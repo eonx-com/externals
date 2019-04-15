@@ -57,7 +57,7 @@ class ChildStub extends EntityStub
      *
      * Note: Changing this array will cause the test testPropertyAnnotationsContainsInvalidClassAndAttribute() to fail
      *
-     * @return mixed[]
+     * @return string[]
      *
      * @see \Tests\EoneoPay\Externals\ORM\EntityTest::testPropertyAnnotationsContainsInvalidClassAndAttribute
      */

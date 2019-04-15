@@ -13,7 +13,7 @@ use nicoSWD\GPG\PublicKey;
 final class Gpg implements GpgInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \EoneoPay\Externals\Encryption\Exceptions\InvalidPublicKeyException If public key is invalid
      * @throws \EoneoPay\Externals\Encryption\Exceptions\EncryptionFailedException If encryption fails

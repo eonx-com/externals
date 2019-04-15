@@ -12,7 +12,7 @@ final class EventDispatcherServiceProvider extends ServiceProvider
     /**
      * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register(): void
     {
