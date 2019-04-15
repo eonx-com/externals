@@ -125,8 +125,9 @@ final class ValidateEventSubscriber implements EventSubscriber
         foreach ($entity->getProperties() as $property) {
             $getter = [$entity, \sprintf('get%s', \ucfirst($property))];
 
+            // If getter isn't available, continue - this is only here for safety since base entity provides __call
             if (\is_callable($getter) === false) {
-                continue;
+                continue; // @codeCoverageIgnore
             }
 
             // Remove backticks from column name

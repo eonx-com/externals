@@ -39,22 +39,29 @@ abstract class Entity implements EntityInterface
      */
     public function __call(string $method, array $parameters)
     {
-        // Extract type and property from method
-        [$type, $property] = $this->getTypeAndPropertyFromMethod($method);
+        // Set available types
+        $types = ['get', 'has', 'is', 'set'];
+
+        // Break calling method into type (get, has, is, set) and attribute
+        \preg_match('/^(' . \implode('|', $types) . ')([a-zA-Z][\w]+)$/i', $method, $matches);
+
+        $type = \mb_strtolower($matches[1] ?? '');
+        $property = $this->resolveProperty($matches[2] ?? '');
+
+        // The property being accessed must exist and the type must be valid if one of these things
+        // aren't true throw an exception
+        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
+            throw new InvalidMethodCallException(
+                \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
+            );
+        }
 
         // Perform action - code coverage disabled due to phpdbg not seeing case statements
         switch ($type) {
             case 'get': // @codeCoverageIgnore
             case 'has': // @codeCoverageIgnore
             case 'is': // @codeCoverageIgnore
-                $callable = [$this, $type === 'is' ? 'get' : $type];
-
-                if (\is_callable($callable) === true) {
-                    return ($type === 'is') ? (bool)$callable($property) : $callable($property);
-                }
-
-                // If call didn't happen, return null/false depending on type
-                return $type === 'get' ? null : false;
+                return $this->callGettableMethod($type, $property);
 
             case 'set': // @codeCoverageIgnore
                 // Return original instance for fluency
@@ -296,6 +303,29 @@ abstract class Entity implements EntityInterface
     }
 
     /**
+     * Perform a gettable call on an entity
+     *
+     * @param string $method The method being called
+     * @param string $property The property the method is being called on
+     *
+     * @return mixed The property value, or null/false if method isn't callable
+     */
+    private function callGettableMethod(string $method, string $property)
+    {
+        // Determine callable method
+        $callable = [$this, $method === 'is' ? 'get' : $method];
+
+        // Only call method if it's callable
+        if (\is_callable($callable) === true) {
+            return ($method === 'is') ? (bool)$callable($property) : $callable($property);
+        }
+
+        // If call didn't happen, return null/false depending on type - this is unlikely since the
+        // property is verified via the __call method and has() and get() exist in this class
+        return $method === 'get' ? null : false; // @codeCoverageIgnore
+    }
+
+    /**
      * Get a value from a property
      *
      * @param string $property The property to get the value of
@@ -317,35 +347,6 @@ abstract class Entity implements EntityInterface
     private function getGuardedProperties(): array
     {
         return $this->invokeEntityMethod('getGuarded');
-    }
-
-    /**
-     * Get type and property from method
-     *
-     * @param string $method The method being called
-     *
-     * @return string[]
-     */
-    private function getTypeAndPropertyFromMethod(string $method): array
-    {
-        // Set available types
-        $types = ['get', 'has', 'is', 'set'];
-
-        // Break calling method into type (get, has, is, set) and attribute
-        \preg_match('/^(' . \implode('|', $types) . ')([a-zA-Z][\w]+)$/i', $method, $matches);
-
-        $type = \mb_strtolower($matches[1] ?? '');
-        $property = $this->resolveProperty($matches[2] ?? '');
-
-        // The property being accessed must exist and the type must be valid if one of these things
-        // aren't true throw an exception
-        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
-            throw new InvalidMethodCallException(
-                \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
-            );
-        }
-
-        return [$type, $property];
     }
 
     /**
@@ -421,11 +422,14 @@ abstract class Entity implements EntityInterface
     {
         $callable = [$this, $method];
 
-        return \method_exists($this, $method) === true &&
-        \is_callable($callable) === true &&
-        \is_array($callable()) === true ?
-            $callable() :
-            $default ?? [];
+        // If method is missing, not callable or doesn't return an array, use default
+        if (\method_exists($this, $method) === false ||
+            \is_callable($callable) === false ||
+            \is_array($callable()) === false) {
+            return $default ?? [];
+        }
+
+        return $callable();
     }
 
     /**

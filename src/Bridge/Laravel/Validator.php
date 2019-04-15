@@ -65,9 +65,7 @@ final class Validator implements ValidatorInterface
 
         if ($this->presence !== null) {
             // This is unable to be covered as there is no application container in this project
-            // @codeCoverageIgnoreStart
-            $validator->setPresenceVerifier($this->presence);
-            // @codeCoverageIgnoreEnd
+            $validator->setPresenceVerifier($this->presence); // @codeCoverageIgnore
         }
 
         $this->validator = $validator;
@@ -93,9 +91,7 @@ final class Validator implements ValidatorInterface
 
         // If rule doesn't exist skip, this is only here for safety since method is private
         if ($rule === null) {
-            // @codeCoverageIgnoreStart
-            return;
-            // @codeCoverageIgnoreEnd
+            return; // @codeCoverageIgnore
         }
 
         // Register as dependent extension
@@ -116,9 +112,7 @@ final class Validator implements ValidatorInterface
 
         // If rule doesn't exist skip, this is only here for safety since method is private
         if ($rule === null) {
-            // @codeCoverageIgnoreStart
-            return;
-            // @codeCoverageIgnoreEnd
+            return; // @codeCoverageIgnore
         }
 
         // Register as extension

@@ -72,9 +72,9 @@ final class GenerateUniqueValue
 
         $setter = [$entity, \sprintf('set%s', \ucfirst($entity->getGeneratedProperty()))];
 
-        // If setter isn't callable, abort
+        // If setter isn't callable, abort - this is only here for safety since base entity provides __call
         if (\is_callable($setter) === false) {
-            return;
+            return; // @codeCoverageIgnore
         }
 
         $setter($randomValue);

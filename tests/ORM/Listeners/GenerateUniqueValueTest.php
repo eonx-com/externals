@@ -6,13 +6,13 @@ namespace Tests\EoneoPay\Externals\ORM\Listeners;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use EoneoPay\Externals\ORM\Exceptions\UniqueValueNotGeneratedException;
 use EoneoPay\Externals\ORM\Listeners\GenerateUniqueValue;
-use Tests\EoneoPay\Externals\ORMTestCase;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\GenerateUniqueValueStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\GenerateUniqueValueWithCallbackStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\GenerateUniqueValueWithCheckDigitStub;
 use Tests\EoneoPay\Externals\Stubs\Translator\TranslatorStub;
 use Tests\EoneoPay\Externals\Stubs\Vendor\EoneoPay\Utils\GeneratorStub;
+use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Listeners\GenerateUniqueValue
@@ -43,8 +43,6 @@ class GenerateUniqueValueTest extends ORMTestCase
     {
         $stub = new GeneratorStub();
         $entity = new GenerateUniqueValueWithCheckDigitStub();
-
-        self::assertNull($entity->getGeneratedValue());
 
         // Invoke generate with known 'random' string
         $generator = new GenerateUniqueValue($stub, new TranslatorStub());

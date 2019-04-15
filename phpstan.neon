@@ -1,5 +1,6 @@
 includes:
-	- vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
 parameters:
     ignoreErrors:
         -
@@ -8,6 +9,9 @@ parameters:
         -
             message: '#Class Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities\\InvalidClass not found.#'
             path: tests/Stubs/ORM/Entities/EntityStub.php
+        -
+            message: '#Constant XDEBUG_[A-Z_]+ not found.#'
+            path: tests/bootstrap.php
         -
             message: '/Parameter #1 \$function of function call_user_func_array expects callable\(\): mixed, array\([A-Z][\w\\]+|mixed, string\) given./'
             path: src/Bridge/Laravel/Filesystem.php
@@ -23,4 +27,3 @@ parameters:
         -
             message: '#Variable property access on \$this\(Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities\\EntityStub|TransformerStub\).#'
             path: src/ORM/Traits/HasTransformers.php
-

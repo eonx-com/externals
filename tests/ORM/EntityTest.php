@@ -7,17 +7,20 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException;
-use Tests\EoneoPay\Externals\ORMTestCase;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\FillableStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\GuardedStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidRelationshipStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub;
+use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Entity
  *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Coupling is required to fully test entity functionality
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) All test cases must be public
  */
 class EntityTest extends ORMTestCase
@@ -228,7 +231,7 @@ class EntityTest extends ORMTestCase
      */
     public function testFillMethodPopulatesDataInEntity(): void
     {
-        $entity = new EntityStub();
+        $entity = new FillableStub();
         self::assertEmpty(\array_filter($this->getEntityContents($entity)));
 
         // Add an invalid field to ensure only valid properties are set
@@ -253,6 +256,25 @@ class EntityTest extends ORMTestCase
         $entity->setEntityId($entityId);
 
         self::assertSame($entityId, $entity->getId());
+    }
+
+    /**
+     * Test guarded prevents filling certain fields
+     *
+     * @return void
+     */
+    public function testGuardPreventsFillingDataInEntity(): void
+    {
+        $entity = new GuardedStub();
+
+        // Fill entity with data including 'id' for entityId
+        $data = self::$data;
+        $data['entityId'] = 'id';
+        $entity->fill($data);
+
+        // Ensure entity id was not populated with 'id'
+        $expected = \array_merge($data, ['entityId' => null]);
+        self::assertSame($expected, $entity->toArray());
     }
 
     /**
@@ -303,8 +325,7 @@ class EntityTest extends ORMTestCase
         self::assertFalse($entity->isString());
 
         // Test setting email returns entity instance
-        $return = $entity->setString(self::$data['string']);
-        self::assertInstanceOf(EntityStub::class, $return);
+        self::assertSame($entity, $entity->setString(self::$data['string']));
 
         // Test string is set
         self::assertTrue($entity->isString());

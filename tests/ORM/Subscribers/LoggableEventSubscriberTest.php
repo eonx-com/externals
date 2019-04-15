@@ -7,10 +7,10 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use EoneoPay\Externals\ORM\Subscribers\LoggableEventSubscriber;
 use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Mapping\Event\Adapter\ORM;
-use Tests\EoneoPay\Externals\ORMTestCase;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\FillableStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\NoInterfaceStub;
+use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Subscribers\LoggableEventSubscriber
@@ -82,18 +82,17 @@ class LoggableEventSubscriberTest extends ORMTestCase
         $adapter->setEventArgs(new OnFlushEventArgs($this->getDoctrineEntityManager()));
 
         // Test username '1' is returned by log entry
-        $entry = $this->createInstance('1')
-            ->createLogEntry('insert', new EntityStub(), $adapter);
+        $entry = $this->createInstance('1')->createLogEntry('insert', new EntityStub(), $adapter);
 
         self::assertInstanceOf(LogEntry::class, $entry);
-        self::assertSame('1', ($entry instanceof LogEntry) === true ? $entry->getUsername() : '');
+        self::assertSame('1', $entry->getUsername());
 
         // Test default is set if username resolver returns null
         $entry = $this->createInstance()
             ->createLogEntry('insert', new EntityStub(), $adapter);
 
         self::assertInstanceOf(LogEntry::class, $entry);
-        self::assertSame('not_set', ($entry instanceof LogEntry) === true ? $entry->getUsername() : '');
+        self::assertSame('not_set', $entry->getUsername());
     }
 
     /**

@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\ORM\Query;
 
 use EoneoPay\Externals\ORM\Exceptions\ORMException;
-use EoneoPay\Externals\ORM\Interfaces\Query\FilterCollectionInterface;
-use Tests\EoneoPay\Externals\ORMTestCase;
+use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Query\FilterCollection
@@ -25,8 +24,8 @@ class FilterCollectionTest extends ORMTestCase
         $filters->enable('soft-deleteable');
         $filters->disable('soft-deleteable');
 
-        /** @noinspection UnnecessaryAssertionInspection Test of actual returned instance */
-        self::assertInstanceOf(FilterCollectionInterface::class, $filters);
+        // If enable/disable doesn't throw exception we're good
+        $this->addToAssertionCount(1);
     }
 
     /**

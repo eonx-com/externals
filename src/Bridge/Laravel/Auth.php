@@ -39,11 +39,7 @@ abstract class Auth implements AuthInterface
     {
         $callable = [$this->auth, $method];
 
-        if (\is_callable($callable) === true) {
-            return $callable(...$arguments);
-        }
-
-        // Return null if not callable
-        return null;
+        // Call method otherwise return null if not callable
+        return \is_callable($callable) === true ? $callable(...$arguments) : null;
     }
 }

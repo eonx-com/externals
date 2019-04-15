@@ -6,10 +6,10 @@ namespace Tests\EoneoPay\Externals\ORM\Subscribers;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use EoneoPay\Externals\ORM\Subscribers\SoftDeleteEventSubscriber;
-use Tests\EoneoPay\Externals\ORMTestCase;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\Common\Persistence\ObjectManagerStub;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\ORM\EntityManagerStub;
+use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 
 /**
  * @covers \EoneoPay\Externals\ORM\Subscribers\SoftDeleteEventSubscriber
@@ -150,16 +150,7 @@ class SoftDeleteEventSubscriberTest extends ORMTestCase
         $entityManager->getFilters()->disable('soft-deleteable');
         $deleted = $repository->find($entity->getEntityId());
 
-        // Ensure delete is an entity
-        if (($deleted instanceof EntityStub) === false) {
-            self::fail(\sprintf(
-                'Deleted entity expected to be an entity stub but %s found',
-                $deleted === null ? 'null' : \get_class($deleted)
-            ));
-
-            return;
-        }
-
+        // Ensure retrieved deleted entity is the same as the original entity
         self::assertSame($entity->getEntityId(), $deleted->getEntityId());
 
         // Remove deleted entity entirely
