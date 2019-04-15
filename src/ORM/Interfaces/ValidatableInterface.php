@@ -8,7 +8,7 @@ interface ValidatableInterface extends EntityInterface
     /**
      * Get validation rules.
      *
-     * @return string[]
+     * @return mixed[]
      */
     public function getRules(): array;
 

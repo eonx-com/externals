@@ -7,7 +7,7 @@ use EoneoPay\Externals\Auth\Interfaces\AuthInterface;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 
 /**
- * @method mixed guard(string $name)
+ * @method mixed guard(?string $name = null)
  * @method void shouldUse(string $name)
  */
 abstract class Auth implements AuthInterface
