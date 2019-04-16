@@ -86,7 +86,7 @@ final class EntityManager implements EntityManagerInterface
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\RepositoryClassDoesNotImplementInterfaceException If wrong interface
      */
-    public function getRepository(string $class): RepositoryInterface
+    public function getRepository(string $class)
     {
         // Create repository
         $repository = $this->entityManager->getRepository($class);

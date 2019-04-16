@@ -38,9 +38,9 @@ interface EntityManagerInterface
      *
      * @param string $class The class name of the entity to generate a repository for
      *
-     * @return \EoneoPay\Externals\ORM\Interfaces\RepositoryInterface
+     * @return mixed The instantiated repository
      */
-    public function getRepository(string $class): RepositoryInterface;
+    public function getRepository(string $class);
 
     /**
      * Merge entity to the database, similar to REPLACE INTO in SQL
