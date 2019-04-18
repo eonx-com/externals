@@ -11,7 +11,8 @@
     "eoneopay/utils": "dev-master",
     "ext-json": "*",
     "ext-libxml": "*",
-    "ext-simplexml": "*"
+    "ext-simplexml": "*",
+    "zendframework/zend-diactoros": "^2.1"
   },
   "require-dev": {
     "eoneopay/standards": "dev-master",

@@ -3,8 +3,20 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\HttpClient\Interfaces;
 
+use Psr\Http\Message\RequestInterface;
+
 interface ClientInterface
 {
+    /**
+     * Performs a PSR7 request
+     *
+     * @param \Psr\Http\Message\RequestInterface $request
+     * @param mixed[]|null $options
+     *
+     * @return \EoneoPay\Externals\HttpClient\Response
+     */
+    public function proxy(RequestInterface $request, ?array $options = null): ResponseInterface;
+
     /**
      * Perform a request on a uri
      *
