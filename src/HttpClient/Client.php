@@ -13,7 +13,11 @@ use Exception;
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Response as PsrResponse;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use function GuzzleHttp\Psr7\str;
 
 final class Client implements ClientInterface
 {
@@ -44,38 +48,69 @@ final class Client implements ClientInterface
      *
      * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
+    public function proxy(RequestInterface $request, ?array $options = null): PsrResponseInterface
+    {
+        $this->logRequest($request->getMethod(), $request->getUri()->__toString(), $options);
+
+        // Define exception in case request fails
+        $exception = null;
+
+        try {
+            $response = $this->client->send($request, $options ?? []);
+        } catch (RequestException $exception) {
+            $response = $this->handleRequestException($exception);
+        } catch (GuzzleException $exception) {
+            // Covers any other guzzle exception
+            $response = new PsrResponse(500);
+        }
+
+        $this->logResponse($response);
+
+        // If response is unsuccessful, throw exception
+        $statusCode = $response->getStatusCode();
+        if ($statusCode >= 300 || $statusCode < 200) {
+            throw new InvalidApiResponseException(new Response($response), $exception);
+        }
+
+        return $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
+     */
     public function request(string $method, string $uri, ?array $options = null): ResponseInterface
     {
         $this->logRequest($method, $uri, $options);
 
         // Define exception in case request fails
         $exception = null;
+        $content = null;
 
         try {
-            $request = $this->client->request($method, $uri, $options ?? []);
-            $content = $this->getBodyContents($request->getBody());
-
-            $response = new Response(
-                $this->processResponseContent($content),
-                $request->getStatusCode(),
-                $request->getHeaders(),
-                $content
-            );
+            $response = $this->client->request($method, $uri, $options ?? []);
         } catch (RequestException $exception) {
             $response = $this->handleRequestException($exception);
         } catch (GuzzleException $exception) {
             // Covers any other guzzle exception
-            $response = new Response(['content' => $exception->getMessage()], 500);
+            $response = new PsrResponse(500);
+            $content = ['contents' => $exception->getMessage()];
         }
 
         $this->logResponse($response);
 
-        // If response is unsuccessful, throw exception
-        if ($response->isSuccessful() === false) {
-            throw new InvalidApiResponseException($response, $exception);
+        if ($content === null) {
+            $content = $this->processResponseContent($this->getBodyContents($response->getBody()));
         }
 
-        return $response;
+        // If response is unsuccessful, throw exception
+        $statusCode = $response->getStatusCode();
+        if ($statusCode >= 300 || $statusCode < 200) {
+            throw new InvalidApiResponseException(new Response($response, $content), $exception);
+        }
+
+        return new Response($response, $content);
     }
 
     /**
@@ -104,26 +139,19 @@ final class Client implements ClientInterface
      *
      * @param \GuzzleHttp\Exception\RequestException $exception The exception thrown
      *
-     * @return \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    private function handleRequestException(RequestException $exception): ResponseInterface
+    private function handleRequestException(RequestException $exception): PsrResponseInterface
     {
         $this->logException($exception);
 
-        if ($exception->hasResponse() && $exception->getResponse() !== null) {
-            $content = $this->getBodyContents($exception->getResponse()->getBody());
-
-            return new Response(
-                $this->processResponseContent($content),
-                $exception->getResponse()->getStatusCode(),
-                $exception->getResponse()->getHeaders(),
-                $content
-            );
+        if ($exception->getResponse() !== null) {
+            return $exception->getResponse();
         }
 
         $content = \json_encode(['exception' => $exception->getMessage()]) ?: '';
 
-        return new Response($this->processResponseContent($content), 400, null, $content);
+        return new PsrResponse(400, [], $content);
     }
 
     /**
@@ -135,7 +163,7 @@ final class Client implements ClientInterface
      */
     private function isJson(string $string): bool
     {
-        \json_decode($string);
+        \json_decode($string, false);
 
         return \json_last_error() === \JSON_ERROR_NONE;
     }
@@ -191,17 +219,17 @@ final class Client implements ClientInterface
     /**
      * Log the received response
      *
-     * @param \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface $response The received response
+     * @param \Psr\Http\Message\ResponseInterface $response The received response
      *
      * @return void
      */
-    private function logResponse(ResponseInterface $response): void
+    private function logResponse(PsrResponseInterface $response): void
     {
         if ($this->logger === null) {
             return;
         }
 
-        $this->logger->info('API response received', $response->toArray());
+        $this->logger->info('API response received', ['response' => str($response)]);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Tests\EoneoPay\Externals\HttpClient\Exceptions;
 
 use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
 use EoneoPay\Externals\HttpClient\Response;
+use GuzzleHttp\Psr7\Response as PsrResponse;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
@@ -19,7 +20,7 @@ class InvalidApiResponseExceptionTest extends TestCase
      */
     public function testExceptionGetters(): void
     {
-        $response = new Response();
+        $response = new Response(new PsrResponse());
         $exception = new InvalidApiResponseException($response);
 
         self::assertSame(1100, $exception->getErrorCode());
