@@ -9,7 +9,7 @@ use EoneoPay\Utils\XmlConverter;
 use Exception;
 use Psr\Http\Message\StreamInterface;
 
-class StreamParser implements StreamParserInterface
+final class StreamParser implements StreamParserInterface
 {
     /**
      * @var \EoneoPay\Utils\XmlConverter

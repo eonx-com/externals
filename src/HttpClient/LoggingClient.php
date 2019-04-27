@@ -13,7 +13,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use function GuzzleHttp\Psr7\str;
 
-class LoggingClient implements ClientInterface
+final class LoggingClient implements ClientInterface
 {
     /**
      * @var \EoneoPay\Externals\HttpClient\Interfaces\ClientInterface

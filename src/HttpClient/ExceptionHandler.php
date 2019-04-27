@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use function GuzzleHttp\Psr7\stream_for;
 
-class ExceptionHandler implements ExceptionHandlerInterface
+final class ExceptionHandler implements ExceptionHandlerInterface
 {
     /**
      * {@inheritdoc}

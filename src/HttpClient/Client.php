@@ -53,29 +53,6 @@ final class Client implements ClientInterface
      *
      * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
-    public function sendRequest(RequestInterface $request, ?array $options = null): PsrResponseInterface
-    {
-        // Define exception in case request fails so the variable can be used outside of the
-        // try block
-        $exception = null;
-
-        try {
-            $response = $this->client->send($request, $options ?? []);
-        } catch (GuzzleException $exception) {
-            $response = $this->exceptionHandler->getResponseFrom($exception);
-        }
-
-        // If response is unsuccessful, throw exception
-        $this->handleResponseFailure($response, $exception);
-
-        return $response;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
-     */
     public function request(string $method, string $uri, ?array $options = null): ResponseInterface
     {
         // Define exception in case request fails so the variable can be used outside of the
@@ -92,6 +69,29 @@ final class Client implements ClientInterface
         $this->handleResponseFailure($response, $exception);
 
         return $this->buildResponse($response);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
+     */
+    public function sendRequest(RequestInterface $request, ?array $options = null): PsrResponseInterface
+    {
+        // Define exception in case request fails so the variable can be used outside of the
+        // try block
+        $exception = null;
+
+        try {
+            $response = $this->client->send($request, $options ?? []);
+        } catch (GuzzleException $exception) {
+            $response = $this->exceptionHandler->getResponseFrom($exception);
+        }
+
+        // If response is unsuccessful, throw exception
+        $this->handleResponseFailure($response, $exception);
+
+        return $response;
     }
 
     /**
