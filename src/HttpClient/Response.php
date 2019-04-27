@@ -4,45 +4,27 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
-use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Collection;
+use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 final class Response extends Collection implements ResponseInterface
 {
     /**
-     * @var string
+     * @var \Psr\Http\Message\ResponseInterface
      */
-    private $content;
-
-    /**
-     * @var string[]
-     */
-    private $headers;
-
-    /**
-     * @var int
-     */
-    private $statusCode;
+    private $response;
 
     /**
      * Response constructor.
      *
+     * @param \Psr\Http\Message\ResponseInterface $response
      * @param mixed[]|null $data
-     * @param int|null $statusCode
-     * @param mixed[]|null $headers
-     * @param string|null $content
      */
-    public function __construct(
-        ?array $data = null,
-        ?int $statusCode = null,
-        ?array $headers = null,
-        ?string $content = null
-    ) {
+    public function __construct(PsrResponseInterface $response, ?array $data = null)
+    {
         parent::__construct($data);
 
-        $this->content = $content ?? '';
-        $this->headers = $headers ?? [];
-        $this->statusCode = $statusCode ?? 200;
+        $this->response = $response;
     }
 
     /**
@@ -50,7 +32,7 @@ final class Response extends Collection implements ResponseInterface
      */
     public function getContent(): string
     {
-        return $this->content;
+        return $this->response->getBody()->__toString();
     }
 
     /**
@@ -58,7 +40,9 @@ final class Response extends Collection implements ResponseInterface
      */
     public function getHeader(string $key): ?string
     {
-        return (new Arr())->get($this->headers, $key);
+        $headers = $this->response->getHeader($key);
+
+        return \reset($headers) ?: null;
     }
 
     /**
@@ -66,7 +50,15 @@ final class Response extends Collection implements ResponseInterface
      */
     public function getHeaders(): array
     {
-        return $this->headers;
+        return $this->response->getHeaders();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPsrResponse(): PsrResponseInterface
+    {
+        return $this->response;
     }
 
     /**
@@ -74,7 +66,7 @@ final class Response extends Collection implements ResponseInterface
      */
     public function getStatusCode(): int
     {
-        return $this->statusCode;
+        return $this->response->getStatusCode();
     }
 
     /**
@@ -82,6 +74,6 @@ final class Response extends Collection implements ResponseInterface
      */
     public function isSuccessful(): bool
     {
-        return $this->statusCode >= 200 && $this->statusCode < 300;
+        return $this->response->getStatusCode() >= 200 && $this->response->getStatusCode() < 300;
     }
 }

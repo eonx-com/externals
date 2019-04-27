@@ -11,7 +11,8 @@
     "eoneopay/utils": "dev-master",
     "ext-json": "*",
     "ext-libxml": "*",
-    "ext-simplexml": "*"
+    "ext-simplexml": "*",
+    "psr/http-client": "^1.0"
   },
   "require-dev": {
     "eoneopay/standards": "dev-master",

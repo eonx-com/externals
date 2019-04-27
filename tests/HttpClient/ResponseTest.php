@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\Response;
+use GuzzleHttp\Psr7\Response as PsrResponse;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
@@ -18,10 +19,11 @@ class ResponseTest extends TestCase
      */
     public function testResponseObject(): void
     {
-        $response = new Response(['test' => '1'], 200, ['Content-Type' => 'application/json'], '{"test":"1"}');
+        $psrResponse = new PsrResponse(200, ['Content-Type' => 'application/json'], '{"test":"1"}');
+        $response = new Response($psrResponse, ['test' => '1']);
 
         self::assertSame('{"test":"1"}', $response->getContent());
-        self::assertSame(['Content-Type' => 'application/json'], $response->getHeaders());
+        self::assertSame(['Content-Type' => ['application/json']], $response->getHeaders());
         self::assertSame(200, $response->getStatusCode());
 
         // Test getting a single header
@@ -33,7 +35,9 @@ class ResponseTest extends TestCase
         // Test status code result
         self::assertTrue($response->isSuccessful());
 
-        $response = new Response(null, 500);
+        self::assertSame($psrResponse, $response->getPsrResponse());
+
+        $response = new Response(new PsrResponse(500));
         self::assertFalse($response->isSuccessful());
     }
 }
