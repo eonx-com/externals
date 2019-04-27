@@ -10,6 +10,7 @@ use EoneoPay\Externals\HttpClient\LoggingClient;
 use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
 use EoneoPay\Externals\Logger\Logger;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use Psr\Http\Client\ClientInterface as PsrClientInterface;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
 use Tests\EoneoPay\Externals\TestCase;
 
@@ -32,10 +33,11 @@ class HttpClientServiceProviderTest extends TestCase
         (new HttpClientServiceProvider($application))->register();
 
         // Ensure we get back a LoggingClient
-        self::assertInstanceOf(
-            LoggingClient::class,
-            $application->get(ClientInterface::class)
-        );
+        $client = $application->get(ClientInterface::class);
+        self::assertInstanceOf(LoggingClient::class, $client);
+
+        // Ensure we get back a LoggingClient
+        self::assertSame($client, $application->get(PsrClientInterface::class));
 
         // Ensure we configure the inner client
         self::assertInstanceOf(

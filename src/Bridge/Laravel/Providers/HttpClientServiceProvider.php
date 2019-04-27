@@ -46,6 +46,6 @@ class HttpClientServiceProvider extends ServiceProvider
         });
 
         // If someone is asking for a PsrClientInterface, lets give them our implementation.
-        $this->app->alias(PsrClientInterface::class, ClientInterface::class);
+        $this->app->alias(ClientInterface::class, PsrClientInterface::class);
     }
 }

@@ -19,6 +19,8 @@ use function GuzzleHttp\Psr7\stream_for;
 
 /**
  * @covers \EoneoPay\Externals\HttpClient\LoggingClient
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Coupling is required to fully test
  */
 class LoggingClientTest extends TestCase
 {
