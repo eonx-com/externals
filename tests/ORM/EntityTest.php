@@ -259,6 +259,30 @@ class EntityTest extends ORMTestCase
     }
 
     /**
+     * Test guarded property can still be set using setter method.
+     *
+     * @return void
+     */
+    public function testGuardCanStillBeSetWithSetterMethod(): void
+    {
+        $entity = new GuardedStub();
+
+        // Fill entity with data excluding entityId
+        $data = self::$data;
+        $data['entityId'] = 'skipped-entity-value';
+        $entity->fill($data);
+
+        // Ensure that entityId is still null.
+        self::assertNull($entity->getEntityId());
+
+        // Call setter method (proceeds to __call)
+        $entity->setEntityId('the-entity-id');
+
+        // Test that property is set using setter method even if entityId is guarded.
+        self::assertEquals('the-entity-id', $entity->getEntityId());
+    }
+
+    /**
      * Test guarded prevents filling certain fields
      *
      * @return void

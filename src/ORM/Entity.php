@@ -50,7 +50,7 @@ abstract class Entity implements EntityInterface
 
         // The property being accessed must exist and the type must be valid if one of these things
         // aren't true throw an exception
-        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
+        if ($type === '' || $property === null) {
             throw new InvalidMethodCallException(
                 \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
             );
@@ -79,6 +79,11 @@ abstract class Entity implements EntityInterface
     {
         // Loop through data and set values, set will automatically skip invalid or non-fillable properties
         foreach ($data as $property => $value) {
+            // Skip set if property is not fillable.
+            if ($this->isFillable($property) === false) {
+                continue;
+            }
+
             $this->set($property, $value);
         }
     }
@@ -492,8 +497,8 @@ abstract class Entity implements EntityInterface
     {
         $resolved = (string)$this->resolveProperty($property);
 
-        // If property doesn't exist or is not fillable, return
-        if ($this->has($property) === false || $this->isFillable($resolved) === false) {
+        // If property doesn't exist, return
+        if ($this->has($property) === false) {
             return $this;
         }
 
