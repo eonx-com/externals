@@ -6,9 +6,12 @@ namespace EoneoPay\Externals\HttpClient\Exceptions;
 use EoneoPay\Externals\HttpClient\Interfaces\InvalidApiResponseExceptionInterface;
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
 use EoneoPay\Utils\Exceptions\RuntimeException;
+use Psr\Http\Client\ClientExceptionInterface;
 use Throwable;
 
-final class InvalidApiResponseException extends RuntimeException implements InvalidApiResponseExceptionInterface
+final class InvalidApiResponseException extends RuntimeException implements
+    ClientExceptionInterface,
+    InvalidApiResponseExceptionInterface
 {
     /**
      * @var \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface
