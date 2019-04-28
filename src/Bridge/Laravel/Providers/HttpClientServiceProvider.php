@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
 use EoneoPay\Externals\HttpClient\Client;
+use EoneoPay\Externals\HttpClient\ClientFactory;
 use EoneoPay\Externals\HttpClient\ExceptionHandler;
-use EoneoPay\Externals\HttpClient\Interfaces\ClientInterface;
 use EoneoPay\Externals\HttpClient\LoggingClient;
 use EoneoPay\Externals\HttpClient\StreamParser;
 use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
@@ -24,28 +24,22 @@ class HttpClientServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Defined to allow an application to override the Guzzle client used for External's HTTP
-        // requests.
-        $this->app->singleton('eoneopay_externals.http_client', GuzzleClient::class);
+        // Register the Http ClientFactory
+        $this->app->singleton(ClientFactory::class);
 
-        // Define the inner client that is used as part of the LoggingClient
-        $this->app->singleton('eoneopay_externals.client', static function (Container $app): Client {
-            return new Client(
-                $app->make('eoneopay_externals.http_client'),
+        // Register a default http service that comes with a minimally configured
+        // Guzzle instance inside.
+        $this->app->singleton('http', static function (Container $app): LoggingClient {
+            $client = new Client(
+                new GuzzleClient(),
                 new ExceptionHandler(),
                 new StreamParser(new XmlConverter())
             );
-        });
 
-        // Wrap a Client in a LoggingClient to get logging functionality.
-        $this->app->singleton(ClientInterface::class, static function (Container $app): LoggingClient {
-            return new LoggingClient(
-                $app->make('eoneopay_externals.client'),
-                $app->make(LoggerInterface::class)
-            );
+            return new LoggingClient($client, $app->make(LoggerInterface::class));
         });
 
         // If someone is asking for a PsrClientInterface, lets give them our implementation.
-        $this->app->alias(ClientInterface::class, PsrClientInterface::class);
+        $this->app->alias('http', PsrClientInterface::class);
     }
 }

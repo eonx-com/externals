@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
 use EoneoPay\Externals\Bridge\Laravel\Providers\HttpClientServiceProvider;
-use EoneoPay\Externals\HttpClient\Client;
-use EoneoPay\Externals\HttpClient\Interfaces\ClientInterface;
+use EoneoPay\Externals\HttpClient\ClientFactory;
 use EoneoPay\Externals\HttpClient\LoggingClient;
 use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
 use EoneoPay\Externals\Logger\Logger;
-use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use Psr\Http\Client\ClientInterface as PsrClientInterface;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
 use Tests\EoneoPay\Externals\TestCase;
@@ -26,29 +24,19 @@ class HttpClientServiceProviderTest extends TestCase
      */
     public function testRegister(): void
     {
-        $application = new ApplicationStub();
-        $application->instance(LoggerInterface::class, new Logger());
+        $app = new ApplicationStub();
+        $app->instance(LoggerInterface::class, new Logger());
 
         // Run registration
-        (new HttpClientServiceProvider($application))->register();
+        (new HttpClientServiceProvider($app))->register();
 
         // Ensure we get back a LoggingClient
-        $client = $application->get(ClientInterface::class);
+        $client = $app->get('http');
         self::assertInstanceOf(LoggingClient::class, $client);
 
         // Ensure we get back a LoggingClient
-        self::assertSame($client, $application->get(PsrClientInterface::class));
+        self::assertSame($client, $app->get(PsrClientInterface::class));
 
-        // Ensure we configure the inner client
-        self::assertInstanceOf(
-            Client::class,
-            $application->get('eoneopay_externals.client')
-        );
-
-        // Ensure we configure the guzzle client
-        self::assertInstanceOf(
-            GuzzleClientInterface::class,
-            $application->get('eoneopay_externals.http_client')
-        );
+        self::assertInstanceOf(ClientFactory::class, $app->get(ClientFactory::class));
     }
 }
