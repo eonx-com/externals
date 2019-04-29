@@ -23,7 +23,7 @@ final class InvalidApiResponseException extends RuntimeException implements Inva
      */
     public function __construct(ResponseInterface $response, ?Throwable $previous = null)
     {
-        parent::__construct('', 0, $previous);
+        parent::__construct('', null, 0, $previous);
 
         $this->response = $response;
     }

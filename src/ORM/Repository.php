@@ -126,7 +126,7 @@ abstract class Repository implements RepositoryInterface
             return \call_user_func_array([$persister, $method], $parameters ?? []);
         } catch (Exception $exception) {
             // Wrap all thrown exceptions as an ORM exception
-            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, $exception);
+            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, null, $exception);
         }
     }
 }
