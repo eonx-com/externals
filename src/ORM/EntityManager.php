@@ -52,7 +52,7 @@ final class EntityManager implements EntityManagerInterface
             // @codeCoverageIgnoreStart
         } catch (MappingException $exception) {
             // Exception only thrown when composite identifiers are used
-            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, $exception);
+            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, null, $exception);
             // @codeCoverageIgnoreEnd
         }
 
@@ -163,7 +163,7 @@ final class EntityManager implements EntityManagerInterface
             }
 
             // Wrap others in ORMException
-            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, $exception);
+            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, null, $exception);
         }
     }
 }
