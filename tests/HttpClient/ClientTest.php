@@ -6,8 +6,10 @@ namespace Tests\EoneoPay\Externals\HttpClient;
 use EoneoPay\Externals\HttpClient\Client;
 use EoneoPay\Externals\HttpClient\ExceptionHandler;
 use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
+use EoneoPay\Externals\HttpClient\Exceptions\NetworkException;
 use EoneoPay\Externals\HttpClient\StreamParser;
 use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Handler\MockHandler;
@@ -107,6 +109,7 @@ class ClientTest extends TestCase
      * @return void
      *
      * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException If there is a request error
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
      */
     public function testRequestSendRequesting(): void
     {
@@ -124,6 +127,8 @@ class ClientTest extends TestCase
      * Test processing a standard request
      *
      * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
      */
     public function testRequestSendRequestingException(): void
     {
@@ -135,6 +140,33 @@ class ClientTest extends TestCase
             $instance->sendRequest(new Request('post', '/'));
         } catch (InvalidApiResponseException $exception) {
             self::assertSame('{"exception":"An error occured"}', $exception->getResponse()->getContent());
+
+            return;
+        }
+
+        self::fail('An exception was not thrown');
+    }
+
+    /**
+     * Test network failure
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
+     * @throws InvalidApiResponseException
+     */
+    public function testSendRequestNetworkException(): void
+    {
+        $expected = new ConnectException('An error occured', new Request('GET', 'test'));
+
+        $instance = $this->createInstance(new MockHandler([
+            $expected
+        ]));
+
+        try {
+            $instance->sendRequest(new Request('post', '/'));
+        } catch (NetworkException $exception) {
+            self::assertSame($expected, $exception->getPrevious());
 
             return;
         }

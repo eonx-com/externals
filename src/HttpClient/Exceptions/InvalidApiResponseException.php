@@ -6,13 +6,19 @@ namespace EoneoPay\Externals\HttpClient\Exceptions;
 use EoneoPay\Externals\HttpClient\Interfaces\InvalidApiResponseExceptionInterface;
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
 use EoneoPay\Utils\Exceptions\RuntimeException;
-use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\RequestExceptionInterface;
+use Psr\Http\Message\RequestInterface;
 use Throwable;
 
 final class InvalidApiResponseException extends RuntimeException implements
-    ClientExceptionInterface,
+    RequestExceptionInterface,
     InvalidApiResponseExceptionInterface
 {
+    /**
+     * @var \Psr\Http\Message\RequestInterface
+     */
+    private $request;
+
     /**
      * @var \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface
      */
@@ -21,13 +27,18 @@ final class InvalidApiResponseException extends RuntimeException implements
     /**
      * InvalidApiResponseException constructor.
      *
+     * @param \Psr\Http\Message\RequestInterface $request
      * @param \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface $response The response received from the api
      * @param \Throwable|null $previous The original exception thrown
      */
-    public function __construct(ResponseInterface $response, ?Throwable $previous = null)
-    {
-        parent::__construct('', 0, $previous);
+    public function __construct(
+        RequestInterface $request,
+        ResponseInterface $response,
+        ?Throwable $previous = null
+    ) {
+        parent::__construct('', null, 0, $previous);
 
+        $this->request = $request;
         $this->response = $response;
     }
 
@@ -45,6 +56,14 @@ final class InvalidApiResponseException extends RuntimeException implements
     public function getErrorSubCode(): int
     {
         return self::DEFAULT_ERROR_SUB_CODE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequest(): RequestInterface
+    {
+        return $this->request;
     }
 
     /**
