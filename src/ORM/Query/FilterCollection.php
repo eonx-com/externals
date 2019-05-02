@@ -61,7 +61,7 @@ final class FilterCollection implements FilterCollectionInterface
             return \call_user_func_array([$this->collection, $method], $parameters ?? []);
         } catch (InvalidArgumentException $exception) {
             // Wrap exceptions in ORMException
-            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, $exception);
+            throw new ORMException(\sprintf('Database Error: %s', $exception->getMessage()), null, null, $exception);
         }
     }
 }

@@ -107,6 +107,7 @@ final class ValidateEventSubscriber implements EventSubscriber
             $this->translator->trans('exceptions.validation.failed'),
             null,
             null,
+            null,
             $this->validator->getFailures()
         );
     }
