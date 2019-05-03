@@ -30,7 +30,7 @@ class FilesystemServiceProviderTest extends TestCase
         // Use cloud as default
         $application = $this->getConfiguredApplication(['default' => 's3']);
         (new FilesystemServiceProvider($application))->register();
-        self::assertEquals(
+        self::assertSame(
             $application->get(CloudFilesystemInterface::class),
             $application->get(FilesystemInterface::class)
         );
@@ -38,7 +38,7 @@ class FilesystemServiceProviderTest extends TestCase
         // Use disk as default
         $application = $this->getConfiguredApplication(['default' => 'local']);
         (new FilesystemServiceProvider($application))->register();
-        self::assertEquals(
+        self::assertSame(
             $application->get(DiskFilesystemInterface::class),
             $application->get(FilesystemInterface::class)
         );
@@ -46,11 +46,11 @@ class FilesystemServiceProviderTest extends TestCase
         // Use custom driver
         $application = $this->getConfiguredApplication(['default' => 'custom']);
         (new FilesystemServiceProvider($application))->register();
-        self::assertNotEquals(
+        self::assertSame(
             $application->get(CloudFilesystemInterface::class),
             $application->get(FilesystemInterface::class)
         );
-        self::assertNotEquals(
+        self::assertSame(
             $application->get(DiskFilesystemInterface::class),
             $application->get(FilesystemInterface::class)
         );

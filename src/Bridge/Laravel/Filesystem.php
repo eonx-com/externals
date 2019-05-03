@@ -58,6 +58,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
      */
     public function path(?string $filename = null): string
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         /** @noinspection PhpUndefinedMethodInspection */
         // Method is in \Illuminate\Filesystem\FilesystemAdapter
         // @see: https://github.com/illuminate/contracts/pull/6

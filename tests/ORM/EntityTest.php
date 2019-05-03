@@ -93,8 +93,13 @@ class EntityTest extends ORMTestCase
             return;
         }
 
+        /**
+         * @var \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiChildStub $childRetrieve
+         *
+         * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
+         */
         // Test parent is added to child collection
-        self::assertEquals(1, $childRetrieve->getParents()->count());
+        self::assertSame(1, $childRetrieve->getParents()->count());
     }
 
     /**
@@ -284,12 +289,12 @@ class EntityTest extends ORMTestCase
      */
     public function testInstanceOfRuleAsStringMethod(): void
     {
-        self::assertEquals(
+        self::assertSame(
             'instance_of:stdClass',
             (new EntityStub())->getInstanceOfRuleForTest(\stdClass::class)
         );
 
-        self::assertEquals(
+        self::assertSame(
             'instance_of:Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub',
             (new EntityStub())->getInstanceOfRuleForTest(EntityStub::class)
         );
@@ -459,7 +464,7 @@ class EntityTest extends ORMTestCase
      */
     public function testUniqueRuleAsStringMethod(): void
     {
-        self::assertEquals(
+        self::assertSame(
             'unique:Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub,email,,entityId,where1,value1',
             (new EntityStub())->getEmailUniqueRuleForTest(['where1' => 'value1'])
         );
