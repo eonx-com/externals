@@ -19,6 +19,8 @@ use Tests\EoneoPay\Externals\TestCase;
 
 /**
  * @covers \EoneoPay\Externals\HttpClient\Client
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Coupling is required to fully test entity manager
  */
 class ClientTest extends TestCase
 {
@@ -89,7 +91,7 @@ class ClientTest extends TestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException If there is a request error
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testRequestProcessing(): void
     {
@@ -108,8 +110,7 @@ class ClientTest extends TestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException If there is a request error
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testRequestSendRequesting(): void
     {
@@ -127,8 +128,6 @@ class ClientTest extends TestCase
      * Test processing a standard request
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
      */
     public function testRequestSendRequestingException(): void
     {
@@ -152,8 +151,7 @@ class ClientTest extends TestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
-     * @throws InvalidApiResponseException
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
      */
     public function testSendRequestNetworkException(): void
     {

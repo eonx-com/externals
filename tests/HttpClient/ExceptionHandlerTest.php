@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\ExceptionHandler;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\TransferException;
+use EoneoPay\Externals\HttpClient\Exceptions\NetworkException;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Tests\EoneoPay\Externals\TestCase;
@@ -16,52 +17,58 @@ use Tests\EoneoPay\Externals\TestCase;
 class ExceptionHandlerTest extends TestCase
 {
     /**
-     * Tests the response when a non RequestException occurs
+     * Tests that the handle method throws a ConnectException as a NetworkException
      *
      * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
      */
-    public function testGetResponseForNonResponseException(): void
+    public function testHandleThrowsNetworkException(): void
     {
-        $instance = $this->createInstance();
+        $this->expectException(NetworkException::class);
 
-        $result = $instance->getResponseFrom(new TransferException('message'));
+        $request = new Request('', '');
 
-        static::assertSame(500, $result->getStatusCode());
-        static::assertSame('{"exception":"message"}', $result->getBody()->__toString());
+        $instance = $this->getInstance();
+        $instance->handle($request, new ConnectException('', $request));
     }
 
     /**
-     * Tests the response when a RequestException occurs without a response
+     * Tests that the exception handler adds a response when one isnt present.
      *
      * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
      */
-    public function testGetResponseForClientExceptionWithoutResponse(): void
+    public function testHandlesRequestExceptionWithoutResponse(): void
     {
-        $instance = $this->createInstance();
+        $request = new Request('', '');
+        $requestException = new RequestException('Something happened', $request);
 
-        $result = $instance->getResponseFrom(new ClientException('message', new Request('post', '/')));
+        $instance = $this->getInstance();
+        $response = $instance->handle($request, $requestException);
 
-        static::assertSame(400, $result->getStatusCode());
-        static::assertSame('{"exception":"message"}', $result->getBody()->__toString());
+        static::assertSame(500, $response->getStatusCode());
+        static::assertSame('{"exception":"Something happened"}', $response->getBody()->__toString());
     }
 
     /**
-     * Tests the response when a RequestException occurs with a response
+     * Tests that the exception handler adds a response when one isnt present.
      *
      * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
      */
-    public function testGetResponseForClientExceptionWithResponse(): void
+    public function testHandlesRequestExceptionWithResponse(): void
     {
-        $instance = $this->createInstance();
+        $request = new Request('', '');
+        $response = new Response(500);
+        $requestException = new RequestException('Something happened', $request, $response);
 
-        $response = new Response(200);
-        $result = $instance->getResponseFrom(new ClientException(
-            'message',
-            new Request('post', '/'),
-            $response
-        ));
+        $instance = $this->getInstance();
+        $actual = $instance->handle($request, $requestException);
 
-        static::assertSame($response, $result);
+        static::assertSame($response, $actual);
     }
 
     /**
@@ -69,7 +76,7 @@ class ExceptionHandlerTest extends TestCase
      *
      * @return \EoneoPay\Externals\HttpClient\ExceptionHandler
      */
-    private function createInstance(): ExceptionHandler
+    private function getInstance(): ExceptionHandler
     {
         return new ExceptionHandler();
     }

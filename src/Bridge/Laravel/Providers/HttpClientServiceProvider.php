@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
 use EoneoPay\Externals\HttpClient\Client;
-use EoneoPay\Externals\HttpClient\ClientFactory;
 use EoneoPay\Externals\HttpClient\ExceptionHandler;
-use EoneoPay\Externals\HttpClient\LoggingClient;
+use EoneoPay\Externals\HttpClient\Interfaces\ClientInterface;
+use EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface;
+use EoneoPay\Externals\HttpClient\Interfaces\StreamParserInterface;
 use EoneoPay\Externals\HttpClient\StreamParser;
-use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
-use EoneoPay\Utils\XmlConverter;
 use GuzzleHttp\Client as GuzzleClient;
-use Illuminate\Contracts\Container\Container;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use Illuminate\Support\ServiceProvider;
 use Psr\Http\Client\ClientInterface as PsrClientInterface;
 
@@ -24,22 +23,13 @@ class HttpClientServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Register the Http ClientFactory
-        $this->app->singleton(ClientFactory::class);
+        // Define a Guzzle binding so Client can be created
+        $this->app->bind(GuzzleClientInterface::class, GuzzleClient::class);
 
-        // Register a default http service that comes with a minimally configured
-        // Guzzle instance inside.
-        $this->app->singleton('http', static function (Container $app): LoggingClient {
-            $client = new Client(
-                new GuzzleClient(),
-                new ExceptionHandler(),
-                new StreamParser(new XmlConverter())
-            );
-
-            return new LoggingClient($client, $app->make(LoggerInterface::class));
-        });
-
-        // If someone is asking for a PsrClientInterface, lets give them our implementation.
-        $this->app->alias('http', PsrClientInterface::class);
+        // Alias Client to PsrClientInterface
+        $this->app->alias(ClientInterface::class, PsrClientInterface::class);
+        $this->app->bind(ClientInterface::class, Client::class);
+        $this->app->bind(ExceptionHandlerInterface::class, ExceptionHandler::class);
+        $this->app->bind(StreamParserInterface::class, StreamParser::class);
     }
 }

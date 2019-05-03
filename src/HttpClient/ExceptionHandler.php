@@ -3,23 +3,47 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\HttpClient;
 
+use EoneoPay\Externals\HttpClient\Exceptions\NetworkException;
 use EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Response as PsrResponse;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 use function GuzzleHttp\Psr7\stream_for;
 
 final class ExceptionHandler implements ExceptionHandlerInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
      */
-    public function getResponseFrom(GuzzleException $exception): ResponseInterface
+    public function handle(RequestInterface $request, GuzzleException $exception): ResponseInterface
     {
-        $stringBody = \json_encode(['exception' => $exception->getMessage()]) ?: '';
-        $body = stream_for($stringBody);
+        if (($exception instanceof ConnectException) === true) {
+            /**
+             * @var \GuzzleHttp\Exception\ConnectException $exception
+             *
+             * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === chec
+             */
+            throw new NetworkException($request, $exception);
+        }
+
+        return $this->extractPsrResponse($exception);
+    }
+
+    /**
+     * Extracts a response if one exists, otherwise creating one.
+     *
+     * @param \GuzzleHttp\Exception\GuzzleException $exception
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    private function extractPsrResponse(GuzzleException $exception): ResponseInterface
+    {
+        $response = null;
 
         if ($exception instanceof RequestException === true) {
             /**
@@ -27,27 +51,16 @@ final class ExceptionHandler implements ExceptionHandlerInterface
              *
              * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === chec
              */
-            return $this->handleRequestException($exception, $body);
+            $response = $exception->getResponse();
         }
 
-        return new Response(500, [], $body);
-    }
+        if ($response === null) {
+            $stringBody = \json_encode(['exception' => $exception->getMessage()]) ?: '';
+            $body = stream_for($stringBody);
 
-    /**
-     * If the Exception is a RequestException, get the original response from the exception
-     * and return that, otherwise throwing a 400 exception.
-     *
-     * @param \GuzzleHttp\Exception\RequestException $exception
-     * @param \Psr\Http\Message\StreamInterface $body
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    private function handleRequestException(RequestException $exception, StreamInterface $body): ResponseInterface
-    {
-        if ($exception->getResponse() !== null) {
-            return $exception->getResponse();
+            $response = new PsrResponse(500, [], $body);
         }
 
-        return new Response(400, [], $body);
+        return $response;
     }
 }

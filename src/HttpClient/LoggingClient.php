@@ -88,7 +88,7 @@ final class LoggingClient implements ClientInterface
             throw $exception;
         }
 
-        $this->logResponse($response->getPsrResponse(), $request);
+        $this->logResponse($response, $request);
 
         return $response;
     }

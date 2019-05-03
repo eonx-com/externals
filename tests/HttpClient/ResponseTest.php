@@ -25,9 +25,10 @@ class ResponseTest extends TestCase
         self::assertSame('{"test":"1"}', $response->getContent());
         self::assertSame(['Content-Type' => ['application/json']], $response->getHeaders());
         self::assertSame(200, $response->getStatusCode());
+        self::assertSame('OK', $response->getReasonPhrase());
 
         // Test getting a single header
-        self::assertSame('application/json', $response->getHeader('Content-Type'));
+        self::assertSame(['application/json'], $response->getHeader('Content-Type'));
 
         // Test getting a single item
         self::assertSame('1', $response->get('test'));
@@ -35,7 +36,10 @@ class ResponseTest extends TestCase
         // Test status code result
         self::assertTrue($response->isSuccessful());
 
-        self::assertSame($psrResponse, $response->getPsrResponse());
+        $newResponse = $response->withStatus(204);
+
+        self::assertSame(204, $newResponse->getStatusCode());
+        self::assertSame('No Content', $newResponse->getReasonPhrase());
 
         $response = new Response(new PsrResponse(500));
         self::assertFalse($response->isSuccessful());

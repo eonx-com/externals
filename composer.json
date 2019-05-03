@@ -12,7 +12,8 @@
     "ext-json": "*",
     "ext-libxml": "*",
     "ext-simplexml": "*",
-    "psr/http-client": "^1.0"
+    "psr/http-client": "^1.0",
+    "zendframework/zend-diactoros": "^2.1"
   },
   "require-dev": {
     "eoneopay/standards": "dev-master",
