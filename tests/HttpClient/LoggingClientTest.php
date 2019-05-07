@@ -46,7 +46,7 @@ class LoggingClientTest extends TestCase
 
         $previous = null;
         try {
-            $instance->request('get', '/');
+            $instance->request('GET', '/');
         } catch (InvalidApiResponseException $exception) {
             $previous = $exception->getPrevious();
         }
@@ -78,7 +78,7 @@ class LoggingClientTest extends TestCase
 
         $instance = $this->createInstance($handler, $logger);
 
-        $instance->request('get', '/test');
+        $instance->request('GET', '/test');
 
         $logs = $logger->getLogs();
 
@@ -96,7 +96,6 @@ class LoggingClientTest extends TestCase
      * @return void
      *
      * @throws \Exception
-     * @throws \Psr\Http\Client\ClientExceptionInterface
      */
     public function testSendRequestLogRequestFailure(): void
     {
@@ -135,7 +134,6 @@ class LoggingClientTest extends TestCase
      * @return void
      *
      * @throws \Exception
-     * @throws \Psr\Http\Client\ClientExceptionInterface
      */
     public function testSendRequestLogRequestSuccess(): void
     {

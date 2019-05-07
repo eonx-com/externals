@@ -35,11 +35,11 @@ class ClientTest extends TestCase
     {
         $this->expectException(InvalidApiResponseException::class);
 
-        $instance = $this->createInstance(new MockHandler([
+        $client = $this->createInstance(new MockHandler([
             new TransferException('An error occured')
         ]));
 
-        $instance->request('get', 'test');
+        $client->request('get', 'test');
     }
 
     /**
@@ -53,7 +53,7 @@ class ClientTest extends TestCase
     {
         $this->expectException(InvalidApiResponseException::class);
 
-        $instance = $this->createInstance(new MockHandler([
+        $client = $this->createInstance(new MockHandler([
             new RequestException(
                 'An error occured',
                 new Request('GET', 'test'),
@@ -61,7 +61,7 @@ class ClientTest extends TestCase
             )
         ]));
 
-        $instance->request('get', 'test');
+        $client->request('get', 'test');
     }
 
     /**
@@ -71,12 +71,12 @@ class ClientTest extends TestCase
      */
     public function testHandlingGuzzleRequestExceptionWithoutBody(): void
     {
-        $instance = $this->createInstance(new MockHandler([
+        $client = $this->createInstance(new MockHandler([
             new RequestException('An error occured', new Request('GET', 'test'))
         ]));
 
         try {
-            $instance->request('get', 'test');
+            $client->request('get', 'test');
         } catch (InvalidApiResponseException $exception) {
             self::assertSame('{"exception":"An error occured"}', $exception->getResponse()->getContent());
 
@@ -95,11 +95,11 @@ class ClientTest extends TestCase
      */
     public function testRequestProcessing(): void
     {
-        $instance = $this->createInstance(new MockHandler([
+        $client = $this->createInstance(new MockHandler([
             new Response(200, [], 'ok')
         ]));
 
-        $result = $instance->request('get', 'test');
+        $result = $client->request('get', 'test');
 
         self::assertSame(200, $result->getStatusCode());
         self::assertSame('ok', $result->getContent());
@@ -114,11 +114,11 @@ class ClientTest extends TestCase
      */
     public function testRequestSendRequesting(): void
     {
-        $instance = $this->createInstance(new MockHandler([
+        $client = $this->createInstance(new MockHandler([
             new Response(200, [], 'ok')
         ]));
 
-        $result = $instance->sendRequest(new Request('post', '/'));
+        $result = $client->sendRequest(new Request('post', '/'));
 
         self::assertSame(200, $result->getStatusCode());
         self::assertSame('ok', $result->getBody()->__toString());
@@ -131,12 +131,12 @@ class ClientTest extends TestCase
      */
     public function testRequestSendRequestingException(): void
     {
-        $instance = $this->createInstance(new MockHandler([
+        $client = $this->createInstance(new MockHandler([
             new RequestException('An error occured', new Request('GET', 'test'))
         ]));
 
         try {
-            $instance->sendRequest(new Request('post', '/'));
+            $client->sendRequest(new Request('post', '/'));
         } catch (InvalidApiResponseException $exception) {
             self::assertSame('{"exception":"An error occured"}', $exception->getResponse()->getContent());
 
@@ -157,12 +157,12 @@ class ClientTest extends TestCase
     {
         $expected = new ConnectException('An error occured', new Request('GET', 'test'));
 
-        $instance = $this->createInstance(new MockHandler([
+        $client = $this->createInstance(new MockHandler([
             $expected
         ]));
 
         try {
-            $instance->sendRequest(new Request('post', '/'));
+            $client->sendRequest(new Request('post', '/'));
         } catch (NetworkException $exception) {
             self::assertSame($expected, $exception->getPrevious());
 
