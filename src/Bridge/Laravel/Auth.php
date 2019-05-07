@@ -4,13 +4,9 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\Bridge\Laravel;
 
 use EoneoPay\Externals\Auth\Interfaces\AuthInterface;
-use Illuminate\Contracts\Auth\Factory as AuthFactory;
+use Illuminate\Contracts\Auth\Factory;
 
-/**
- * @method mixed guard(?string $name = null)
- * @method void shouldUse(string $name)
- */
-abstract class Auth implements AuthInterface
+abstract class Auth implements AuthInterface, Factory
 {
     /**
      * @var \Illuminate\Contracts\Auth\Factory
@@ -22,7 +18,7 @@ abstract class Auth implements AuthInterface
      *
      * @param \Illuminate\Contracts\Auth\Factory $auth Illuminate auth factory
      */
-    public function __construct(AuthFactory $auth)
+    public function __construct(Factory $auth)
     {
         $this->auth = $auth;
     }
@@ -41,5 +37,21 @@ abstract class Auth implements AuthInterface
 
         // Call method otherwise return null if not callable
         return \is_callable($callable) === true ? $callable(...$arguments) : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function guard($name = null)
+    {
+        return $this->auth->guard($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function shouldUse($name): void
+    {
+        $this->auth->shouldUse($name);
     }
 }

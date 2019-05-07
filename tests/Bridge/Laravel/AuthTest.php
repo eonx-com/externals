@@ -13,7 +13,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class AuthTest extends TestCase
 {
     /**
-     * Test auth passthrough
+     * Test auth passthrough to factory
      *
      * @return void
      */
@@ -22,10 +22,13 @@ class AuthTest extends TestCase
         $factory = new FactoryStub();
         $auth = new AuthStub(null, $factory);
 
-        $auth->guard('testGuard');
-        $auth->shouldUse('testUse');
+        $auth->setDefaultDriver('test');
+        self::assertSame('test', $factory->getDefaultDriver());
 
+        $auth->guard('testGuard');
         self::assertSame(['testGuard'], $factory->getGuards());
+
+        $auth->shouldUse('testUse');
         self::assertSame(['testUse'], $factory->getUses());
     }
 }

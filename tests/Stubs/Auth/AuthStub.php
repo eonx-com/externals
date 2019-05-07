@@ -8,6 +8,11 @@ use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use Illuminate\Contracts\Auth\Factory;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Auth\AuthStub as FactoryStub;
 
+/**
+ * @coversNothing
+ *
+ * @method void setDefaultDriver($name)
+ */
 class AuthStub extends Auth
 {
     /**

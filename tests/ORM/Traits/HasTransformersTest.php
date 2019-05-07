@@ -31,7 +31,7 @@ class HasTransformersTest extends TestCase
         self::assertInstanceOf(DateTime::class, $entity->setDatetime('now')->getDatetime());
         self::assertInstanceOf(DateTime::class, $entity->setDatetime(new DateTime())->getDatetime());
 
-        self::assertEquals('', $entity->setString(null)->getString());
-        self::assertEquals('equals', $entity->setString('equals')->getString());
+        self::assertSame('', $entity->setString(null)->getString());
+        self::assertSame('equals', $entity->setString('equals')->getString());
     }
 }

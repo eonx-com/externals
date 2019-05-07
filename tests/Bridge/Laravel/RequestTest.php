@@ -13,53 +13,6 @@ use Tests\EoneoPay\Externals\TestCase;
 class RequestTest extends TestCase
 {
     /**
-     * Test request can retrieve headers as expected
-     *
-     * @return void
-     */
-    public function testRequestReadsHeaderInformationFromServer(): void
-    {
-        $request = new Request(
-            new HttpRequest(
-                [],
-                [],
-                [],
-                [],
-                [],
-                ['HTTP_ACCEPT' => 'text/test', 'HTTP_HOST' => 'localhost', 'PHP_AUTH_USER' => 'user']
-            )
-        );
-
-        self::assertSame('text/test', $request->getHeader('accept'));
-        self::assertSame('text/test', $request->getHeader('Accept'));
-        self::assertSame('default', $request->getHeader('invalid', 'default'));
-
-        self::assertNull($request->getHeader('empty'));
-        $request->setHeader('empty', 'notempty');
-        self::assertSame('notempty', $request->getHeader('empty'));
-
-        self::assertSame('user', $request->getUser());
-        self::assertEquals('localhost', $request->getHost());
-    }
-
-    /**
-     * Test request works as expected
-     *
-     * @return void
-     */
-    public function testRequestReadsIncomingData(): void
-    {
-        $request = new Request(new HttpRequest(['key' => 'value']));
-
-        self::assertTrue($request->has('key'));
-        self::assertFalse($request->has('invalid'));
-        self::assertSame('value', $request->input('key'));
-        self::assertNull($request->input('invalid'));
-        self::assertSame(['key' => 'value'], $request->toArray());
-        self::assertSame('test', $request->input('missing', 'test'));
-    }
-
-    /**
      * Test client ip is read from header
      *
      * @return void
@@ -88,6 +41,53 @@ class RequestTest extends TestCase
             'REMOTE_ADDR' => '127.0.0.1'
         ]));
         self::assertSame('192.168.10.10', $request->getClientIp());
+    }
+
+    /**
+     * Test request can retrieve headers as expected
+     *
+     * @return void
+     */
+    public function testRequestReadsHeaderInformationFromServer(): void
+    {
+        $request = new Request(
+            new HttpRequest(
+                [],
+                [],
+                [],
+                [],
+                [],
+                ['HTTP_ACCEPT' => 'text/test', 'HTTP_HOST' => 'localhost', 'PHP_AUTH_USER' => 'user']
+            )
+        );
+
+        self::assertSame('text/test', $request->getHeader('accept'));
+        self::assertSame('text/test', $request->getHeader('Accept'));
+        self::assertSame('default', $request->getHeader('invalid', 'default'));
+
+        self::assertNull($request->getHeader('empty'));
+        $request->setHeader('empty', 'notempty');
+        self::assertSame('notempty', $request->getHeader('empty'));
+
+        self::assertSame('user', $request->getUser());
+        self::assertSame('localhost', $request->getHost());
+    }
+
+    /**
+     * Test request works as expected
+     *
+     * @return void
+     */
+    public function testRequestReadsIncomingData(): void
+    {
+        $request = new Request(new HttpRequest(['key' => 'value']));
+
+        self::assertTrue($request->has('key'));
+        self::assertFalse($request->has('invalid'));
+        self::assertSame('value', $request->input('key'));
+        self::assertNull($request->input('invalid'));
+        self::assertSame(['key' => 'value'], $request->toArray());
+        self::assertSame('test', $request->input('missing', 'test'));
     }
 
     /**

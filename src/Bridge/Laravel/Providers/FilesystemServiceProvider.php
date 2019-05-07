@@ -87,6 +87,7 @@ final class FilesystemServiceProvider extends ServiceProvider
      */
     private function getCloudDriver(): ?string
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection Phpstorm doesn't understand how container works */
         return $this->app->make('config')->get('filesystems.cloud');
     }
 
@@ -99,6 +100,7 @@ final class FilesystemServiceProvider extends ServiceProvider
      */
     private function getDefaultDriver(): ?string
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection Phpstorm doesn't understand how container works */
         return $this->app->make('config')->get('filesystems.default');
     }
 
@@ -111,6 +113,7 @@ final class FilesystemServiceProvider extends ServiceProvider
      */
     private function getDiskDriver(): ?string
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection Phpstorm doesn't understand how container works */
         return $this->app->make('config')->get('filesystems.disk');
     }
 
