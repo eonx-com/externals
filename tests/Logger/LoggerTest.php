@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Logger;
 
 use EoneoPay\Externals\Logger\Logger;
+use Exception;
 use Monolog\Processor\ProcessorInterface;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Monolog\Handler\LogHandlerStub;
 use Tests\EoneoPay\Externals\TestCase;
@@ -58,7 +59,9 @@ class LoggerTest extends TestCase
         $logger = new Logger(null, $handler);
         $message = 'my message';
 
-        $logger->exception(new \Exception($message));
+        $logger->exception(new Exception($message), 'warning', [
+            'extra' => 'stuff'
+        ]);
         $logs = $handler->getLogs();
 
         self::assertCount(1, $logs);
@@ -66,7 +69,9 @@ class LoggerTest extends TestCase
         $log = \reset($logs);
 
         self::assertArrayHasKey('message', $log);
-        self::assertEquals(\sprintf('Exception caught: %s', $message), $log['message']);
+        self::assertSame(\sprintf('Exception caught: %s', $message), $log['message']);
+        self::assertSame(300, $log['level']);
+        self::assertSame('stuff', $log['context']['extra']);
     }
 
     /**
