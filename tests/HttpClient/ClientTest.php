@@ -6,10 +6,8 @@ namespace Tests\EoneoPay\Externals\HttpClient;
 use EoneoPay\Externals\HttpClient\Client;
 use EoneoPay\Externals\HttpClient\ExceptionHandler;
 use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
-use EoneoPay\Externals\HttpClient\Exceptions\NetworkException;
 use EoneoPay\Externals\HttpClient\StreamParser;
 use GuzzleHttp\Client as Guzzle;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Handler\MockHandler;
@@ -36,7 +34,7 @@ class ClientTest extends TestCase
         $this->expectException(InvalidApiResponseException::class);
 
         $client = $this->createInstance(new MockHandler([
-            new TransferException('An error occured')
+            new TransferException('An error occurred')
         ]));
 
         $client->request('get', 'test');
@@ -55,7 +53,7 @@ class ClientTest extends TestCase
 
         $client = $this->createInstance(new MockHandler([
             new RequestException(
-                'An error occured',
+                'An error occurred',
                 new Request('GET', 'test'),
                 new Response(500, [], 'error')
             )
@@ -72,13 +70,13 @@ class ClientTest extends TestCase
     public function testHandlingGuzzleRequestExceptionWithoutBody(): void
     {
         $client = $this->createInstance(new MockHandler([
-            new RequestException('An error occured', new Request('GET', 'test'))
+            new RequestException('An error occurred', new Request('GET', 'test'))
         ]));
 
         try {
             $client->request('get', 'test');
         } catch (InvalidApiResponseException $exception) {
-            self::assertSame('{"exception":"An error occured"}', $exception->getResponse()->getContent());
+            self::assertSame('{"exception":"An error occurred"}', $exception->getResponse()->getContent());
 
             return;
         }
@@ -132,39 +130,13 @@ class ClientTest extends TestCase
     public function testRequestSendRequestingException(): void
     {
         $client = $this->createInstance(new MockHandler([
-            new RequestException('An error occured', new Request('GET', 'test'))
+            new RequestException('An error occurred', new Request('GET', 'test'))
         ]));
 
         try {
             $client->sendRequest(new Request('post', '/'));
         } catch (InvalidApiResponseException $exception) {
-            self::assertSame('{"exception":"An error occured"}', $exception->getResponse()->getContent());
-
-            return;
-        }
-
-        self::fail('An exception was not thrown');
-    }
-
-    /**
-     * Test network failure
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
-     */
-    public function testSendRequestNetworkException(): void
-    {
-        $expected = new ConnectException('An error occured', new Request('GET', 'test'));
-
-        $client = $this->createInstance(new MockHandler([
-            $expected
-        ]));
-
-        try {
-            $client->sendRequest(new Request('post', '/'));
-        } catch (NetworkException $exception) {
-            self::assertSame($expected, $exception->getPrevious());
+            self::assertSame('{"exception":"An error occurred"}', $exception->getResponse()->getContent());
 
             return;
         }
