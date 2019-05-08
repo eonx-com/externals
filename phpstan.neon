@@ -27,3 +27,6 @@ parameters:
         -
             message: '#Variable property access on \$this\(Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities\\EntityStub|TransformerStub\).#'
             path: src/ORM/Traits/HasTransformers.php
+        -
+            message: '#Parameter \#3 \$previous of class EoneoPay\\Externals\\HttpClient\\Exceptions\\InvalidApiResponseException constructor expects Throwable\|null, GuzzleHttp\\Exception\\GuzzleException given\.#'
+            path: src/HttpClient/Client.php

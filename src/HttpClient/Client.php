@@ -5,38 +5,47 @@ namespace EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
 use EoneoPay\Externals\HttpClient\Interfaces\ClientInterface;
+use EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface;
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
-use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
-use EoneoPay\Utils\Exceptions\InvalidXmlException;
-use EoneoPay\Utils\XmlConverter;
-use Exception;
-use GuzzleHttp\Client as Guzzle;
+use EoneoPay\Externals\HttpClient\Interfaces\StreamParserInterface;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
-use Psr\Http\Message\StreamInterface;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 final class Client implements ClientInterface
 {
     /**
-     * @var \GuzzleHttp\Client
+     * @var \GuzzleHttp\ClientInterface
      */
     private $client;
 
     /**
-     * @var null|\EoneoPay\Externals\Logger\Interfaces\LoggerInterface
+     * @var \EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface
      */
-    private $logger;
+    private $exceptionHandler;
+
+    /**
+     * @var \EoneoPay\Externals\HttpClient\Interfaces\StreamParserInterface
+     */
+    private $streamParser;
 
     /**
      * Client constructor.
      *
-     * @param \GuzzleHttp\Client|null $client
-     * @param \EoneoPay\Externals\Logger\Interfaces\LoggerInterface|null $logger
+     * @param \GuzzleHttp\ClientInterface $client
+     * @param \EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface $exceptionHandler
+     * @param \EoneoPay\Externals\HttpClient\Interfaces\StreamParserInterface $streamParser
      */
-    public function __construct(?Guzzle $client = null, ?LoggerInterface $logger = null)
-    {
-        $this->client = $client ?? new Guzzle();
-        $this->logger = $logger;
+    public function __construct(
+        GuzzleClientInterface $client,
+        ExceptionHandlerInterface $exceptionHandler,
+        StreamParserInterface $streamParser
+    ) {
+        $this->client = $client;
+        $this->exceptionHandler = $exceptionHandler;
+        $this->streamParser = $streamParser;
     }
 
     /**
@@ -46,189 +55,84 @@ final class Client implements ClientInterface
      */
     public function request(string $method, string $uri, ?array $options = null): ResponseInterface
     {
-        $this->logRequest($method, $uri, $options);
+        $request = new Request(
+            $method,
+            $uri,
+            $options['headers'] ?? [],
+            $options['body'] ?? null,
+            $options['version'] ?? '1.1'
+        );
 
-        // Define exception in case request fails
+        $response = $this->sendRequest($request, $options);
+
+        if (($response instanceof ResponseInterface) === true) {
+            /**
+             * @var \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface $response
+             *
+             * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === chec
+             */
+            return $response;
+        }
+
+        // @codeCoverageIgnoreStart
+        // It isnt possible to reach this code - $this->sendRequest can only be typed to return a
+        // PSR ResponseInterface, but we're always returning our ResponseInterface.
+        return new Response($response);
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
+     */
+    public function sendRequest(RequestInterface $request, ?array $options = null): PsrResponseInterface
+    {
+        // Defined so we can pass an exception to buildResponse if one occurred.
         $exception = null;
 
         try {
-            $request = $this->client->request($method, $uri, $options ?? []);
-            $content = $this->getBodyContents($request->getBody());
-
-            $response = new Response(
-                $this->processResponseContent($content),
-                $request->getStatusCode(),
-                $request->getHeaders(),
-                $content
-            );
-        } catch (RequestException $exception) {
-            $response = $this->handleRequestException($exception);
+            $response = $this->client->send($request, $options ?? []);
         } catch (GuzzleException $exception) {
-            // Covers any other guzzle exception
-            $response = new Response(['content' => $exception->getMessage()], 500);
+            $response = $this->exceptionHandler->handle($request, $exception);
         }
 
-        $this->logResponse($response);
+        return $this->buildResponse($request, $response, $exception);
+    }
 
-        // If response is unsuccessful, throw exception
-        if ($response->isSuccessful() === false) {
-            throw new InvalidApiResponseException($response, $exception);
+    /**
+     * Builds a response and parses body contents of the PsrResponse and puts
+     * it into our Response object.
+     *
+     * If an exception occurred while making the request, we will throw the
+     * Response as part of an InvalidApiResponseException.
+     *
+     * @param \Psr\Http\Message\RequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface $psrResponse
+     * @param \GuzzleHttp\Exception\GuzzleException|null $exception
+     *
+     * @return \EoneoPay\Externals\HttpClient\Response
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException
+     */
+    private function buildResponse(
+        RequestInterface $request,
+        PsrResponseInterface $psrResponse,
+        ?GuzzleException $exception
+    ): Response {
+        $data = $this->streamParser->parse($psrResponse->getBody());
+        $response = new Response($psrResponse, $data);
+
+        if ($exception !== null) {
+            /**
+             * @var \Throwable $exception
+             *
+             * Concrete guzzle exceptions implement \Throwable, their root interface
+             * doesnt.
+             */
+            throw new InvalidApiResponseException($request, $response, $exception);
         }
 
         return $response;
-    }
-
-    /**
-     * Get response body contents.
-     *
-     * @param \Psr\Http\Message\StreamInterface $body
-     *
-     * @return string
-     */
-    private function getBodyContents(StreamInterface $body): string
-    {
-        try {
-            return $body->getContents();
-            // @codeCoverageIgnoreStart
-        } catch (Exception $exception) {
-            // This exception is unlikely as the stream is retrieved directly from Guzzle
-            $this->logException($exception);
-
-            return '';
-            // @codeCoverageIgnoreEnd
-        }
-    }
-
-    /**
-     * Capture a request exception and convert it to an API response
-     *
-     * @param \GuzzleHttp\Exception\RequestException $exception The exception thrown
-     *
-     * @return \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface
-     */
-    private function handleRequestException(RequestException $exception): ResponseInterface
-    {
-        $this->logException($exception);
-
-        if ($exception->hasResponse() && $exception->getResponse() !== null) {
-            $content = $this->getBodyContents($exception->getResponse()->getBody());
-
-            return new Response(
-                $this->processResponseContent($content),
-                $exception->getResponse()->getStatusCode(),
-                $exception->getResponse()->getHeaders(),
-                $content
-            );
-        }
-
-        $content = \json_encode(['exception' => $exception->getMessage()]) ?: '';
-
-        return new Response($this->processResponseContent($content), 400, null, $content);
-    }
-
-    /**
-     * Determine if a string is json
-     *
-     * @param string $string The string to check
-     *
-     * @return bool
-     */
-    private function isJson(string $string): bool
-    {
-        \json_decode($string, false);
-
-        return \json_last_error() === \JSON_ERROR_NONE;
-    }
-
-    /**
-     * Determine if a string is xml
-     *
-     * @param string $string The string to check
-     *
-     * @return bool
-     */
-    private function isXml(string $string): bool
-    {
-        \libxml_use_internal_errors(true);
-
-        return \simplexml_load_string($string) !== false;
-    }
-
-    /**
-     * Log the request exception.
-     *
-     * @param \Exception $exception
-     *
-     * @return void
-     */
-    private function logException(Exception $exception): void
-    {
-        if ($this->logger === null) {
-            return;
-        }
-
-        $this->logger->exception($exception);
-    }
-
-    /**
-     * Log the outgoing request
-     *
-     * @param string $method The method to use for the request
-     * @param string $uri The uri to send the request to
-     * @param mixed[]|null $options The options to send with the request
-     *
-     * @return void
-     */
-    private function logRequest(string $method, string $uri, ?array $options = null): void
-    {
-        if ($this->logger === null) {
-            return;
-        }
-
-        $this->logger->info('API request sent', \compact('method', 'uri', 'options'));
-    }
-
-    /**
-     * Log the received response
-     *
-     * @param \EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface $response The received response
-     *
-     * @return void
-     */
-    private function logResponse(ResponseInterface $response): void
-    {
-        if ($this->logger === null) {
-            return;
-        }
-
-        $this->logger->info('API response received', $response->toArray());
-    }
-
-    /**
-     * Process response body into an array.
-     *
-     * @param string $content
-     *
-     * @return mixed[]|null
-     */
-    private function processResponseContent(string $content): ?array
-    {
-        // If content is xml, decode it
-        if ($this->isXml($content) === true) {
-            try {
-                return (new XmlConverter())->xmlToArray($content);
-                // @codeCoverageIgnoreStart
-            } catch (InvalidXmlException $exception) {
-                // This exception is unlikely as the `isXML()` method would return false
-                // if the content contains invalid/unparseable XML
-                $this->logException($exception);
-                // @codeCoverageIgnoreEnd
-            }
-        }
-
-        // If contents is json, decode it otherwise encase in array
-        return $this->isJson($content) === true ?
-            \json_decode($content, true) :
-            ['content' => $content];
     }
 }

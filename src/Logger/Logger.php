@@ -8,6 +8,7 @@ use Exception;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Logger as MonologLogger;
+use Throwable;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) Methods are dictated by PSR logger interface
@@ -85,12 +86,15 @@ final class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function exception(Exception $exception, ?string $level = null): void
+    public function exception(Throwable $exception, ?string $level = null, ?array $context = null): void
     {
         $this->log(
             $level ?? 'notice',
             \sprintf('Exception caught: %s', $exception->getMessage()),
-            $exception->getTrace()
+            \array_merge(
+                $context ?? [],
+                ['trace' => $exception->getTrace()]
+            )
         );
     }
 
