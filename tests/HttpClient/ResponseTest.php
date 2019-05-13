@@ -20,7 +20,7 @@ class ResponseTest extends TestCase
     public function testResponseObject(): void
     {
         $psrResponse = new PsrResponse(200, ['Content-Type' => 'application/json'], '{"test":"1"}');
-        $response = new Response($psrResponse, ['test' => '1']);
+        $response = new Response($psrResponse);
 
         self::assertSame('{"test":"1"}', $response->getContent());
         self::assertSame(['Content-Type' => ['application/json']], $response->getHeaders());
@@ -29,9 +29,6 @@ class ResponseTest extends TestCase
 
         // Test getting a single header
         self::assertSame(['application/json'], $response->getHeader('Content-Type'));
-
-        // Test getting a single item
-        self::assertSame('1', $response->get('test'));
 
         // Test status code result
         self::assertTrue($response->isSuccessful());
