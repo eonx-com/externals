@@ -7,7 +7,6 @@ use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
 use EoneoPay\Externals\HttpClient\Interfaces\ClientInterface;
 use EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface;
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
-use EoneoPay\Externals\HttpClient\Interfaces\StreamParserInterface;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
@@ -27,25 +26,17 @@ final class Client implements ClientInterface
     private $exceptionHandler;
 
     /**
-     * @var \EoneoPay\Externals\HttpClient\Interfaces\StreamParserInterface
-     */
-    private $streamParser;
-
-    /**
      * Client constructor.
      *
      * @param \GuzzleHttp\ClientInterface $client
      * @param \EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface $exceptionHandler
-     * @param \EoneoPay\Externals\HttpClient\Interfaces\StreamParserInterface $streamParser
      */
     public function __construct(
         GuzzleClientInterface $client,
-        ExceptionHandlerInterface $exceptionHandler,
-        StreamParserInterface $streamParser
+        ExceptionHandlerInterface $exceptionHandler
     ) {
         $this->client = $client;
         $this->exceptionHandler = $exceptionHandler;
-        $this->streamParser = $streamParser;
     }
 
     /**
@@ -120,8 +111,7 @@ final class Client implements ClientInterface
         PsrResponseInterface $psrResponse,
         ?GuzzleException $exception
     ): Response {
-        $data = $this->streamParser->parse($psrResponse->getBody());
-        $response = new Response($psrResponse, $data);
+        $response = new Response($psrResponse);
 
         if ($exception !== null) {
             /**

@@ -6,7 +6,6 @@ namespace Tests\EoneoPay\Externals\HttpClient;
 use EoneoPay\Externals\HttpClient\Client;
 use EoneoPay\Externals\HttpClient\ExceptionHandler;
 use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
-use EoneoPay\Externals\HttpClient\StreamParser;
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
@@ -156,8 +155,7 @@ class ClientTest extends TestCase
         // Create guzzle with mock response
         return new Client(
             new Guzzle(['handler' => $handler]),
-            new ExceptionHandler(),
-            new StreamParser()
+            new ExceptionHandler()
         );
     }
 }

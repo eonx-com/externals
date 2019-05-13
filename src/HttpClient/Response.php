@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
-use EoneoPay\Utils\Collection;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Zend\Diactoros\MessageTrait;
 
-final class Response extends Collection implements ResponseInterface
+final class Response implements ResponseInterface
 {
     use MessageTrait;
 
@@ -108,12 +107,9 @@ final class Response extends Collection implements ResponseInterface
      * Response constructor.
      *
      * @param \Psr\Http\Message\ResponseInterface $response
-     * @param mixed[]|null $data
      */
-    public function __construct(PsrResponseInterface $response, ?array $data = null)
+    public function __construct(PsrResponseInterface $response)
     {
-        parent::__construct($data);
-
         $this->protocol = $response->getProtocolVersion();
         $this->reasonPhrase = $response->getReasonPhrase();
         $this->statusCode = $response->getStatusCode();

@@ -6,9 +6,7 @@ namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 use EoneoPay\Externals\HttpClient\Client;
 use EoneoPay\Externals\HttpClient\ExceptionHandler;
 use EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface;
-use EoneoPay\Externals\HttpClient\Interfaces\StreamParserInterface;
 use EoneoPay\Externals\HttpClient\LoggingClient;
-use EoneoPay\Externals\HttpClient\StreamParser;
 use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
@@ -28,7 +26,6 @@ class HttpClientServiceProvider extends ServiceProvider
         $this->app->bind(GuzzleClientInterface::class, GuzzleClient::class);
 
         $this->app->bind(ExceptionHandlerInterface::class, ExceptionHandler::class);
-        $this->app->bind(StreamParserInterface::class, StreamParser::class);
 
         // Concrete implementations
         $this->app->bind(Client::class);
