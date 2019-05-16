@@ -9,6 +9,7 @@ use EoneoPay\Externals\Bridge\Laravel\Validation\InstanceOfRule;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Validation\PresenceVerifierInterface;
+use Illuminate\Validation\ValidationException;
 
 final class Validator implements ValidatorInterface
 {
@@ -75,6 +76,23 @@ final class Validator implements ValidatorInterface
         $this->addRule(InstanceOfRule::class);
 
         return $validator->passes();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validated(array $data, array $rules): array
+    {
+        if ($this->validator === null) {
+            $this->validate($data, $rules);
+        }
+
+        try {
+            return $this->validator->validated();
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (ValidationException $exception) {
+            // Return empty array if validation failed
+            return [];
+        }
     }
 
     /**
