@@ -25,10 +25,7 @@ interface ValidatorInterface
     /**
      * Return validated values
      *
-     * @param mixed[] $data
-     * @param mixed[] $rules
-     *
      * @return mixed[]
      */
-    public function validated(array $data, array $rules): array;
+    public function validated(): array;
 }

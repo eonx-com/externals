@@ -15,20 +15,17 @@ use Tests\EoneoPay\Externals\TestCase;
 class ValidatorTest extends TestCase
 {
     /**
-     * Test validated method after validation
+     * Test validated method before validation. Logic exception should be thrown
      *
      * @return void
      */
-    public function testValidatedAfterCallToValidate(): void
+    public function testValidatedBeforeCallToValidate(): void
     {
-        $data = ['key' => 'value', 'extra-key' => 'extra-key-value'];
-        $rules = ['key' => 'required'];
         $validator = $this->createValidator();
 
-        $validator->validate($data, $rules);
-        $validated = $validator->validated($data, $rules);
+        $this->expectException(\LogicException::class);
 
-        self::assertSame(['key' => 'value'], $validated);
+        $validator->validated();
     }
 
     /**
@@ -39,11 +36,12 @@ class ValidatorTest extends TestCase
     public function testValidatedWithFailedValidation(): void
     {
         $validator = $this->createValidator();
-
-        $validated = $validator->validated(
+        $validator->validate(
             ['key' => 'value', 'extra-key' => 'extra-key-value'],
             ['key' => 'required|integer']
         );
+
+        $validated = $validator->validated();
 
         self::assertSame([], $validated);
     }
@@ -56,11 +54,12 @@ class ValidatorTest extends TestCase
     public function testValidatedWithSuccessfulValidation(): void
     {
         $validator = $this->createValidator();
-
-        $validated = $validator->validated(
+        $validator->validate(
             ['key' => 'value', 'extra-key' => 'extra-key-value'],
             ['key' => 'required']
         );
+
+        $validated = $validator->validated();
 
         self::assertSame(['key' => 'value'], $validated);
     }
