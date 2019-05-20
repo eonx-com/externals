@@ -80,14 +80,10 @@ final class Validator implements ValidatorInterface
 
     /**
      * @inheritdoc
-     *
-     * @throws \LogicException
      */
-    public function validated(): array
+    public function validatedData(array $data, array $rules): array
     {
-        if ($this->validator === null) {
-            throw new \LogicException('You must call the validate method before calling this method.');
-        }
+        $this->validate($data, $rules);
 
         try {
             return $this->validator->validated();

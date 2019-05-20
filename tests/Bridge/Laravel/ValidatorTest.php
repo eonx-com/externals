@@ -15,53 +15,39 @@ use Tests\EoneoPay\Externals\TestCase;
 class ValidatorTest extends TestCase
 {
     /**
-     * Test validated method before validation. Logic exception should be thrown
+     * Test validatedData method return empty array if validation failed
      *
      * @return void
      */
-    public function testValidatedBeforeCallToValidate(): void
+    public function testValidatedDataWithFailedValidation(): void
     {
         $validator = $this->createValidator();
 
-        $this->expectException(\LogicException::class);
-
-        $validator->validated();
-    }
-
-    /**
-     * Test validated method return empty array if validation failed
-     *
-     * @return void
-     */
-    public function testValidatedWithFailedValidation(): void
-    {
-        $validator = $this->createValidator();
-        $validator->validate(
+        $validatedData = $validator->validatedData(
             ['key' => 'value', 'extra-key' => 'extra-key-value'],
             ['key' => 'required|integer']
         );
 
-        $validated = $validator->validated();
-
-        self::assertSame([], $validated);
+        self::assertSame([], $validatedData);
+        self::assertSame(['key' => ['validation.integer']], $validator->getFailures());
     }
 
     /**
-     * Test validated method return correct values
+     * Test validatedData method return correct values
      *
      * @return void
      */
-    public function testValidatedWithSuccessfulValidation(): void
+    public function testValidatedDataWithSuccessfulValidation(): void
     {
         $validator = $this->createValidator();
-        $validator->validate(
+
+        $validatedData = $validator->validatedData(
             ['key' => 'value', 'extra-key' => 'extra-key-value'],
             ['key' => 'required']
         );
 
-        $validated = $validator->validated();
-
-        self::assertSame(['key' => 'value'], $validated);
+        self::assertSame(['key' => 'value'], $validatedData);
+        self::assertSame([], $validator->getFailures());
     }
 
     /**
