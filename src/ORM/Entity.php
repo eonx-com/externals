@@ -104,7 +104,13 @@ abstract class Entity implements EntityInterface
      */
     public function getProperties(): array
     {
-        return \array_keys(\get_object_vars($this));
+        $properties = \array_keys(\get_object_vars($this));
+
+        return \array_filter($properties, static function ($property): bool {
+            // Skip all properties that have __ at the start, they are reserved properties
+            // and should not be processed.
+            return \strncmp($property, '__', 2) !== 0;
+        });
     }
 
     /**
