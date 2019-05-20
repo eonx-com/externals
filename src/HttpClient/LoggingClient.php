@@ -162,5 +162,10 @@ final class LoggingClient implements ClientInterface
             'statusCode' => $response->getStatusCode(),
             'uri' => $request !== null ? $request->getUri()->__toString() : null
         ]);
+
+        if ($response->getBody()->isSeekable()) {
+            // We've moved the pointer of the stream to the end, lets move it back.
+            $response->getBody()->rewind();
+        }
     }
 }

@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Id;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityProxyStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\FillableStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\GuardedStub;
@@ -261,6 +262,19 @@ class EntityTest extends ORMTestCase
         $entity->setEntityId($entityId);
 
         self::assertSame($entityId, $entity->getId());
+    }
+
+    /**
+     * Tests that getProperties ignores double underscore properties set by Doctrine
+     * proxy definitions.
+     *
+     * @return void
+     */
+    public function testGetPropertiesIgnoresUnderscores(): void
+    {
+        $entity = new EntityProxyStub();
+
+        self::assertNotContains('__initializer', $entity->getProperties());
     }
 
     /**
