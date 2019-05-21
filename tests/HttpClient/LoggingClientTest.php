@@ -70,8 +70,9 @@ class LoggingClientTest extends TestCase
      */
     public function testLogRequestSuccess(): void
     {
+        $body = stream_for('{"test": 1}');
         $handler = new MockHandler([
-            new Response(200, [], stream_for('{"test": 1}'))
+            new Response(200, [], $body)
         ]);
         $logger = new LogHandlerStub();
 
@@ -87,6 +88,7 @@ class LoggingClientTest extends TestCase
         static::assertSame('/test', $logs[0]['context']['uri']);
         static::assertSame('HTTP Response Received', $logs[1]['message']);
         static::assertSame('/test', $logs[1]['context']['uri']);
+        static::assertSame(0, $body->tell());
     }
 
     /**
