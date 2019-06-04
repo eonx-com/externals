@@ -51,14 +51,19 @@ final class InstanceOfRule implements ValidationRuleInterface
                 return true;
             }
 
-            $class = $parameters[0] ?? null;
-
             // If no parameters given rule should fail
-            if ($class === null) {
+            if (\count($parameters) === 0) {
                 return false;
             }
 
-            return $value instanceof $class;
+            foreach ($parameters as $class) {
+                if (($value instanceof $class) === true) {
+                    return true;
+                }
+            }
+
+            // No matching class
+            return false;
         };
     }
 }

@@ -39,10 +39,10 @@ class InstanceOfRuleTest extends TestCase
             ['key1' => 'instance_of:' . EntityInterface::class]
         ));
 
-        // Rule should take in consideration only first parameter
+        // Rule should take in consideration all parameters
         self::assertTrue($validator->validate(
             ['key1' => new \stdClass()],
-            ['key1' => \sprintf('instance_of:%s,%s', \stdClass::class, EntityInterface::class)]
+            ['key1' => \sprintf('instance_of:%s,%s', EntityInterface::class, \stdClass::class)]
         ));
 
         // If no value provided rule should pass
