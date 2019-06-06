@@ -18,8 +18,19 @@ class PhoneNumberValidatorTest extends TestCase
      */
     public function getFormatData(): iterable
     {
+        // input => output
+        yield ['0312345678', '+61312345678'];
+        yield ['0312345678', '+61312345678'];
+        yield ['312345678', '+61312345678'];
         yield ['0400000000', '+61400000000'];
+        yield ['1800123456', '+611800123456'];
         yield ['+61400000000', '+61400000000'];
+        yield ['+1202-555-0191', '+12025550191'];
+
+        // invalid numbers
+        yield 'no area code' => ['12345678', null];
+        yield 'not enough digits' => ['+6140000', null];
+        yield ['email@example.net', null];
         yield ['elephant', null];
     }
 
@@ -30,8 +41,18 @@ class PhoneNumberValidatorTest extends TestCase
      */
     public function getValidityData(): iterable
     {
+        // input => valid bool
+        yield ['0312345678', true];
+        yield ['312345678', true];
         yield ['0400000000', true];
+        yield ['1800123456', true];
         yield ['+61400000000', true];
+        yield ['+1202-555-0191', true];
+
+        // invalid numbers
+        yield 'no area code' => ['12345678', false];
+        yield 'not enough digits' => ['+6140000', false];
+        yield ['email@example.net', false];
         yield ['elephant', false];
     }
 

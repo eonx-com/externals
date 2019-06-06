@@ -27,7 +27,7 @@ class PhoneNumberValidator implements PhoneNumberValidatorInterface
     /**
      * Constructor
      *
-     * @param string $defaultRegion
+     * @param string $defaultRegion Default region to use when a phone number has no + prefix
      */
     public function __construct(?string $defaultRegion = null)
     {
@@ -42,7 +42,8 @@ class PhoneNumberValidator implements PhoneNumberValidatorInterface
     {
         $parsed = $this->parseNumber($number);
 
-        if ($parsed === null) {
+        if ($parsed === null || $this->parser->isValidNumber($parsed) === false) {
+            // If parsing the number failed entirely, or the number isnt valid
             return null;
         }
 

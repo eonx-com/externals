@@ -16,7 +16,10 @@ interface PhoneNumberValidatorInterface
     public function format(string $number): ?string;
 
     /**
-     * Checks if the phone number is valid.
+     * Checks if the phone number is valid according to phone number patterns. This
+     * method takes into account the country code, and implementations might provide
+     * a default region for numbers to be processed as (which will allow skipping of
+     * +61 for australian numbers).
      *
      * @param string $number
      *
