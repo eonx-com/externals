@@ -18,6 +18,7 @@
   "require-dev": {
     "eoneopay/standards": "dev-master",
     "gedmo/doctrine-extensions": "^2.4",
+    "giggsey/libphonenumber-for-php": "^8.10",
     "guzzlehttp/guzzle": "^6.0.0",
     "illuminate/auth": "^5.8",
     "illuminate/http": "^5.8",
@@ -52,6 +53,7 @@
   },
   "suggest": {
     "gedmo/doctrine-extensions": "Required to use ORM extensions",
+    "giggsey/libphonenumber-for-php": "For phone number validation",
     "guzzlehttp/guzzle": "Required to use the http client class",
     "illuminate/http": "Required to use the laravel request bridge",
     "illuminate/validation": "Required to use the validate subscriber and laravel validate bridge",
