@@ -32,13 +32,7 @@ class ValidatorTest extends TestCase
         $validator->addCustomRule('customRuleClassName1');
         $validator->addCustomRule('customRuleClassName2');
 
-        self::assertEquals(
-            [
-            'customRuleClassName1' => 'customRuleClassName1',
-            'customRuleClassName2' => 'customRuleClassName2'
-            ],
-            $property->getValue($validator)
-        );
+        self::assertEquals(['customRuleClassName1', 'customRuleClassName2'], $property->getValue($validator));
     }
 
     /**

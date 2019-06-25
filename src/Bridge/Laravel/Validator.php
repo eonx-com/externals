@@ -56,7 +56,7 @@ final class Validator implements ValidatorInterface
      */
     public function addCustomRule(string $className): void
     {
-        $this->customRules[$className] = $className;
+        $this->customRules[] = $className;
     }
 
     /**
