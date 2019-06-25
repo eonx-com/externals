@@ -14,6 +14,11 @@ use Illuminate\Validation\ValidationException;
 final class Validator implements ValidatorInterface
 {
     /**
+     * @var string[]
+     */
+    private $customRules = [];
+
+    /**
      * Validation factory instance
      *
      * @var \Illuminate\Contracts\Validation\Factory
@@ -49,6 +54,14 @@ final class Validator implements ValidatorInterface
     /**
      * {@inheritdoc}
      */
+    public function addCustomRule(string $className): void
+    {
+        $this->customRules[$className] = $className;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFailures(): array
     {
         // If validator isn't set return empty array
@@ -71,9 +84,13 @@ final class Validator implements ValidatorInterface
 
         $this->validator = $validator;
 
-        // Add custom rules
+        // Add common custom rules
         $this->addDependantRule(EmptyWithRule::class);
         $this->addRule(InstanceOfRule::class);
+        // Add external (project specific) custom rules
+        foreach ($this->customRules as $customRule) {
+            $this->addRule($customRule);
+        }
 
         return $validator->passes();
     }

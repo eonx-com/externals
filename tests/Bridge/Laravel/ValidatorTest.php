@@ -7,6 +7,7 @@ use EoneoPay\Externals\Bridge\Laravel\Validator;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
+use ReflectionClass;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
@@ -14,6 +15,32 @@ use Tests\EoneoPay\Externals\TestCase;
  */
 class ValidatorTest extends TestCase
 {
+    /**
+     * Test addCustomRule method
+     *
+     * @return void
+     *
+     * @throws \ReflectionException
+     */
+    public function testAddCustomRule(): void
+    {
+        $class = new ReflectionClass(Validator::class);
+        $property = $class->getProperty('customRules');
+        $property->setAccessible(true);
+        $validator = $this->createValidator();
+
+        $validator->addCustomRule('customRuleClassName1');
+        $validator->addCustomRule('customRuleClassName2');
+
+        self::assertEquals(
+            [
+            'customRuleClassName1' => 'customRuleClassName1',
+            'customRuleClassName2' => 'customRuleClassName2'
+            ],
+            $property->getValue($validator)
+        );
+    }
+
     /**
      * Test validatedData method return empty array if validation failed
      *

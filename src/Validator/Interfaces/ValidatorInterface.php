@@ -6,6 +6,15 @@ namespace EoneoPay\Externals\Validator\Interfaces;
 interface ValidatorInterface
 {
     /**
+     * Add a custom rule to the validator
+     *
+     * @param string $className The class this rule uses
+     *
+     * @return void
+     */
+    public function addCustomRule(string $className): void;
+
+    /**
      * Get messages from the last validation attempt
      *
      * @return mixed[]
