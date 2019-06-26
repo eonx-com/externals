@@ -19,7 +19,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class ValidatorTest extends TestCase
 {
     /**
-     * Test addCustomRule method.
+     * Test addCustomRule method
      *
      * @return void
      *
@@ -39,7 +39,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * Test validate method adds custom rules to the underlying validator.
+     * Test validate method adds custom rules to the underlying validator
      *
      * @return void
      *
@@ -120,7 +120,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * Returns custom rule anonymous class instance.
+     * Returns custom rule anonymous class instance
      *
      * @return \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface
      */
@@ -162,7 +162,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * Returns Illuminate Validator instance from Validator.
+     * Returns Illuminate Validator instance from Validator
      *
      * @param \EoneoPay\Externals\Bridge\Laravel\Validator $validator
      *
