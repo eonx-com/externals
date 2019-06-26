@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
+use Closure;
+use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
 use EoneoPay\Externals\Bridge\Laravel\Validator;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
@@ -16,7 +18,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class ValidatorTest extends TestCase
 {
     /**
-     * Test addCustomRule method
+     * Test addCustomRule method.
      *
      * @return void
      *
@@ -33,6 +35,31 @@ class ValidatorTest extends TestCase
         $validator->addCustomRule('customRuleClassName2');
 
         self::assertEquals(['customRuleClassName1', 'customRuleClassName2'], $property->getValue($validator));
+    }
+
+    /**
+     * Test validate method adds custom rules to the underlying validator.
+     *
+     * @return void
+     *
+     * @throws \ReflectionException
+     */
+    public function testValidateAddsCustomRules(): void
+    {
+        $class = new ReflectionClass(Validator::class);
+        $property = $class->getProperty('validator');
+        $property->setAccessible(true);
+        $validator = $this->createValidator();
+        $customRule = $this->getCustomRuleClassDeclaration();
+        $validator->addCustomRule(\get_class($customRule));
+
+        $validator->validate(['key' => 'value'], ['key' => 'required|string']);
+
+        /** @var \Illuminate\Validation\Validator $laravelValidator */
+        $laravelValidator = $property->getValue($validator);
+        self::assertArrayHasKey('empty_with', $laravelValidator->extensions);
+        self::assertArrayHasKey('instance_of', $laravelValidator->extensions);
+        self::assertArrayHasKey('custom_rule_name', $laravelValidator->extensions);
     }
 
     /**
@@ -92,6 +119,50 @@ class ValidatorTest extends TestCase
     public function testValidatorWithSuccessfulValidation(): void
     {
         self::assertTrue($this->createValidator()->validate(['key' => 'value'], ['key' => 'required|string']));
+    }
+
+    /**
+     * Returns custom validation rule anonymous class.
+     *
+     * @return \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface
+     */
+    protected function getCustomRuleClassDeclaration(): ValidationRuleInterface
+    {
+        $customRule = new class() implements ValidationRuleInterface {
+            /**
+             * Get rule name.
+             *
+             * @return string
+             */
+            public function getName(): string
+            {
+                return 'custom_rule_name';
+            }
+
+            /**
+             * Get message replacements.
+             *
+             * @return \Closure
+             */
+            public function getReplacements(): Closure
+            {
+                return function () {
+                };
+            }
+
+            /**
+             * Get the validation rule closure.
+             *
+             * @return \Closure
+             */
+            public function getRule(): Closure
+            {
+                return function () {
+                };
+            }
+        };
+
+        return $customRule;
     }
 
     /**
