@@ -9,6 +9,7 @@ use EoneoPay\Externals\Bridge\Laravel\Validator;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
+use Illuminate\Validation\Validator as IlluminateValidator;
 use ReflectionClass;
 use Tests\EoneoPay\Externals\TestCase;
 
@@ -46,20 +47,17 @@ class ValidatorTest extends TestCase
      */
     public function testValidateAddsCustomRules(): void
     {
-        $class = new ReflectionClass(Validator::class);
-        $property = $class->getProperty('validator');
-        $property->setAccessible(true);
         $validator = $this->createValidator();
-        $customRule = $this->getCustomRuleClassDeclaration();
+        $customRule = $this->getCustomRuleAnonymousClassInstance();
         $validator->addCustomRule(\get_class($customRule));
 
         $validator->validate(['key' => 'value'], ['key' => 'required|string']);
 
-        /** @var \Illuminate\Validation\Validator $laravelValidator */
-        $laravelValidator = $property->getValue($validator);
-        self::assertArrayHasKey('empty_with', $laravelValidator->extensions);
-        self::assertArrayHasKey('instance_of', $laravelValidator->extensions);
-        self::assertArrayHasKey('custom_rule_name', $laravelValidator->extensions);
+        /** @var \Illuminate\Validation\Validator $illuminateValidator */
+        $illuminateValidator = $this->getIlluminateValidator($validator);
+        self::assertArrayHasKey('empty_with', $illuminateValidator->extensions);
+        self::assertArrayHasKey('instance_of', $illuminateValidator->extensions);
+        self::assertArrayHasKey('custom_rule_name', $illuminateValidator->extensions);
     }
 
     /**
@@ -122,11 +120,11 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * Returns custom validation rule anonymous class.
+     * Returns custom rule anonymous class instance.
      *
      * @return \EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface
      */
-    protected function getCustomRuleClassDeclaration(): ValidationRuleInterface
+    protected function getCustomRuleAnonymousClassInstance(): ValidationRuleInterface
     {
         $customRule = new class() implements ValidationRuleInterface {
             /**
@@ -161,6 +159,24 @@ class ValidatorTest extends TestCase
         };
 
         return $customRule;
+    }
+
+    /**
+     * Returns Illuminate Validator instance from Validator.
+     *
+     * @param \EoneoPay\Externals\Bridge\Laravel\Validator $validator
+     *
+     * @return \Illuminate\Validation\Validator
+     *
+     * @throws \ReflectionException
+     */
+    protected function getIlluminateValidator($validator): IlluminateValidator
+    {
+        $class = new ReflectionClass(Validator::class);
+        $property = $class->getProperty('validator');
+        $property->setAccessible(true);
+
+        return $property->getValue($validator);
     }
 
     /**
