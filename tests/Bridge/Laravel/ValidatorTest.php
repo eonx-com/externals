@@ -146,8 +146,7 @@ class ValidatorTest extends TestCase
              */
             public function getReplacements(): Closure
             {
-                return function () {
-                };
+                return function () {};
             }
 
             /**
@@ -157,8 +156,7 @@ class ValidatorTest extends TestCase
              */
             public function getRule(): Closure
             {
-                return function () {
-                };
+                return function () {};
             }
         };
 
