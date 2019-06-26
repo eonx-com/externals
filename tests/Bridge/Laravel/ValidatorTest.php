@@ -128,7 +128,7 @@ class ValidatorTest extends TestCase
     {
         $customRule = new class() implements ValidationRuleInterface {
             /**
-             * Get rule name.
+             * Get rule name
              *
              * @return string
              */
@@ -138,7 +138,7 @@ class ValidatorTest extends TestCase
             }
 
             /**
-             * Get message replacements.
+             * Get message replacements
              *
              * @return \Closure
              */
@@ -148,7 +148,7 @@ class ValidatorTest extends TestCase
             }
 
             /**
-             * Get the validation rule closure.
+             * Get the validation rule closure
              *
              * @return \Closure
              */
