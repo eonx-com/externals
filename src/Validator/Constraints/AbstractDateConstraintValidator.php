@@ -42,6 +42,8 @@ abstract class AbstractDateConstraintValidator implements ConstraintValidatorInt
         try {
             $dateValue = new DateTime($value);
         } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidDateTimeStringException $exception) {
+            // We are ignoring failures to create a date time because validation
+            // that $value is a real date format does not happen in this validator.
             return;
         }
 
