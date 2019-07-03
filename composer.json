@@ -39,6 +39,8 @@
     "roave/security-advisories": "dev-master",
     "sebastian/phpcpd": "^4.0",
     "squizlabs/php_codesniffer": "3.*",
+    "symfony/property-access": "^4.3",
+    "symfony/validator": "^4.3",
     "vlucas/phpdotenv": "^3.0"
   },
   "autoload": {
@@ -63,10 +65,12 @@
     "league/flysystem-aws-s3-v3": "Required to use the cloud Filesystem class",
     "monolog/monolog": "Required to use the logger class",
     "nicoswd/php-gpg": "Required to use the encryption class",
+    "symfony/validator": "Required to use the symfony validator",
     "vlucas/phpdotenv": "Required to use the env helper"
   },
   "minimum-stability": "stable",
   "config": {
-    "optimize-autoloader": true
+    "optimize-autoloader": true,
+    "sort-packages": true
   }
 }

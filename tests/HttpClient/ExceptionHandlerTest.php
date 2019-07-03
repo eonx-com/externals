@@ -27,7 +27,7 @@ class ExceptionHandlerTest extends TestCase
     {
         $this->expectException(NetworkException::class);
 
-        $request = new Request('', '');
+        $request = new Request('POST', '');
 
         $instance = $this->getInstance();
         $instance->handle($request, new ConnectException('', $request));
@@ -42,7 +42,7 @@ class ExceptionHandlerTest extends TestCase
      */
     public function testHandlesRequestExceptionWithoutResponse(): void
     {
-        $request = new Request('', '');
+        $request = new Request('POST', '');
         $requestException = new RequestException('Something happened', $request);
 
         $instance = $this->getInstance();
@@ -61,7 +61,7 @@ class ExceptionHandlerTest extends TestCase
      */
     public function testHandlesRequestExceptionWithResponse(): void
     {
-        $request = new Request('', '');
+        $request = new Request('POST', '');
         $response = new Response(500);
         $requestException = new RequestException('Something happened', $request, $response);
 
