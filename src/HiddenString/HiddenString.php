@@ -55,6 +55,22 @@ final class HiddenString
     }
 
     /**
+     * Hide its internal state from var_dump()
+     *
+     * @return array
+     */
+    public function __debugInfo()
+    {
+        return [
+            'value' =>
+                '*',
+            'attention' =>
+                'If you need the value of a HiddenString, ' .
+                'invoke getString() instead of dumping it.'
+        ];
+    }
+
+    /**
      * Assert two hidden strings are equal.
      *
      * @param \EoneoPay\Externals\HiddenString\HiddenString $string
