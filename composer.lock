@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35ff2fdfb135e626859e6ebb08bdf9a5",
+    "content-hash": "96412e06ff14d0c0ffed78da94419766",
     "packages": [
         {
             "name": "eoneopay/utils",
@@ -8438,7 +8438,8 @@
         "php": ">=7.2",
         "ext-json": "*",
         "ext-libxml": "*",
-        "ext-simplexml": "*"
+        "ext-simplexml": "*",
+        "ext-sodium": "*"
     },
     "platform-dev": []
 }
