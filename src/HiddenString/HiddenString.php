@@ -8,6 +8,13 @@ use ParagonIE\HiddenString\HiddenString as BaseHiddenString;
 final class HiddenString
 {
     /**
+     * Disallow the contents from being accessed via __toString()?
+     *
+     * @var bool
+     */
+    protected $disableInline = true;
+
+    /**
      * @var \ParagonIE\HiddenString\HiddenString
      */
     private $hiddenString;
@@ -24,10 +31,27 @@ final class HiddenString
         ?bool $disableInline = null,
         ?bool $disableSerialization = null
     ) {
-        $disableInline = ($disableInline === true || $disableInline === null);
+        $this->disableInline = ($disableInline === true || $disableInline === null);
         $disableSerialization = ($disableSerialization === true || $disableSerialization === null);
 
-        $this->hiddenString = new BaseHiddenString($value, $disableInline, $disableSerialization);
+        $this->hiddenString = new BaseHiddenString($value, $this->disableInline, $disableSerialization);
+    }
+
+    /**
+     * Returns a copy of the string's internal value.
+     * Will return empty string if disableInline is true.
+     *
+     * @return string
+     *
+     * @throws \TypeError
+     */
+    public function __toString(): string
+    {
+        if ($this->disableInline === false) {
+            return $this->getString();
+        }
+
+        return '';
     }
 
     /**

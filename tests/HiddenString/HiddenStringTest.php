@@ -43,7 +43,7 @@ class HiddenStringTest extends TestCase
      *
      * @return void
      */
-    public function testHide(): void
+    public function testHiddenString(): void
     {
         $name = 'ABC';
         $password = new HiddenString('secret');
@@ -59,6 +59,21 @@ class HiddenStringTest extends TestCase
 
         self::assertFalse(\strpos($dump, 'secret'));
         self::assertNotFalse(\strpos($dump, 'ABC'));
+    }
+
+    /**
+     * Test hidden string can be casted to string.
+     * Also asserts if disable inline is set to true, cast is hidden.
+     *
+     * @return void
+     */
+    public function testHiddenStringCanBeCastedAsString(): void
+    {
+        $passwordVisible = new HiddenString('secret', false);
+        $passwordHidden = new HiddenString('secret', true);
+
+        self::assertSame('secret', (string)$passwordVisible);
+        self::assertSame('', (string)$passwordHidden);
     }
 
     /**
