@@ -39,7 +39,7 @@ class HiddenStringTest extends TestCase
     }
 
     /**
-     * Test hide method calls HiddenString base class and returns encrypted string.
+     * Test constructor takes in a string, calls base HiddenString and hides it.
      *
      * @return void
      */
