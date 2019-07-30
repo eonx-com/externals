@@ -12,7 +12,6 @@
     "ext-json": "*",
     "ext-libxml": "*",
     "ext-simplexml": "*",
-    "ext-sodium": "*",
     "psr/http-client": "^1.0",
     "zendframework/zend-diactoros": "^2.1"
   },
