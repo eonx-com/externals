@@ -57,9 +57,9 @@ final class HiddenString
     /**
      * Hide its internal state from var_dump()
      *
-     * @return array
+     * @return mixed[]
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         return [
             'value' =>
