@@ -46,7 +46,7 @@ class HiddenStringTest extends TestCase
     public function testHiddenString(): void
     {
         $name = 'ABC';
-        $password = new HiddenString('secret');
+        $password = new HiddenString('xyz');
 
         $data = [
             'name' => $name,
@@ -57,7 +57,7 @@ class HiddenStringTest extends TestCase
         \var_dump($data);
         $dump = \ob_get_clean() ?: '';
 
-        self::assertFalse(\strpos($dump, 'secret'));
+        self::assertFalse(\strpos($dump, 'xyz'));
         self::assertNotFalse(\strpos($dump, 'ABC'));
     }
 
