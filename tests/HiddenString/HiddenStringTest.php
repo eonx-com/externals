@@ -53,12 +53,12 @@ class HiddenStringTest extends TestCase
             'password' => $password
         ];
 
-        ob_start();
-        var_dump($data);
-        $dump = ob_get_clean();
+        \ob_start();
+        \var_dump($data);
+        $dump = \ob_get_clean() ?: '';
 
-        self::assertFalse(strpos($dump, 'secret'));
-        self::assertNotFalse(strpos($dump, 'ABC'));
+        self::assertFalse(\strpos($dump, 'secret'));
+        self::assertNotFalse(\strpos($dump, 'ABC'));
     }
 
     /**
@@ -78,7 +78,7 @@ class HiddenStringTest extends TestCase
 
         $serialized = \serialize($data);
 
-        self::assertNotFalse(strpos($serialized, 'ABC'));
-        self::assertFalse(strpos($serialized, 'secret'));
+        self::assertNotFalse(\strpos($serialized, 'ABC'));
+        self::assertFalse(\strpos($serialized, 'secret'));
     }
 }
