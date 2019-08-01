@@ -39,29 +39,6 @@ class HiddenStringTest extends TestCase
     }
 
     /**
-     * Test constructor takes in a string, calls base HiddenString and hides it.
-     *
-     * @return void
-     */
-    public function testHiddenString(): void
-    {
-        $name = 'ABC';
-        $password = new HiddenString('secret');
-
-        $data = [
-            'name' => $name,
-            'password' => $password
-        ];
-
-        \ob_start();
-        \var_dump($data);
-        $dump = \ob_get_clean() ?: '';
-
-        self::assertFalse(\strpos($dump, 'secret'));
-        self::assertNotFalse(\strpos($dump, 'ABC'));
-    }
-
-    /**
      * Test hidden string can be casted to string.
      * Also asserts if disable inline is set to true, cast is hidden.
      *

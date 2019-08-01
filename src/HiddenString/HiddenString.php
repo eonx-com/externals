@@ -38,6 +38,32 @@ final class HiddenString
     }
 
     /**
+     * Hide its internal state from var_dump()
+     *
+     * @return mixed[]
+     */
+    public function __debugInfo(): array
+    {
+        /**
+         * Test for this code cannot pass in bamboo because of xDebug changes.
+         *
+         * @see https://bugs.xdebug.org/bug_view_page.php?bug_id=00001662
+         *
+         * Xdebug has decided to not consider user class defined ___debugInfo()
+         * thus this piece of code does not run with xDebug on bamboo.
+         */
+        // @codeCoverageIgnoreStart
+        return [
+            'value' =>
+                '*',
+            'attention' =>
+                'If you need the value of a HiddenString, ' .
+                'invoke getString() instead of dumping it.'
+        ];
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
      * Returns a copy of the string's internal value.
      * Will return empty string if disableInline is true.
      *
@@ -52,22 +78,6 @@ final class HiddenString
         }
 
         return '';
-    }
-
-    /**
-     * Hide its internal state from var_dump()
-     *
-     * @return mixed[]
-     */
-    public function __debugInfo(): array
-    {
-        return [
-            'value' =>
-                '*',
-            'attention' =>
-                'If you need the value of a HiddenString, ' .
-                'invoke getString() instead of dumping it.'
-        ];
     }
 
     /**
