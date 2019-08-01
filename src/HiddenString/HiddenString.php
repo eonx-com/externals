@@ -31,8 +31,8 @@ final class HiddenString
         ?bool $disableInline = null,
         ?bool $disableSerialization = null
     ) {
-        $this->disableInline = ($disableInline === true || $disableInline === null);
-        $disableSerialization = ($disableSerialization === true || $disableSerialization === null);
+        $this->disableInline = (($disableInline ?? true) === true);
+        $disableSerialization = (($disableSerialization ?? true) === true);
 
         $this->hiddenString = new BaseHiddenString($value, $this->disableInline, $disableSerialization);
     }
