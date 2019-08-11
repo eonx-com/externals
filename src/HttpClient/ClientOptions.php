@@ -14,7 +14,7 @@ class ClientOptions implements ClientOptionsInterface
     private $connectTimeout = 5;
 
     /**
-     * @var int The number of seconds the HTTP client will wait for the response body to
+     * @var float The number of seconds the HTTP client will wait for the response body to
      *          stream before timing out.
      */
     private $readTimeout = 0;

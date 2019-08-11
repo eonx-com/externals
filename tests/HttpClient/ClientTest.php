@@ -12,10 +12,8 @@ use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\RequestOptions;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
@@ -151,7 +149,6 @@ class ClientTest extends TestCase
      * Create client instance
      *
      * @param \GuzzleHttp\Handler\MockHandler $handler Guzzle mock handler
-     *
      * @param \EoneoPay\Externals\HttpClient\Interfaces\ClientOptionsInterface|null $clientOptions
      *
      * @return \EoneoPay\Externals\HttpClient\Client
