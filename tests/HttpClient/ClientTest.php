@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\Client;
+use EoneoPay\Externals\HttpClient\ClientOptions;
 use EoneoPay\Externals\HttpClient\ExceptionHandler;
 use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
+use EoneoPay\Externals\HttpClient\Interfaces\ClientOptionsInterface;
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
@@ -118,7 +120,7 @@ class ClientTest extends TestCase
         $result = $client->sendRequest(new Request('post', '/'));
 
         self::assertSame(200, $result->getStatusCode());
-        self::assertSame('ok', $result->getBody()->__toString());
+        self::assertSame('ok', (string)$result->getBody());
     }
 
     /**
@@ -147,15 +149,19 @@ class ClientTest extends TestCase
      * Create client instance
      *
      * @param \GuzzleHttp\Handler\MockHandler $handler Guzzle mock handler
+     * @param \EoneoPay\Externals\HttpClient\Interfaces\ClientOptionsInterface|null $clientOptions
      *
      * @return \EoneoPay\Externals\HttpClient\Client
      */
-    private function createInstance(MockHandler $handler): Client
-    {
+    private function createInstance(
+        MockHandler $handler,
+        ?ClientOptionsInterface $clientOptions = null
+    ): Client {
         // Create guzzle with mock response
         return new Client(
             new Guzzle(['handler' => $handler]),
-            new ExceptionHandler()
+            new ExceptionHandler(),
+            $clientOptions ?? new ClientOptions()
         );
     }
 }

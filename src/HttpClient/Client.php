@@ -5,6 +5,7 @@ namespace EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
 use EoneoPay\Externals\HttpClient\Interfaces\ClientInterface;
+use EoneoPay\Externals\HttpClient\Interfaces\ClientOptionsInterface;
 use EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface;
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
@@ -26,17 +27,25 @@ final class Client implements ClientInterface
     private $exceptionHandler;
 
     /**
+     * @var \EoneoPay\Externals\HttpClient\Interfaces\ClientOptionsInterface
+     */
+    private $options;
+
+    /**
      * Client constructor.
      *
      * @param \GuzzleHttp\ClientInterface $client
      * @param \EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface $exceptionHandler
+     * @param \EoneoPay\Externals\HttpClient\Interfaces\ClientOptionsInterface|null $options
      */
     public function __construct(
         GuzzleClientInterface $client,
-        ExceptionHandlerInterface $exceptionHandler
+        ExceptionHandlerInterface $exceptionHandler,
+        ?ClientOptionsInterface $options = null
     ) {
         $this->client = $client;
         $this->exceptionHandler = $exceptionHandler;
+        $this->options = $options ?? new ClientOptions();
     }
 
     /**
@@ -54,7 +63,10 @@ final class Client implements ClientInterface
             $options['version'] ?? '1.1'
         );
 
-        $response = $this->sendRequest($request, $options);
+        $response = $this->sendRequest(
+            $request,
+            \array_merge($options ?? [], $this->options->toArray())
+        );
 
         if (($response instanceof ResponseInterface) === true) {
             /**
@@ -83,7 +95,10 @@ final class Client implements ClientInterface
         $exception = null;
 
         try {
-            $response = $this->client->send($request, $options ?? []);
+            $response = $this->client->send(
+                $request,
+                \array_merge($options ?? [], $this->options->toArray())
+            );
         } catch (GuzzleException $exception) {
             $response = $this->exceptionHandler->handle($request, $exception);
         }
