@@ -6,6 +6,7 @@ namespace EoneoPay\Externals\ORM;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\ORM\Interfaces\MagicEntityInterface;
 use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\XmlConverter;
@@ -13,7 +14,7 @@ use EoneoPay\Utils\XmlConverter;
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity required to enable smaller entities in application
  */
-abstract class Entity implements EntityInterface
+abstract class Entity implements MagicEntityInterface
 {
     /**
      * Create a new entity
@@ -100,7 +101,9 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns all properties on the entity.
+     *
+     * @return string[]
      */
     public function getProperties(): array
     {

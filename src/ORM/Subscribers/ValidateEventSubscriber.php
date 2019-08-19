@@ -6,7 +6,6 @@ namespace EoneoPay\Externals\ORM\Subscribers;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Externals\ORM\Interfaces\ValidatableInterface;
 use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
@@ -116,11 +115,11 @@ final class ValidateEventSubscriber implements EventSubscriber
      * Get entity contents via reflection, this is used so there's no reliance
      * on entity methods such as toArray().
      *
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity
+     * @param \EoneoPay\Externals\ORM\Interfaces\ValidatableInterface $entity
      *
      * @return mixed[]
      */
-    private function getEntityContents(EntityInterface $entity): array
+    private function getEntityContents(ValidatableInterface $entity): array
     {
         $contents = [];
         foreach ($entity->getProperties() as $property) {
