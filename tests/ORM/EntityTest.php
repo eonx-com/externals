@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\ORM;
 
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Id;
-use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildStub;
 use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityProxyStub;

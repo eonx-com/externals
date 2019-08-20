@@ -12,6 +12,7 @@ use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
  * @method int|null getInteger()
  * @method string|null getEntityId()
  * @method string|null getString()
+ * @method string|null getWithSetter()
  * @method bool hasString()
  * @method bool isString()
  * @method self setInteger(int $integer)

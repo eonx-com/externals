@@ -182,9 +182,13 @@ abstract class SimpleEntity implements EntityInterface
     /**
      * Determine if a property exists on an entity
      *
+     * @noinspection PhpUnusedPrivateMethodInspection This method is used by __call
+     *
      * @param string $property The property to test
      *
      * @return bool
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod) This method is used by __call
      */
     private function has(string $property): bool
     {

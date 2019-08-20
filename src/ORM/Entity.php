@@ -56,7 +56,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
             $resolved = $this->resolveProperty($matches[1]);
 
             // Run transformer if applicable
-            $method = \sprintf('transform%s', \ucfirst($resolved));
+            $method = \sprintf('transform%s', \ucfirst($resolved ?? ''));
             $callable = [$this, $method];
             if (\method_exists($this, $method) === true && \is_callable($callable) === true) {
                 $callable();
