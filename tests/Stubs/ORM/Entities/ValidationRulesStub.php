@@ -40,6 +40,14 @@ class ValidationRulesStub extends Entity implements ValidatableInterface
     /**
      * {@inheritdoc}
      */
+    public function getValidatableProperties(): array
+    {
+        return $this->getObjectProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getValidationFailedException(): string
     {
         return EntityValidationFailedExceptionStub::class;

@@ -265,16 +265,21 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Tests that getProperties ignores double underscore properties set by Doctrine
-     * proxy definitions.
+     * Tests that getObjectProperties does not allow operations on __ prefixed properties
+     * which are considered internal implementation details by php.
      *
      * @return void
      */
-    public function testGetPropertiesIgnoresUnderscores(): void
+    public function testGetObjectPropertiesIgnoresUnderscores(): void
     {
         $entity = new EntityProxyStub();
+        $entity->__initializer__ = true;
+        $entity->fill([
+            // Due to quirks of the Array search method, the trailing __ is omitted
+            '__initializer' => false
+        ]);
 
-        self::assertNotContains('__initializer', $entity->getProperties());
+        static::assertTrue($entity->__initializer__);
     }
 
     /**

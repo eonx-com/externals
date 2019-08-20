@@ -5,7 +5,7 @@ namespace EoneoPay\Externals\ORM\Subscribers;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\Column;
-use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\ORM\Interfaces\MagicEntityInterface;
 use EoneoPay\Utils\AnnotationReader;
 use Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry;
 use Gedmo\Loggable\LoggableListener as BaseLoggableListener;
@@ -58,7 +58,7 @@ final class LoggableEventSubscriber extends BaseLoggableListener
         $config = parent::getConfiguration($objectManager, $class);
         $entity = new $class();
 
-        if (($entity instanceof EntityInterface) === false || \count($this->getEntityFillable($entity)) === 0) {
+        if (($entity instanceof MagicEntityInterface) === false || \count($this->getEntityFillable($entity)) === 0) {
             return $config;
         }
 
@@ -71,13 +71,13 @@ final class LoggableEventSubscriber extends BaseLoggableListener
     /**
      * Get fillable properties for given entity.
      *
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity
+     * @param \EoneoPay\Externals\ORM\Interfaces\MagicEntityInterface $entity
      *
      * @return string[]
      *
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache extension isn't loaded
      */
-    private function getEntityFillable(EntityInterface $entity): array
+    private function getEntityFillable(MagicEntityInterface $entity): array
     {
         if (\in_array('*', $entity->getFillableProperties(), true) === false) {
             return $entity->getFillableProperties();

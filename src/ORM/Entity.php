@@ -6,6 +6,7 @@ namespace EoneoPay\Externals\ORM;
 use EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException;
 use EoneoPay\Externals\ORM\Exceptions\InvalidRelationshipException;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\ORM\Interfaces\MagicEntityInterface;
 use EoneoPay\Utils\Arr;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\XmlConverter;
@@ -13,7 +14,7 @@ use EoneoPay\Utils\XmlConverter;
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity required to enable smaller entities in application
  */
-abstract class Entity implements EntityInterface
+abstract class Entity implements MagicEntityInterface
 {
     /**
      * Create a new entity
@@ -97,20 +98,6 @@ abstract class Entity implements EntityInterface
     public function getId()
     {
         return $this->get($this->getIdProperty());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProperties(): array
-    {
-        $properties = \array_keys(\get_object_vars($this));
-
-        return \array_filter($properties, static function ($property): bool {
-            // Skip all properties that have __ at the start, they are reserved properties
-            // and should not be processed.
-            return \strncmp($property, '__', 2) !== 0;
-        });
     }
 
     /**
@@ -229,6 +216,22 @@ abstract class Entity implements EntityInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Returns all properties on the entity.
+     *
+     * @return string[]
+     */
+    protected function getObjectProperties(): array
+    {
+        $properties = \array_keys(\get_object_vars($this));
+
+        return \array_filter($properties, static function ($property): bool {
+            // Skip all properties that have __ at the start, they are reserved properties
+            // and should not be processed.
+            return \strncmp($property, '__', 2) !== 0;
+        });
     }
 
     /**
@@ -483,7 +486,9 @@ abstract class Entity implements EntityInterface
         // All properties will be camel case within the object
         $property = \lcfirst($property);
 
-        return \property_exists($this, $property) ? $property : (new Arr())->search($this->getProperties(), $property);
+        return \property_exists($this, $property)
+            ? $property :
+            (new Arr())->search($this->getObjectProperties(), $property);
     }
 
     /**
