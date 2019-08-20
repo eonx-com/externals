@@ -14,7 +14,7 @@ use EoneoPay\Utils\XmlConverter;
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Complexity required to enable smaller entities in application
  */
-abstract class Entity implements MagicEntityInterface
+abstract class Entity extends SimpleEntity implements MagicEntityInterface
 {
     /**
      * Create a new entity
@@ -36,41 +36,41 @@ abstract class Entity implements MagicEntityInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \EoneoPay\Externals\ORM\Exceptions\InvalidMethodCallException If the method doesn't exist or is immutable
+     * Overrides and adds functionality to check for guarded properties in set calls.
      */
     public function __call(string $method, array $parameters)
     {
-        // Set available types
-        $types = ['get', 'has', 'is', 'set'];
+        // Look for a setter call
+        $matched = \preg_match('/^set([a-zA-Z][\w]+)$/i', $method, $matches);
 
-        // Break calling method into type (get, has, is, set) and attribute
-        \preg_match('/^(' . \implode('|', $types) . ')([a-zA-Z][\w]+)$/i', $method, $matches);
-
-        $type = \mb_strtolower($matches[1] ?? '');
-        $property = $this->resolveProperty($matches[2] ?? '');
-
-        // The property being accessed must exist and the type must be valid if one of these things
-        // aren't true throw an exception
-        if ($type === '' || $property === null || ($type === 'set' && $this->isFillable($property) === false)) {
-            throw new InvalidMethodCallException(
-                \sprintf('Call to undefined method %s::%s()', \get_class($this), $method)
-            );
+        if ($matched === 0) {
+            // The call is not for a setter.
+            return parent::__call($method, $parameters);
         }
 
-        // Perform action - code coverage disabled due to phpdbg not seeing case statements
-        switch ($type) {
-            case 'get': // @codeCoverageIgnore
-            case 'has': // @codeCoverageIgnore
-            case 'is': // @codeCoverageIgnore
-                return $this->callGettableMethod($type, $property);
+        if ($this->isFillable($matches[1]) === true) {
+            // The property is fillable, lets fill it and if any transformers run,
+            // run those.
+            $return = parent::__call($method, $parameters);
 
-            case 'set': // @codeCoverageIgnore
-                // Return original instance for fluency
-                $this->set($property, \reset($parameters));
-                break;
+            $resolved = $this->resolveProperty($matches[1]);
+
+            // Run transformer if applicable
+            $method = \sprintf('transform%s', \ucfirst($resolved));
+            $callable = [$this, $method];
+            if (\method_exists($this, $method) === true && \is_callable($callable) === true) {
+                $callable();
+            }
+
+            return $return;
         }
 
-        return $this;
+        // We've got a setter and the property is not fillable.
+        throw new InvalidMethodCallException(\sprintf(
+            'Call to undefined method %s::%s()',
+            \get_class($this),
+            $method
+        ));
     }
 
     /**
@@ -78,9 +78,35 @@ abstract class Entity implements MagicEntityInterface
      */
     public function fill(array $data): void
     {
-        // Loop through data and set values, set will automatically skip invalid or non-fillable properties
+        // Loop through data and set values, set will automatically skip invalid or
+        // non-fillable properties.
         foreach ($data as $property => $value) {
-            $this->set($property, $value);
+            $resolved = $this->resolveProperty($property);
+            if ($resolved === null) {
+                // No property exists.
+
+                continue;
+            }
+
+            $method = \sprintf('set%s', \ucfirst($resolved));
+            $callable = [$this, $method];
+
+            if (\is_callable($callable) === false) {
+                // @codeCoverageIgnoreStart
+                // The callable isnt callable. This wont happen - this entity
+                // implements __call which means is_callable will always return
+                // true.
+                continue;
+                // @codeCoverageIgnoreEnd
+            }
+
+            try {
+                $callable($value);
+            } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidMethodCallException $exception) {
+                // Using __call means we might throw an InvalidMethodCallException when
+                // the property is guarded, but the BC behaviour for fill()
+                // is to ignore and skip the property in $data.
+            }
         }
     }
 
@@ -89,15 +115,7 @@ abstract class Entity implements MagicEntityInterface
      */
     public function getFillableProperties(): array
     {
-        return $this->invokeEntityMethod('getFillable', ['*']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->get($this->getIdProperty());
+        return $this->invokeEntityMethod('getFillable', null, ['*']);
     }
 
     /**
@@ -128,13 +146,6 @@ abstract class Entity implements MagicEntityInterface
             return null;
         }
     }
-
-    /**
-     * Get the id property for this entity
-     *
-     * @return string
-     */
-    abstract protected function getIdProperty(): string;
 
     /**
      * Associate an entity in a bidirectional way from the owning side
@@ -219,61 +230,6 @@ abstract class Entity implements MagicEntityInterface
     }
 
     /**
-     * Returns all properties on the entity.
-     *
-     * @return string[]
-     */
-    protected function getObjectProperties(): array
-    {
-        $properties = \array_keys(\get_object_vars($this));
-
-        return \array_filter($properties, static function ($property): bool {
-            // Skip all properties that have __ at the start, they are reserved properties
-            // and should not be processed.
-            return \strncmp($property, '__', 2) !== 0;
-        });
-    }
-
-    /**
-     * Get instance_of rule string for given class.
-     *
-     * @param string $class
-     *
-     * @return string
-     */
-    protected function instanceOfRuleAsString(string $class): string
-    {
-        return \sprintf('instance_of:%s', $class);
-    }
-
-    /**
-     * Get unique rule string for given target property and optional where clauses.
-     *
-     * @param string $target The target entity
-     * @param mixed[]|null $wheres Additional/optional where clauses
-     *
-     * @return string
-     */
-    protected function uniqueRuleAsString(string $target, ?array $wheres = null): string
-    {
-        $additional = '';
-        foreach ($wheres ?? [] as $column => $value) {
-            $additional .= \sprintf(',%s,%s', $column, $value);
-        }
-
-        $rule = \sprintf(
-            'unique:%s,%s,%s,%s%s',
-            \get_class($this),
-            $target,
-            $this->getValue($this->getIdProperty()),
-            $this->getIdProperty(),
-            $additional
-        );
-
-        return $rule;
-    }
-
-    /**
      * Update a collection with an entity
      *
      * @param string $attribute The attribute which contains the collection
@@ -312,43 +268,6 @@ abstract class Entity implements MagicEntityInterface
     }
 
     /**
-     * Perform a gettable call on an entity
-     *
-     * @param string $method The method being called
-     * @param string $property The property the method is being called on
-     *
-     * @return mixed The property value, or null/false if method isn't callable
-     */
-    private function callGettableMethod(string $method, string $property)
-    {
-        // Determine callable method
-        $callable = [$this, $method === 'is' ? 'get' : $method];
-
-        // Only call method if it's callable
-        if (\is_callable($callable) === true) {
-            return ($method === 'is') ? (bool)$callable($property) : $callable($property);
-        }
-
-        // If call didn't happen, return null/false depending on type - this is unlikely since the
-        // property is verified via the __call method and has() and get() exist in this class
-        return $method === 'get' ? null : false; // @codeCoverageIgnore
-    }
-
-    /**
-     * Get a value from a property
-     *
-     * @param string $property The property to get the value of
-     *
-     * @return mixed The property value
-     */
-    private function get(string $property)
-    {
-        $resolved = $this->resolveProperty($property);
-
-        return $resolved !== null ? $this->{$resolved} : null;
-    }
-
-    /**
      * Get a list of attributes or keys which can't be filled, by default nothing is guarded
      *
      * @return string[]
@@ -356,20 +275,6 @@ abstract class Entity implements MagicEntityInterface
     private function getGuardedProperties(): array
     {
         return $this->invokeEntityMethod('getGuarded');
-    }
-
-    /**
-     * Get property value via getter
-     *
-     * @param string $property The property to get
-     *
-     * @return mixed
-     */
-    private function getValue(string $property)
-    {
-        $getter = [$this, \sprintf('get%s', \ucfirst($property))];
-
-        return \is_callable($getter) === true ? $getter() : null;
     }
 
     /**
@@ -408,26 +313,15 @@ abstract class Entity implements MagicEntityInterface
     }
 
     /**
-     * Determine if a property exists on an entity
-     *
-     * @param string $property The property to test
-     *
-     * @return bool
-     */
-    private function has(string $property): bool
-    {
-        return $this->resolveProperty($property) !== null;
-    }
-
-    /**
      * Resolve a method on the entity which may or may not exist
      *
      * @param string $method The name of the method to invoke if it exists
+     * @param mixed[]|null $args
      * @param mixed[]|null $default The default to return if the method doesn't exist
      *
      * @return mixed[]
      */
-    private function invokeEntityMethod(string $method, ?array $default = null): array
+    private function invokeEntityMethod(string $method, ?array $args = null, ?array $default = null): array
     {
         $callable = [$this, $method];
 
@@ -438,7 +332,7 @@ abstract class Entity implements MagicEntityInterface
             return $default ?? [];
         }
 
-        return $callable();
+        return $callable(...$args ?? []);
     }
 
     /**
@@ -477,6 +371,11 @@ abstract class Entity implements MagicEntityInterface
      * Resolve property without case sensitivity or special characters, resolves property such as
      * addressStreet to addressstreet, address_street or ADDRESSSTREET
      *
+     * Method copied/overridden and suppressed to keep it private. Protected methods
+     * will be usable from entities but this method should remain private.
+     *
+     * @noinspection SenselessMethodDuplicationInspection PhpMissingParentCallCommonInspection
+     *
      * @param string $property The property to resolve
      *
      * @return string|null
@@ -489,39 +388,5 @@ abstract class Entity implements MagicEntityInterface
         return \property_exists($this, $property)
             ? $property :
             (new Arr())->search($this->getObjectProperties(), $property);
-    }
-
-    /**
-     * Set the value for a property
-     *
-     * @param string $property The property to set
-     * @param mixed $value The value to set
-     *
-     * @return mixed The entity the set method was called on
-     */
-    private function set(string $property, $value)
-    {
-        $resolved = (string)$this->resolveProperty($property);
-
-        // If property doesn't exist or is not fillable, return
-        if ($this->has($property) === false || $this->isFillable($resolved) === false) {
-            return $this;
-        }
-
-        // Set property value, prefer setter over direct set
-        $setter = \sprintf('set%s', \ucfirst($resolved));
-        $callable = [$this, $setter];
-        \method_exists($this, $setter) === true && \is_callable($callable) === true ?
-            $callable($value) :
-            $this->{$resolved} = $value;
-
-        // Run transformer if applicable
-        $method = \sprintf('transform%s', \ucfirst($resolved));
-        $callable = [$this, $method];
-        if (\method_exists($this, $method) === true && \is_callable($callable) === true) {
-            $callable();
-        }
-
-        return $this;
     }
 }

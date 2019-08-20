@@ -185,10 +185,10 @@ class EntityTest extends ORMTestCase
      */
     public function testAssociateWithWrongAssociationException(): void
     {
-        $this->expectException(InvalidRelationshipException::class);
-
         $parent = new ParentStub();
         $child = new ChildStub(['annotation_name' => 'string']);
+
+        $this->expectException(InvalidRelationshipException::class);
 
         $child->setInvalidParent($parent);
     }
@@ -248,23 +248,6 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Test entity has a generic getId method which return id value based on Id doctrine annotation.
-     *
-     * @return void
-     */
-    public function testGetIdReturnsRightValueBasedOnIdAnnotation(): void
-    {
-        $entity = new EntityStub();
-        $entityId = 'my-entity-id';
-
-        self::assertNull($entity->getId());
-
-        $entity->setEntityId($entityId);
-
-        self::assertSame($entityId, $entity->getId());
-    }
-
-    /**
      * Tests that getObjectProperties does not allow operations on __ prefixed properties
      * which are considered internal implementation details by php.
      *
@@ -302,24 +285,6 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Test instanceOfRuleAsString build correctly the string representation of the validation rule.
-     *
-     * @return void
-     */
-    public function testInstanceOfRuleAsStringMethod(): void
-    {
-        self::assertSame(
-            'instance_of:stdClass',
-            (new EntityStub())->getInstanceOfRuleForTest(\stdClass::class)
-        );
-
-        self::assertSame(
-            'instance_of:Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub',
-            (new EntityStub())->getInstanceOfRuleForTest(EntityStub::class)
-        );
-    }
-
-    /**
      * Test entity can be json serialized
      *
      * @return void
@@ -330,92 +295,6 @@ class EntityTest extends ORMTestCase
     {
         $entity = new EntityStub(self::$data);
         self::assertSame(\json_encode($this->getEntityContents($entity)), \json_encode($entity));
-    }
-
-    /**
-     * Test __call allows setting and getting of data
-     *
-     * @return void
-     */
-    public function testMagicCallCanGetAndSetAccessesEntityProperties(): void
-    {
-        $entity = new EntityStub();
-        self::assertEmpty(\array_filter($this->getEntityContents($entity)));
-
-        // Test check entity has properties
-        self::assertTrue($entity->hasString());
-
-        // Test string is not set
-        self::assertFalse($entity->isString());
-
-        // Test setting email returns entity instance
-        self::assertSame($entity, $entity->setString(self::$data['string']));
-
-        // Test string is set
-        self::assertTrue($entity->isString());
-
-        // Attempt to grab value
-        self::assertSame(self::$data['string'], $entity->getString());
-    }
-
-    /**
-     * Test __call with invalid accessor throws exception
-     *
-     * @return void
-     */
-    public function testMagicCallThrowsExceptionIfAccessorInvalid(): void
-    {
-        $entity = new EntityStub();
-
-        $this->expectException(InvalidMethodCallException::class);
-        $entity->whenString();
-    }
-
-    /**
-     * Test __call with invalid property throws exception
-     *
-     * @return void
-     */
-    public function testMagicCallThrowsExceptionIfPropertyInvalid(): void
-    {
-        $entity = new EntityStub();
-
-        $this->expectException(InvalidMethodCallException::class);
-        $entity->getInvalid();
-    }
-
-    /**
-     * Test the property annotations method on the entity stub contains invalid items
-     *
-     * @return void
-     */
-    public function testPropertyAnnotationsContainsInvalidClassAndAttribute(): void
-    {
-        $entity = new EntityStub();
-
-        $expected = [
-            'Tests\EoneoPay\Externals\Stubs\ORM\Entities\InvalidClass' => 'name', // This class is invalid
-            Column::class => 'name',
-            Id::class => 'invalid' // This attribute is invalid
-        ];
-
-        self::assertSame($expected, $entity->getPropertyAnnotations());
-    }
-
-    /**
-     * Test __call finds properties via annotations
-     *
-     * @return void
-     *
-     * @depends testPropertyAnnotationsContainsInvalidClassAndAttribute
-     */
-    public function testPropertyAnnotationsSetAndGetViaMagicMethods(): void
-    {
-        $entity = new EntityStub();
-
-        self::assertNull($entity->getString());
-        self::assertSame($entity, $entity->setString('test'));
-        self::assertSame('test', $entity->getString());
     }
 
     /**
@@ -474,18 +353,5 @@ class EntityTest extends ORMTestCase
     public function testToXmlWithInvalidRootNodeReturnsNull(): void
     {
         self::assertNull((new EntityStub())->toXml('@invalid'));
-    }
-
-    /**
-     * Test uniqueRuleAsString build correctly the string representation of the validation rule.
-     *
-     * @return void
-     */
-    public function testUniqueRuleAsStringMethod(): void
-    {
-        self::assertSame(
-            'unique:Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub,email,,entityId,where1,value1',
-            (new EntityStub())->getEmailUniqueRuleForTest(['where1' => 'value1'])
-        );
     }
 }

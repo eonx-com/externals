@@ -20,8 +20,8 @@ use EoneoPay\Externals\Bridge\Laravel\Translator;
 use EoneoPay\Externals\Bridge\Laravel\Validator;
 use EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\ResolveTargetEntityExtension;
 use EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\SoftDeleteExtension;
-use EoneoPay\Externals\ORM\Entity;
 use EoneoPay\Externals\ORM\EntityManager;
+use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
 use EoneoPay\Externals\ORM\Listeners\GenerateUniqueValue;
 use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
@@ -224,11 +224,11 @@ abstract class ORMTestCase extends TestCase
      * Get entity contents via reflection, this is used so there's no reliance
      * on entity methods such as toArray for tests to work
      *
-     * @param \EoneoPay\Externals\ORM\Entity $entity The entity to get data from
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to get data from
      *
      * @return mixed[]
      */
-    protected function getEntityContents(Entity $entity): array
+    protected function getEntityContents(EntityInterface $entity): array
     {
         // Get properties available for this entity
         try {
