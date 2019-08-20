@@ -101,22 +101,6 @@ abstract class Entity implements MagicEntityInterface
     }
 
     /**
-     * Returns all properties on the entity.
-     *
-     * @return string[]
-     */
-    public function getProperties(): array
-    {
-        $properties = \array_keys(\get_object_vars($this));
-
-        return \array_filter($properties, static function ($property): bool {
-            // Skip all properties that have __ at the start, they are reserved properties
-            // and should not be processed.
-            return \strncmp($property, '__', 2) !== 0;
-        });
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function jsonSerialize(): array
@@ -232,6 +216,22 @@ abstract class Entity implements MagicEntityInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Returns all properties on the entity.
+     *
+     * @return string[]
+     */
+    protected function getObjectProperties(): array
+    {
+        $properties = \array_keys(\get_object_vars($this));
+
+        return \array_filter($properties, static function ($property): bool {
+            // Skip all properties that have __ at the start, they are reserved properties
+            // and should not be processed.
+            return \strncmp($property, '__', 2) !== 0;
+        });
     }
 
     /**
@@ -486,7 +486,9 @@ abstract class Entity implements MagicEntityInterface
         // All properties will be camel case within the object
         $property = \lcfirst($property);
 
-        return \property_exists($this, $property) ? $property : (new Arr())->search($this->getProperties(), $property);
+        return \property_exists($this, $property)
+            ? $property :
+            (new Arr())->search($this->getObjectProperties(), $property);
     }
 
     /**

@@ -122,7 +122,7 @@ final class ValidateEventSubscriber implements EventSubscriber
     private function getEntityContents(ValidatableInterface $entity): array
     {
         $contents = [];
-        foreach ($entity->getProperties() as $property) {
+        foreach ($entity->getValidatableProperties() as $property) {
             $getter = [$entity, \sprintf('get%s', \ucfirst($property))];
 
             // If getter isn't available, continue - this is only here for safety since base entity provides __call

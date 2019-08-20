@@ -6,11 +6,11 @@ namespace EoneoPay\Externals\ORM\Interfaces;
 interface ValidatableInterface extends EntityInterface
 {
     /**
-     * Get all properties for this entity
+     * Get all validatable properties for this entity
      *
      * @return string[]
      */
-    public function getProperties(): array;
+    public function getValidatableProperties(): array;
 
     /**
      * Get validation rules.
