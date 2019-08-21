@@ -65,6 +65,7 @@
     "league/flysystem": "Required to use the Filesystem class",
     "league/flysystem-aws-s3-v3": "Required to use the cloud Filesystem class",
     "monolog/monolog": "Required to use the logger class",
+    "paragonie/hidden-string": "Required to use hidden string functionality",
     "nicoswd/php-gpg": "Required to use the encryption class",
     "symfony/validator": "Required to use the symfony validator",
     "vlucas/phpdotenv": "Required to use the env helper"
