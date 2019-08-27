@@ -283,6 +283,26 @@ class EntityTest extends ORMTestCase
     }
 
     /**
+     * Tests that the validatableProperties method returns correct properties.
+     *
+     * @return void
+     */
+    public function testGetValidatableProperties(): void
+    {
+        $entity = new EntityStub();
+        $expected = [
+            'entityId',
+            'integer',
+            'string',
+            'deletedAt'
+        ];
+
+        $properties = $entity->getValidatableProperties();
+
+        static::assertSame($expected, $properties);
+    }
+
+    /**
      * Test guarded prevents filling certain fields
      *
      * @return void
