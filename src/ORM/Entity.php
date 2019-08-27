@@ -101,6 +101,16 @@ abstract class Entity implements MagicEntityInterface
     }
 
     /**
+     * Method is defined for BC - the ValidatableInterface requires this method.
+     *
+     * @return string[]
+     */
+    public function getValidatableProperties(): array
+    {
+        return $this->getObjectProperties();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function jsonSerialize(): array
