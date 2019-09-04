@@ -53,22 +53,6 @@ class ChildStub extends EntityStub
     }
 
     /**
-     * Return an array of annotation/attribute pairs to search for properties in
-     *
-     * Note: Changing this array will cause the test testPropertyAnnotationsContainsInvalidClassAndAttribute() to fail
-     *
-     * @return string[]
-     *
-     * @see \Tests\EoneoPay\Externals\ORM\EntityTest::testPropertyAnnotationsContainsInvalidClassAndAttribute
-     */
-    public function getPropertyAnnotations(): array
-    {
-        parent::getPropertyAnnotations();
-
-        return [];
-    }
-
-    /**
      * Set parent with invalid relation.
      *
      * @param \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ParentStub $parent

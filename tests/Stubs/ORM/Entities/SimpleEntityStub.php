@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Stubs\ORM\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use EoneoPay\Externals\ORM\Entity;
-use EoneoPay\Externals\ORM\Traits\HasTransformers;
+use EoneoPay\Externals\ORM\SimpleEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
 
@@ -13,6 +12,7 @@ use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
  * @method int|null getInteger()
  * @method string|null getEntityId()
  * @method string|null getString()
+ * @method string|null getWithSetter()
  * @method bool hasString()
  * @method bool isString()
  * @method self setInteger(int $integer)
@@ -29,9 +29,8 @@ use LaravelDoctrine\Extensions\SoftDeletes\SoftDeletes;
  *
  * @Gedmo\SoftDeleteable()
  */
-class EntityStub extends Entity
+class SimpleEntityStub extends SimpleEntity
 {
-    use HasTransformers;
     use SoftDeletes;
 
     /**
@@ -64,6 +63,13 @@ class EntityStub extends Entity
     protected $string;
 
     /**
+     * Property that has a setter.
+     *
+     * @var string
+     */
+    protected $withSetter;
+
+    /**
      * Function exclusively for test purposes to test uniqueRuleAsString.
      *
      * @param string[]|null $wheres
@@ -88,30 +94,22 @@ class EntityStub extends Entity
     }
 
     /**
-     * Get the contents of the entity as an array
-     *
-     * @return mixed[]
-     */
-    public function toArray(): array
-    {
-        return \get_object_vars($this);
-    }
-
-    /**
-     * Make sure that string is a string.
-     *
-     * @return void
-     */
-    public function transformString(): void
-    {
-        $this->transformToString('string');
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function getIdProperty(): string
     {
         return 'entityId';
+    }
+
+    /**
+     * Defined setter for testage - protected so __call will run instead of this property.
+     *
+     * @param string $withSetter
+     *
+     * @return void
+     */
+    protected function setWithSetter(string $withSetter): void
+    {
+        $this->withSetter = $withSetter;
     }
 }
