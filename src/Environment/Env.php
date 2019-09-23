@@ -11,14 +11,14 @@ use EoneoPay\Externals\Environment\Interfaces\EnvInterface;
 final class Env implements EnvInterface
 {
     /**
-     * Dotenv loader instance
+     * Dotenv loader instance.
      *
      * @var \Dotenv\Loader
      */
     private $dotenv;
 
     /**
-     * Create a new env instance
+     * Create a new env instance.
      */
     public function __construct()
     {
@@ -73,7 +73,7 @@ final class Env implements EnvInterface
     }
 
     /**
-     * Process a string for keywords and return keyword value if found
+     * Process a string for keywords and return keyword value if found.
      *
      * @param string $value The value to process
      *
@@ -86,24 +86,36 @@ final class Env implements EnvInterface
 
         // Handle php keywords - code coverage disabled due to phpdbg not seeing case statements
         switch (\mb_strtolower($value)) {
-            case 'false': // @codeCoverageIgnore
-            case '(false)': // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+            case 'false':
+            case '(false)':
+                /** @codeCoverageIgnoreEnd */
                 $resolution = false;
+
                 break;
 
-            case 'true': // @codeCoverageIgnore
-            case '(true)': // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+            case 'true':
+            case '(true)':
+                /** @codeCoverageIgnoreEnd */
                 $resolution = true;
+
                 break;
 
-            case 'empty': // @codeCoverageIgnore
-            case '(empty)': // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+            case 'empty':
+            case '(empty)':
+                /** @codeCoverageIgnoreEnd */
                 $resolution = '';
+
                 break;
 
-            case 'null': // @codeCoverageIgnore
-            case '(null)': // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+            case 'null':
+            case '(null)':
+                /** @codeCoverageIgnoreEnd */
                 $resolution = null;
+
                 break;
         }
 

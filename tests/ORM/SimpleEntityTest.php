@@ -16,7 +16,7 @@ use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 class SimpleEntityTest extends ORMTestCase
 {
     /**
-     * Data to populate the entity with for testing
+     * Data to populate the entity with for testing.
      *
      * @var mixed[]
      */
@@ -24,7 +24,7 @@ class SimpleEntityTest extends ORMTestCase
         'entityId' => null,
         'integer' => 1,
         'string' => 'test@test.com',
-        'deletedAt' => null
+        'deletedAt' => null,
     ];
 
     /**
@@ -63,7 +63,7 @@ class SimpleEntityTest extends ORMTestCase
     }
 
     /**
-     * Test __call allows setting and getting of data
+     * Test __call allows setting and getting of data.
      *
      * @return void
      */
@@ -98,11 +98,11 @@ class SimpleEntityTest extends ORMTestCase
         $entity = new SimpleEntityStub();
         $entity->setWithSetter('test');
 
-        static::assertSame('test', $entity->getWithSetter());
+        self::assertSame('test', $entity->getWithSetter());
     }
 
     /**
-     * Test __call with invalid accessor throws exception
+     * Test __call with invalid accessor throws exception.
      *
      * @return void
      */
@@ -115,7 +115,7 @@ class SimpleEntityTest extends ORMTestCase
     }
 
     /**
-     * Test __call with invalid property throws exception
+     * Test __call with invalid property throws exception.
      *
      * @return void
      */

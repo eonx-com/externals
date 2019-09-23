@@ -25,7 +25,7 @@ use function GuzzleHttp\Psr7\stream_for;
 class LoggingClientTest extends TestCase
 {
     /**
-     * Tests logging when request fails
+     * Tests logging when request fails.
      *
      * @return void
      *
@@ -38,32 +38,33 @@ class LoggingClientTest extends TestCase
                 'Request Exception',
                 new Request('GET', '/'),
                 new Response(500, [], 'error')
-            )
+            ),
         ]);
         $logger = new LogHandlerStub();
 
         $instance = $this->createInstance($handler, $logger);
 
         $previous = null;
+
         try {
             $instance->request('GET', '/');
         } catch (InvalidApiResponseException $exception) {
             $previous = $exception->getPrevious();
         }
 
-        static::assertSame($expectedException, $previous);
+        self::assertSame($expectedException, $previous);
 
         $logs = $logger->getLogs();
 
-        static::assertCount(3, $logs);
+        self::assertCount(3, $logs);
 
-        static::assertSame('HTTP Request Sent', $logs[0]['message']);
-        static::assertSame('HTTP Response Received', $logs[1]['message']);
-        static::assertSame('Exception caught: Request Exception', $logs[2]['message']);
+        self::assertSame('HTTP Request Sent', $logs[0]['message']);
+        self::assertSame('HTTP Response Received', $logs[1]['message']);
+        self::assertSame('Exception caught: Request Exception', $logs[2]['message']);
     }
 
     /**
-     * Tests logging when a successful request is made
+     * Tests logging when a successful request is made.
      *
      * @return void
      *
@@ -73,7 +74,7 @@ class LoggingClientTest extends TestCase
     {
         $body = stream_for('{"test": 1}');
         $handler = new MockHandler([
-            new Response(200, [], $body)
+            new Response(200, [], $body),
         ]);
         $logger = new LogHandlerStub();
 
@@ -83,17 +84,17 @@ class LoggingClientTest extends TestCase
 
         $logs = $logger->getLogs();
 
-        static::assertCount(2, $logs);
+        self::assertCount(2, $logs);
 
-        static::assertSame('HTTP Request Sent', $logs[0]['message']);
-        static::assertSame('/test', $logs[0]['context']['uri']);
-        static::assertSame('HTTP Response Received', $logs[1]['message']);
-        static::assertSame('/test', $logs[1]['context']['uri']);
-        static::assertSame(0, $body->tell());
+        self::assertSame('HTTP Request Sent', $logs[0]['message']);
+        self::assertSame('/test', $logs[0]['context']['uri']);
+        self::assertSame('HTTP Response Received', $logs[1]['message']);
+        self::assertSame('/test', $logs[1]['context']['uri']);
+        self::assertSame(0, $body->tell());
     }
 
     /**
-     * Tests logging when request fails
+     * Tests logging when request fails.
      *
      * @return void
      *
@@ -106,32 +107,33 @@ class LoggingClientTest extends TestCase
                 'Request Exception',
                 new Request('GET', '/test'),
                 new Response(500, [], 'error')
-            )
+            ),
         ]);
         $logger = new LogHandlerStub();
 
         $instance = $this->createInstance($handler, $logger);
 
         $previous = null;
+
         try {
             $instance->sendRequest(new Request('get', '/test'));
         } catch (InvalidApiResponseException $exception) {
             $previous = $exception->getPrevious();
         }
 
-        static::assertSame($expectedException, $previous);
+        self::assertSame($expectedException, $previous);
 
         $logs = $logger->getLogs();
 
-        static::assertCount(3, $logs);
+        self::assertCount(3, $logs);
 
-        static::assertSame('HTTP Request Sent', $logs[0]['message']);
-        static::assertSame('HTTP Response Received', $logs[1]['message']);
-        static::assertSame('Exception caught: Request Exception', $logs[2]['message']);
+        self::assertSame('HTTP Request Sent', $logs[0]['message']);
+        self::assertSame('HTTP Response Received', $logs[1]['message']);
+        self::assertSame('Exception caught: Request Exception', $logs[2]['message']);
     }
 
     /**
-     * Tests logging when a successful request is made
+     * Tests logging when a successful request is made.
      *
      * @return void
      *
@@ -140,7 +142,7 @@ class LoggingClientTest extends TestCase
     public function testSendRequestLogRequestSuccess(): void
     {
         $handler = new MockHandler([
-            new Response(200, [], stream_for('{"test": 1}'))
+            new Response(200, [], stream_for('{"test": 1}')),
         ]);
         $logger = new LogHandlerStub();
 
@@ -150,16 +152,16 @@ class LoggingClientTest extends TestCase
 
         $logs = $logger->getLogs();
 
-        static::assertCount(2, $logs);
+        self::assertCount(2, $logs);
 
-        static::assertSame('HTTP Request Sent', $logs[0]['message']);
-        static::assertSame('/test', $logs[0]['context']['uri']);
-        static::assertSame('HTTP Response Received', $logs[1]['message']);
-        static::assertSame('/test', $logs[1]['context']['uri']);
+        self::assertSame('HTTP Request Sent', $logs[0]['message']);
+        self::assertSame('/test', $logs[0]['context']['uri']);
+        self::assertSame('HTTP Response Received', $logs[1]['message']);
+        self::assertSame('/test', $logs[1]['context']['uri']);
     }
 
     /**
-     * Creates an instance
+     * Creates an instance.
      *
      * @param \GuzzleHttp\Handler\MockHandler $handler
      * @param \Tests\EoneoPay\Externals\Stubs\Vendor\Monolog\Handler\LogHandlerStub $logHandlerStub

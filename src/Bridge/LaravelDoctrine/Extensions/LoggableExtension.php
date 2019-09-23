@@ -25,7 +25,7 @@ final class LoggableExtension extends GedmoExtension
     private $env;
 
     /**
-     * Create loggable extension
+     * Create loggable extension.
      *
      * @param \EoneoPay\Externals\Auth\Interfaces\AuthInterface $auth
      * @param \EoneoPay\Externals\Environment\Interfaces\EnvInterface $env

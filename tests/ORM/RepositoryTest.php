@@ -15,7 +15,7 @@ use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 class RepositoryTest extends ORMTestCase
 {
     /**
-     * Test count works as expected
+     * Test count works as expected.
      *
      * @return void
      */
@@ -46,7 +46,7 @@ class RepositoryTest extends ORMTestCase
     }
 
     /**
-     * Test create query builder
+     * Test create query builder.
      *
      * @return void
      */
@@ -59,7 +59,7 @@ class RepositoryTest extends ORMTestCase
     }
 
     /**
-     * Test exceptions thrown by doctrine are converted by the repository
+     * Test exceptions thrown by doctrine are converted by the repository.
      *
      * @return void
      */
@@ -73,7 +73,7 @@ class RepositoryTest extends ORMTestCase
     }
 
     /**
-     * Test find functionality
+     * Test find functionality.
      *
      * @return void
      */
@@ -97,7 +97,7 @@ class RepositoryTest extends ORMTestCase
     }
 
     /**
-     * Test find all functionality
+     * Test find all functionality.
      *
      * @return void
      */
@@ -124,7 +124,7 @@ class RepositoryTest extends ORMTestCase
     }
 
     /**
-     * Test find by functionality
+     * Test find by functionality.
      *
      * @return void
      */
@@ -155,7 +155,7 @@ class RepositoryTest extends ORMTestCase
     }
 
     /**
-     * Test find one by functionality
+     * Test find one by functionality.
      *
      * @return void
      */
@@ -180,7 +180,7 @@ class RepositoryTest extends ORMTestCase
     }
 
     /**
-     * Test get class name
+     * Test get class name.
      *
      * @return void
      */
@@ -192,7 +192,7 @@ class RepositoryTest extends ORMTestCase
     }
 
     /**
-     * Create repository instance
+     * Create repository instance.
      *
      * @param string $entityClass The class to get the entity for
      *

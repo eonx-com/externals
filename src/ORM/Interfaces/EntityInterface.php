@@ -8,7 +8,7 @@ interface EntityInterface
     /**
      * Get entity id.
      *
-     * @return null|string|int
+     * @return int|string|null
      */
     public function getId();
 }

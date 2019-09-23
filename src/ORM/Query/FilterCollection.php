@@ -46,7 +46,7 @@ final class FilterCollection implements FilterCollectionInterface
     }
 
     /**
-     * Call a method on the entity manager and catch any exception
+     * Call a method on the entity manager and catch any exception.
      *
      * @param string $method The method to call
      * @param mixed ...$parameters The parameters to pass to the method

@@ -23,7 +23,7 @@ abstract class Repository implements RepositoryInterface
     protected $entityName;
 
     /**
-     * Initialise a new repository
+     * Initialise a new repository.
      *
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager Entity manager instance
      * @param \Doctrine\ORM\Mapping\ClassMetadata $classMetadata The class descriptor
@@ -93,7 +93,7 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * Create query build instance
+     * Create query build instance.
      *
      * @param string $alias The select alias
      * @param string|null $indexBy The index to use
@@ -108,7 +108,7 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * Call a method on the entity manager and catch any exception
+     * Call a method on the entity manager and catch any exception.
      *
      * @param string $method The method torc/ORM/Subscribers/SoftDeleteEventSubscriber.php call
      * @param mixed ...$parameters The parameters to pass to the method

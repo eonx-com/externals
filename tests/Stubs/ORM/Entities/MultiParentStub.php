@@ -46,7 +46,7 @@ class MultiParentStub extends Entity
     }
 
     /**
-     * Serialize entity as an array
+     * Serialize entity as an array.
      *
      * @return mixed[]
      */

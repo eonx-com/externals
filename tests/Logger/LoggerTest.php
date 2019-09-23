@@ -60,7 +60,7 @@ class LoggerTest extends TestCase
         $message = 'my message';
 
         $logger->exception(new Exception($message), 'warning', [
-            'extra' => 'stuff'
+            'extra' => 'stuff',
         ]);
         $logs = $handler->getLogs();
 
@@ -75,15 +75,14 @@ class LoggerTest extends TestCase
     }
 
     /**
-     * Test logger processors
+     * Test logger processors.
      *
      * @return void
      */
     public function testLogProcessors(): void
     {
         $handler = new LogHandlerStub();
-        $processor = new class implements ProcessorInterface
-        {
+        $processor = new class() implements ProcessorInterface {
             /**
              * {@inheritdoc}
              */
@@ -110,7 +109,7 @@ class LoggerTest extends TestCase
     }
 
     /**
-     * Test logger handles Monolog exceptions
+     * Test logger handles Monolog exceptions.
      *
      * @return void
      */

@@ -26,7 +26,7 @@ final class LoggingClient implements ClientInterface
     private $logger;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \EoneoPay\Externals\HttpClient\Interfaces\ClientInterface $client
      * @param \EoneoPay\Externals\Logger\Interfaces\LoggerInterface $logger
@@ -97,7 +97,7 @@ final class LoggingClient implements ClientInterface
      * Log the request exception.
      *
      * @param \Exception $exception
-     * @param null|\Psr\Http\Message\RequestInterface $request
+     * @param \Psr\Http\Message\RequestInterface|null $request
      *
      * @return void
      */
@@ -125,12 +125,12 @@ final class LoggingClient implements ClientInterface
 
         $this->logger->exception($exception, null, [
             'request' => $request !== null ? str($request) : null,
-            'uri' => $request !== null ? $request->getUri()->__toString() : null
+            'uri' => $request !== null ? $request->getUri()->__toString() : null,
         ]);
     }
 
     /**
-     * Log the outgoing request
+     * Log the outgoing request.
      *
      * @param \Psr\Http\Message\RequestInterface $request
      * @param mixed[]|null $options The options to send with the request
@@ -142,12 +142,12 @@ final class LoggingClient implements ClientInterface
         $this->logger->info('HTTP Request Sent', [
             'options' => $options ?? [],
             'request' => str($request),
-            'uri' => $request->getUri()->__toString()
+            'uri' => $request->getUri()->__toString(),
         ]);
     }
 
     /**
-     * Log the received response
+     * Log the received response.
      *
      * @param \Psr\Http\Message\ResponseInterface $response The received response
      * @param \Psr\Http\Message\RequestInterface $request
@@ -160,7 +160,7 @@ final class LoggingClient implements ClientInterface
             'request' => $request !== null ? str($request) : null,
             'response' => str($response),
             'statusCode' => $response->getStatusCode(),
-            'uri' => $request !== null ? $request->getUri()->__toString() : null
+            'uri' => $request !== null ? $request->getUri()->__toString() : null,
         ]);
 
         if ($response->getBody()->isSeekable()) {

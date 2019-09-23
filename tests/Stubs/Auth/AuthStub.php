@@ -21,7 +21,7 @@ class AuthStub extends Auth
     private $entity;
 
     /**
-     * Create auth library
+     * Create auth library.
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $entity The entity to return when calling user
      * @param \Illuminate\Contracts\Auth\Factory|null $factory Auth factory to use

@@ -18,7 +18,7 @@ use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 class LoggableEventSubscriberTest extends ORMTestCase
 {
     /**
-     * Test loggable is only performed on entities extending the correct interface
+     * Test loggable is only performed on entities extending the correct interface.
      *
      * @return void
      *
@@ -36,7 +36,7 @@ class LoggableEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test entity with fillable properties only versions fillable properties
+     * Test entity with fillable properties only versions fillable properties.
      *
      * @return void
      *
@@ -54,7 +54,7 @@ class LoggableEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test getting configuration on a normal entity
+     * Test getting configuration on a normal entity.
      *
      * @return void
      *
@@ -69,7 +69,7 @@ class LoggableEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test creating log entry
+     * Test creating log entry.
      *
      * @return void
      *
@@ -107,9 +107,8 @@ class LoggableEventSubscriberTest extends ORMTestCase
         self::assertEquals($expected, $this->createInstance()->getSubscribedEvents());
     }
 
-
     /**
-     * Create validate subscriber instance
+     * Create validate subscriber instance.
      *
      * @param string|null $username The username to return from the resolver
      *

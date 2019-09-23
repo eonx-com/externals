@@ -6,14 +6,14 @@ namespace EoneoPay\Externals\Request\Interfaces;
 interface RequestInterface
 {
     /**
-     * Get client ip address
+     * Get client ip address.
      *
      * @return string|null
      */
     public function getClientIp(): ?string;
 
     /**
-     * Get a header by name
+     * Get a header by name.
      *
      * @param string $key The key to find
      * @param mixed $default The default to return if key isn't found
@@ -23,21 +23,21 @@ interface RequestInterface
     public function getHeader(string $key, $default = null);
 
     /**
-     * Retrieve the server host
+     * Retrieve the server host.
      *
      * @return string
      */
     public function getHost(): string;
 
     /**
-     * Get user from request
+     * Get user from request.
      *
      * @return string|null
      */
     public function getUser(): ?string;
 
     /**
-     * Determine if the request contains a given input item key
+     * Determine if the request contains a given input item key.
      *
      * @param string $key The key to find
      *
@@ -46,7 +46,7 @@ interface RequestInterface
     public function has(string $key): bool;
 
     /**
-     * Retrieve an input item from the request
+     * Retrieve an input item from the request.
      *
      * @param string|null $key The key to retrieve from the input
      * @param mixed $default The default value to use if key isn't set
@@ -56,7 +56,7 @@ interface RequestInterface
     public function input(?string $key = null, $default = null);
 
     /**
-     * Merge a new data set into an existing request
+     * Merge a new data set into an existing request.
      *
      * @param mixed[] $data The data to merge into the request
      *
@@ -65,7 +65,7 @@ interface RequestInterface
     public function merge(array $data);
 
     /**
-     * Replace request with a new set of data
+     * Replace request with a new set of data.
      *
      * @param mixed[] $data The data to replace in the request
      *
@@ -74,7 +74,7 @@ interface RequestInterface
     public function replace(array $data);
 
     /**
-     * Set a header on the request
+     * Set a header on the request.
      *
      * @param string $key The key to set
      * @param mixed $value The value to set against the header
@@ -84,7 +84,7 @@ interface RequestInterface
     public function setHeader(string $key, $value);
 
     /**
-     * Retrieve the entire request as an array
+     * Retrieve the entire request as an array.
      *
      * @return mixed[]
      */

@@ -25,7 +25,7 @@ class PhoneNumberValidator implements PhoneNumberValidatorInterface
     private $parser;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $defaultRegion Default region to use when a phone number has no + prefix
      */

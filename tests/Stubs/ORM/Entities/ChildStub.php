@@ -6,7 +6,7 @@ namespace Tests\EoneoPay\Externals\Stubs\ORM\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @method null|ParentStub getParent()
+ * @method ParentStub|null getParent()
  *
  * @ORM\Entity()
  */

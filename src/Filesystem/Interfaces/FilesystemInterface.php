@@ -6,7 +6,7 @@ namespace EoneoPay\Externals\Filesystem\Interfaces;
 interface FilesystemInterface
 {
     /**
-     * Append to a file
+     * Append to a file.
      *
      * @param string $filename The filename to write to
      * @param string $contents The contents to write to the file
@@ -16,7 +16,7 @@ interface FilesystemInterface
     public function append(string $filename, string $contents): bool;
 
     /**
-     * Check whether a file exists
+     * Check whether a file exists.
      *
      * @param string $filename The file to check
      *
@@ -35,7 +35,7 @@ interface FilesystemInterface
     public function files(?string $directory = null, ?bool $recursive = null): array;
 
     /**
-     * Get the full path to a file
+     * Get the full path to a file.
      *
      * @param string|null $filename The filename to append to the path
      *
@@ -44,7 +44,7 @@ interface FilesystemInterface
     public function path(?string $filename = null): string;
 
     /**
-     * Get contents of a file
+     * Get contents of a file.
      *
      * @param string $filename The filename to read from
      *
@@ -53,7 +53,7 @@ interface FilesystemInterface
     public function read(string $filename): string;
 
     /**
-     * Remove a file from the filesystem
+     * Remove a file from the filesystem.
      *
      * @param string $filename The filename to remove
      *
@@ -62,7 +62,7 @@ interface FilesystemInterface
     public function remove(string $filename): bool;
 
     /**
-     * Write a file to the filesystem
+     * Write a file to the filesystem.
      *
      * @param string $filename The filename to write to
      * @param string $contents The contents to write to the file

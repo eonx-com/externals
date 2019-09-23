@@ -8,14 +8,14 @@ use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 interface ResponseInterface extends PsrResponseInterface
 {
     /**
-     * Get response content
+     * Get response content.
      *
      * @return string
      */
     public function getContent(): string;
 
     /**
-     * Determine if the response is successful or not
+     * Determine if the response is successful or not.
      *
      * @return bool
      */

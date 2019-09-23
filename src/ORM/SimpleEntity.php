@@ -14,7 +14,7 @@ use EoneoPay\Utils\Arr;
 abstract class SimpleEntity implements EntityInterface
 {
     /**
-     * Allow getX() and setX($value) to get and set column values
+     * Allow getX() and setX($value) to get and set column values.
      *
      * This method searches case insensitive
      *
@@ -44,14 +44,17 @@ abstract class SimpleEntity implements EntityInterface
 
         // Perform action - code coverage disabled due to phpdbg not seeing case statements
         switch ($type) {
-            case 'get': // @codeCoverageIgnore
-            case 'has': // @codeCoverageIgnore
-            case 'is': // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+            case 'get':
+            case 'has':
+            case 'is':
+                /** @codeCoverageIgnoreEnd */
                 return $this->callGettableMethod($type, $property);
 
             case 'set': // @codeCoverageIgnore
                 // Return original instance for fluency
                 $this->set($property, \reset($parameters));
+
                 break;
         }
 
@@ -59,22 +62,19 @@ abstract class SimpleEntity implements EntityInterface
     }
 
     /**
-     * Resolve property without case sensitivity or special characters, resolves property such as
-     * addressStreet to addressstreet, address_street or ADDRESSSTREET
-     *
-     * @param string $property The property to resolve
-     *
-     * @return string|null
+     * {@inheritdoc}
      */
-    private function resolveProperty(string $property): ?string
+    public function getId()
     {
-        // All properties will be camel case within the object
-        $property = \lcfirst($property);
-
-        return \property_exists($this, $property)
-            ? $property :
-            (new Arr())->search($this->getObjectProperties(), $property);
+        return $this->get($this->getIdProperty());
     }
+
+    /**
+     * Get the id property for this entity.
+     *
+     * @return string
+     */
+    abstract protected function getIdProperty(): string;
 
     /**
      * Returns all properties on the entity.
@@ -90,51 +90,6 @@ abstract class SimpleEntity implements EntityInterface
             // and should not be processed.
             return \strncmp($property, '__', 2) !== 0;
         });
-    }
-
-    /**
-     * Perform a gettable call on an entity
-     *
-     * @param string $method The method being called
-     * @param string $property The property the method is being called on
-     *
-     * @return mixed The property value, or null/false if method isn't callable
-     */
-    private function callGettableMethod(string $method, string $property)
-    {
-        // Determine callable method
-        $callable = [$this, $method === 'is' ? 'get' : $method];
-
-        // Only call method if it's callable
-        if (\is_callable($callable) === true) {
-            return ($method === 'is') ? (bool)$callable($property) : $callable($property);
-        }
-
-        // If call didn't happen, return null/false depending on type - this is unlikely since the
-        // property is verified via the __call method and has() and get() exist in this class
-        return $method === 'get' ? null : false; // @codeCoverageIgnore
-    }
-
-    /**
-     * Set the value for a property
-     *
-     * @param string $property The property to set
-     * @param mixed $value The value to set
-     *
-     * @return mixed The entity the set method was called on
-     */
-    private function set(string $property, $value)
-    {
-        $resolved = (string)$this->resolveProperty($property);
-
-        // Set property value, prefer setter over direct set
-        $setter = \sprintf('set%s', \ucfirst($resolved));
-        $callable = [$this, $setter];
-        \method_exists($this, $setter) === true && \is_callable($callable) === true ?
-            $callable($value) :
-            $this->{$resolved} = $value;
-
-        return $this;
     }
 
     /**
@@ -177,15 +132,30 @@ abstract class SimpleEntity implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Perform a gettable call on an entity.
+     *
+     * @param string $method The method being called
+     * @param string $property The property the method is being called on
+     *
+     * @return mixed The property value, or null/false if method isn't callable
      */
-    public function getId()
+    private function callGettableMethod(string $method, string $property)
     {
-        return $this->get($this->getIdProperty());
+        // Determine callable method
+        $callable = [$this, $method === 'is' ? 'get' : $method];
+
+        // Only call method if it's callable
+        if (\is_callable($callable) === true) {
+            return ($method === 'is') ? (bool)$callable($property) : $callable($property);
+        }
+
+        // If call didn't happen, return null/false depending on type - this is unlikely since the
+        // property is verified via the __call method and has() and get() exist in this class
+        return $method === 'get' ? null : false; // @codeCoverageIgnore
     }
 
     /**
-     * Get a value from a property
+     * Get a value from a property.
      *
      * @param string $property The property to get the value of
      *
@@ -199,14 +169,7 @@ abstract class SimpleEntity implements EntityInterface
     }
 
     /**
-     * Get the id property for this entity
-     *
-     * @return string
-     */
-    abstract protected function getIdProperty(): string;
-
-    /**
-     * Determine if a property exists on an entity
+     * Determine if a property exists on an entity.
      *
      * @noinspection PhpUnusedPrivateMethodInspection This method is used by __call
      *
@@ -219,5 +182,45 @@ abstract class SimpleEntity implements EntityInterface
     private function has(string $property): bool
     {
         return $this->resolveProperty($property) !== null;
+    }
+
+    /**
+     * Resolve property without case sensitivity or special characters, resolves property such as
+     * addressStreet to addressstreet, address_street or ADDRESSSTREET.
+     *
+     * @param string $property The property to resolve
+     *
+     * @return string|null
+     */
+    private function resolveProperty(string $property): ?string
+    {
+        // All properties will be camel case within the object
+        $property = \lcfirst($property);
+
+        return \property_exists($this, $property)
+            ? $property :
+            (new Arr())->search($this->getObjectProperties(), $property);
+    }
+
+    /**
+     * Set the value for a property.
+     *
+     * @param string $property The property to set
+     * @param mixed $value The value to set
+     *
+     * @return mixed The entity the set method was called on
+     */
+    private function set(string $property, $value)
+    {
+        $resolved = (string)$this->resolveProperty($property);
+
+        // Set property value, prefer setter over direct set
+        $setter = \sprintf('set%s', \ucfirst($resolved));
+        $callable = [$this, $setter];
+        \method_exists($this, $setter) === true && \is_callable($callable) === true ?
+            $callable($value) :
+            $this->{$resolved} = $value;
+
+        return $this;
     }
 }

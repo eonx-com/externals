@@ -41,7 +41,9 @@ return PhpCsFixer\Config::create()
         'comment_to_phpdoc' => true,
 
         // Enforces no space around the concat operator
-        'concat_space' => true,
+        'concat_space' => [
+            'spacing' => 'one'
+        ],
 
         // No spaces around declare equals
         'declare_equal_normalize' => [
@@ -65,9 +67,6 @@ return PhpCsFixer\Config::create()
         // Enforces explicit variables
         'explicit_indirect_variable' => true,
         'explicit_string_variable' => true,
-
-        // Enforce all classes are final or abstract
-//        'final_class' => true,
 
         // Replaces some core function calls to statics
         'function_to_constant' => true,

@@ -60,7 +60,7 @@ final class SoftDeleteEventSubscriber extends SoftDeleteableListener
     }
 
     /**
-     * Detach soft deleted items from entity manager
+     * Detach soft deleted items from entity manager.
      *
      * @param \Doctrine\Common\EventArgs $args Event arguments
      *

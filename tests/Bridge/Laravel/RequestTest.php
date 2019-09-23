@@ -13,7 +13,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class RequestTest extends TestCase
 {
     /**
-     * Test client ip is read from header
+     * Test client ip is read from header.
      *
      * @return void
      *
@@ -30,7 +30,7 @@ class RequestTest extends TestCase
         // Test proxy header is ignored if proxy isn't trusted
         $request = new Request(new HttpRequest([], [], [], [], [], [
             'HTTP_X_FORWARDED_FOR' => '192.168.10.10',
-            'REMOTE_ADDR' => '127.0.0.1'
+            'REMOTE_ADDR' => '127.0.0.1',
         ]));
         self::assertSame('127.0.0.1', $request->getClientIp());
 
@@ -38,13 +38,13 @@ class RequestTest extends TestCase
         HttpRequest::setTrustedProxies(['127.0.0.1/24'], HttpRequest::HEADER_X_FORWARDED_ALL);
         $request = new Request(new HttpRequest([], [], [], [], [], [
             'HTTP_X_FORWARDED_FOR' => '192.168.10.10',
-            'REMOTE_ADDR' => '127.0.0.1'
+            'REMOTE_ADDR' => '127.0.0.1',
         ]));
         self::assertSame('192.168.10.10', $request->getClientIp());
     }
 
     /**
-     * Test request can retrieve headers as expected
+     * Test request can retrieve headers as expected.
      *
      * @return void
      */
@@ -74,7 +74,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * Test request works as expected
+     * Test request works as expected.
      *
      * @return void
      */
@@ -91,7 +91,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * Test replacing data in the request
+     * Test replacing data in the request.
      *
      * @return void
      */

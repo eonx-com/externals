@@ -14,7 +14,7 @@ final class DateNotEqualToValidator extends AbstractDateConstraintValidator
     private $inner;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \Symfony\Component\Validator\Constraints\NotEqualToValidator $inner
      */

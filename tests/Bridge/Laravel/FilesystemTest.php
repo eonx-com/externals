@@ -39,7 +39,7 @@ class FilesystemTest extends TestCase
     }
 
     /**
-     * Test filesystem can retrieve files from disk
+     * Test filesystem can retrieve files from disk.
      *
      * @return void
      *
@@ -51,7 +51,7 @@ class FilesystemTest extends TestCase
 
         $filenames = [
             'test/test.txt',
-            'test/sub-directory/test.txt'
+            'test/sub-directory/test.txt',
         ];
 
         foreach ($filenames as $filename) {
@@ -68,7 +68,7 @@ class FilesystemTest extends TestCase
     }
 
     /**
-     * Test filesystem can write files to disk
+     * Test filesystem can write files to disk.
      *
      * @return void
      *
@@ -90,7 +90,7 @@ class FilesystemTest extends TestCase
     }
 
     /**
-     * Test reading a file which doesn't exists throws an exception
+     * Test reading a file which doesn't exists throws an exception.
      *
      * @return void
      *
@@ -106,7 +106,7 @@ class FilesystemTest extends TestCase
     }
 
     /**
-     * Test reading a file which doesn't exists throws an exception
+     * Test reading a file which doesn't exists throws an exception.
      *
      * @return void
      *
@@ -120,7 +120,7 @@ class FilesystemTest extends TestCase
     }
 
     /**
-     * Create a filesystem instance for testing
+     * Create a filesystem instance for testing.
      *
      * @return \EoneoPay\Externals\Bridge\Laravel\Filesystem
      *

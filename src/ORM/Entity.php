@@ -17,7 +17,7 @@ use EoneoPay\Utils\XmlConverter;
 abstract class Entity extends SimpleEntity implements MagicEntityInterface
 {
     /**
-     * Create a new entity
+     * Create a new entity.
      *
      * @param mixed[]|null $data The data to populate the entity with
      */
@@ -65,7 +65,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
 
     /**
      * Resolve property without case sensitivity or special characters, resolves property such as
-     * addressStreet to addressstreet, address_street or ADDRESSSTREET
+     * addressStreet to addressstreet, address_street or ADDRESSSTREET.
      *
      * Method copied/overridden and suppressed to keep it private. Protected methods
      * will be usable from entities but this method should remain private.
@@ -127,7 +127,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * Determine if a property is fillable
+     * Determine if a property is fillable.
      *
      * @param string $property
      *
@@ -150,7 +150,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
          *  - The property must exist
          *  - The model must not be guarded and
          *  - The property must not be guarded and
-         *  - The model or property must be fillable
+         *  - The model or property must be fillable.
          */
         return $resolved !== null &&
             \in_array('*', $this->getGuardedProperties(), true) === false &&
@@ -167,7 +167,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * Resolve a method on the entity which may or may not exist
+     * Resolve a method on the entity which may or may not exist.
      *
      * @param string $method The name of the method to invoke if it exists
      * @param mixed[]|null $args
@@ -190,7 +190,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * Get a list of attributes or keys which can't be filled, by default nothing is guarded
+     * Get a list of attributes or keys which can't be filled, by default nothing is guarded.
      *
      * @return string[]
      */
@@ -218,7 +218,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * Serialize entity as an array
+     * Serialize entity as an array.
      *
      * @return mixed[]
      */
@@ -246,7 +246,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * Associate an entity in a bidirectional way from the owning side
+     * Associate an entity in a bidirectional way from the owning side.
      *
      * @param string $attribute The attribute on the entity for the many to one association
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $parent The entity to associate
@@ -305,7 +305,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * Get property value via getter
+     * Get property value via getter.
      *
      * @param string $property The property to get
      *
@@ -354,7 +354,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * Associate an entity in a bidirectional way on a N-N relation
+     * Associate an entity in a bidirectional way on a N-N relation.
      *
      * @param string $attribute The attribute on the first entity for the many to many association
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $parent The entity to associate
@@ -377,7 +377,7 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * Update a collection with an entity
+     * Update a collection with an entity.
      *
      * @param string $attribute The attribute which contains the collection
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $child The entity to add to the collection

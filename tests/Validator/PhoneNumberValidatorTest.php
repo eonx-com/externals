@@ -12,7 +12,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class PhoneNumberValidatorTest extends TestCase
 {
     /**
-     * Returns test data for format function
+     * Returns test data for format function.
      *
      * @return mixed[]
      */
@@ -72,7 +72,7 @@ class PhoneNumberValidatorTest extends TestCase
 
         $result = $validator->validate($number);
 
-        static::assertSame($valid, $result);
+        self::assertSame($valid, $result);
     }
 
     /**
@@ -91,6 +91,6 @@ class PhoneNumberValidatorTest extends TestCase
 
         $result = $validator->format($number);
 
-        static::assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 }

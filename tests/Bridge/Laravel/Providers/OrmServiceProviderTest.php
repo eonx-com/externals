@@ -34,9 +34,9 @@ class OrmServiceProviderTest extends ORMTestCase
         $application->instance('config', new Repository([
             'doctrine' => [
                 'replacements' => [
-                    stdClass::class => 'replacement'
-                ]
-            ]
+                    stdClass::class => 'replacement',
+                ],
+            ],
         ]));
 
         // Run service provider

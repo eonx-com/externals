@@ -12,7 +12,7 @@ final class HiddenString
      *
      * @var bool
      */
-    protected $disableInline = true;
+    private $disableInline = true;
 
     /**
      * @var \ParagonIE\HiddenString\HiddenString
@@ -38,7 +38,7 @@ final class HiddenString
     }
 
     /**
-     * Hide its internal state from var_dump()
+     * Hide its internal state from var_dump().
      *
      * @return mixed[]
      */
@@ -54,11 +54,8 @@ final class HiddenString
          */
         // @codeCoverageIgnoreStart
         return [
-            'value' =>
-                '*',
-            'attention' =>
-                'If you need the value of a HiddenString, ' .
-                'invoke getString() instead of dumping it.'
+            'value' => '*',
+            'attention' => 'If you need the value of a HiddenString, ' . 'invoke getString() instead of dumping it.',
         ];
         // @codeCoverageIgnoreEnd
     }

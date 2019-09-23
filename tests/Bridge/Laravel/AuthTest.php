@@ -13,7 +13,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class AuthTest extends TestCase
 {
     /**
-     * Test auth passthrough to factory
+     * Test auth passthrough to factory.
      *
      * @return void
      */

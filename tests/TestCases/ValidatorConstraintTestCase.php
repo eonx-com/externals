@@ -16,7 +16,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class ValidatorConstraintTestCase extends TestCase
 {
     /**
-     * Builds a fake ExecutionContext
+     * Builds a fake ExecutionContext.
      *
      * @param \Symfony\Component\Validator\Constraint $constraint
      *

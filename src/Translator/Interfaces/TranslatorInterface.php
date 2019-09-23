@@ -6,7 +6,7 @@ namespace EoneoPay\Externals\Translator\Interfaces;
 interface TranslatorInterface
 {
     /**
-     * Get a value from the language file
+     * Get a value from the language file.
      *
      * @param string $key The key to fetch the message for
      * @param mixed[]|null $replace Attributes to replace within the message
@@ -17,7 +17,7 @@ interface TranslatorInterface
     public function get(string $key, ?array $replace = null, ?string $locale = null);
 
     /**
-     * Get a value from the language file and ensure a string is always returned
+     * Get a value from the language file and ensure a string is always returned.
      *
      * @param string $key The key to fetch the message for
      * @param mixed[]|null $replace Attributes to replace within the message

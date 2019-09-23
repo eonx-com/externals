@@ -17,7 +17,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class ExceptionHandlerTest extends TestCase
 {
     /**
-     * Tests that the handle method throws a ConnectException as a NetworkException
+     * Tests that the handle method throws a ConnectException as a NetworkException.
      *
      * @return void
      *
@@ -48,8 +48,8 @@ class ExceptionHandlerTest extends TestCase
         $instance = $this->getInstance();
         $response = $instance->handle($request, $requestException);
 
-        static::assertSame(500, $response->getStatusCode());
-        static::assertSame('{"exception":"Something happened"}', $response->getBody()->__toString());
+        self::assertSame(500, $response->getStatusCode());
+        self::assertSame('{"exception":"Something happened"}', $response->getBody()->__toString());
     }
 
     /**
@@ -68,11 +68,11 @@ class ExceptionHandlerTest extends TestCase
         $instance = $this->getInstance();
         $actual = $instance->handle($request, $requestException);
 
-        static::assertSame($response, $actual);
+        self::assertSame($response, $actual);
     }
 
     /**
-     * Creates an instance
+     * Creates an instance.
      *
      * @return \EoneoPay\Externals\HttpClient\ExceptionHandler
      */

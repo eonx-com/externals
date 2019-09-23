@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints\LessThanOrEqual;
  *
  * @noinspection EmptyClassInspection
  *
- * @Annotation
+ * @Annotation()
  *
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */

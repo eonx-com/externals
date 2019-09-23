@@ -14,7 +14,7 @@ class DateConstraintValidatorStub extends AbstractDateConstraintValidator
     private $inner;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \Symfony\Component\Validator\ConstraintValidatorInterface $inner
      */

@@ -14,14 +14,14 @@ use Tests\EoneoPay\Externals\TestCases\ValidatorConstraintTestCase;
 class DateEqualToValidatorTest extends ValidatorConstraintTestCase
 {
     /**
-     * Test that the validator wraps a EqualTo validator
+     * Test that the validator wraps a EqualTo validator.
      *
      * @return void
      */
     public function testValidationPassthrough(): void
     {
         $constraint = new DateEqualTo([
-            'value' => '2019-07-01T00:00:00Z'
+            'value' => '2019-07-01T00:00:00Z',
         ]);
 
         $context = $this->buildContext($constraint);
@@ -32,6 +32,6 @@ class DateEqualToValidatorTest extends ValidatorConstraintTestCase
 
         $validator->validate('2019-07-01T00:00:00Z', $constraint);
 
-        static::assertCount(0, $context->getViolations());
+        self::assertCount(0, $context->getViolations());
     }
 }

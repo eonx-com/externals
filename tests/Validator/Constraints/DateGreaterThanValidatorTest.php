@@ -14,14 +14,14 @@ use Tests\EoneoPay\Externals\TestCases\ValidatorConstraintTestCase;
 class DateGreaterThanValidatorTest extends ValidatorConstraintTestCase
 {
     /**
-     * Test that the validator wraps a GreaterThan validator
+     * Test that the validator wraps a GreaterThan validator.
      *
      * @return void
      */
     public function testValidationPassthrough(): void
     {
         $constraint = new DateGreaterThan([
-            'value' => '2019-07-01T00:00:00Z'
+            'value' => '2019-07-01T00:00:00Z',
         ]);
 
         $context = $this->buildContext($constraint);
@@ -32,6 +32,6 @@ class DateGreaterThanValidatorTest extends ValidatorConstraintTestCase
 
         $validator->validate('2020-04-05T12:34:55Z', $constraint);
 
-        static::assertCount(0, $context->getViolations());
+        self::assertCount(0, $context->getViolations());
     }
 }

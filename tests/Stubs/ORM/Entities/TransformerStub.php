@@ -7,9 +7,9 @@ use EoneoPay\Externals\ORM\Entity;
 use EoneoPay\Externals\ORM\Traits\HasTransformers;
 
 /**
- * @method null|bool getBool()
- * @method null|\DateTime getDatetime()
- * @method null|string getString()
+ * @method bool|null getBool()
+ * @method \DateTime|null getDatetime()
+ * @method string|null getString()
  * @method self setBool($bool)
  * @method self setDatetime($datetime)
  * @method self setString($string)
@@ -34,7 +34,7 @@ class TransformerStub extends Entity
     protected $string;
 
     /**
-     * Serialize entity as an array
+     * Serialize entity as an array.
      *
      * @return mixed[]
      */
@@ -43,7 +43,7 @@ class TransformerStub extends Entity
         return [
             'bool' => $this->bool,
             'datetime' => $this->datetime !== null ? $this->datetime->format('d/m/Y') : null,
-            'string' => $this->string
+            'string' => $this->string,
         ];
     }
 

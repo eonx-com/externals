@@ -8,28 +8,28 @@ use Illuminate\Contracts\Auth\Factory;
 class AuthStub implements Factory
 {
     /**
-     * Driver in use
+     * Driver in use.
      *
      * @var mixed
      */
     private $driver;
 
     /**
-     * Guards called
+     * Guards called.
      *
      * @var string[]
      */
     private $guards = [];
 
     /**
-     * Uses called
+     * Uses called.
      *
      * @var string[]
      */
     private $uses = [];
 
     /**
-     * Get specified driver
+     * Get specified driver.
      *
      * @return mixed
      */
@@ -39,7 +39,7 @@ class AuthStub implements Factory
     }
 
     /**
-     * Get guards used
+     * Get guards used.
      *
      * @return string[]
      */
@@ -49,7 +49,7 @@ class AuthStub implements Factory
     }
 
     /**
-     * Get uses used
+     * Get uses used.
      *
      * @return string[]
      */
@@ -70,7 +70,7 @@ class AuthStub implements Factory
     }
 
     /**
-     * Set default driver
+     * Set default driver.
      *
      * @param mixed $name
      *

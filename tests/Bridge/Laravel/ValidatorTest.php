@@ -15,7 +15,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class ValidatorTest extends TestCase
 {
     /**
-     * Test validatedData method return empty array if validation failed
+     * Test validatedData method return empty array if validation failed.
      *
      * @return void
      */
@@ -33,7 +33,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * Test validatedData method return correct values
+     * Test validatedData method return correct values.
      *
      * @return void
      */
@@ -51,7 +51,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * Test error messages work as expected
+     * Test error messages work as expected.
      *
      * @return void
      */
@@ -64,7 +64,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * Test validator can validate data
+     * Test validator can validate data.
      *
      * @return void
      */
@@ -74,7 +74,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * Create validation instance
+     * Create validation instance.
      *
      * @return \EoneoPay\Externals\Bridge\Laravel\Validator
      */
