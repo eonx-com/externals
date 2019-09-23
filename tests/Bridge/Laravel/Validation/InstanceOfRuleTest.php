@@ -8,6 +8,7 @@ use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
+use stdClass;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
@@ -29,31 +30,31 @@ class InstanceOfRuleTest extends TestCase
 
         // If key1 is an instance of expected object rule should pass
         self::assertTrue($validator->validate(
-            ['key1' => new \stdClass()],
-            ['key1' => 'instance_of:' . \stdClass::class]
+            ['key1' => new stdClass()],
+            ['key1' => 'instance_of:' . stdClass::class]
         ));
 
         // If key1 is not an instance of expected object rule should fail
         self::assertFalse($validator->validate(
-            ['key1' => new \stdClass()],
+            ['key1' => new stdClass()],
             ['key1' => 'instance_of:' . EntityInterface::class]
         ));
 
         // Rule should take in consideration all parameters
         self::assertTrue($validator->validate(
-            ['key1' => new \stdClass()],
-            ['key1' => \sprintf('instance_of:%s,%s', EntityInterface::class, \stdClass::class)]
+            ['key1' => new stdClass()],
+            ['key1' => \sprintf('instance_of:%s,%s', EntityInterface::class, stdClass::class)]
         ));
 
         // If no value provided rule should pass
         self::assertTrue($validator->validate(
             ['key1' => null],
-            ['key1' => 'instance_of:' . \stdClass::class]
+            ['key1' => 'instance_of:' . stdClass::class]
         ));
 
         // If no parameter provided rule should fail
         self::assertFalse($validator->validate(
-            ['key1' => new \stdClass()],
+            ['key1' => new stdClass()],
             ['key1' => 'instance_of']
         ));
 

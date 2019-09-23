@@ -56,7 +56,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function basePath()
+    public function basePath($path = null)
     {
     }
 
@@ -458,6 +458,14 @@ class ApplicationStub implements Application, ArrayAccess
     public function singleton($abstract, $concrete = null): void
     {
         $this->callMethod('singleton', [$abstract, $concrete]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function singletonIf($abstract, $concrete = null): void
+    {
+        $this->callMethod('singletonIf', [$abstract, $concrete]);
     }
 
     /**

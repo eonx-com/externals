@@ -30,7 +30,7 @@ final class Translator implements TranslatorInterface
      */
     public function get(string $key, ?array $replace = null, ?string $locale = null)
     {
-        return $this->translator->trans($key, $replace ?? [], $locale);
+        return $this->translator->get($key, $replace ?? [], $locale);
     }
 
     /**
