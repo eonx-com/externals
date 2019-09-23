@@ -9,14 +9,14 @@ use Illuminate\Http\Request as HttpRequest;
 final class Request implements RequestInterface
 {
     /**
-     * Incoming http request
+     * Incoming http request.
      *
      * @var \Illuminate\Http\Request
      */
     private $request;
 
     /**
-     * Create new request instance
+     * Create new request instance.
      *
      * @param \Illuminate\Http\Request $request Incoming http request
      */

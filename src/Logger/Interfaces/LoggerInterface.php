@@ -9,7 +9,7 @@ use Throwable;
 interface LoggerInterface extends BaseInterface
 {
     /**
-     * Record a caught exception with backtrace
+     * Record a caught exception with backtrace.
      *
      * @param \Throwable $exception The exception to handle
      * @param string|null $level The log level for this exception

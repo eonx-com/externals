@@ -19,7 +19,7 @@ class NetworkException extends RuntimeException implements NetworkExceptionInter
     private $request;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \Psr\Http\Message\RequestInterface $request
      * @param \Throwable $previous

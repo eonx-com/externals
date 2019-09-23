@@ -29,7 +29,7 @@ final class EmptyWithRule implements ValidationRuleInterface
         return static function (
             string $message,
             string $attribute,
-            /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $rule,
+            string $rule,
             array $parameters
         ): string {
             return \str_replace([':attribute', ':values'], [$attribute, \implode(' / ', $parameters)], $message);
@@ -45,8 +45,8 @@ final class EmptyWithRule implements ValidationRuleInterface
     {
         // Ensure that the field is empty if one of the specified parameters isn't
         return static function (
-            /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $attribute,
-            /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ $value,
+            string $attribute,
+            $value,
             array $parameters,
             Validator $validator
         ): bool {

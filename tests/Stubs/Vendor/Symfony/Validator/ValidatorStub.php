@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ValidatorStub implements ValidatorInterface
 {
     /**
-     * The calls to validate()
+     * The calls to validate().
      *
      * @var mixed[]
      */
@@ -25,7 +25,7 @@ class ValidatorStub implements ValidatorInterface
     private $violations;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \Symfony\Component\Validator\ConstraintViolation[][]|null $violations
      */

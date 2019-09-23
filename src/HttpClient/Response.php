@@ -12,7 +12,7 @@ final class Response implements ResponseInterface
     use MessageTrait;
 
     /**
-     * Map of standard HTTP status code/reason phrases
+     * Map of standard HTTP status code/reason phrases.
      *
      * This array was copy and pasted shamelessly from the Zend Diactoros
      * implementation because it wasnt part of the trait.
@@ -90,7 +90,7 @@ final class Response implements ResponseInterface
         508 => 'Loop Detected',
         510 => 'Not Extended',
         511 => 'Network Authentication Required',
-        599 => 'Network Connect Timeout Error'
+        599 => 'Network Connect Timeout Error',
     ];
 
     /**
@@ -123,7 +123,7 @@ final class Response implements ResponseInterface
      */
     public function getContent(): string
     {
-        return $this->getBody()->__toString();
+        return (string)$this->getBody();
     }
 
     /**

@@ -26,7 +26,7 @@ final class LoggingClient implements ClientInterface
     private $logger;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \EoneoPay\Externals\HttpClient\Interfaces\ClientInterface $client
      * @param \EoneoPay\Externals\Logger\Interfaces\LoggerInterface $logger
@@ -39,30 +39,8 @@ final class LoggingClient implements ClientInterface
 
     /**
      * {@inheritdoc}
-     */
-    public function sendRequest(RequestInterface $request, ?array $options = null): PsrResponseInterface
-    {
-        $this->logRequest($request, $options);
-
-        try {
-            $response = $this->client->sendRequest($request, $options);
-        } catch (Exception $exception) {
-            $this->logException($exception, $request);
-
-            // To avoid type hinting @throws \Exception, we suppress this throw - it is only
-            // intended to rethrow things that other ClientInterface implementations may throw.
-
-            /** @noinspection PhpUnhandledExceptionInspection */
-            throw $exception;
-        }
-
-        $this->logResponse($response, $request);
-
-        return $response;
-    }
-
-    /**
-     * {@inheritdoc}
+     *
+     * @throws \Exception Rethrows any exception caught from Guzzle
      */
     public function request(string $method, string $uri, ?array $options = null): ResponseInterface
     {
@@ -94,10 +72,36 @@ final class LoggingClient implements ClientInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @throws \Exception Rethrows any exception caught from Guzzle
+     */
+    public function sendRequest(RequestInterface $request, ?array $options = null): PsrResponseInterface
+    {
+        $this->logRequest($request, $options);
+
+        try {
+            $response = $this->client->sendRequest($request, $options);
+        } catch (Exception $exception) {
+            $this->logException($exception, $request);
+
+            // To avoid type hinting @throws \Exception, we suppress this throw - it is only
+            // intended to rethrow things that other ClientInterface implementations may throw.
+
+            /** @noinspection PhpUnhandledExceptionInspection */
+            throw $exception;
+        }
+
+        $this->logResponse($response, $request);
+
+        return $response;
+    }
+
+    /**
      * Log the request exception.
      *
      * @param \Exception $exception
-     * @param null|\Psr\Http\Message\RequestInterface $request
+     * @param \Psr\Http\Message\RequestInterface|null $request
      *
      * @return void
      */
@@ -125,12 +129,12 @@ final class LoggingClient implements ClientInterface
 
         $this->logger->exception($exception, null, [
             'request' => $request !== null ? str($request) : null,
-            'uri' => $request !== null ? $request->getUri()->__toString() : null
+            'uri' => $request !== null ? (string)$request->getUri() : null,
         ]);
     }
 
     /**
-     * Log the outgoing request
+     * Log the outgoing request.
      *
      * @param \Psr\Http\Message\RequestInterface $request
      * @param mixed[]|null $options The options to send with the request
@@ -142,12 +146,12 @@ final class LoggingClient implements ClientInterface
         $this->logger->info('HTTP Request Sent', [
             'options' => $options ?? [],
             'request' => str($request),
-            'uri' => $request->getUri()->__toString()
+            'uri' => (string)$request->getUri(),
         ]);
     }
 
     /**
-     * Log the received response
+     * Log the received response.
      *
      * @param \Psr\Http\Message\ResponseInterface $response The received response
      * @param \Psr\Http\Message\RequestInterface $request
@@ -160,7 +164,7 @@ final class LoggingClient implements ClientInterface
             'request' => $request !== null ? str($request) : null,
             'response' => str($response),
             'statusCode' => $response->getStatusCode(),
-            'uri' => $request !== null ? $request->getUri()->__toString() : null
+            'uri' => $request !== null ? (string)$request->getUri() : null,
         ]);
 
         if ($response->getBody()->isSeekable()) {

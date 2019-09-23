@@ -25,7 +25,7 @@ use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 class EntityManagerTest extends ORMTestCase
 {
     /**
-     * Custom repository should be able to call createQueryBuilder() even though it's protected
+     * Custom repository should be able to call createQueryBuilder() even though it's protected.
      *
      * @return void
      */
@@ -72,7 +72,7 @@ class EntityManagerTest extends ORMTestCase
     }
 
     /**
-     * Test custom repository throw exception if it doesn't implement the right interface
+     * Test custom repository throw exception if it doesn't implement the right interface.
      *
      * @return void
      */
@@ -147,7 +147,7 @@ class EntityManagerTest extends ORMTestCase
     }
 
     /**
-     * Test repository method findByIds
+     * Test repository method findByIds.
      *
      * @return void
      */
@@ -168,10 +168,10 @@ class EntityManagerTest extends ORMTestCase
 
         $result = $this->getEntityManager()->findByIds(EntityStub::class, $ids);
 
-        static::assertCount(3, $result);
-        static::assertContains($entity1, $result);
-        static::assertContains($entity2, $result);
-        static::assertContains($entity3, $result);
+        self::assertCount(3, $result);
+        self::assertContains($entity1, $result);
+        self::assertContains($entity2, $result);
+        self::assertContains($entity3, $result);
     }
 
     /**

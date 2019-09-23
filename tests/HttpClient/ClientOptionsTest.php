@@ -13,7 +13,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class ClientOptionsTest extends TestCase
 {
     /**
-     * Tests that the internal `parseTimeoutValue` method correctly
+     * Tests that the internal `parseTimeoutValue` method correctly.
      *
      * @return void
      */
@@ -21,6 +21,7 @@ class ClientOptionsTest extends TestCase
     {
         $options = new ClientOptions();
 
+        /** @noinspection PhpStrictTypeCheckingInspection Phpstorm sees this negative value as an integer */
         $options->setConnectTimeout(-123.45);
 
         self::assertSame(0.0, $options->getConnectTimeout());
@@ -85,7 +86,7 @@ class ClientOptionsTest extends TestCase
         $expected = [
             RequestOptions::READ_TIMEOUT => 6.0,
             RequestOptions::CONNECT_TIMEOUT => 1.2,
-            RequestOptions::TIMEOUT => 1.3
+            RequestOptions::TIMEOUT => 1.3,
         ];
 
         $result = $options->toArray();

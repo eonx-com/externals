@@ -63,14 +63,11 @@ class HiddenStringTest extends TestCase
         $name = 'ABC';
         $password = new HiddenString('secret');
 
-        $data = [
-            'name' => $name,
-            'password' => $password
-        ];
+        $data = \compact('name', 'password');
 
         $serialized = \serialize($data);
 
-        self::assertNotFalse(\strpos($serialized, 'ABC'));
-        self::assertFalse(\strpos($serialized, 'secret'));
+        self::assertNotFalse(\mb_strpos($serialized, 'ABC'));
+        self::assertFalse(\mb_strpos($serialized, 'secret'));
     }
 }

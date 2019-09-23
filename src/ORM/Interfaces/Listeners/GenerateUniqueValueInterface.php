@@ -6,21 +6,21 @@ namespace EoneoPay\Externals\ORM\Interfaces\Listeners;
 interface GenerateUniqueValueInterface
 {
     /**
-     * Returns if generators are enabled or not
+     * Returns if generators are enabled or not.
      *
      * @return bool
      */
     public function areGeneratorsEnabled(): bool;
 
     /**
-     * Disable generators
+     * Disable generators.
      *
      * @return static
      */
     public function disableGenerators();
 
     /**
-     * Enable generators
+     * Enable generators.
      *
      * @return static
      */
@@ -34,7 +34,7 @@ interface GenerateUniqueValueInterface
     public function getGeneratedProperty(): string;
 
     /**
-     * Length of value to be generated (after check digit)
+     * Length of value to be generated (after check digit).
      *
      * @return int
      */

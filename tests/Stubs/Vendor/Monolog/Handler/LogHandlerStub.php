@@ -39,7 +39,7 @@ class LogHandlerStub extends AbstractProcessingHandler
     }
 
     /**
-     * Writes the record down to the log of the implementing handler
+     * Writes the record down to the log of the implementing handler.
      *
      * @param mixed[] $record
      *

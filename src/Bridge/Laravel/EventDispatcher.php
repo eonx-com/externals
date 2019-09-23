@@ -14,7 +14,7 @@ final class EventDispatcher implements EventDispatcherInterface
     private $dispatcher;
 
     /**
-     * Create event dispatcher
+     * Create event dispatcher.
      *
      * @param \Illuminate\Contracts\Events\Dispatcher $dispatcher
      */

@@ -13,7 +13,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class ResponseTest extends TestCase
 {
     /**
-     * Test response object
+     * Test response object.
      *
      * @return void
      */

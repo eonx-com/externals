@@ -12,7 +12,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class FilterTest extends TestCase
 {
     /**
-     * Test that the annotation targets classes
+     * Test that the annotation targets classes.
      *
      * @return void
      */

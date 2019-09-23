@@ -13,28 +13,28 @@ use EoneoPay\Externals\Environment\Interfaces\LoaderInterface;
 final class Loader implements LoaderInterface
 {
     /**
-     * Relative path to compiled env file
+     * Relative path to compiled env file.
      *
      * @var string
      */
     private $compiled;
 
     /**
-     * Relative path to env file
+     * Relative path to env file.
      *
      * @var string
      */
     private $env;
 
     /**
-     * Path to load env from
+     * Path to load env from.
      *
      * @var string
      */
     private $path;
 
     /**
-     * Create a new loader instance
+     * Create a new loader instance.
      *
      * @param string $path The path to load the env file from
      * @param string|null $compiled Relative path to compiled env file
@@ -68,7 +68,7 @@ final class Loader implements LoaderInterface
     }
 
     /**
-     * Get compiled array
+     * Get compiled array.
      *
      * @return mixed[]|null
      */
@@ -91,7 +91,7 @@ final class Loader implements LoaderInterface
     }
 
     /**
-     * Process an env file
+     * Process an env file.
      *
      * @param bool|null $overload Whether to overwrite existing values or not
      *

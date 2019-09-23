@@ -14,12 +14,12 @@ use Tests\EoneoPay\Externals\Stubs\ORM\Exceptions\EntityValidationFailedExceptio
 class ValidationRulesStub extends Entity implements ValidatableInterface
 {
     /**
-     * Primary id
+     * Primary id.
      *
      * @var string
      *
      * @ORM\Column(type="string", length=36)
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      */
     protected $entityId;
@@ -35,14 +35,6 @@ class ValidationRulesStub extends Entity implements ValidatableInterface
     public function getRules(): array
     {
         return $this->rules ?? [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getValidatableProperties(): array
-    {
-        return $this->getObjectProperties();
     }
 
     /**

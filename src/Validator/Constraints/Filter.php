@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * Run a filter_var call on a property.
  *
- * @Annotation
+ * @Annotation()
  *
  * @Target({"METHOD", "PROPERTY"})
  */

@@ -24,7 +24,7 @@ use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 class EntityTest extends ORMTestCase
 {
     /**
-     * Data to populate the entity with for testing
+     * Data to populate the entity with for testing.
      *
      * @var mixed[]
      */
@@ -32,7 +32,7 @@ class EntityTest extends ORMTestCase
         'entityId' => null,
         'integer' => 1,
         'string' => 'test@test.com',
-        'deletedAt' => null
+        'deletedAt' => null,
     ];
 
     /**
@@ -77,7 +77,7 @@ class EntityTest extends ORMTestCase
         $this->getDoctrineEntityManager()->clear();
 
         $childRetrieve = $this->getEntityManager()->getRepository(MultiChildStub::class)->findOneBy([
-            'value' => 'my-value'
+            'value' => 'my-value',
         ]);
 
         // Check we have the right type
@@ -160,7 +160,7 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Test associate on invalid property throws an exception
+     * Test associate on invalid property throws an exception.
      *
      * @return void
      */
@@ -191,7 +191,7 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Test constructor fills entity with data
+     * Test constructor fills entity with data.
      *
      * @return void
      */
@@ -202,7 +202,7 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Test associate allows disassociation
+     * Test associate allows disassociation.
      *
      * @return void
      * */
@@ -228,7 +228,7 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Test array is fillable by calling fill
+     * Test array is fillable by calling fill.
      *
      * @return void
      */
@@ -256,10 +256,10 @@ class EntityTest extends ORMTestCase
         $entity->__initializer__ = true;
         $entity->fill([
             // Due to quirks of the Array search method, the trailing __ is omitted
-            '__initializer' => false
+            '__initializer' => false,
         ]);
 
-        static::assertTrue($entity->__initializer__);
+        self::assertTrue($entity->__initializer__);
     }
 
     /**
@@ -274,16 +274,16 @@ class EntityTest extends ORMTestCase
             'entityId',
             'integer',
             'string',
-            'deletedAt'
+            'deletedAt',
         ];
 
         $properties = $entity->getValidatableProperties();
 
-        static::assertSame($expected, $properties);
+        self::assertSame($expected, $properties);
     }
 
     /**
-     * Test guarded prevents filling certain fields
+     * Test guarded prevents filling certain fields.
      *
      * @return void
      */
@@ -302,7 +302,7 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Test entity can be json serialized
+     * Test entity can be json serialized.
      *
      * @return void
      *
@@ -315,7 +315,7 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Test getting entity data as an array
+     * Test getting entity data as an array.
      *
      * @return void
      *
@@ -328,7 +328,7 @@ class EntityTest extends ORMTestCase
     }
 
     /**
-     * Test getting entity data as json
+     * Test getting entity data as json.
      *
      * @return void
      *

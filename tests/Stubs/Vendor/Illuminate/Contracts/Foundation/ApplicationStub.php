@@ -17,14 +17,14 @@ use Illuminate\Contracts\Foundation\Application;
 class ApplicationStub implements Application, ArrayAccess
 {
     /**
-     * Container bindings
+     * Container bindings.
      *
      * @var \Illuminate\Container\Container
      */
     private $container;
 
     /**
-     * Create container
+     * Create container.
      */
     public function __construct()
     {
@@ -56,7 +56,7 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function basePath()
+    public function basePath($path = null)
     {
     }
 
@@ -463,6 +463,14 @@ class ApplicationStub implements Application, ArrayAccess
     /**
      * {@inheritdoc}
      */
+    public function singletonIf($abstract, $concrete = null): void
+    {
+        $this->callMethod('singletonIf', [$abstract, $concrete]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function storagePath()
     {
     }
@@ -503,7 +511,7 @@ class ApplicationStub implements Application, ArrayAccess
     }
 
     /**
-     * Call a container method
+     * Call a container method.
      *
      * @param string $method The method to call
      * @param mixed[]|null $parameters Parameters to pass to the method

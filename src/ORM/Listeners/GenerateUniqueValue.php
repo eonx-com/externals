@@ -14,7 +14,7 @@ use EoneoPay\Utils\CheckDigit;
 use EoneoPay\Utils\Interfaces\GeneratorInterface;
 
 /**
- * Doctrine listener that will be applied to entities that have the following interface implemented
+ * Doctrine listener that will be applied to entities that have the following interface implemented.
  *
  * @see \EoneoPay\Externals\ORM\Interfaces\Listeners\GenerateUniqueValueInterface
  * @see \EoneoPay\Externals\ORM\Interfaces\Listeners\GenerateUniqueValueWithCallbackInterface
@@ -31,7 +31,7 @@ final class GenerateUniqueValue
     private $generator;
 
     /**
-     * Translator instance
+     * Translator instance.
      *
      * @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface
      */
@@ -50,7 +50,7 @@ final class GenerateUniqueValue
     }
 
     /**
-     * Generate unique value for property if required
+     * Generate unique value for property if required.
      *
      * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Event arguments
      *
@@ -90,7 +90,7 @@ final class GenerateUniqueValue
     }
 
     /**
-     * Determine if this entity requires generation
+     * Determine if this entity requires generation.
      *
      * @param mixed $entity The entity to check
      *
@@ -105,7 +105,7 @@ final class GenerateUniqueValue
     }
 
     /**
-     * Generate a random value for this entity
+     * Generate a random value for this entity.
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\Listeners\GenerateUniqueValueInterface $entity Entity to generate for
      * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Life cycle call back arguments
@@ -127,7 +127,6 @@ final class GenerateUniqueValue
             $entity->getGeneratedPropertyLength() - 1 :
             $entity->getGeneratedPropertyLength();
         $property = $entity->getGeneratedProperty();
-
 
         // Try 100 times to obtain a unique value
         for ($count = 0; $count < 100; $count++) {

@@ -14,7 +14,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class NetworkExceptionTest extends TestCase
 {
     /**
-     * Test exception returns the correct error codes
+     * Test exception returns the correct error codes.
      *
      * @return void
      */

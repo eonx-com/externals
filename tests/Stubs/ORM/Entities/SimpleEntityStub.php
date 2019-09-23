@@ -34,27 +34,27 @@ class SimpleEntityStub extends SimpleEntity
     use SoftDeletes;
 
     /**
-     * Primary id
+     * Primary id.
      *
      * @var string
      *
      * @ORM\Column(name="id", type="string", length=36)
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      */
     protected $entityId;
 
     /**
-     * Integer test
+     * Integer test.
      *
      * @var int
      *
-     * @ORM\Column(type="integer", nullable=true, options={"unsigned": true})
+     * @ORM\Column(type="integer", nullable=true, options={"unsigned" = true})
      */
     protected $integer;
 
     /**
-     * String test
+     * String test.
      *
      * @var string
      *

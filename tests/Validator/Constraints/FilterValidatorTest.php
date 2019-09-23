@@ -17,7 +17,7 @@ use Tests\EoneoPay\Externals\TestCases\ValidatorConstraintTestCase;
 class FilterValidatorTest extends ValidatorConstraintTestCase
 {
     /**
-     * Test bails on empty value
+     * Test bails on empty value.
      *
      * @return void
      */
@@ -30,11 +30,11 @@ class FilterValidatorTest extends ValidatorConstraintTestCase
 
         $validator->validate(null, $constraint);
 
-        static::assertCount(0, $context->getViolations());
+        self::assertCount(0, $context->getViolations());
     }
 
     /**
-     * Test filter int when it is a hex string
+     * Test filter int when it is a hex string.
      *
      * @return void
      */
@@ -42,7 +42,7 @@ class FilterValidatorTest extends ValidatorConstraintTestCase
     {
         $constraint = new Filter([
             'filter' => 'FILTER_VALIDATE_INT',
-            'flags' => ['FILTER_FLAG_ALLOW_HEX']
+            'flags' => ['FILTER_FLAG_ALLOW_HEX'],
         ]);
 
         $context = $this->buildContext($constraint);
@@ -50,11 +50,11 @@ class FilterValidatorTest extends ValidatorConstraintTestCase
 
         $validator->validate('0x5a', $constraint);
 
-        static::assertCount(0, $context->getViolations());
+        self::assertCount(0, $context->getViolations());
     }
 
     /**
-     * Test filter int
+     * Test filter int.
      *
      * @return void
      */
@@ -67,11 +67,11 @@ class FilterValidatorTest extends ValidatorConstraintTestCase
 
         $validator->validate(5, $constraint);
 
-        static::assertCount(0, $context->getViolations());
+        self::assertCount(0, $context->getViolations());
     }
 
     /**
-     * Test filter int when it is a non int string
+     * Test filter int when it is a non int string.
      *
      * @return void
      */
@@ -95,12 +95,12 @@ class FilterValidatorTest extends ValidatorConstraintTestCase
 
         $validator->validate('purple', $constraint);
 
-        static::assertCount(1, $context->getViolations());
-        static::assertEquals($expectedViolation, $context->getViolations()[0]);
+        self::assertCount(1, $context->getViolations());
+        self::assertEquals($expectedViolation, $context->getViolations()[0]);
     }
 
     /**
-     * Test invalid constraint passed
+     * Test invalid constraint passed.
      *
      * @return void
      */

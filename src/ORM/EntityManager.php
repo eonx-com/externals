@@ -18,14 +18,14 @@ use Exception;
 final class EntityManager implements EntityManagerInterface
 {
     /**
-     * Doctrine entity manager
+     * Doctrine entity manager.
      *
      * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $entityManager;
 
     /**
-     * Create an internal entity manager
+     * Create an internal entity manager.
      *
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      */
@@ -142,7 +142,7 @@ final class EntityManager implements EntityManagerInterface
     }
 
     /**
-     * Call a method on the entity manager and catch any exception
+     * Call a method on the entity manager and catch any exception.
      *
      * @param string $method The method to call
      * @param mixed ...$parameters The parameters to pass to the method

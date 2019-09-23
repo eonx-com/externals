@@ -105,7 +105,7 @@ class ClientOptions implements ClientOptionsInterface
         return [
             RequestOptions::CONNECT_TIMEOUT => $this->connectTimeout,
             RequestOptions::READ_TIMEOUT => $this->readTimeout,
-            RequestOptions::TIMEOUT => $this->requestTimeout
+            RequestOptions::TIMEOUT => $this->requestTimeout,
         ];
     }
 

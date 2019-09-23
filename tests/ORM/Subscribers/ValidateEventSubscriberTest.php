@@ -34,7 +34,7 @@ class ValidateEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test no exception is thrown if entity is not validatable
+     * Test no exception is thrown if entity is not validatable.
      *
      * @return void
      */
@@ -50,7 +50,7 @@ class ValidateEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test no exception is thrown if validation passes
+     * Test no exception is thrown if validation passes.
      *
      * @return void
      */
@@ -66,7 +66,7 @@ class ValidateEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test validation throws exception if validation fails pre-persist
+     * Test validation throws exception if validation fails pre-persist.
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class ValidateEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test validation throws exception if validation fails pre-update
+     * Test validation throws exception if validation fails pre-update.
      *
      * @return void
      */
@@ -96,7 +96,7 @@ class ValidateEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Create validate subscriber instance
+     * Create validate subscriber instance.
      *
      * @return \EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber
      */

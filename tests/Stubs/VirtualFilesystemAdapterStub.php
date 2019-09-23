@@ -24,24 +24,24 @@ use SplFileInfo;
 class VirtualFilesystemAdapterStub extends AbstractAdapter
 {
     /**
-     * Default access permissions
+     * Default access permissions.
      *
      * @var mixed[]
      */
     protected static $permissions = [
         'dir' => ['private' => 0700, 'public' => 0755],
-        'file' => ['private' => 0600, 'public' => 0644]
+        'file' => ['private' => 0600, 'public' => 0644],
     ];
 
     /**
-     * Virtual file system instance
+     * Virtual file system instance.
      *
      * @var \org\bovigo\vfs\vfsStreamDirectory
      */
     private static $vfs;
 
     /**
-     * Create virtual file system
+     * Create virtual file system.
      *
      * @param string $root The optional root directly to use
      *
@@ -140,7 +140,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         return [
             'mimetype' => Util\MimeType::detectByFilename($this->applyPathPrefix($path)),
             'path' => $path,
-            'type' => 'file'
+            'type' => 'file',
         ];
     }
 
@@ -169,7 +169,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
 
         \clearstatcache(false, $location);
 
-        $permissions = \octdec(\substr(\sprintf('%o', \fileperms($location)), -4));
+        $permissions = \octdec(\mb_substr(\sprintf('%o', \fileperms($location)), -4));
 
         $visibility = ($permissions & 0044) === 0044 ?
             AdapterInterface::VISIBILITY_PUBLIC :
@@ -310,7 +310,9 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $location = $this->applyPathPrefix($path);
         $this->ensureDirectory(\dirname($location));
 
-        if (($size = \file_put_contents($location, $contents)) === false) {
+        $size = \file_put_contents($location, $contents);
+
+        if ($size === false) {
             return false;
         }
 
@@ -359,10 +361,12 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
                 if ($file->getRealPath() !== false) {
                     \rmdir($file->getRealPath());
                 }
+
                 break;
 
             case 'link':
                 \unlink($file->getPathname());
+
                 break;
 
             default:
@@ -373,7 +377,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * Ensure the root directory exists
+     * Ensure the root directory exists.
      *
      * @param string $folder Folder to check
      *
@@ -426,7 +430,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
      * Get a recursive iterator for specified directory.
      *
      * @param string $path
-     * @param null|int $mode
+     * @param int|null $mode
      *
      * @return \RecursiveIteratorIterator
      */
@@ -467,7 +471,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     {
         $normalized = [
             'type' => $file->getType(),
-            'path' => $this->getFilePath($file)
+            'path' => $this->getFilePath($file),
         ];
 
         $normalized['timestamp'] = $file->getMTime();
@@ -494,7 +498,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
     }
 
     /**
-     * Write a resource to a stream
+     * Write a resource to a stream.
      *
      * @param string $path The path to write to
      * @param mixed $resource The resource to write

@@ -13,14 +13,14 @@ use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 final class ValidateEventSubscriber implements EventSubscriber
 {
     /**
-     * Translator instance
+     * Translator instance.
      *
      * @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface
      */
     private $translator;
 
     /**
-     * Validator instance
+     * Validator instance.
      *
      * @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface
      */
@@ -45,12 +45,12 @@ final class ValidateEventSubscriber implements EventSubscriber
     {
         return [
             Events::prePersist,
-            Events::preUpdate
+            Events::preUpdate,
         ];
     }
 
     /**
-     * Validate entities before persist
+     * Validate entities before persist.
      *
      * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Event arguments
      *
@@ -62,7 +62,7 @@ final class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
-     * Call validator before update
+     * Call validator before update.
      *
      * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Event arguments
      *
@@ -74,7 +74,7 @@ final class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
-     * Call validator on an object
+     * Call validator on an object.
      *
      * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs
      *

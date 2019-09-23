@@ -19,7 +19,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class FilesystemServiceProviderTest extends TestCase
 {
     /**
-     * Test default filesystem is set correctly
+     * Test default filesystem is set correctly.
      *
      * @return void
      *
@@ -84,7 +84,7 @@ class FilesystemServiceProviderTest extends TestCase
     /** @noinspection ReturnTypeCanBeDeclaredInspection Application is nothing else than container */
 
     /**
-     * Create configured application instance
+     * Create configured application instance.
      *
      * @param mixed[]|null $additional Additional configuration entries
      *
@@ -102,11 +102,11 @@ class FilesystemServiceProviderTest extends TestCase
                     'disks' => [
                         'custom' => [
                             'driver' => 'local',
-                            'root' => \sprintf('%s/tmp', \sys_get_temp_dir())
+                            'root' => \sprintf('%s/tmp', \sys_get_temp_dir()),
                         ],
                         'local' => [
                             'driver' => 'local',
-                            'root' => \sys_get_temp_dir()
+                            'root' => \sys_get_temp_dir(),
                         ],
                         's3' => [
                             'driver' => 's3',
@@ -114,10 +114,10 @@ class FilesystemServiceProviderTest extends TestCase
                             'secret' => null,
                             'region' => 'us-west-2',
                             'bucket' => null,
-                            'url' => null
-                        ]
-                    ]
-                ], $additional ?? [])
+                            'url' => null,
+                        ],
+                    ],
+                ], $additional ?? []),
             ]);
         });
 

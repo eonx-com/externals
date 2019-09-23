@@ -14,28 +14,28 @@ use Illuminate\Validation\ValidationException;
 final class Validator implements ValidatorInterface
 {
     /**
-     * Validation factory instance
+     * Validation factory instance.
      *
      * @var \Illuminate\Contracts\Validation\Factory
      */
     private $factory;
 
     /**
-     * Database presence verifier
+     * Database presence verifier.
      *
      * @var \Illuminate\Validation\PresenceVerifierInterface|null
      */
     private $presence;
 
     /**
-     * Validation instance
+     * Validation instance.
      *
      * @var \Illuminate\Validation\Validator
      */
     private $validator;
 
     /**
-     * Create new validation instance
+     * Create new validation instance.
      *
      * @param \Illuminate\Contracts\Validation\Factory $factory Validation factory interface instance
      * @param \Illuminate\Validation\PresenceVerifierInterface|null $presence Database presence verifier
@@ -94,7 +94,7 @@ final class Validator implements ValidatorInterface
     }
 
     /**
-     * Add a dependant custom rule to the validator
+     * Add a dependant custom rule to the validator.
      *
      * @param string $className The class this rule uses
      *
@@ -115,7 +115,7 @@ final class Validator implements ValidatorInterface
     }
 
     /**
-     * Add a custom rule to the validator
+     * Add a custom rule to the validator.
      *
      * @param string $className The class this rule uses
      *
@@ -164,7 +164,7 @@ final class Validator implements ValidatorInterface
     }
 
     /**
-     * Instantiate rule class if it's valid
+     * Instantiate rule class if it's valid.
      *
      * @param string $className
      *

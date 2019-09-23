@@ -13,7 +13,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class JsonFormatterTest extends TestCase
 {
     /**
-     * Tests format date works
+     * Tests format date works.
      *
      * @return void
      *
@@ -23,14 +23,14 @@ class JsonFormatterTest extends TestCase
     {
         $formatter = new JsonFormatter();
         $result = $formatter->format([
-            'datetime' => new DateTime('2019-01-01T00:00:00+00:00')
+            'datetime' => new DateTime('2019-01-01T00:00:00+00:00'),
         ]);
 
-        static::assertSame('{"datetime":"2019-01-01T00:00:00+00:00"}', \trim($result));
+        self::assertSame('{"datetime":"2019-01-01T00:00:00+00:00"}', \trim($result));
     }
 
     /**
-     * Tests format date works if the property is not a DateTime
+     * Tests format date works if the property is not a DateTime.
      *
      * @return void
      */
@@ -38,9 +38,9 @@ class JsonFormatterTest extends TestCase
     {
         $formatter = new JsonFormatter();
         $result = $formatter->format([
-            'datetime' => 'string'
+            'datetime' => 'string',
         ]);
 
-        static::assertSame('{"datetime":"string"}', \trim($result));
+        self::assertSame('{"datetime":"string"}', \trim($result));
     }
 }

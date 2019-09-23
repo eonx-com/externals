@@ -15,7 +15,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class EmptyWithRuleTest extends TestCase
 {
     /**
-     * Test custom rule to empty with
+     * Test custom rule to empty with.
      *
      * @return void
      */

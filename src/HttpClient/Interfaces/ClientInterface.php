@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 interface ClientInterface extends HttpClientInterface
 {
     /**
-     * Perform a request on a uri
+     * Perform a request on a uri.
      *
      * @param string $method The method to use for the request
      * @param string $uri The uri to send the request to

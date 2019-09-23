@@ -12,12 +12,12 @@ use EoneoPay\Externals\ORM\Entity;
 class CustomRepositoryStub extends Entity
 {
     /**
-     * Primary id
+     * Primary id.
      *
      * @var string
      *
      * @ORM\Column(type="string", length=36)
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      */
     protected $entityId;
@@ -28,7 +28,7 @@ class CustomRepositoryStub extends Entity
     public function toArray(): array
     {
         return [
-            'id' => $this->entityId
+            'id' => $this->entityId,
         ];
     }
 

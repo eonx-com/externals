@@ -27,7 +27,7 @@ final class InstanceOfRule implements ValidationRuleInterface
         return static function (
             string $message,
             string $attribute,
-            /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $rule,
+            string $rule,
             array $parameters
         ): string {
             return \str_replace([':attribute', ':values'], [$attribute, $parameters[0] ?? '{NO PARAMETER}'], $message);
@@ -42,7 +42,7 @@ final class InstanceOfRule implements ValidationRuleInterface
     public function getRule(): Closure
     {
         return static function (
-            /** @noinspection PhpUnusedParameterInspection Parameters defined by interface */ string $attribute,
+            string $attribute,
             $value,
             array $parameters
         ): bool {

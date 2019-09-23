@@ -8,7 +8,7 @@ use EoneoPay\Utils\Interfaces\SerializableInterface;
 interface MagicEntityInterface extends EntityInterface, SerializableInterface
 {
     /**
-     * Allow getX() and setX($value) to get and set column values
+     * Allow getX() and setX($value) to get and set column values.
      *
      * This method searches case insensitive
      *
@@ -20,7 +20,7 @@ interface MagicEntityInterface extends EntityInterface, SerializableInterface
     public function __call(string $method, array $parameters);
 
     /**
-     * Fill an entity from an array
+     * Fill an entity from an array.
      *
      * @param mixed[] $data The array to fill the entity from
      *
@@ -29,7 +29,7 @@ interface MagicEntityInterface extends EntityInterface, SerializableInterface
     public function fill(array $data): void;
 
     /**
-     * Get a list of attributes or keys which are able to be filled, by default all fields can be set
+     * Get a list of attributes or keys which are able to be filled, by default all fields can be set.
      *
      * @return string[]
      */

@@ -20,7 +20,7 @@ interface EntityManagerInterface
     public function findByIds(string $class, array $ids): array;
 
     /**
-     * Flush unit of work to the database
+     * Flush unit of work to the database.
      *
      * @return void
      */
@@ -34,7 +34,7 @@ interface EntityManagerInterface
     public function getFilters(): FilterCollectionInterface;
 
     /**
-     * Gets the repository from a entity class
+     * Gets the repository from a entity class.
      *
      * @param string $class The class name of the entity to generate a repository for
      *
@@ -43,7 +43,7 @@ interface EntityManagerInterface
     public function getRepository(string $class);
 
     /**
-     * Merge entity to the database, similar to REPLACE INTO in SQL
+     * Merge entity to the database, similar to REPLACE INTO in SQL.
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to merge into the database
      *
@@ -52,7 +52,7 @@ interface EntityManagerInterface
     public function merge(EntityInterface $entity): void;
 
     /**
-     * Persist entity to the database
+     * Persist entity to the database.
      *
      * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to persist to the database
      *

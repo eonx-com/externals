@@ -12,7 +12,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class EnvTest extends TestCase
 {
     /**
-     * Test getting a value from the environment
+     * Test getting a value from the environment.
      *
      * @return void
      */
@@ -40,7 +40,7 @@ class EnvTest extends TestCase
     }
 
     /**
-     * Test setting and removing values to/from environment
+     * Test setting and removing values to/from environment.
      *
      * @return void
      */
