@@ -21,6 +21,7 @@ class ClientOptionsTest extends TestCase
     {
         $options = new ClientOptions();
 
+        /** @noinspection PhpStrictTypeCheckingInspection Phpstorm sees this negative value as an integer */
         $options->setConnectTimeout(-123.45);
 
         self::assertSame(0.0, $options->getConnectTimeout());

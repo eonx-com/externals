@@ -33,6 +33,42 @@ class AbstractDateConstraintValidatorTest extends ValidatorConstraintTestCase
     }
 
     /**
+     * Test invalid date value does not call inner validator.
+     *
+     * @return void
+     */
+    public function testInvalidDate(): void
+    {
+        $value = 'purple elephant';
+        $constraint = new NotBlank();
+
+        $inner = new ConstraintValidatorStub();
+        $validator = new DateConstraintValidatorStub($inner);
+
+        $validator->validate($value, $constraint);
+
+        self::assertCount(0, $inner->getValidated());
+    }
+
+    /**
+     * Test null value does not call inner validator.
+     *
+     * @return void
+     */
+    public function testNullValue(): void
+    {
+        $value = null;
+        $constraint = new NotBlank();
+
+        $inner = new ConstraintValidatorStub();
+        $validator = new DateConstraintValidatorStub($inner);
+
+        $validator->validate($value, $constraint);
+
+        self::assertCount(0, $inner->getValidated());
+    }
+
+    /**
      * Test that the validator wraps a EqualTo validator.
      *
      * @return void
@@ -54,45 +90,5 @@ class AbstractDateConstraintValidatorTest extends ValidatorConstraintTestCase
 
         self::assertEquals(new DateTime('2019-07-01T00:00:00Z'), $call['value']);
         self::assertSame($constraint, $call['constraint']);
-    }
-
-    /**
-     * Test null value does not call inner validator.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
-     */
-    public function testNullValue(): void
-    {
-        $value = null;
-        $constraint = new NotBlank();
-
-        $inner = new ConstraintValidatorStub();
-        $validator = new DateConstraintValidatorStub($inner);
-
-        $validator->validate($value, $constraint);
-
-        self::assertCount(0, $inner->getValidated());
-    }
-
-    /**
-     * Test invalid date value does not call inner validator.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
-     */
-    public function testInvalidDate(): void
-    {
-        $value = 'purple elephant';
-        $constraint = new NotBlank();
-
-        $inner = new ConstraintValidatorStub();
-        $validator = new DateConstraintValidatorStub($inner);
-
-        $validator->validate($value, $constraint);
-
-        self::assertCount(0, $inner->getValidated());
     }
 }

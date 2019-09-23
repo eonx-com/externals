@@ -123,7 +123,7 @@ final class Response implements ResponseInterface
      */
     public function getContent(): string
     {
-        return $this->getBody()->__toString();
+        return (string)$this->getBody();
     }
 
     /**

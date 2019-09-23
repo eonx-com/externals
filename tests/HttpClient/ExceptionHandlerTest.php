@@ -40,25 +40,6 @@ class ExceptionHandlerTest extends TestCase
      *
      * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
      */
-    public function testHandlesRequestExceptionWithoutResponse(): void
-    {
-        $request = new Request('POST', '');
-        $requestException = new RequestException('Something happened', $request);
-
-        $instance = $this->getInstance();
-        $response = $instance->handle($request, $requestException);
-
-        self::assertSame(500, $response->getStatusCode());
-        self::assertSame('{"exception":"Something happened"}', $response->getBody()->__toString());
-    }
-
-    /**
-     * Tests that the exception handler adds a response when one isnt present.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
-     */
     public function testHandlesRequestExceptionWithResponse(): void
     {
         $request = new Request('POST', '');
@@ -69,6 +50,25 @@ class ExceptionHandlerTest extends TestCase
         $actual = $instance->handle($request, $requestException);
 
         self::assertSame($response, $actual);
+    }
+
+    /**
+     * Tests that the exception handler adds a response when one isnt present.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\HttpClient\Exceptions\NetworkException
+     */
+    public function testHandlesRequestExceptionWithoutResponse(): void
+    {
+        $request = new Request('POST', '');
+        $requestException = new RequestException('Something happened', $request);
+
+        $instance = $this->getInstance();
+        $response = $instance->handle($request, $requestException);
+
+        self::assertSame(500, $response->getStatusCode());
+        self::assertSame('{"exception":"Something happened"}', (string)$response->getBody());
     }
 
     /**

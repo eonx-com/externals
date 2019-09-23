@@ -39,13 +39,23 @@ final class LoggingClient implements ClientInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Exception Rethrows any exception caught from Guzzle
      */
-    public function sendRequest(RequestInterface $request, ?array $options = null): PsrResponseInterface
+    public function request(string $method, string $uri, ?array $options = null): ResponseInterface
     {
+        $request = new Request(
+            $method,
+            $uri,
+            $options['headers'] ?? [],
+            $options['body'] ?? null,
+            $options['version'] ?? '1.1'
+        );
+
         $this->logRequest($request, $options);
 
         try {
-            $response = $this->client->sendRequest($request, $options);
+            $response = $this->client->request($method, $uri, $options);
         } catch (Exception $exception) {
             $this->logException($exception, $request);
 
@@ -63,21 +73,15 @@ final class LoggingClient implements ClientInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Exception Rethrows any exception caught from Guzzle
      */
-    public function request(string $method, string $uri, ?array $options = null): ResponseInterface
+    public function sendRequest(RequestInterface $request, ?array $options = null): PsrResponseInterface
     {
-        $request = new Request(
-            $method,
-            $uri,
-            $options['headers'] ?? [],
-            $options['body'] ?? null,
-            $options['version'] ?? '1.1'
-        );
-
         $this->logRequest($request, $options);
 
         try {
-            $response = $this->client->request($method, $uri, $options);
+            $response = $this->client->sendRequest($request, $options);
         } catch (Exception $exception) {
             $this->logException($exception, $request);
 
@@ -125,7 +129,7 @@ final class LoggingClient implements ClientInterface
 
         $this->logger->exception($exception, null, [
             'request' => $request !== null ? str($request) : null,
-            'uri' => $request !== null ? $request->getUri()->__toString() : null,
+            'uri' => $request !== null ? (string)$request->getUri() : null,
         ]);
     }
 
@@ -142,7 +146,7 @@ final class LoggingClient implements ClientInterface
         $this->logger->info('HTTP Request Sent', [
             'options' => $options ?? [],
             'request' => str($request),
-            'uri' => $request->getUri()->__toString(),
+            'uri' => (string)$request->getUri(),
         ]);
     }
 
@@ -160,7 +164,7 @@ final class LoggingClient implements ClientInterface
             'request' => $request !== null ? str($request) : null,
             'response' => str($response),
             'statusCode' => $response->getStatusCode(),
-            'uri' => $request !== null ? $request->getUri()->__toString() : null,
+            'uri' => $request !== null ? (string)$request->getUri() : null,
         ]);
 
         if ($response->getBody()->isSeekable()) {

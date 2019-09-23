@@ -63,10 +63,7 @@ class HiddenStringTest extends TestCase
         $name = 'ABC';
         $password = new HiddenString('secret');
 
-        $data = [
-            'name' => $name,
-            'password' => $password,
-        ];
+        $data = \compact('name', 'password');
 
         $serialized = \serialize($data);
 

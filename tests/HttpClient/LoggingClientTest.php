@@ -48,7 +48,7 @@ class LoggingClientTest extends TestCase
 
         try {
             $instance->request('GET', '/');
-        } catch (InvalidApiResponseException $exception) {
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidApiResponseException $exception) {
             $previous = $exception->getPrevious();
         }
 
@@ -117,7 +117,7 @@ class LoggingClientTest extends TestCase
 
         try {
             $instance->sendRequest(new Request('get', '/test'));
-        } catch (InvalidApiResponseException $exception) {
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (InvalidApiResponseException $exception) {
             $previous = $exception->getPrevious();
         }
 

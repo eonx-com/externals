@@ -12,7 +12,7 @@ final class HiddenString
      *
      * @var bool
      */
-    private $disableInline = true;
+    private $disableInline;
 
     /**
      * @var \ParagonIE\HiddenString\HiddenString
@@ -31,8 +31,8 @@ final class HiddenString
         ?bool $disableInline = null,
         ?bool $disableSerialization = null
     ) {
-        $this->disableInline = (($disableInline ?? true) === true);
-        $disableSerialization = (($disableSerialization ?? true) === true);
+        $this->disableInline = ($disableInline ?? true) === true;
+        $disableSerialization = ($disableSerialization ?? true) === true;
 
         $this->hiddenString = new BaseHiddenString($value, $this->disableInline, $disableSerialization);
     }

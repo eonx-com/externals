@@ -75,7 +75,7 @@ class PhoneNumberValidator implements PhoneNumberValidatorInterface
     {
         try {
             return $this->parser->parse($number, $this->defaultRegion);
-        } catch (NumberParseException $exception) {
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (NumberParseException $exception) {
             return null;
         }
     }
