@@ -22,4 +22,12 @@ class GeneratorStub implements GeneratorInterface
     {
         return 'notrandom';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function uuid4(): string
+    {
+        return 'uuid';
+    }
 }
