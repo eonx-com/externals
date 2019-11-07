@@ -79,4 +79,15 @@ interface FilesystemInterface
      * @return bool
      */
     public function write(string $filename, string $contents): bool;
+
+    /**
+     * Write a new file using a stream.
+     *
+     * @param string $path
+     * @param resource $resource
+     * @param null|mixed[] $options
+     *
+     * @return bool
+     */
+    public function writeStream(string $path, $resource, ?array $options = null): bool;
 }
