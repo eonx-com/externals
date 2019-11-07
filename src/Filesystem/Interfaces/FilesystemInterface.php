@@ -53,6 +53,15 @@ interface FilesystemInterface
     public function read(string $filename): string;
 
     /**
+     * Get a resource to read the file.
+     *
+     * @param string $filename The filename to read from
+     *
+     * @return null|resource
+     */
+    public function readStream(string $filename);
+
+    /**
      * Remove a file from the filesystem.
      *
      * @param string $filename The filename to remove

@@ -81,6 +81,23 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     }
 
     /**
+     * Get a resource to read the file.
+     *
+     * @param string $filename The filename to read from
+     *
+     * @return null|resource
+     */
+    public function readStream(string $filename)
+    {
+        try {
+            return $this->filesystem->readStream($filename);
+        } catch (ContractedFileNotFoundException $exception) {
+            // Wrap exception
+            throw new FileNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function remove(string $filename): bool
