@@ -8,6 +8,7 @@ use EoneoPay\Externals\HttpClient\ExceptionHandler;
 use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
 use EoneoPay\Externals\HttpClient\LoggingClient;
 use EoneoPay\Externals\Logger\Logger;
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Request;
@@ -169,7 +170,7 @@ class LoggingClientTest extends TestCase
     {
         return new LoggingClient(
             new Client(
-                new \GuzzleHttp\Client(['handler' => $handler]),
+                new GuzzleClient(['handler' => $handler]),
                 new ExceptionHandler()
             ),
             new Logger(null, $logHandlerStub)

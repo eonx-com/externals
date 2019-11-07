@@ -310,7 +310,8 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         $location = $this->applyPathPrefix($path);
         $this->ensureDirectory(\dirname($location));
 
-        if (($size = \file_put_contents($location, $contents)) === false) {
+        $size = \file_put_contents($location, $contents);
+        if ($size === false) {
             return false;
         }
 
