@@ -79,6 +79,7 @@ class FilesystemTest extends TestCase
         $filesystem = $this->createFilesystem();
 
         $filename = 'test/test.txt';
+        $filenameStream = 'test/test_stream.txt';
         $contents = 'contents';
 
         self::assertTrue($filesystem->write($filename, $contents));
@@ -87,6 +88,8 @@ class FilesystemTest extends TestCase
         self::assertSame($contents, $filesystem->read($filename));
         self::assertIsResource($filesystem->readStream($filename));
         self::assertSame($contents, \stream_get_contents($filesystem->readStream($filename)));
+        self::assertTrue($filesystem->writeStream($filenameStream, $filesystem->readStream($filename)));
+        self::assertSame($contents, $filesystem->read($filenameStream));
         self::assertTrue($filesystem->remove($filename));
         self::assertFalse($filesystem->exists($filename));
     }
