@@ -1,6 +1,11 @@
 <?php
 declare(strict_types=1);
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
+
+// Until Doctrine Annotations v2.0, we need to register an autoloader, which is just 'class_exists'.
+AnnotationRegistry::registerUniqueLoader('class_exists');
+
 /**
  * @coversNothing
  */
