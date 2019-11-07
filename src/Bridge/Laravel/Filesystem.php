@@ -81,11 +81,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     }
 
     /**
-     * Get a resource to read the file.
-     *
-     * @param string $filename The filename to read from
-     *
-     * @return null|resource
+     * {@inheritdoc}
      */
     public function readStream(string $filename)
     {
@@ -111,6 +107,14 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     public function write(string $filename, string $contents): bool
     {
         return $this->safeWrite('put', $filename, $contents);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function writeStream(string $path, $resource, ?array $options = null): bool
+    {
+        return $this->safeWrite('writeStream', $path, $resource, $options ?? []);
     }
 
     /**
