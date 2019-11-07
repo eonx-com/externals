@@ -127,7 +127,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
      *
      * @return bool
      */
-    private function safeWrite(string $action, ... $parameters): bool
+    private function safeWrite(string $action, ...$parameters): bool
     {
         try {
             return (bool)\call_user_func_array([$this->filesystem, $action], $parameters);
