@@ -85,6 +85,8 @@ class FilesystemTest extends TestCase
         self::assertSame(\sprintf('vfs://root/%s', $filename), $filesystem->path($filename));
         self::assertTrue($filesystem->exists($filename));
         self::assertSame($contents, $filesystem->read($filename));
+        self::assertIsResource($filesystem->readStream($filename));
+        self::assertSame($contents, \stream_get_contents($filesystem->readStream($filename)));
         self::assertTrue($filesystem->remove($filename));
         self::assertFalse($filesystem->exists($filename));
     }
@@ -96,7 +98,7 @@ class FilesystemTest extends TestCase
      *
      * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
      */
-    public function testFilesystemThrowsExceptionIfReadiningNonExistentFile(): void
+    public function testFilesystemThrowsExceptionIfReadingNonExistentFile(): void
     {
         $filesystem = $this->createFilesystem();
 
@@ -106,7 +108,23 @@ class FilesystemTest extends TestCase
     }
 
     /**
-     * Test reading a file which doesn't exists throws an exception
+     * Test reading stream a file which doesn't exists throws an exception.
+     *
+     * @return void
+     *
+     * @throws \org\bovigo\vfs\vfsStreamException If stream can't be created
+     */
+    public function testFilesystemThrowsExceptionIfReadingStreamNonExistentFile(): void
+    {
+        $filesystem = $this->createFilesystem();
+
+        $this->expectException(FileNotFoundException::class);
+
+        $filesystem->readStream('non-existent.file');
+    }
+
+    /**
+     * Test reading a file which doesn't exists throws an exception.
      *
      * @return void
      *
