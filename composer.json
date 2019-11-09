@@ -45,7 +45,7 @@
     "vlucas/phpdotenv": "^3.0"
   },
   "replace": {
-    "eoneopay/externals": "^1.0"
+    "eoneopay/externals": "^1.1"
   },
   "autoload": {
     "psr-4": {
