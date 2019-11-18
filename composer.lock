@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79a5039c2ff2a108ded32f69be85f532",
+    "content-hash": "2f949f16e0ef79ee9abf09df87b69bed",
     "packages": [
         {
-            "name": "eoneopay/utils",
-            "version": "v0.2.13",
+            "name": "eonx-com/utils",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/loyaltycorp/utils.git",
-                "reference": "981e762b941bf0cc78fb5427cfd75ac956a02fdb"
+                "url": "https://github.com/eonx-com/utils.git",
+                "reference": "e20c1ba295ab760d43e72c1547e8d3aa69296b4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/loyaltycorp/utils/zipball/981e762b941bf0cc78fb5427cfd75ac956a02fdb",
-                "reference": "981e762b941bf0cc78fb5427cfd75ac956a02fdb",
+                "url": "https://api.github.com/repos/eonx-com/utils/zipball/e20c1ba295ab760d43e72c1547e8d3aa69296b4e",
+                "reference": "e20c1ba295ab760d43e72c1547e8d3aa69296b4e",
                 "shasum": ""
             },
             "require": {
@@ -25,6 +25,9 @@
                 "ext-json": "*",
                 "ext-libxml": "*",
                 "php": ">=7.1"
+            },
+            "replace": {
+                "eoneopay/utils": "^0.2"
             },
             "require-dev": {
                 "doctrine/annotations": "^1.6",
@@ -68,8 +71,7 @@
                 "helpers",
                 "utilities"
             ],
-            "abandoned": "eonx-com/utils",
-            "time": "2019-11-06T21:13:49+00:00"
+            "time": "2019-11-09T03:22:46+00:00"
         },
         {
             "name": "psr/event-dispatcher",
