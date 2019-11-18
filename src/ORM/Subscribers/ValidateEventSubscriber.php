@@ -95,7 +95,8 @@ final class ValidateEventSubscriber implements EventSubscriber
          *
          * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
          */
-        if ($this->validator->validate($this->getEntityContents($entity), $entity->getRules()) === true) {
+        $result = $this->validator->validate($this->getEntityContents($entity), $entity->getRules());
+        if (\count($result) === 0) {
             return;
         }
 
@@ -107,7 +108,7 @@ final class ValidateEventSubscriber implements EventSubscriber
             null,
             null,
             null,
-            $this->validator->getFailures()
+            $result
         );
     }
 

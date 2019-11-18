@@ -9,7 +9,6 @@ use EoneoPay\Externals\Bridge\Laravel\Validation\InstanceOfRule;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Validation\PresenceVerifierInterface;
-use Illuminate\Validation\ValidationException;
 
 final class Validator implements ValidatorInterface
 {
@@ -49,16 +48,7 @@ final class Validator implements ValidatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getFailures(): array
-    {
-        // If validator isn't set return empty array
-        return $this->validator === null ? [] : $this->validator->getMessageBag()->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validate(array $data, array $rules): bool
+    public function validate(array $data, array $rules): array
     {
         // Doing this to make PHPStan happy
         /** @var \Illuminate\Validation\Validator $validator */
@@ -75,22 +65,10 @@ final class Validator implements ValidatorInterface
         $this->addDependantRule(EmptyWithRule::class);
         $this->addRule(InstanceOfRule::class);
 
-        return $validator->passes();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function validatedData(array $data, array $rules): array
-    {
-        $this->validate($data, $rules);
-
-        try {
-            return $this->validator->validated();
-        } /** @noinspection BadExceptionsProcessingInspection */ catch (ValidationException $exception) {
-            // Return empty array if validation failed
-            return [];
-        }
+        // If validation passed, return an empty array, otherwise return errors
+        return $this->validator->passes() === true
+            ? []
+            : $this->validator->getMessageBag()->toArray();
     }
 
     /**
