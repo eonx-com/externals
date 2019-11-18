@@ -5,6 +5,8 @@ namespace Tests\EoneoPay\Externals\Bridge\Laravel;
 
 use EoneoPay\Externals\Bridge\Laravel\EventDispatcher;
 use Illuminate\Events\Dispatcher as IlluminateDispatcher;
+use Tests\EoneoPay\Externals\Stubs\Events\EventStub;
+use Tests\EoneoPay\Externals\Stubs\Events\StoppableEventStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
@@ -13,34 +15,32 @@ use Tests\EoneoPay\Externals\TestCase;
 class EventDispatcherTest extends TestCase
 {
     /**
-     * Dispatcher should return array or null based on $halt parameter.
+     * Dispatcher returns the expected event after dispatch is called.
      *
      * @return void
      */
     public function testDispatch(): void
     {
+        $event = new EventStub();
         $eventDispatcher = new EventDispatcher(new IlluminateDispatcher());
 
-        self::assertIsArray($eventDispatcher->dispatch('my-event'));
-        self::assertNull($eventDispatcher->dispatch('my-event', null, true));
+        $response = $eventDispatcher->dispatch($event);
+
+        self::assertSame($event, $response);
     }
 
     /**
-     * Dispatcher should call illuminate dispatcher to configure listener for given events.
+     * Dispatcher returns the expected (stoppable) event after dispatch is called.
      *
      * @return void
      */
-    public function testListen(): void
+    public function testDispatchStoppable(): void
     {
-        $dispatcher = new IlluminateDispatcher();
-        $eventDispatcher = new EventDispatcher($dispatcher);
+        $event = new StoppableEventStub();
+        $eventDispatcher = new EventDispatcher(new IlluminateDispatcher());
 
-        // Ensure listener doesn't exist
-        self::assertFalse($dispatcher->hasListeners('test'));
+        $response = $eventDispatcher->dispatch($event);
 
-        $eventDispatcher->listen(['test'], 'my-listener');
-
-        // Ensure listener was added
-        self::assertTrue($dispatcher->hasListeners('test'));
+        self::assertSame($event, $response);
     }
 }

@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\Bridge\Laravel;
 
-use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcher;
+use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
+use Psr\EventDispatcher\StoppableEventInterface as PsrStoppableEventInterface;
 
-final class EventDispatcher implements EventDispatcherInterface
+final class EventDispatcher implements PsrEventDispatcherInterface
 {
     /**
      * @var \Illuminate\Contracts\Events\Dispatcher
@@ -26,16 +27,19 @@ final class EventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatch($event, $payload = null, ?bool $halt = null): ?array
+    public function dispatch(object $event)
     {
-        return $this->dispatcher->dispatch($event, $payload, $halt ?? false);
-    }
+        $halt = false;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function listen(array $events, string $listener): void
-    {
-        $this->dispatcher->listen($events, $listener);
+        // According to PSR-14, any halt-able event should implement StoppableEventInterface and must
+        // return true from isPropagationStopped() when the event is completed.
+        // @see https://www.php-fig.org/psr/psr-14/
+        if (($event instanceof PsrStoppableEventInterface) === true) {
+            $halt = $event->isPropagationStopped();
+        }
+
+        $this->dispatcher->dispatch($event, [], $halt);
+
+        return $event;
     }
 }
