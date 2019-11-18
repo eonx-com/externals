@@ -17,7 +17,7 @@
     "zendframework/zend-diactoros": "^2.1"
   },
   "require-dev": {
-    "eoneopay/standards": "dev-master",
+    "eoneopay/standards": "^1.0",
     "gedmo/doctrine-extensions": "^2.4",
     "giggsey/libphonenumber-for-php": "^8.10",
     "guzzlehttp/guzzle": "^6.0.0",
