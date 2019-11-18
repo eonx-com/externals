@@ -8,10 +8,11 @@
   "type": "library",
   "require": {
     "php": ">=7.2",
-    "eoneopay/utils": "^0.2",
     "ext-json": "*",
     "ext-libxml": "*",
     "ext-simplexml": "*",
+    "eonx-com/utils": "^1.0",
+    "psr/event-dispatcher": "^1.0",
     "psr/http-client": "^1.0",
     "zendframework/zend-diactoros": "^2.1"
   },
