@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f949f16e0ef79ee9abf09df87b69bed",
+    "content-hash": "ff996d3101d1053a383e31ac690427a7",
     "packages": [
         {
             "name": "eonx-com/utils",
@@ -341,16 +341,16 @@
     "packages-dev": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.117.2",
+            "version": "3.119.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3dc81df70f1cdf2842c85915548bffb870c1e1da"
+                "reference": "f9baeb6efe99318956d9924696bd2d51ae5ba338"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3dc81df70f1cdf2842c85915548bffb870c1e1da",
-                "reference": "3dc81df70f1cdf2842c85915548bffb870c1e1da",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f9baeb6efe99318956d9924696bd2d51ae5ba338",
+                "reference": "f9baeb6efe99318956d9924696bd2d51ae5ba338",
                 "shasum": ""
             },
             "require": {
@@ -420,7 +420,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-11-15T19:21:02+00:00"
+            "time": "2019-11-19T19:47:09+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -1169,33 +1169,35 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.6.4",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "b52ef5a1002f99ab506a5a2d6dba5a2c236c5f43"
+                "reference": "4d763ca4c925f647b248b9fa01b5f47aa3685d62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/b52ef5a1002f99ab506a5a2d6dba5a2c236c5f43",
-                "reference": "b52ef5a1002f99ab506a5a2d6dba5a2c236c5f43",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/4d763ca4c925f647b248b9fa01b5f47aa3685d62",
+                "reference": "4d763ca4c925f647b248b9fa01b5f47aa3685d62",
                 "shasum": ""
             },
             "require": {
-                "doctrine/annotations": "~1.5",
-                "doctrine/cache": "~1.6",
-                "doctrine/collections": "^1.4",
-                "doctrine/common": "^2.7.1",
-                "doctrine/dbal": "^2.6",
-                "doctrine/instantiator": "~1.1",
+                "doctrine/annotations": "^1.8",
+                "doctrine/cache": "^1.9.1",
+                "doctrine/collections": "^1.5",
+                "doctrine/common": "^2.11",
+                "doctrine/dbal": "^2.9.3",
+                "doctrine/event-manager": "^1.1",
+                "doctrine/instantiator": "^1.3",
+                "doctrine/persistence": "^1.2",
                 "ext-pdo": "*",
                 "php": "^7.1",
-                "symfony/console": "~3.0|~4.0"
+                "symfony/console": "^3.0|^4.0|^5.0"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^5.0",
                 "phpunit/phpunit": "^7.5",
-                "symfony/yaml": "~3.4|~4.0"
+                "symfony/yaml": "^3.4|^4.0|^5.0"
             },
             "suggest": {
                 "symfony/yaml": "If you want to use YAML Metadata Mapping Driver"
@@ -1206,7 +1208,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6.x-dev"
+                    "dev-master": "2.7.x-dev"
                 }
             },
             "autoload": {
@@ -1241,12 +1243,12 @@
                 }
             ],
             "description": "Object-Relational-Mapper for PHP",
-            "homepage": "http://www.doctrine-project.org",
+            "homepage": "https://www.doctrine-project.org/projects/orm.html",
             "keywords": [
                 "database",
                 "orm"
             ],
-            "time": "2019-09-20T14:30:26+00:00"
+            "time": "2019-11-19T08:38:05+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -1464,22 +1466,25 @@
             "time": "2019-08-13T17:33:27+00:00"
         },
         {
-            "name": "eoneopay/standards",
-            "version": "v1.0.2",
+            "name": "eonx-com/standards",
+            "version": "v0.2.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/loyaltycorp/standards.git",
-                "reference": "a3467c0bdd27cc5b0c97e42e9510ae058e5adcc7"
+                "url": "https://github.com/eonx-com/standards.git",
+                "reference": "4c6d90b559f1600b58f93f3941b6c25d844bbed7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/loyaltycorp/standards/zipball/a3467c0bdd27cc5b0c97e42e9510ae058e5adcc7",
-                "reference": "a3467c0bdd27cc5b0c97e42e9510ae058e5adcc7",
+                "url": "https://api.github.com/repos/eonx-com/standards/zipball/4c6d90b559f1600b58f93f3941b6c25d844bbed7",
+                "reference": "4c6d90b559f1600b58f93f3941b6c25d844bbed7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1",
                 "slevomat/coding-standard": "~4.0"
+            },
+            "replace": {
+                "eoneopay/standards": "*"
             },
             "require-dev": {
                 "phpstan/phpstan": "^0.11.13",
@@ -1515,8 +1520,7 @@
                 "eoneopay",
                 "standards"
             ],
-            "abandoned": "eonx-com/standards",
-            "time": "2019-10-22T01:17:45+00:00"
+            "time": "2019-11-19T21:44:08+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1906,7 +1910,7 @@
         },
         {
             "name": "illuminate/auth",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/auth.git",
@@ -1957,7 +1961,7 @@
         },
         {
             "name": "illuminate/config",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/config.git",
@@ -2001,16 +2005,16 @@
         },
         {
             "name": "illuminate/console",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/console.git",
-                "reference": "e87ca7da2c1849a33b86b1e6ec1e64fe6faa937d"
+                "reference": "f494593315fdbbc052d532a4d662fd09dc699f33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/console/zipball/e87ca7da2c1849a33b86b1e6ec1e64fe6faa937d",
-                "reference": "e87ca7da2c1849a33b86b1e6ec1e64fe6faa937d",
+                "url": "https://api.github.com/repos/illuminate/console/zipball/f494593315fdbbc052d532a4d662fd09dc699f33",
+                "reference": "f494593315fdbbc052d532a4d662fd09dc699f33",
                 "shasum": ""
             },
             "require": {
@@ -2048,11 +2052,11 @@
             ],
             "description": "The Illuminate Console package.",
             "homepage": "https://laravel.com",
-            "time": "2019-10-24T11:49:56+00:00"
+            "time": "2019-11-18T16:17:36+00:00"
         },
         {
             "name": "illuminate/container",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -2096,7 +2100,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -2140,16 +2144,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "5351516d3e9b77fe4b0225c0b52883a718c4c0be"
+                "reference": "5c54aee0e7540459962828ec67c7ad9adaef3a4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/5351516d3e9b77fe4b0225c0b52883a718c4c0be",
-                "reference": "5351516d3e9b77fe4b0225c0b52883a718c4c0be",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/5c54aee0e7540459962828ec67c7ad9adaef3a4c",
+                "reference": "5c54aee0e7540459962828ec67c7ad9adaef3a4c",
                 "shasum": ""
             },
             "require": {
@@ -2196,11 +2200,11 @@
                 "orm",
                 "sql"
             ],
-            "time": "2019-11-12T14:40:39+00:00"
+            "time": "2019-11-15T14:26:24+00:00"
         },
         {
             "name": "illuminate/events",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
@@ -2245,7 +2249,7 @@
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
@@ -2297,16 +2301,16 @@
         },
         {
             "name": "illuminate/http",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/http.git",
-                "reference": "2070eac3995fe35dea800ab9501b39520e6392a9"
+                "reference": "43b303e4e0219c6542812d3edc65974e9e197199"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/http/zipball/2070eac3995fe35dea800ab9501b39520e6392a9",
-                "reference": "2070eac3995fe35dea800ab9501b39520e6392a9",
+                "url": "https://api.github.com/repos/illuminate/http/zipball/43b303e4e0219c6542812d3edc65974e9e197199",
+                "reference": "43b303e4e0219c6542812d3edc65974e9e197199",
                 "shasum": ""
             },
             "require": {
@@ -2343,11 +2347,11 @@
             ],
             "description": "The Illuminate Http package.",
             "homepage": "https://laravel.com",
-            "time": "2019-11-05T22:14:29+00:00"
+            "time": "2019-11-19T14:25:44+00:00"
         },
         {
             "name": "illuminate/pagination",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
@@ -2392,22 +2396,23 @@
         },
         {
             "name": "illuminate/pipeline",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pipeline.git",
-                "reference": "2da4fbe1e5ef038c6f7a7bda11aaf873e7b60326"
+                "reference": "95a7012d1e20394733c19f1397bb0c89145a35bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/pipeline/zipball/2da4fbe1e5ef038c6f7a7bda11aaf873e7b60326",
-                "reference": "2da4fbe1e5ef038c6f7a7bda11aaf873e7b60326",
+                "url": "https://api.github.com/repos/illuminate/pipeline/zipball/95a7012d1e20394733c19f1397bb0c89145a35bf",
+                "reference": "95a7012d1e20394733c19f1397bb0c89145a35bf",
                 "shasum": ""
             },
             "require": {
                 "illuminate/contracts": "^6.0",
                 "illuminate/support": "^6.0",
-                "php": "^7.2"
+                "php": "^7.2",
+                "symfony/debug": "^4.3"
             },
             "type": "library",
             "extra": {
@@ -2432,20 +2437,20 @@
             ],
             "description": "The Illuminate Pipeline package.",
             "homepage": "https://laravel.com",
-            "time": "2019-10-21T13:49:59+00:00"
+            "time": "2019-11-17T22:27:27+00:00"
         },
         {
             "name": "illuminate/queue",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/queue.git",
-                "reference": "16ccdfe162c151c4db66e9493d7865064de18206"
+                "reference": "de1d1f97576536cba015dac971cbf29a7bf9056f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/queue/zipball/16ccdfe162c151c4db66e9493d7865064de18206",
-                "reference": "16ccdfe162c151c4db66e9493d7865064de18206",
+                "url": "https://api.github.com/repos/illuminate/queue/zipball/de1d1f97576536cba015dac971cbf29a7bf9056f",
+                "reference": "de1d1f97576536cba015dac971cbf29a7bf9056f",
                 "shasum": ""
             },
             "require": {
@@ -2492,11 +2497,11 @@
             ],
             "description": "The Illuminate Queue package.",
             "homepage": "https://laravel.com",
-            "time": "2019-11-05T13:23:58+00:00"
+            "time": "2019-11-19T14:49:48+00:00"
         },
         {
             "name": "illuminate/routing",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/routing.git",
@@ -2553,7 +2558,7 @@
         },
         {
             "name": "illuminate/session",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/session.git",
@@ -2604,16 +2609,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "236fa24d2e510c4800429cde89ed72e535051a5d"
+                "reference": "7a93f9e5a15bbf41236a8695fb738bf293f3c186"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/236fa24d2e510c4800429cde89ed72e535051a5d",
-                "reference": "236fa24d2e510c4800429cde89ed72e535051a5d",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/7a93f9e5a15bbf41236a8695fb738bf293f3c186",
+                "reference": "7a93f9e5a15bbf41236a8695fb738bf293f3c186",
                 "shasum": ""
             },
             "require": {
@@ -2661,11 +2666,11 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2019-11-04T13:46:29+00:00"
+            "time": "2019-11-18T21:49:40+00:00"
         },
         {
             "name": "illuminate/translation",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/translation.git",
@@ -2711,7 +2716,7 @@
         },
         {
             "name": "illuminate/validation",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/validation.git",
@@ -2763,7 +2768,7 @@
         },
         {
             "name": "illuminate/view",
-            "version": "v6.5.1",
+            "version": "v6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/view.git",
@@ -3744,7 +3749,7 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "🍸 Nette NEON: encodes and decodes NEON file format.",
+            "description": "? Nette NEON: encodes and decodes NEON file format.",
             "homepage": "http://ne-on.org",
             "keywords": [
                 "export",
@@ -5784,12 +5789,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "261562a9c048aa10932e5e1d596da6c761cf95bb"
+                "reference": "40fb2c205dd261ab6bb42ec29545934f0db7026f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/261562a9c048aa10932e5e1d596da6c761cf95bb",
-                "reference": "261562a9c048aa10932e5e1d596da6c761cf95bb",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/40fb2c205dd261ab6bb42ec29545934f0db7026f",
+                "reference": "40fb2c205dd261ab6bb42ec29545934f0db7026f",
                 "shasum": ""
             },
             "conflict": {
@@ -5857,7 +5862,7 @@
                 "league/commonmark": "<0.18.3",
                 "magento/magento1ce": "<1.9.4.3",
                 "magento/magento1ee": ">=1,<1.14.4.3",
-                "magento/product-community-edition": ">=2,<2.2.10|>=2.3,<2.3.3",
+                "magento/product-community-edition": ">=2,<2.2.10|>=2.3,<2.3.2",
                 "monolog/monolog": ">=1.8,<1.12",
                 "namshi/jose": "<2.2",
                 "onelogin/php-saml": "<2.10.4",
@@ -5994,7 +5999,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-11-15T09:15:43+00:00"
+            "time": "2019-11-19T14:18:57+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
