@@ -35,7 +35,7 @@ class FilesystemWrapper implements FilesystemInterface
 
     public function files(?string $directory = null, ?bool $recursive = null): array
     {
-        // TODO: Implement files() method.
+        return $this->flysystem->listContents($directory, $recursive);
     }
 
     public function path(?string $filename = null): string

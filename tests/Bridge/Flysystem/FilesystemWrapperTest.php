@@ -27,6 +27,25 @@ class FilesystemWrapperTest extends TestCase
         self::assertSame([['path' => 'file:///dir/foo']], $filesystem->getHasCalls());
     }
 
+    /**
+     * Test fileListing
+     *
+     * @return void
+     */
+    public function testsFiles(): void
+    {
+        $flysystem = new FlySystemStub(['listContents' => [['a/b/c', 'xy/z.txt']]]);
+        $wrapper = $this->getInstance($flysystem);
+
+        $actual = $wrapper->files('path/to/some/dir', true);
+
+        self::assertSame(['a/b/c', 'xy/z.txt'], $actual);
+        self::assertSame(
+            [['directory' => 'path/to/some/dir', 'recursive' => true]],
+            $flysystem->getListContentsCalls()
+        );
+    }
+
     private function getInstance(
         FilesystemInterface $filesystem
     ): FilesystemWrapper

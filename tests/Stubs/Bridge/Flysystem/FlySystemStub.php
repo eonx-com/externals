@@ -235,4 +235,14 @@ class FlySystemStub extends StubBase implements FilesystemInterface
     {
         return $this->getCalls(__FUNCTION__);
     }
+
+    /**
+     * Get the calls to listContents().
+     *
+     * @return mixed[]
+     */
+    public function getListContentsCalls(): array
+    {
+        return $this->getCalls(__FUNCTION__);
+    }
 }
