@@ -181,6 +181,28 @@ class FilesystemWrapperTest extends TestCase
         self::assertSame('abc', $flysystem->read('x.txt'));
     }
 
+    /**
+     * Integration test for writeStream().
+     *
+     * @return void
+     *
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function testWriteStream(): void
+    {
+        $flysystem = new Filesystem(new MemoryAdapter());
+        $data = 'abcdefghijklmnopqrstuiwxyz';
+        $stream = fopen('php://memory','rb+');
+        \fwrite($stream, $data);
+        $wrapper = $this->getInstance($flysystem);
+
+        $response = $wrapper->writeStream('st.txt', $stream);
+
+        self::assertTrue($response);
+        self::assertSame('abcdefghijklmnopqrstuiwxyz', $flysystem->read('st.txt'));
+    }
+
     private function getInstance(
         FilesystemInterface $filesystem
     ): FilesystemWrapper
