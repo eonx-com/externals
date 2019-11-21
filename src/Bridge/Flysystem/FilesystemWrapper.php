@@ -50,7 +50,7 @@ class FilesystemWrapper implements FilesystemInterface
 
     public function readStream(string $filename)
     {
-        // TODO: Implement readStream() method.
+        return $this->flysystem->readStream($filename);
     }
 
     public function remove(string $filename): bool
