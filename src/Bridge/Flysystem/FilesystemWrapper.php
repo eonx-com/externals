@@ -45,7 +45,7 @@ class FilesystemWrapper implements FilesystemInterface
 
     public function read(string $filename): string
     {
-        // TODO: Implement read() method.
+        return $this->flysystem->read($filename);
     }
 
     public function readStream(string $filename)
@@ -60,7 +60,7 @@ class FilesystemWrapper implements FilesystemInterface
 
     public function write(string $filename, string $contents): bool
     {
-        // TODO: Implement write() method.
+        return $this->flysystem->write($filename, $contents);
     }
 
     public function writeStream(string $path, $resource, ?array $options = null): bool

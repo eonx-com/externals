@@ -103,6 +103,48 @@ class FilesystemWrapperTest extends TestCase
     }
 
     /**
+     * Integration test for read().
+     *
+     * @return void
+     *
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function testRead(): void
+    {
+        $flysystem = new Filesystem(new MemoryAdapter());
+        $flysystem->write('a/b/c.txt', '123');
+        $expected = '123';
+
+        $wrapper = $this->getInstance($flysystem);
+
+        $actual = $wrapper->read('a/b/c.txt');
+
+        self::assertSame($expected, $actual);
+    }
+
+    /**
+     * Integration test for readStream().
+     *
+     * @return void
+     *
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function testReadStream(): void
+    {
+        $flysystem = new Filesystem(new MemoryAdapter());
+        $flysystem->write('a/b/c.txt', 'abcdefghijklmnopqrstuiwxyz');
+        $expected = 'abcdefghijklmnopqrstuiwxyz';
+
+        $wrapper = $this->getInstance($flysystem);
+
+        $stream = $wrapper->readStream('a/b/c.txt');
+
+        self::assertSame($expected, \stream_get_contents($stream));
+    }
+
+    /**
      * Integration test for path().
      *
      * @return void
@@ -117,6 +159,26 @@ class FilesystemWrapperTest extends TestCase
         $actual = $wrapper->path('a/b/c.txt');
 
         self::assertSame($expected, $actual);
+    }
+
+    /**
+     * Integration test for write().
+     *
+     * @return void
+     *
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function testWrite(): void
+    {
+        $flysystem = new Filesystem(new MemoryAdapter());
+
+        $wrapper = $this->getInstance($flysystem);
+
+        $response = $wrapper->write('x.txt', 'abc');
+
+        self::assertTrue($response);
+        self::assertSame($flysystem->read('x.txt'), 'abc');
     }
 
     private function getInstance(
