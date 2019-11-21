@@ -40,7 +40,7 @@ class FilesystemWrapper implements FilesystemInterface
 
     public function path(?string $filename = null): string
     {
-        // TODO: Implement path() method.
+        return '/' . $filename;
     }
 
     public function read(string $filename): string

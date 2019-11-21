@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Bridge\Flysystem;
 
 use EoneoPay\Externals\Bridge\Flysystem\FilesystemWrapper;
+use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\Config;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
@@ -97,6 +98,23 @@ class FilesystemWrapperTest extends TestCase
         $wrapper = $this->getInstance($flysystem);
 
         $actual = $wrapper->files('a', true);
+
+        self::assertSame($expected, $actual);
+    }
+
+    /**
+     * Integration test for path().
+     *
+     * @return void
+     */
+    public function testPath(): void
+    {
+        $flysystem = new Filesystem(new NullAdapter());
+        $expected = '/a/b/c.txt';
+
+        $wrapper = $this->getInstance($flysystem);
+
+        $actual = $wrapper->path('a/b/c.txt');
 
         self::assertSame($expected, $actual);
     }
