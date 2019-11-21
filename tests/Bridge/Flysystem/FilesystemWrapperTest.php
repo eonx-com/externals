@@ -178,7 +178,7 @@ class FilesystemWrapperTest extends TestCase
         $response = $wrapper->write('x.txt', 'abc');
 
         self::assertTrue($response);
-        self::assertSame($flysystem->read('x.txt'), 'abc');
+        self::assertSame('abc', $flysystem->read('x.txt'));
     }
 
     private function getInstance(
