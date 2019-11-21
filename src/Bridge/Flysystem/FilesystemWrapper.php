@@ -65,6 +65,6 @@ class FilesystemWrapper implements FilesystemInterface
 
     public function writeStream(string $path, $resource, ?array $options = null): bool
     {
-        // TODO: Implement writeStream() method.
+        return $this->flysystem->writeStream($path, $resource);
     }
 }
