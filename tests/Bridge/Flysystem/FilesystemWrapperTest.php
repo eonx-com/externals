@@ -18,6 +18,27 @@ use Tests\EoneoPay\Externals\TestCase;
 class FilesystemWrapperTest extends TestCase
 {
     /**
+     * Integration test for append().
+     *
+     * @return void
+     *
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function testAppend(): void
+    {
+        $flysystem = new Filesystem(new MemoryAdapter());
+        $flysystem->write('half.txt', 'abcdefghijk');
+        $data = 'lmnopqrstuiwxyz';
+        $wrapper = $this->getInstance($flysystem);
+
+        $response = $wrapper->append('half.txt', $data);
+
+        self::assertTrue($response);
+        self::assertSame('abcdefghijklmnopqrstuiwxyz', $flysystem->read('half.txt'));
+    }
+
+    /**
      * Tests FilesystemWrapper::exists() method.
      *
      * @return void
