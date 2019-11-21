@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Bridge\Flysystem;
 
 use EoneoPay\Externals\Bridge\Flysystem\FilesystemWrapper;
+use League\Flysystem\Config;
+use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
+use League\Flysystem\Memory\MemoryAdapter;
 use Tests\EoneoPay\Externals\Stubs\Bridge\Flysystem\FlySystemStub;
 use Tests\EoneoPay\Externals\TestCase;
 
@@ -15,8 +18,10 @@ class FilesystemWrapperTest extends TestCase
 {
     /**
      * Tests FilesystemWrapper::exists() method.
+     *
+     * @return void
      */
-    public function testExists()
+    public function testExists(): void
     {
         $filesystem = new FlySystemStub(['has' => [true]]);
         $wrapper = $this->getInstance($filesystem);
@@ -32,7 +37,7 @@ class FilesystemWrapperTest extends TestCase
      *
      * @return void
      */
-    public function testsFiles(): void
+    public function testsFileListingCalls(): void
     {
         $flysystem = new FlySystemStub(['listContents' => [['a/b/c', 'xy/z.txt']]]);
         $wrapper = $this->getInstance($flysystem);
@@ -44,6 +49,56 @@ class FilesystemWrapperTest extends TestCase
             [['directory' => 'path/to/some/dir', 'recursive' => true]],
             $flysystem->getListContentsCalls()
         );
+    }
+
+    /**
+     * Integration test for list().
+     *
+     * @throws \League\Flysystem\FileExistsException
+     */
+    public function testFileListingBehaviour(): void
+    {
+        $config = new Config(['timestamp' => 1574312111]);
+        $flysystem = new Filesystem(new MemoryAdapter($config), $config);
+        $flysystem->write('a/b/c.txt', '123');
+        $flysystem->write('a/d.txt', '456');
+        $flysystem->write('x.txt', '789');
+        $expected = [
+            [
+                'type' => 'dir',
+                'timestamp' => 1574312111,
+                'path' => 'a/b',
+                'dirname' => 'a',
+                'basename' => 'b',
+                'filename' => 'b'
+            ], [
+                'type' => 'file',
+                'visibility' => 'public',
+                'timestamp' => 1574312111,
+                'size' => 3,
+                'path' => 'a/b/c.txt',
+                'dirname' => 'a/b',
+                'basename' => 'c.txt',
+                'extension' => 'txt',
+                'filename' => 'c'
+            ], [
+                'type' => 'file',
+                'visibility' => 'public',
+                'timestamp' => 1574312111,
+                'size' => 3,
+                'path' => 'a/d.txt',
+                'dirname' => 'a',
+                'basename' => 'd.txt',
+                'extension' => 'txt',
+                'filename' => 'd'
+            ]
+        ];
+
+        $wrapper = $this->getInstance($flysystem);
+
+        $actual = $wrapper->files('a', true);
+
+        self::assertSame($expected, $actual);
     }
 
     private function getInstance(
