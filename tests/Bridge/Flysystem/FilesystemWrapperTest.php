@@ -225,6 +225,29 @@ class FilesystemWrapperTest extends TestCase
         self::assertTrue($response);
         self::assertSame($expected, $flysystem->listContents('/'));
     }
+    /**
+     * Integration test for remove() when run against directories.
+     *
+     * @return void
+     *
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function testRemoveDirectories(): void
+    {
+        $config = new Config(['timestamp' => 1574312111]);
+        $flysystem = new Filesystem(new MemoryAdapter($config), $config);
+        $flysystem->write('a/b/c.txt', '123');
+        $flysystem->write('a/b.txt', '123');
+        $expected = [];
+
+        $wrapper = $this->getInstance($flysystem);
+
+        $response = $wrapper->remove('a/');
+
+        self::assertTrue($response);
+        self::assertSame($expected, $flysystem->listContents('/'));
+    }
 
     /**
      * Integration test for write().
