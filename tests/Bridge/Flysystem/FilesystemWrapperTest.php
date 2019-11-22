@@ -236,27 +236,26 @@ class FilesystemWrapperTest extends TestCase
     public function testRemoveDirectories(): void
     {
         // Localfile system is required, as directories are not fully supported in MemorySystem.
-        $tempDir = sys_get_temp_dir() . '/' . (string) \random_int(111111, 999999);
-        $flysystem = new Filesystem(new Local($tempDir));
+        $config = new Config(['timestamp' => 1574312111]);
+        $flysystem = new Filesystem(new MemoryAdapter($config), $config);
         $flysystem->put('test/b/c.txt', '123');
         $flysystem->put('test/b.txt', 'abc');
         $flysystem->createDir('test/d/e/f/g');
-        \touch($tempDir . '/test/b.txt', 1574312111);
-        \touch($tempDir . '/test/d', 1574312111);
         $expected = [
             [
                 'type' => 'file',
-                'path' => 'test/b.txt',
+                'visibility' => 'public',
                 'timestamp' => 1574312111,
                 'size' => 3,
+                'path' => 'test/b.txt',
                 'dirname' => 'test',
                 'basename' => 'b.txt',
                 'extension' => 'txt',
                 'filename' => 'b'
             ],[
                 'type' => 'dir',
-                'path' => 'test/d',
                 'timestamp' => 1574312111,
+                'path' => 'test/d',
                 'dirname' => 'test',
                 'basename' => 'd',
                 'filename' => 'd'
@@ -269,8 +268,6 @@ class FilesystemWrapperTest extends TestCase
 
         self::assertTrue($response);
         self::assertSame($expected, $flysystem->listContents('test'));
-        $flysystem->deleteDir('test');
-        \rmdir($tempDir);
     }
 
     /**
