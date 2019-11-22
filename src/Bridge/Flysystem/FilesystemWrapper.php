@@ -24,7 +24,7 @@ class FilesystemWrapper implements FilesystemInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws \League\Flysystem\FileNotFoundException
      */
@@ -32,7 +32,7 @@ class FilesystemWrapper implements FilesystemInterface
     {
         $existing = $this->readStream($filename);
 
-        $writeStream = \fopen('php://memory','ab+');
+        $writeStream = \fopen('php://memory', 'ab+');
         \stream_copy_to_stream($existing, $writeStream);
         \fwrite($writeStream, $contents);
 
@@ -40,7 +40,7 @@ class FilesystemWrapper implements FilesystemInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function exists(string $filename): bool
     {
@@ -48,7 +48,7 @@ class FilesystemWrapper implements FilesystemInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function files(?string $directory = null, ?bool $recursive = null): array
     {
@@ -56,7 +56,7 @@ class FilesystemWrapper implements FilesystemInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function path(?string $filename = null): string
     {
@@ -64,7 +64,7 @@ class FilesystemWrapper implements FilesystemInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function read(string $filename): string
     {
@@ -72,7 +72,7 @@ class FilesystemWrapper implements FilesystemInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function readStream(string $filename)
     {
@@ -80,7 +80,7 @@ class FilesystemWrapper implements FilesystemInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws \League\Flysystem\FileNotFoundException
      */
@@ -95,7 +95,7 @@ class FilesystemWrapper implements FilesystemInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws \League\Flysystem\FileExistsException
      */
@@ -105,7 +105,7 @@ class FilesystemWrapper implements FilesystemInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws \League\Flysystem\FileExistsException
      */

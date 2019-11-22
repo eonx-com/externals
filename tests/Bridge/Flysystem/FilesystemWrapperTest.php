@@ -297,10 +297,16 @@ class FilesystemWrapperTest extends TestCase
         self::assertSame('abcdefghijklmnopqrstuiwxyz', $flysystem->read('st.txt'));
     }
 
+    /**
+     * Create a wrapper around Flysystem.
+     *
+     * @param \League\Flysystem\FilesystemInterface $filesystem
+     *
+     * @return \EoneoPay\Externals\Bridge\Flysystem\FilesystemWrapper
+     */
     private function getInstance(
         FilesystemInterface $filesystem
-    ): FilesystemWrapper
-    {
+    ): FilesystemWrapper {
         return new FilesystemWrapper($filesystem);
     }
 }
