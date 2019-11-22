@@ -86,7 +86,12 @@ class FilesystemWrapper implements FilesystemInterface
      */
     public function remove(string $filename): bool
     {
-        return $this->flysystem->delete($filename);
+        $metadata = $this->flysystem->listContents($filename, false);
+        $type = $metadata['type'] ?? 'unknown';
+        if ($type === 'file') {
+            return $this->flysystem->delete($filename);
+        }
+        return $this->flysystem->deleteDir($filename);
     }
 
     /**

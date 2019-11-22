@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Bridge\Flysystem;
 
 use EoneoPay\Externals\Bridge\Flysystem\FilesystemWrapper;
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\Config;
 use League\Flysystem\Filesystem;
@@ -230,23 +231,46 @@ class FilesystemWrapperTest extends TestCase
      *
      * @return void
      *
-     * @throws \League\Flysystem\FileExistsException
      * @throws \League\Flysystem\FileNotFoundException
      */
     public function testRemoveDirectories(): void
     {
-        $config = new Config(['timestamp' => 1574312111]);
-        $flysystem = new Filesystem(new MemoryAdapter($config), $config);
-        $flysystem->write('a/b/c.txt', '123');
-        $flysystem->write('a/b.txt', '123');
-        $expected = [];
+        // Localfile system is required, as directories are not fully supported in MemorySystem.
+        $tempDir = sys_get_temp_dir() . '/' . (string) \random_int(111111, 999999);
+        $flysystem = new Filesystem(new Local($tempDir));
+        $flysystem->put('test/b/c.txt', '123');
+        $flysystem->put('test/b.txt', 'abc');
+        $flysystem->createDir('test/d/e/f/g');
+        \touch($tempDir . '/test/b.txt', 1574312111);
+        \touch($tempDir . '/test/d', 1574312111);
+        $expected = [
+            [
+                'type' => 'file',
+                'path' => 'test/b.txt',
+                'timestamp' => 1574312111,
+                'size' => 3,
+                'dirname' => 'test',
+                'basename' => 'b.txt',
+                'extension' => 'txt',
+                'filename' => 'b'
+            ],[
+                'type' => 'dir',
+                'path' => 'test/d',
+                'timestamp' => 1574312111,
+                'dirname' => 'test',
+                'basename' => 'd',
+                'filename' => 'd'
+            ]
+        ];
 
         $wrapper = $this->getInstance($flysystem);
 
-        $response = $wrapper->remove('a/');
+        $response = $wrapper->remove('test/b');
 
         self::assertTrue($response);
-        self::assertSame($expected, $flysystem->listContents('/'));
+        self::assertSame($expected, $flysystem->listContents('test'));
+        $flysystem->deleteDir('test');
+        \rmdir($tempDir);
     }
 
     /**
