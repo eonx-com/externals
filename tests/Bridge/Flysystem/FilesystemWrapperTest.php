@@ -183,6 +183,49 @@ class FilesystemWrapperTest extends TestCase
     }
 
     /**
+     * Integration test for remove().
+     *
+     * @return void
+     *
+     * @throws \League\Flysystem\FileExistsException
+     */
+    public function testRemove(): void
+    {
+        $config = new Config(['timestamp' => 1574312111]);
+        $flysystem = new Filesystem(new MemoryAdapter($config), $config);
+        $flysystem->write('a/b/c.txt', '123');
+        $flysystem->write('x.txt', '789');
+        $expected = [
+            [
+                'type' => 'dir',
+                'timestamp' => 1574312111,
+                'path' => 'a',
+                'dirname' => '',
+                'basename' => 'a',
+                'filename' => 'a'
+            ],
+            [
+                'type' => 'file',
+                'visibility' => 'public',
+                'timestamp' => 1574312111,
+                'size' => 3,
+                'path' => 'x.txt',
+                'dirname' => '',
+                'basename' => 'x.txt',
+                'extension' => 'txt',
+                'filename' => 'x'
+            ]
+        ];
+
+        $wrapper = $this->getInstance($flysystem);
+
+        $response = $wrapper->remove('a/b/c.txt');
+
+        self::assertTrue($response);
+        self::assertSame($expected, $flysystem->listContents('/'));
+    }
+
+    /**
      * Integration test for write().
      *
      * @return void

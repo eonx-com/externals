@@ -61,7 +61,7 @@ class FilesystemWrapper implements FilesystemInterface
 
     public function remove(string $filename): bool
     {
-        // TODO: Implement remove() method.
+        return $this->flysystem->delete($filename);
     }
 
     public function write(string $filename, string $contents): bool
