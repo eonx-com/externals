@@ -4,13 +4,11 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Bridge\Flysystem;
 
 use EoneoPay\Externals\Bridge\Flysystem\FilesystemWrapper;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\Config;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\Memory\MemoryAdapter;
-use Tests\EoneoPay\Externals\Stubs\Bridge\Flysystem\FlySystemStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
@@ -43,39 +41,26 @@ class FilesystemWrapperTest extends TestCase
      * Tests FilesystemWrapper::exists() method.
      *
      * @return void
+     *
+     * @throws \League\Flysystem\FileExistsException
      */
     public function testExists(): void
     {
-        $filesystem = new FlySystemStub(['has' => [true]]);
-        $wrapper = $this->getInstance($filesystem);
-
-        $response = $wrapper->exists('file:///dir/foo');
-
-        self::assertTrue($response);
-        self::assertSame([['path' => 'file:///dir/foo']], $filesystem->getHasCalls());
-    }
-
-    /**
-     * Test fileListing
-     *
-     * @return void
-     */
-    public function testsFileListingCalls(): void
-    {
-        $flysystem = new FlySystemStub(['listContents' => [['a/b/c', 'xy/z.txt']]]);
+        $flysystem = new Filesystem(new MemoryAdapter());
+        $flysystem->write('a.txt', '123');
         $wrapper = $this->getInstance($flysystem);
 
-        $actual = $wrapper->files('path/to/some/dir', true);
+        $existsResponse = $wrapper->exists('a.txt');
+        $notExistsResponse = $wrapper->exists('b.txt');
 
-        self::assertSame(['a/b/c', 'xy/z.txt'], $actual);
-        self::assertSame(
-            [['directory' => 'path/to/some/dir', 'recursive' => true]],
-            $flysystem->getListContentsCalls()
-        );
+        self::assertTrue($existsResponse);
+        self::assertFalse($notExistsResponse);
     }
 
     /**
      * Integration test for list().
+     *
+     * @return void
      *
      * @throws \League\Flysystem\FileExistsException
      */
@@ -302,7 +287,7 @@ class FilesystemWrapperTest extends TestCase
     {
         $flysystem = new Filesystem(new MemoryAdapter());
         $data = 'abcdefghijklmnopqrstuiwxyz';
-        $stream = fopen('php://memory','rb+');
+        $stream = \fopen('php://memory', 'rb+');
         \fwrite($stream, $data);
         $wrapper = $this->getInstance($flysystem);
 
