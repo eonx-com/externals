@@ -25,7 +25,13 @@ class FilesystemWrapper implements FilesystemInterface
 
     public function append(string $filename, string $contents): bool
     {
-        // TODO: Implement append() method.
+        $existing = $this->readStream($filename);
+
+        $writeStream = \fopen('php://memory','ab+');
+        \stream_copy_to_stream($existing, $writeStream);
+        \fwrite($writeStream, $contents);
+
+        return $this->flysystem->updateStream($filename, $writeStream);
     }
 
     public function exists(string $filename): bool
