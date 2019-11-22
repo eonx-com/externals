@@ -188,6 +188,7 @@ class FilesystemWrapperTest extends TestCase
      * @return void
      *
      * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
      */
     public function testRemove(): void
     {
