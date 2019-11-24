@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Bridge\Flysystem;
 
 use EoneoPay\Externals\Bridge\Flysystem\FilesystemWrapper;
+use EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException;
 use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\Config;
 use League\Flysystem\Filesystem;
@@ -128,6 +129,24 @@ class FilesystemWrapperTest extends TestCase
         $actual = $wrapper->read('a/b/c.txt');
 
         self::assertSame($expected, $actual);
+    }
+
+    /**
+     * Catch errors for missing files.
+     *
+     * @return void
+     *
+     * * @throws \EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException
+     */
+    public function testReadError(): void
+    {
+        $flysystem = new Filesystem(new MemoryAdapter());
+        $wrapper = $this->getInstance($flysystem);
+
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('File not found at path: a/b/c.txt');
+
+        $wrapper->read('a/b/c.txt');
     }
 
     /**
