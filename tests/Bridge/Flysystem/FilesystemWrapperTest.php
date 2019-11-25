@@ -219,7 +219,7 @@ class FilesystemWrapperTest extends TestCase
     public function testPath(): void
     {
         $flysystem = new Filesystem(new NullAdapter());
-        $expected = '/a/b/c.txt';
+        $expected = 'a/b/c.txt';
 
         $wrapper = $this->getInstance($flysystem);
 
