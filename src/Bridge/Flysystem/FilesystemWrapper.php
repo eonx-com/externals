@@ -62,6 +62,8 @@ class FilesystemWrapper implements FilesystemInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated See PYMT-1581.
      */
     public function path(?string $filename = null): string
     {

@@ -40,6 +40,8 @@ interface FilesystemInterface
      * @param string|null $filename The filename to append to the path
      *
      * @return string
+     *
+     * @deprecated See PYMT-1581.
      */
     public function path(?string $filename = null): string;
 
