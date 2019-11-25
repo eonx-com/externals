@@ -116,7 +116,6 @@ class FilesystemWrapperTest extends TestCase
      * @return void
      *
      * @throws \League\Flysystem\FileExistsException
-     * @throws \League\Flysystem\FileNotFoundException
      */
     public function testRead(): void
     {
@@ -136,7 +135,7 @@ class FilesystemWrapperTest extends TestCase
      *
      * @return void
      *
-     * * @throws \EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException
+     * @throws \EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException
      */
     public function testReadError(): void
     {
@@ -147,6 +146,26 @@ class FilesystemWrapperTest extends TestCase
         $this->expectExceptionMessage('File not found at path: a/b/c.txt');
 
         $wrapper->read('a/b/c.txt');
+    }
+
+    /**
+     * Catch errors for missing files.
+     *
+     * This is for errors when the underlying adapter returns false.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Externals\Filesystem\Exceptions\FileNotFoundException
+     */
+    public function testReadErrorFalse(): void
+    {
+        $flysystem = new Filesystem(new NullAdapter());
+        $wrapper = $this->getInstance($flysystem);
+
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('File not found at path: x.txt');
+
+        $wrapper->read('x.txt');
     }
 
     /**
