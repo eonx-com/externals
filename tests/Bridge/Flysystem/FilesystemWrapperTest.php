@@ -184,9 +184,29 @@ class FilesystemWrapperTest extends TestCase
 
         $wrapper = $this->getInstance($flysystem);
 
+        /** @var resource $stream */
         $stream = $wrapper->readStream('a/b/c.txt');
 
         self::assertSame($expected, \stream_get_contents($stream));
+    }
+
+    /**
+     * Integration test for readStream().
+     *
+     * @return void
+     *
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function testReadStreamFailure(): void
+    {
+        $flysystem = new Filesystem(new NullAdapter(), new Config(['disable_asserts' => true]));
+
+        $wrapper = $this->getInstance($flysystem);
+
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('File not found at path: null.txt');
+
+        $wrapper->readStream('null.txt');
     }
 
     /**
@@ -325,10 +345,12 @@ class FilesystemWrapperTest extends TestCase
     {
         $flysystem = new Filesystem(new MemoryAdapter());
         $data = 'abcdefghijklmnopqrstuiwxyz';
+        /** @var resource $stream */
         $stream = \fopen('php://memory', 'rb+');
         \fwrite($stream, $data);
         $wrapper = $this->getInstance($flysystem);
 
+        /** @var resource $stream */
         $response = $wrapper->writeStream('st.txt', $stream);
 
         self::assertTrue($response);

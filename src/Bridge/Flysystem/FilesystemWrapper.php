@@ -88,10 +88,16 @@ class FilesystemWrapper implements FilesystemInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \League\Flysystem\FileNotFoundException
      */
     public function readStream(string $filename)
     {
-        return $this->flysystem->readStream($filename);
+        $stream = $this->flysystem->readStream($filename);
+        if (\is_resource($stream) !== true) {
+            throw new FileNotFoundException(\sprintf('File not found at path: %s', $filename));
+        }
+        return $stream;
     }
 
     /**
@@ -102,8 +108,7 @@ class FilesystemWrapper implements FilesystemInterface
     public function remove(string $filename): bool
     {
         $metadata = $this->flysystem->getMetadata($filename);
-        $type = $metadata['type'] ?? 'unknown';
-        if ($type === 'file') {
+        if (\is_array($metadata) && \array_key_exists('type', $metadata) && $metadata['type'] === 'file') {
             return $this->flysystem->delete($filename);
         }
         return $this->flysystem->deleteDir($filename);
