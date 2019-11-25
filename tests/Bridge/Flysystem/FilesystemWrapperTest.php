@@ -159,7 +159,7 @@ class FilesystemWrapperTest extends TestCase
      */
     public function testReadErrorFalse(): void
     {
-        $flysystem = new Filesystem(new NullAdapter());
+        $flysystem = new Filesystem(new NullAdapter(), new Config(['disable_asserts' => true]));
         $wrapper = $this->getInstance($flysystem);
 
         $this->expectException(FileNotFoundException::class);

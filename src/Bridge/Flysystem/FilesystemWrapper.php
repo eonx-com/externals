@@ -76,10 +76,14 @@ class FilesystemWrapper implements FilesystemInterface
     public function read(string $filename): string
     {
         try {
-            return $this->flysystem->read($filename);
+            $response = $this->flysystem->read($filename);
         } catch (FlysystemFileNotFoundException $exception) {
             throw new FileNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
         }
+        if ($response === false) {
+            throw new FileNotFoundException(\sprintf('File not found at path: %s', $filename));
+        }
+        return $response;
     }
 
     /**
