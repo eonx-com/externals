@@ -67,7 +67,7 @@ class FilesystemWrapper implements FilesystemInterface
      */
     public function path(?string $filename = null): string
     {
-        return $filename;
+        return $filename ?? '';
     }
 
     /**
