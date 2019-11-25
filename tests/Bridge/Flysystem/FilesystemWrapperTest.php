@@ -14,6 +14,8 @@ use Tests\EoneoPay\Externals\TestCase;
 
 /**
  * @covers \EoneoPay\Externals\Bridge\Flysystem\FilesystemWrapper
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) Lots of tests are good.
  */
 class FilesystemWrapperTest extends TestCase
 {
