@@ -12,6 +12,7 @@
     "ext-libxml": "*",
     "ext-simplexml": "*",
     "eonx-com/utils": "^1.0",
+    "league/flysystem": "^1.0",
     "psr/event-dispatcher": "^1.0",
     "psr/http-client": "^1.0",
     "zendframework/zend-diactoros": "^2.1"
@@ -27,8 +28,8 @@
     "indigophp/doctrine-annotation-autoload": "^0.1.0",
     "laravel-doctrine/extensions": "^1.0",
     "laravel-doctrine/orm": "1.5.*",
-    "league/flysystem": "^1.0",
     "league/flysystem-aws-s3-v3": "^1.0",
+    "league/flysystem-memory": "^1.0",
     "mikey179/vfsstream": "^1.6",
     "monolog/monolog": "^1.23",
     "nicoswd/php-gpg": "^1.7",
