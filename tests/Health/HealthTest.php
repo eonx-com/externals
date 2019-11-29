@@ -15,6 +15,30 @@ class HealthTest extends TestCase
      *
      * @return void
      */
+    public function testExtendedCheckReturnsNegativeResult(): void
+    {
+        $instance = $this->getInstance([
+            new HealthCheckStub(
+                'Test Health Check',
+                'test-health-check',
+                HealthInterface::STATE_DEGRADED
+            )
+        ]);
+        $expected = [
+            'test-health-check' => HealthInterface::STATE_DEGRADED
+        ];
+
+        $result = $instance->extended();
+
+        self::assertSame($expected, $result);
+    }
+
+    /**
+     * Tests that the 'extended' method returns positive health check result matching
+     * the expected data.
+     *
+     * @return void
+     */
     public function testExtendedCheckReturnsPositiveResult(): void
     {
         $instance = $this->getInstance([
