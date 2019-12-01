@@ -15,11 +15,11 @@ class Health implements HealthInterface
     private $checks;
 
     /**
-     * Constructs a new instance of the service..
+     * Constructs a new instance of the service.
      *
      * @param \EoneoPay\Externals\Health\Interfaces\HealthCheckInterface[] $checks
      */
-    public function __construct(array $checks)
+    public function __construct(iterable $checks)
     {
         $this->checks = $checks;
     }

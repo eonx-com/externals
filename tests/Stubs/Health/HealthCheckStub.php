@@ -43,9 +43,7 @@ class HealthCheckStub implements HealthCheckInterface
     }
 
     /**
-     * Performs a health check.
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function check(): int
     {
@@ -53,9 +51,7 @@ class HealthCheckStub implements HealthCheckInterface
     }
 
     /**
-     * Gets the name of the health check.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getName(): string
     {
@@ -63,9 +59,7 @@ class HealthCheckStub implements HealthCheckInterface
     }
 
     /**
-     * Gets the shortened name of the check.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getShortName(): string
     {
