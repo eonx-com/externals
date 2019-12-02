@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\Health;
 
+use EoneoPay\Externals\DataTransferObjects\Health\HealthExtendedCheckResult;
+use EoneoPay\Externals\DataTransferObjects\Health\HealthState;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 
 class Health implements HealthInterface
@@ -27,14 +29,14 @@ class Health implements HealthInterface
     /**
      * {@inheritdoc}
      */
-    public function extended(): array
+    public function extended(): HealthExtendedCheckResult
     {
         // If there are no checks set, return early.
         if (\count($this->checks) === 0) {
-            return [
-                'state' => self::STATE_HEALTHY,
-                'services' => []
-            ];
+            return new HealthExtendedCheckResult(
+                self::STATE_HEALTHY,
+                []
+            );
         }
 
         // Get the results of each check.
@@ -44,15 +46,13 @@ class Health implements HealthInterface
         }
 
         // Supply an overall health
-        $overall = (\array_search(self::STATE_DEGRADED, \array_values($states), true) > -1) === true
-            ? self::STATE_DEGRADED
-            : self::STATE_HEALTHY;
+        $numDegraded = \count(\array_filter($states, static function (HealthState $state): bool {
+            return $state->getState() === HealthInterface::STATE_DEGRADED;
+        }));
+        $overall = $numDegraded > 0 ? self::STATE_DEGRADED : self::STATE_HEALTHY;
 
         // Return the results
-        return [
-            'state' => $overall,
-            'services' => $states
-        ];
+        return new HealthExtendedCheckResult($overall, $states);
     }
 
     /**

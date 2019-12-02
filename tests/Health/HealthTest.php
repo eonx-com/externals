@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\Health;
 
+use EoneoPay\Externals\DataTransferObjects\Health\HealthExtendedCheckResult;
+use EoneoPay\Externals\DataTransferObjects\Health\HealthState;
 use EoneoPay\Externals\Health\Health;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 use Tests\EoneoPay\Externals\Stubs\Health\HealthCheckStub;
@@ -25,15 +27,15 @@ class HealthTest extends TestCase
                 new HealthCheckStub(
                     'Test Health Check',
                     'test-health-check',
-                    HealthInterface::STATE_HEALTHY
+                    new HealthState(HealthInterface::STATE_HEALTHY)
                 )
             ],
-            'expected' => [
-                'state' => HealthInterface::STATE_HEALTHY,
-                'services' => [
-                    'test-health-check' => HealthInterface::STATE_HEALTHY,
-                ],
-            ],
+            'expected' => new HealthExtendedCheckResult(
+                HealthInterface::STATE_HEALTHY,
+                [
+                    'test-health-check' => new HealthState(HealthInterface::STATE_HEALTHY),
+                ]
+            ),
         ];
 
         yield 'All services degraded' => [
@@ -41,15 +43,15 @@ class HealthTest extends TestCase
                 new HealthCheckStub(
                     'Test Health Check',
                     'test-health-check',
-                    HealthInterface::STATE_DEGRADED
+                    new HealthState(HealthInterface::STATE_DEGRADED)
                 )
             ],
-            'expected' => [
-                'state' => HealthInterface::STATE_DEGRADED,
-                'services' => [
-                    'test-health-check' => HealthInterface::STATE_DEGRADED,
+            'expected' => new HealthExtendedCheckResult(
+                HealthInterface::STATE_DEGRADED,
+                [
+                    'test-health-check' => new HealthState(HealthInterface::STATE_DEGRADED),
                 ]
-            ],
+            ),
         ];
 
         yield 'At least one service degraded' => [
@@ -57,21 +59,21 @@ class HealthTest extends TestCase
                 new HealthCheckStub(
                     'Test Service One',
                     'test-service-one',
-                    HealthInterface::STATE_HEALTHY
+                    new HealthState(HealthInterface::STATE_HEALTHY)
                 ),
                 new HealthCheckStub(
                     'Test Service Two',
                     'test-service-two',
-                    HealthInterface::STATE_DEGRADED
+                    new HealthState(HealthInterface::STATE_DEGRADED)
                 ),
             ],
-            'expected' => [
-                'state' => HealthInterface::STATE_DEGRADED,
-                'services' => [
-                    'test-service-one' => HealthInterface::STATE_HEALTHY,
-                    'test-service-two' => HealthInterface::STATE_DEGRADED,
-                ],
-            ],
+            'expected' => new HealthExtendedCheckResult(
+                HealthInterface::STATE_DEGRADED,
+                [
+                    'test-service-one' => new HealthState(HealthInterface::STATE_HEALTHY),
+                    'test-service-two' => new HealthState(HealthInterface::STATE_DEGRADED),
+                ]
+            ),
         ];
     }
 
@@ -84,33 +86,35 @@ class HealthTest extends TestCase
     public function testExtendedCheckReturnsEmptyResultWhenNoChecksPassed(): void
     {
         $instance = $this->getInstance([]);
-        $expected = [
-            'state' => HealthInterface::STATE_HEALTHY,
-            'services' => []
-        ];
+        $expected = new HealthExtendedCheckResult(
+            HealthInterface::STATE_HEALTHY,
+            []
+        );
 
         $result = $instance->extended();
 
-        self::assertSame($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
      * Tests that the 'extended' method returns the expected result for each scenario provided by the data provider.
      *
      * @param \EoneoPay\Externals\Health\Interfaces\HealthCheckInterface[] $checks
-     * @param mixed[] $expected
+     * @param \EoneoPay\Externals\DataTransferObjects\Health\HealthExtendedCheckResult $expected
      *
      * @return void
      *
      * @dataProvider getExtendedCheckScenarios
      */
-    public function testExtendedCheckReturnsExpectedScenarioResults(array $checks, array $expected): void
-    {
+    public function testExtendedCheckReturnsExpectedScenarioResults(
+        array $checks,
+        HealthExtendedCheckResult $expected
+    ): void {
         $instance = $this->getInstance($checks);
 
         $result = $instance->extended();
 
-        self::assertSame($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\Stubs\Health;
 
+use EoneoPay\Externals\DataTransferObjects\Health\HealthState;
 use EoneoPay\Externals\Health\Interfaces\HealthCheckInterface;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 
@@ -22,7 +23,7 @@ class HealthCheckStub implements HealthCheckInterface
     private $shortName;
 
     /**
-     * @var int
+     * @var \EoneoPay\Externals\DataTransferObjects\Health\HealthState
      */
     private $state;
 
@@ -31,22 +32,22 @@ class HealthCheckStub implements HealthCheckInterface
      *
      * @param string|null $name
      * @param string|null $shortName
-     * @param int|null $state
+     * @param \EoneoPay\Externals\DataTransferObjects\Health\HealthState|null $state
      */
     public function __construct(
         ?string $name = null,
         ?string $shortName = null,
-        ?int $state = null
+        ?HealthState $state = null
     ) {
         $this->name = $name ?? 'Stubbed Health Check';
         $this->shortName = $shortName ?? 'stubbed';
-        $this->state = $state ?? HealthInterface::STATE_HEALTHY;
+        $this->state = $state ?? new HealthState(HealthInterface::STATE_HEALTHY);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function check(): int
+    public function check(): HealthState
     {
         return $this->state;
     }

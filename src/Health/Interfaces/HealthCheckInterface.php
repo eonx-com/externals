@@ -3,14 +3,16 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\Health\Interfaces;
 
+use EoneoPay\Externals\DataTransferObjects\Health\HealthState;
+
 interface HealthCheckInterface
 {
     /**
      * Performs a health check.
      *
-     * @return int
+     * @return \EoneoPay\Externals\DataTransferObjects\Health\HealthState
      */
-    public function check(): int;
+    public function check(): HealthState;
 
     /**
      * Gets the name of the health check.

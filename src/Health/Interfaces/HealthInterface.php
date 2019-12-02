@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\Health\Interfaces;
 
+use EoneoPay\Externals\DataTransferObjects\Health\HealthExtendedCheckResult;
+
 interface HealthInterface
 {
     /**
@@ -22,9 +24,9 @@ interface HealthInterface
     /**
      * Performs an extended health check.
      *
-     * @return mixed[]
+     * @return \EoneoPay\Externals\DataTransferObjects\Health\HealthExtendedCheckResult
      */
-    public function extended(): array;
+    public function extended(): HealthExtendedCheckResult;
 
     /**
      * Performs a simple health check.
