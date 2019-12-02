@@ -30,7 +30,4 @@ parameters:
         -
             message: '#Call to protected method setWithSetter\(\) of class Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities\\SimpleEntityStub\.#'
             path: tests/ORM/SimpleEntityTest.php
-        -
-            message: '/Parameter #1 \$checks of method Tests\\EoneoPay\\Externals\\Health\\HealthTest::getInstance\(\) expects array<EoneoPay\\Externals\\Health\\Interfaces\\HealthCheckInterface>, array<int, stdClass> given./'
-            path: tests/Health/HealthTest.php
 
