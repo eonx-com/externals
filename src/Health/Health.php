@@ -31,17 +31,28 @@ class Health implements HealthInterface
     {
         // If there are no checks set, return early.
         if (\count($this->checks) === 0) {
-            return [];
+            return [
+                'state' => self::STATE_HEALTHY,
+                'services' => []
+            ];
         }
 
         // Get the results of each check.
-        $results = [];
+        $states = [];
         foreach ($this->checks as $check) {
-            $results[$check->getShortName()] = $check->check();
+            $states[$check->getShortName()] = $check->check();
         }
 
+        // Supply an overall health
+        $overall = (\array_search(self::STATE_DEGRADED, \array_values($states), true) > -1) === true
+            ? self::STATE_DEGRADED
+            : self::STATE_HEALTHY;
+
         // Return the results
-        return $results;
+        return [
+            'state' => $overall,
+            'services' => $states
+        ];
     }
 
     /**

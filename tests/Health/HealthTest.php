@@ -13,39 +13,75 @@ use Tests\EoneoPay\Externals\TestCase;
  */
 class HealthTest extends TestCase
 {
+    public function getExtendedCheckScenarios(): iterable
+    {
+        yield 'All services healthy' => [
+            'checks' => [
+                new HealthCheckStub(
+                    'Test Health Check',
+                    'test-health-check',
+                    HealthInterface::STATE_HEALTHY
+                )
+            ],
+            'expected' => [
+                'state' => HealthInterface::STATE_HEALTHY,
+                'services' => [
+                    'test-health-check' => HealthInterface::STATE_HEALTHY,
+                ],
+            ],
+        ];
+
+        yield 'All services degraded' => [
+            'checks' => [
+                new HealthCheckStub(
+                    'Test Health Check',
+                    'test-health-check',
+                    HealthInterface::STATE_DEGRADED
+                )
+            ],
+            'expected' => [
+                'state' => HealthInterface::STATE_DEGRADED,
+                'services' => [
+                    'test-health-check' => HealthInterface::STATE_DEGRADED,
+                ]
+            ],
+        ];
+
+        yield 'At least one service degraded' => [
+            'checks' => [
+                new HealthCheckStub(
+                    'Test Service One',
+                    'test-service-one',
+                    HealthInterface::STATE_HEALTHY
+                ),
+                new HealthCheckStub(
+                    'Test Service Two',
+                    'test-service-two',
+                    HealthInterface::STATE_DEGRADED
+                ),
+            ],
+            'expected' => [
+                'state' => HealthInterface::STATE_DEGRADED,
+                'services' => [
+                    'test-service-one' => HealthInterface::STATE_HEALTHY,
+                    'test-service-two' => HealthInterface::STATE_DEGRADED,
+                ],
+            ],
+        ];
+    }
+
     /**
-     * Tests that the extended health check returns an empty result when no checks have
-     * been passed in to the constructor of the service.
+     * Tests that the extended health check returns a healthy result when no checks have
+     * been passed via dependency injection.
      *
      * @return void
      */
     public function testExtendedCheckReturnsEmptyResultWhenNoChecksPassed(): void
     {
         $instance = $this->getInstance([]);
-        $expected = [];
-
-        $result = $instance->extended();
-
-        self::assertSame($expected, $result);
-    }
-
-    /**
-     * Tests that the 'extended' method returns positive health check result matching
-     * the expected data.
-     *
-     * @return void
-     */
-    public function testExtendedCheckReturnsNegativeResult(): void
-    {
-        $instance = $this->getInstance([
-            new HealthCheckStub(
-                'Test Health Check',
-                'test-health-check',
-                HealthInterface::STATE_DEGRADED
-            )
-        ]);
         $expected = [
-            'test-health-check' => HealthInterface::STATE_DEGRADED
+            'state' => HealthInterface::STATE_HEALTHY,
+            'services' => []
         ];
 
         $result = $instance->extended();
@@ -54,23 +90,18 @@ class HealthTest extends TestCase
     }
 
     /**
-     * Tests that the 'extended' method returns positive health check result matching
-     * the expected data.
+     * Tests that the 'extended' method returns the expected result for each scenario provided by the data provider.
+     *
+     * @param \EoneoPay\Externals\Health\Interfaces\HealthCheckInterface[] $checks
+     * @param mixed[] $expected
      *
      * @return void
+     *
+     * @dataProvider getExtendedCheckScenarios
      */
-    public function testExtendedCheckReturnsPositiveResult(): void
+    public function testExtendedCheckReturnsExpectedScenarioResults(array $checks, array $expected): void
     {
-        $instance = $this->getInstance([
-            new HealthCheckStub(
-                'Test Health Check',
-                'test-health-check',
-                HealthInterface::STATE_HEALTHY
-            )
-        ]);
-        $expected = [
-            'test-health-check' => HealthInterface::STATE_HEALTHY
-        ];
+        $instance = $this->getInstance($checks);
 
         $result = $instance->extended();
 

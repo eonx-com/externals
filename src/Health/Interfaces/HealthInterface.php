@@ -17,7 +17,7 @@ interface HealthInterface
      *
      * @const int
      */
-    public const STATE_HEALTHY = 1;
+    public const STATE_HEALTHY = 100;
 
     /**
      * Performs an extended health check.
