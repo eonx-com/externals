@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Stubs\Health;
 
 use EoneoPay\Externals\Health\Interfaces\HealthCheckInterface;
+use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 
 /**
  * @coversNothing
@@ -39,7 +40,7 @@ class HealthCheckStub implements HealthCheckInterface
     ) {
         $this->name = $name ?? 'Stubbed Health Check';
         $this->shortName = $shortName ?? 'stubbed';
-        $this->state = $state;
+        $this->state = $state ?? HealthInterface::STATE_HEALTHY;
     }
 
     /**
