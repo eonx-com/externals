@@ -47,6 +47,7 @@ class Health implements HealthInterface
 
         // Supply an overall health
         $numDegraded = \count(\array_filter($states, static function (HealthState $state): bool {
+            // Filter each state and only return the states that are degraded
             return $state->getState() === HealthInterface::STATE_DEGRADED;
         }));
         $overall = $numDegraded > 0 ? self::STATE_DEGRADED : self::STATE_HEALTHY;

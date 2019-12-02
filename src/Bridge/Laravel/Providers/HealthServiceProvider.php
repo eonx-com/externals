@@ -18,8 +18,11 @@ class HealthServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(HealthInterface::class, static function (Container $app): HealthInterface {
+            /**
+             * @var mixed[]|iterable|\Traversable $tagged
+             */
             $tagged = $app->tagged('externals_healthcheck');
-            $checks = \is_array($tagged) ? $tagged : (array)$tagged;
+            $checks = \is_array($tagged) ? $tagged : \iterator_to_array($tagged);
 
             return new Health($checks);
         });
