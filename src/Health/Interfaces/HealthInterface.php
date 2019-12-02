@@ -20,13 +20,6 @@ interface HealthInterface
     public const STATE_HEALTHY = 1;
 
     /**
-     * Performs a simple health check.
-     *
-     * @return int
-     */
-    public function simple(): int;
-
-    /**
      * Performs an extended health check.
      *
      * @return int[]
@@ -39,4 +32,11 @@ interface HealthInterface
      * @return \EoneoPay\Externals\Health\Interfaces\HealthCheckInterface[]
      */
     public function getChecks(): array;
+
+    /**
+     * Performs a simple health check.
+     *
+     * @return int
+     */
+    public function simple(): int;
 }

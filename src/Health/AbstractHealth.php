@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\Health;
 
-use EoneoPay\Externals\Health\Exceptions\InvalidClassInterface;
-use EoneoPay\Externals\Health\Interfaces\HealthCheckInterface;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 
 abstract class AbstractHealth implements HealthInterface
 {
     /**
      * {@inheritdoc}
-     *
-     * @throws \EoneoPay\Externals\Health\Exceptions\InvalidClassInterface
+     */
+    abstract public function getChecks(): array;
+
+    /**
+     * {@inheritdoc}
      */
     public function extended(): array
     {
@@ -27,13 +28,6 @@ abstract class AbstractHealth implements HealthInterface
         // Get the results of each check.
         $results = [];
         foreach ($checks as $check) {
-            if (($check instanceof HealthCheckInterface) === false) {
-                throw new InvalidClassInterface(
-                    'exceptions.health.invalid_class',
-                    ['class' => \get_class($check)]
-                );
-            }
-
             $results[$check->getShortName()] = $check->check();
         }
 
@@ -48,9 +42,4 @@ abstract class AbstractHealth implements HealthInterface
     {
         return self::STATE_HEALTHY;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getChecks(): array;
 }

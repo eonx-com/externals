@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\Health;
 
 use EoneoPay\Externals\Health\AbstractHealth;
-use EoneoPay\Externals\Health\Exceptions\InvalidClassInterface;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
-use stdClass as stdClass;
 use Tests\EoneoPay\Externals\Stubs\Health\HealthCheckStub;
 use Tests\EoneoPay\Externals\Stubs\Health\HealthStub;
 use Tests\EoneoPay\Externals\TestCase;
@@ -21,8 +19,6 @@ class HealthTest extends TestCase
      * been passed in to the constructor of the service.
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\Health\Exceptions\InvalidClassInterface
      */
     public function testExtendedCheckReturnsEmptyResultWhenNoChecksPassed(): void
     {
@@ -35,31 +31,10 @@ class HealthTest extends TestCase
     }
 
     /**
-     * Tests that the 'extended' method throws an exception when it comes across a provided check class
-     * that does not implement the 'HealthCheckInterface' interface.
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Externals\Health\Exceptions\InvalidClassInterface
-     */
-    public function testExtendedCheckThrowsExceptionWithInvalidClass(): void
-    {
-        $checks = [new stdClass()];
-        $instance = $this->getInstance($checks);
-
-        $this->expectException(InvalidClassInterface::class);
-        $this->expectExceptionMessage('exceptions.health.invalid_class');
-
-        $instance->extended();
-    }
-
-    /**
      * Tests that the 'extended' method returns positive health check result matching
      * the expected data.
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\Health\Exceptions\InvalidClassInterface
      */
     public function testExtendedCheckReturnsNegativeResult(): void
     {
@@ -84,8 +59,6 @@ class HealthTest extends TestCase
      * the expected data.
      *
      * @return void
-     *
-     * @throws \EoneoPay\Externals\Health\Exceptions\InvalidClassInterface
      */
     public function testExtendedCheckReturnsPositiveResult(): void
     {
