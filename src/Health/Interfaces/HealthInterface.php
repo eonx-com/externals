@@ -27,13 +27,6 @@ interface HealthInterface
     public function extended(): array;
 
     /**
-     * Gets the health check classes that should be called.
-     *
-     * @return \EoneoPay\Externals\Health\Interfaces\HealthCheckInterface[]
-     */
-    public function getChecks(): array;
-
-    /**
      * Performs a simple health check.
      *
      * @return int

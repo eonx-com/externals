@@ -5,29 +5,38 @@ namespace EoneoPay\Externals\Health;
 
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 
-abstract class AbstractHealth implements HealthInterface
+class Health implements HealthInterface
 {
     /**
-     * {@inheritdoc}
+     * The health checks to perform.
+     *
+     * @var \EoneoPay\Externals\Health\Interfaces\HealthCheckInterface[]
      */
-    abstract public function getChecks(): array;
+    private $checks;
+
+    /**
+     * Constructs a new instance of Health.
+     *
+     * @param \EoneoPay\Externals\Health\Interfaces\HealthCheckInterface[] $checks
+     */
+    public function __construct(array $checks)
+    {
+        $this->checks = $checks;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function extended(): array
     {
-        // Get the classes to call upon for health checks
-        $checks = $this->getChecks();
-
         // If there are no checks set, return early.
-        if (\count($checks) === 0) {
+        if (\count($this->checks) === 0) {
             return [];
         }
 
         // Get the results of each check.
         $results = [];
-        foreach ($checks as $check) {
+        foreach ($this->checks as $check) {
             $results[$check->getShortName()] = $check->check();
         }
 

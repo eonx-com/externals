@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\Health;
 
-use EoneoPay\Externals\Health\AbstractHealth;
+use EoneoPay\Externals\Health\Health;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 use Tests\EoneoPay\Externals\Stubs\Health\HealthCheckStub;
-use Tests\EoneoPay\Externals\Stubs\Health\HealthStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
- * @covers \EoneoPay\Externals\Health\AbstractHealth
+ * @covers \EoneoPay\Externals\Health\Health
  */
 class HealthTest extends TestCase
 {
@@ -97,10 +96,10 @@ class HealthTest extends TestCase
      *
      * @param \EoneoPay\Externals\Health\Interfaces\HealthCheckInterface[] $checks
      *
-     * @return \EoneoPay\Externals\Health\AbstractHealth
+     * @return \EoneoPay\Externals\Health\Health
      */
-    private function getInstance(array $checks): AbstractHealth
+    private function getInstance(array $checks): Health
     {
-        return new HealthStub($checks);
+        return new Health($checks);
     }
 }
