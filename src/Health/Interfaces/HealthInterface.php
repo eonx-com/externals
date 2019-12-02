@@ -22,7 +22,7 @@ interface HealthInterface
     /**
      * Performs an extended health check.
      *
-     * @return int[]
+     * @return mixed[]
      */
     public function extended(): array;
 

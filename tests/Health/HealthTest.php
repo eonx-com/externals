@@ -13,6 +13,11 @@ use Tests\EoneoPay\Externals\TestCase;
  */
 class HealthTest extends TestCase
 {
+    /**
+     * Gets the health check scenarios for testing.
+     *
+     * @return mixed[]
+     */
     public function getExtendedCheckScenarios(): iterable
     {
         yield 'All services healthy' => [
