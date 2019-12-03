@@ -480,6 +480,7 @@ class ApplicationStub implements Application, ArrayAccess
      */
     public function tag($abstracts, $tags): void
     {
+        $this->callMethod('tag', [$abstracts, $tags]);
     }
 
     /**
