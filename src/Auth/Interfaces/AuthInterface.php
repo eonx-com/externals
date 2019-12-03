@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\Auth\Interfaces;
 
-use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\ORM\Interfaces\UserInterface;
 
 interface AuthInterface
 {
     /**
      * Get current authenticated user entity
      *
-     * @return \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null
+     * @return \EoneoPay\Externals\ORM\Interfaces\UserInterface|null
      */
-    public function user(): ?EntityInterface;
+    public function user(): ?UserInterface;
 }

@@ -1,9 +1,14 @@
 <?php
 declare(strict_types=1);
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
+
 /**
  * @coversNothing
  */
+/** @noinspection PhpDeprecationInspection Will be removed with doctrine annotations v2.0 */
+AnnotationRegistry::registerUniqueLoader('class_exists');
+
 if (\function_exists('xdebug_set_filter') === false) {
     return;
 }
