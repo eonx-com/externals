@@ -13,7 +13,7 @@ class ElasticsearchHealthCheck implements HealthCheckInterface
     /**
      * The search client instance.
      *
-     * @var \LoyaltyCorp\Search\Client
+     * @var \LoyaltyCorp\Search\Interfaces\ClientInterface
      */
     private $client;
 
