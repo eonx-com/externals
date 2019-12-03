@@ -8,11 +8,11 @@ use EoneoPay\Externals\Health\Interfaces\HealthCheckInterface;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 use LoyaltyCorp\Search\Interfaces\ClientInterface as SearchClientInterface;
 use Tests\EoneoPay\Externals\Stubs\Vendor\LoyaltyCorp\Search\FailingSearchClientStub;
+use Tests\EoneoPay\Externals\Stubs\Vendor\LoyaltyCorp\Search\SearchClientStub;
 use Tests\EoneoPay\Externals\TestCase;
-use Tests\LoyaltyCorp\Search\Stubs\ClientStub as SearchClientStub;
 
 /**
- * @covers EoneoPay\Externals\Health\Checks\ElasticsearchHealthCheck
+ * @covers \EoneoPay\Externals\Health\Checks\ElasticsearchHealthCheck
  */
 class ElasticsearchHealthCheckTest extends TestCase
 {
@@ -40,11 +40,11 @@ class ElasticsearchHealthCheckTest extends TestCase
     public function testCheckReturnsSuccessful(): void
     {
         $check = $this->getInstance();
-        $expected = HealthInterface::STATE_HEALTHY;
 
         $result = $check->check();
 
-        self::assertSame($expected, $result);
+        self::assertSame(HealthInterface::STATE_HEALTHY, $result->getState());
+        self::assertSame('Communication with Elasticsearch was successful.', $result->getMessage());
     }
 
     /**
