@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "26ca8e259c792afb3aa5322488e3b83b",
+    "content-hash": "de91639d04b23ea390632a10c29c92cd",
     "packages": [
         {
-            "name": "eoneopay/utils",
-            "version": "v0.2.13",
+            "name": "eonx-com/utils",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/loyaltycorp/utils.git",
-                "reference": "981e762b941bf0cc78fb5427cfd75ac956a02fdb"
+                "url": "https://github.com/eonx-com/utils.git",
+                "reference": "e20c1ba295ab760d43e72c1547e8d3aa69296b4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/loyaltycorp/utils/zipball/981e762b941bf0cc78fb5427cfd75ac956a02fdb",
-                "reference": "981e762b941bf0cc78fb5427cfd75ac956a02fdb",
+                "url": "https://api.github.com/repos/eonx-com/utils/zipball/e20c1ba295ab760d43e72c1547e8d3aa69296b4e",
+                "reference": "e20c1ba295ab760d43e72c1547e8d3aa69296b4e",
                 "shasum": ""
             },
             "require": {
@@ -25,6 +25,9 @@
                 "ext-json": "*",
                 "ext-libxml": "*",
                 "php": ">=7.1"
+            },
+            "replace": {
+                "eoneopay/utils": "^0.2"
             },
             "require-dev": {
                 "doctrine/annotations": "^1.6",
@@ -68,7 +71,7 @@
                 "helpers",
                 "utilities"
             ],
-            "time": "2019-11-06T21:13:49+00:00"
+            "time": "2019-11-09T03:22:46+00:00"
         },
         {
             "name": "psr/http-client",
@@ -1405,22 +1408,149 @@
             "time": "2019-08-13T17:33:27+00:00"
         },
         {
-            "name": "eoneopay/standards",
-            "version": "dev-master",
+            "name": "elasticsearch/elasticsearch",
+            "version": "v6.7.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/loyaltycorp/standards.git",
-                "reference": "a3467c0bdd27cc5b0c97e42e9510ae058e5adcc7"
+                "url": "https://github.com/elastic/elasticsearch-php.git",
+                "reference": "9ba89f905ebf699e72dacffa410331c7fecc8255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/loyaltycorp/standards/zipball/a3467c0bdd27cc5b0c97e42e9510ae058e5adcc7",
-                "reference": "a3467c0bdd27cc5b0c97e42e9510ae058e5adcc7",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/9ba89f905ebf699e72dacffa410331c7fecc8255",
+                "reference": "9ba89f905ebf699e72dacffa410331c7fecc8255",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": ">=1.3.7",
+                "guzzlehttp/ringphp": "~1.0",
+                "php": "^7.0",
+                "psr/log": "~1.0"
+            },
+            "require-dev": {
+                "cpliakas/git-wrapper": "^1.7 || ^2.1",
+                "doctrine/inflector": "^1.1",
+                "mockery/mockery": "^1.2",
+                "phpstan/phpstan-shim": "^0.9 || ^0.11",
+                "phpunit/phpunit": "^5.7 || ^6.5",
+                "squizlabs/php_codesniffer": "^3.4",
+                "symfony/finder": "^2.8",
+                "symfony/yaml": "^2.8"
+            },
+            "suggest": {
+                "ext-curl": "*",
+                "monolog/monolog": "Allows for client-level logging and tracing"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Elasticsearch\\": "src/Elasticsearch/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Zachary Tong"
+                },
+                {
+                    "name": "Enrico Zimuel"
+                }
+            ],
+            "description": "PHP Client for Elasticsearch",
+            "keywords": [
+                "client",
+                "elasticsearch",
+                "search"
+            ],
+            "time": "2019-07-19T14:48:24+00:00"
+        },
+        {
+            "name": "eonx-com/search",
+            "version": "v2.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eonx-com/search.git",
+                "reference": "82a98f11177deefadbac8818129650e339aebd03"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eonx-com/search/zipball/82a98f11177deefadbac8818129650e339aebd03",
+                "reference": "82a98f11177deefadbac8818129650e339aebd03",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "^2.6",
+                "elasticsearch/elasticsearch": "^6.1",
+                "eoneopay/externals": "^1.1",
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.3",
+                "illuminate/console": "^5.8|^6.0",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "eoneopay/standards": "dev-master",
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "guzzlehttp/psr7": "^1.5",
+                "illuminate/container": "^5.8|^6.0",
+                "illuminate/support": "^5.8|^6.0",
+                "loyaltycorp/easy-entity-change": "^0.10.4",
+                "loyaltycorp/multitenancy": "^1.0",
+                "monolog/monolog": "^1.24",
+                "phpmd/phpmd": "^2.6",
+                "phpstan/phpstan": "^0.11",
+                "phpunit/phpunit": "^7.0",
+                "roave/security-advisories": "dev-master",
+                "sebastian/phpcpd": "^4.0",
+                "squizlabs/php_codesniffer": "3.*",
+                "vlucas/phpdotenv": "^3.0"
+            },
+            "suggest": {
+                "loyaltycorp/easy-entity-change": "Required when using the Laravel events bridge",
+                "loyaltycorp/multitenancy": "Required when using provider specific search handlers",
+                "monolog/monolog": "Required when using the Laravel bridge",
+                "vlucas/phpdotenv": "Required when using the Laravel bridge"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LoyaltyCorp\\Search\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Search functionality provided by elastic search",
+            "keywords": [
+                "elasticsearch",
+                "loyaltycorp",
+                "search"
+            ],
+            "time": "2019-11-14T01:28:39+00:00"
+        },
+        {
+            "name": "eonx-com/standards",
+            "version": "v0.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eonx-com/standards.git",
+                "reference": "4c6d90b559f1600b58f93f3941b6c25d844bbed7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eonx-com/standards/zipball/4c6d90b559f1600b58f93f3941b6c25d844bbed7",
+                "reference": "4c6d90b559f1600b58f93f3941b6c25d844bbed7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1",
                 "slevomat/coding-standard": "~4.0"
+            },
+            "replace": {
+                "eoneopay/standards": "*"
             },
             "require-dev": {
                 "phpstan/phpstan": "^0.11.13",
@@ -1456,7 +1586,7 @@
                 "eoneopay",
                 "standards"
             ],
-            "time": "2019-10-22T01:17:45+00:00"
+            "time": "2019-11-19T21:44:08+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1843,6 +1973,107 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "guzzlehttp/ringphp",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/RingPHP.git",
+                "reference": "5e2a174052995663dd68e6b5ad838afd47dd615b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/5e2a174052995663dd68e6b5ad838afd47dd615b",
+                "reference": "5e2a174052995663dd68e6b5ad838afd47dd615b",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/streams": "~3.0",
+                "php": ">=5.4.0",
+                "react/promise": "~2.0"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "ext-curl": "Guzzle will use specific adapters if cURL is present"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Ring\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
+            "time": "2018-07-31T13:22:33+00:00"
+        },
+        {
+            "name": "guzzlehttp/streams",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/streams.git",
+                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/streams/zipball/47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Stream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Provides a simple abstraction over streams of data",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "Guzzle",
+                "stream"
+            ],
+            "time": "2014-10-12T19:18:40+00:00"
         },
         {
             "name": "illuminate/auth",
@@ -5718,6 +5949,52 @@
             ],
             "description": "A polyfill for getallheaders.",
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "react/promise",
+            "version": "v2.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/promise.git",
+                "reference": "31ffa96f8d2ed0341a57848cbb84d88b89dd664d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/31ffa96f8d2ed0341a57848cbb84d88b89dd664d",
+                "reference": "31ffa96f8d2ed0341a57848cbb84d88b89dd664d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "React\\Promise\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Sorgalla",
+                    "email": "jsorgalla@gmail.com"
+                }
+            ],
+            "description": "A lightweight implementation of CommonJS Promises/A for PHP",
+            "keywords": [
+                "promise",
+                "promises"
+            ],
+            "time": "2019-01-07T21:25:54+00:00"
         },
         {
             "name": "roave/security-advisories",

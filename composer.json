@@ -17,6 +17,7 @@
   },
   "require-dev": {
     "eoneopay/standards": "dev-master",
+    "eonx-com/search": "^2.1",
     "gedmo/doctrine-extensions": "^2.4",
     "giggsey/libphonenumber-for-php": "^8.10",
     "guzzlehttp/guzzle": "^6.0.0",
@@ -58,6 +59,7 @@
     }
   },
   "suggest": {
+    "eonx-com/search": "Required to use the Elasticsearch health check",
     "gedmo/doctrine-extensions": "Required to use ORM extensions",
     "giggsey/libphonenumber-for-php": "For phone number validation",
     "guzzlehttp/guzzle": "Required to use the http client class",
