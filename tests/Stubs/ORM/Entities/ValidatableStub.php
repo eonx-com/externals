@@ -19,7 +19,7 @@ class ValidatableStub extends EntityStub implements ValidatableInterface
     {
         return [
             'string' => 'required|string',
-            'integer' => 'required|int'
+            'integer' => 'required|int',
         ];
     }
 

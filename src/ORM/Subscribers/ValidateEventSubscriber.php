@@ -6,7 +6,6 @@ namespace EoneoPay\Externals\ORM\Subscribers;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Externals\ORM\Interfaces\ValidatableInterface;
 use EoneoPay\Externals\Translator\Interfaces\TranslatorInterface;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
@@ -14,14 +13,14 @@ use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 final class ValidateEventSubscriber implements EventSubscriber
 {
     /**
-     * Translator instance
+     * Translator instance.
      *
      * @var \EoneoPay\Externals\Translator\Interfaces\TranslatorInterface
      */
     private $translator;
 
     /**
-     * Validator instance
+     * Validator instance.
      *
      * @var \EoneoPay\Externals\Validator\Interfaces\ValidatorInterface
      */
@@ -46,12 +45,12 @@ final class ValidateEventSubscriber implements EventSubscriber
     {
         return [
             Events::prePersist,
-            Events::preUpdate
+            Events::preUpdate,
         ];
     }
 
     /**
-     * Validate entities before persist
+     * Validate entities before persist.
      *
      * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Event arguments
      *
@@ -63,7 +62,7 @@ final class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
-     * Call validator before update
+     * Call validator before update.
      *
      * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs Event arguments
      *
@@ -75,7 +74,7 @@ final class ValidateEventSubscriber implements EventSubscriber
     }
 
     /**
-     * Call validator on an object
+     * Call validator on an object.
      *
      * @param \Doctrine\ORM\Event\LifecycleEventArgs $eventArgs
      *
@@ -96,7 +95,8 @@ final class ValidateEventSubscriber implements EventSubscriber
          *
          * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
          */
-        if ($this->validator->validate($this->getEntityContents($entity), $entity->getRules()) === true) {
+        $result = $this->validator->validate($this->getEntityContents($entity), $entity->getRules());
+        if (\count($result) === 0) {
             return;
         }
 
@@ -108,7 +108,7 @@ final class ValidateEventSubscriber implements EventSubscriber
             null,
             null,
             null,
-            $this->validator->getFailures()
+            $result
         );
     }
 
@@ -116,14 +116,14 @@ final class ValidateEventSubscriber implements EventSubscriber
      * Get entity contents via reflection, this is used so there's no reliance
      * on entity methods such as toArray().
      *
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity
+     * @param \EoneoPay\Externals\ORM\Interfaces\ValidatableInterface $entity
      *
      * @return mixed[]
      */
-    private function getEntityContents(EntityInterface $entity): array
+    private function getEntityContents(ValidatableInterface $entity): array
     {
         $contents = [];
-        foreach ($entity->getProperties() as $property) {
+        foreach ($entity->getValidatableProperties() as $property) {
             $getter = [$entity, \sprintf('get%s', \ucfirst($property))];
 
             // If getter isn't available, continue - this is only here for safety since base entity provides __call

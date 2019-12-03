@@ -9,7 +9,7 @@ use Doctrine\Common\EventSubscriber;
 class EventManagerStub extends EventManager
 {
     /**
-     * Loaded event subscribers
+     * Loaded event subscribers.
      *
      * @var \Doctrine\Common\EventSubscriber[]
      */
@@ -31,7 +31,7 @@ class EventManagerStub extends EventManager
     }
 
     /**
-     * Get subscribers
+     * Get subscribers.
      *
      * @return \Doctrine\Common\EventSubscriber[]
      */

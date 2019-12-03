@@ -20,7 +20,7 @@ use Tests\EoneoPay\Externals\TestCases\ORMTestCase;
 class GenerateUniqueValueTest extends ORMTestCase
 {
     /**
-     * Test callback is invoked if it exists
+     * Test callback is invoked if it exists.
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class GenerateUniqueValueTest extends ORMTestCase
     }
 
     /**
-     * Test generation with check digit consitently adds the same check digit
+     * Test generation with check digit consitently adds the same check digit.
      *
      * @return void
      */
@@ -52,7 +52,7 @@ class GenerateUniqueValueTest extends ORMTestCase
     }
 
     /**
-     * Ensure generator will only execute against entities that have the interface implemented
+     * Ensure generator will only execute against entities that have the interface implemented.
      *
      * @return void
      */

@@ -6,7 +6,7 @@ namespace Tests\EoneoPay\Externals\Stubs\ORM\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @method null|ParentStub getParent()
+ * @method ParentStub|null getParent()
  *
  * @ORM\Entity()
  */
@@ -50,22 +50,6 @@ class ChildStub extends EntityStub
 
         $this->parent = new ParentStub();
         $this->parent->getChildren()->add($this);
-    }
-
-    /**
-     * Return an array of annotation/attribute pairs to search for properties in
-     *
-     * Note: Changing this array will cause the test testPropertyAnnotationsContainsInvalidClassAndAttribute() to fail
-     *
-     * @return string[]
-     *
-     * @see \Tests\EoneoPay\Externals\ORM\EntityTest::testPropertyAnnotationsContainsInvalidClassAndAttribute
-     */
-    public function getPropertyAnnotations(): array
-    {
-        parent::getPropertyAnnotations();
-
-        return [];
     }
 
     /**

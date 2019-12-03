@@ -29,7 +29,7 @@ final class SoftDeleteExtension extends GedmoExtension
     public function getFilters(): array
     {
         return [
-            'soft-deleteable' => SoftDeleteableFilter::class
+            'soft-deleteable' => SoftDeleteableFilter::class,
         ];
     }
 }

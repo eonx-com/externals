@@ -16,14 +16,14 @@ use Throwable;
 final class Logger implements LoggerInterface
 {
     /**
-     * Monolog instance
+     * Monolog instance.
      *
      * @var \Monolog\Logger
      */
     private $monolog;
 
     /**
-     * Set up log writer
+     * Set up log writer.
      *
      * @param string|null $streamName The log stream name
      * @param \Monolog\Handler\HandlerInterface|null $handler The handler to use for logging

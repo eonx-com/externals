@@ -29,7 +29,7 @@ class SoftDeleteEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test nothing happens if the entity manager isn't provided
+     * Test nothing happens if the entity manager isn't provided.
      *
      * @return void
      *
@@ -54,7 +54,7 @@ class SoftDeleteEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test onflush intercepts the delete request
+     * Test onflush intercepts the delete request.
      *
      * @return void
      *
@@ -84,7 +84,7 @@ class SoftDeleteEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test post flush removes entity tracking
+     * Test post flush removes entity tracking.
      *
      * @return void
      *
@@ -119,7 +119,7 @@ class SoftDeleteEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test soft vs hard delete functionality
+     * Test soft vs hard delete functionality.
      *
      * @return void
      */
@@ -162,7 +162,7 @@ class SoftDeleteEventSubscriberTest extends ORMTestCase
     }
 
     /**
-     * Test soft delete subscriber instance
+     * Test soft delete subscriber instance.
      *
      * @return \EoneoPay\Externals\ORM\Subscribers\SoftDeleteEventSubscriber
      */

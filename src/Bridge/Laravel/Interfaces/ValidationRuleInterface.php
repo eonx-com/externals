@@ -8,21 +8,21 @@ use Closure;
 interface ValidationRuleInterface
 {
     /**
-     * Get rule name
+     * Get rule name.
      *
      * @return string
      */
     public function getName(): string;
-    
+
     /**
-     * Get message replacements
+     * Get message replacements.
      *
      * @return \Closure
      */
     public function getReplacements(): Closure;
 
     /**
-     * Get the validation rule closure
+     * Get the validation rule closure.
      *
      * @return \Closure
      */

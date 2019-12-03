@@ -20,8 +20,8 @@ use EoneoPay\Externals\Bridge\Laravel\Translator;
 use EoneoPay\Externals\Bridge\Laravel\Validator;
 use EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\ResolveTargetEntityExtension;
 use EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\SoftDeleteExtension;
-use EoneoPay\Externals\ORM\Entity;
 use EoneoPay\Externals\ORM\EntityManager;
+use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
 use EoneoPay\Externals\ORM\Listeners\GenerateUniqueValue;
 use EoneoPay\Externals\ORM\Subscribers\ValidateEventSubscriber;
@@ -44,35 +44,35 @@ use Tests\EoneoPay\Externals\TestCase;
 abstract class ORMTestCase extends TestCase
 {
     /**
-     * Connection parameters
+     * Connection parameters.
      *
      * @var string[]
      */
     private static $connection = [
         'driver' => 'pdo_sqlite',
-        'path' => ':memory:'
+        'path' => ':memory:',
     ];
 
     /**
-     * Paths to look for entities in
+     * Paths to look for entities in.
      *
      * @var string[]
      */
     private static $paths = [
         // Paths to your entities folder and stubs folder
         __DIR__ . '/../Stubs/ORM/Entities',
-        __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity'
+        __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity',
     ];
 
     /**
-     * Default repository class to use
+     * Default repository class to use.
      *
      * @var string
      */
     private static $repository = RepositoryStub::class;
 
     /**
-     * Generated sql for migrations
+     * Generated sql for migrations.
      *
      * @var string
      */
@@ -89,14 +89,14 @@ abstract class ORMTestCase extends TestCase
     private $entityManager;
 
     /**
-     * Whether the database has been seeded with migration sql or not
+     * Whether the database has been seeded with migration sql or not.
      *
      * @var bool
      */
     private $seeded = false;
 
     /**
-     * Lazy load database schema only when required
+     * Lazy load database schema only when required.
      *
      * @return void
      */
@@ -222,13 +222,13 @@ abstract class ORMTestCase extends TestCase
 
     /**
      * Get entity contents via reflection, this is used so there's no reliance
-     * on entity methods such as toArray for tests to work
+     * on entity methods such as toArray for tests to work.
      *
-     * @param \EoneoPay\Externals\ORM\Entity $entity The entity to get data from
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface $entity The entity to get data from
      *
      * @return mixed[]
      */
-    protected function getEntityContents(Entity $entity): array
+    protected function getEntityContents(EntityInterface $entity): array
     {
         // Get properties available for this entity
         try {
@@ -276,7 +276,7 @@ abstract class ORMTestCase extends TestCase
         return [
             new ResolveTargetEntityExtension(new ResolveTargetEntityListener()),
             new SoftDeleteExtension(),
-            new LoggableExtensionStub()
+            new LoggableExtensionStub(),
         ];
     }
 }

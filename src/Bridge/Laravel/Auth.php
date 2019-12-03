@@ -14,7 +14,7 @@ abstract class Auth implements AuthInterface, Factory
     private $auth;
 
     /**
-     * Create new authentication instance
+     * Create new authentication instance.
      *
      * @param \Illuminate\Contracts\Auth\Factory $auth Illuminate auth factory
      */
@@ -24,7 +24,7 @@ abstract class Auth implements AuthInterface, Factory
     }
 
     /**
-     * Passes through all unimplemented auth methods to the base auth class
+     * Passes through all unimplemented auth methods to the base auth class.
      *
      * @param string $method The method being called
      * @param mixed[] $arguments Any arguements passed to the method

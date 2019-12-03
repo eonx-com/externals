@@ -6,7 +6,7 @@ namespace EoneoPay\Externals\Environment\Interfaces;
 interface EnvInterface
 {
     /**
-     * Gets the value of an environment variable
+     * Gets the value of an environment variable.
      *
      * @param string $key The key to get
      * @param mixed $default The value to return if the key isn't set
@@ -16,7 +16,7 @@ interface EnvInterface
     public function get(string $key, $default = null);
 
     /**
-     * Remove an environment variable
+     * Remove an environment variable.
      *
      * @param string $key The key to remove
      *
@@ -25,7 +25,7 @@ interface EnvInterface
     public function remove(string $key): bool;
 
     /**
-     * Set an environment variable
+     * Set an environment variable.
      *
      * @param string $key The key to set
      * @param mixed $value The value to assign to the key

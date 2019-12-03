@@ -14,8 +14,8 @@ interface FilterCollectionInterface
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
      *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress() EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
+     * @phpcsSuppress() SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function disable($name): void;
 
@@ -28,8 +28,8 @@ interface FilterCollectionInterface
      *
      * @throws \EoneoPay\Externals\ORM\Exceptions\ORMException If the filter does not exist.
      *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress() EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
+     * @phpcsSuppress() SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function enable($name): void;
 }

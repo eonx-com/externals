@@ -34,7 +34,7 @@ class SoftDeleteExtensionTest extends TestCase
     }
 
     /**
-     * Extension should register a soft deleteable filter
+     * Extension should register a soft deleteable filter.
      *
      * @return void
      */

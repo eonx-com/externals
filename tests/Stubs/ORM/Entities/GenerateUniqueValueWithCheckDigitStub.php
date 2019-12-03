@@ -16,18 +16,18 @@ use EoneoPay\Externals\ORM\Interfaces\Listeners\GenerateUniqueValueInterface;
 class GenerateUniqueValueWithCheckDigitStub extends Entity implements GenerateUniqueValueInterface
 {
     /**
-     * Primary id
+     * Primary id.
      *
      * @var string
      *
      * @ORM\Column(name="id", type="string", length=36)
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      */
     protected $entityId;
 
     /**
-     * Generated property
+     * Generated property.
      *
      * @var string
      *
@@ -88,7 +88,7 @@ class GenerateUniqueValueWithCheckDigitStub extends Entity implements GenerateUn
     {
         return [
             'generatedValue' => $this->generatedValue,
-            'id' => $this->entityId
+            'id' => $this->entityId,
         ];
     }
 

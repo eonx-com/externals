@@ -15,7 +15,7 @@ class ConstraintValidatorStub implements ConstraintValidatorInterface
     private $initialized;
 
     /**
-     * The calls to validate()
+     * The calls to validate().
      *
      * @var mixed[]
      */
@@ -32,7 +32,7 @@ class ConstraintValidatorStub implements ConstraintValidatorInterface
     }
 
     /**
-     * Returns calls to validate()
+     * Returns calls to validate().
      *
      * @return mixed[]
      */

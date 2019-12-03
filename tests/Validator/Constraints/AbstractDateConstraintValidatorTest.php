@@ -15,7 +15,7 @@ use Tests\EoneoPay\Externals\TestCases\ValidatorConstraintTestCase;
 class AbstractDateConstraintValidatorTest extends ValidatorConstraintTestCase
 {
     /**
-     * Tests that initialize calls the inner validator
+     * Tests that initialize calls the inner validator.
      *
      * @return void
      */
@@ -29,11 +29,47 @@ class AbstractDateConstraintValidatorTest extends ValidatorConstraintTestCase
         $context = $this->buildContext($constraint);
         $validator->initialize($context);
 
-        static::assertSame([$context], $inner->getInitialized());
+        self::assertSame([$context], $inner->getInitialized());
     }
 
     /**
-     * Test that the validator wraps a EqualTo validator
+     * Test invalid date value does not call inner validator.
+     *
+     * @return void
+     */
+    public function testInvalidDate(): void
+    {
+        $value = 'purple elephant';
+        $constraint = new NotBlank();
+
+        $inner = new ConstraintValidatorStub();
+        $validator = new DateConstraintValidatorStub($inner);
+
+        $validator->validate($value, $constraint);
+
+        self::assertCount(0, $inner->getValidated());
+    }
+
+    /**
+     * Test null value does not call inner validator.
+     *
+     * @return void
+     */
+    public function testNullValue(): void
+    {
+        $value = null;
+        $constraint = new NotBlank();
+
+        $inner = new ConstraintValidatorStub();
+        $validator = new DateConstraintValidatorStub($inner);
+
+        $validator->validate($value, $constraint);
+
+        self::assertCount(0, $inner->getValidated());
+    }
+
+    /**
+     * Test that the validator wraps a EqualTo validator.
      *
      * @return void
      *
@@ -49,50 +85,10 @@ class AbstractDateConstraintValidatorTest extends ValidatorConstraintTestCase
 
         $validator->validate($value, $constraint);
 
-        static::assertCount(1, $inner->getValidated());
+        self::assertCount(1, $inner->getValidated());
         $call = $inner->getValidated()[0];
 
-        static::assertEquals(new DateTime('2019-07-01T00:00:00Z'), $call['value']);
-        static::assertSame($constraint, $call['constraint']);
-    }
-
-    /**
-     * Test null value does not call inner validator
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
-     */
-    public function testNullValue(): void
-    {
-        $value = null;
-        $constraint = new NotBlank();
-
-        $inner = new ConstraintValidatorStub();
-        $validator = new DateConstraintValidatorStub($inner);
-
-        $validator->validate($value, $constraint);
-
-        static::assertCount(0, $inner->getValidated());
-    }
-
-    /**
-     * Test invalid date value does not call inner validator
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
-     */
-    public function testInvalidDate(): void
-    {
-        $value = 'purple elephant';
-        $constraint = new NotBlank();
-
-        $inner = new ConstraintValidatorStub();
-        $validator = new DateConstraintValidatorStub($inner);
-
-        $validator->validate($value, $constraint);
-
-        static::assertCount(0, $inner->getValidated());
+        self::assertEquals(new DateTime('2019-07-01T00:00:00Z'), $call['value']);
+        self::assertSame($constraint, $call['constraint']);
     }
 }

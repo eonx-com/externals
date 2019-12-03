@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 interface ExceptionHandlerInterface
 {
     /**
-     * Retrieves the response from an exception
+     * Retrieves the response from an exception.
      *
      * @param \Psr\Http\Message\RequestInterface $request
      * @param \GuzzleHttp\Exception\GuzzleException $exception

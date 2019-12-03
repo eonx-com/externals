@@ -29,7 +29,7 @@ class FilterCollectionTest extends ORMTestCase
     }
 
     /**
-     * Test an invalid filter throws an exception
+     * Test an invalid filter throws an exception.
      *
      * @return void
      *

@@ -7,9 +7,6 @@ parameters:
             message: '#Call to an undefined method Illuminate\\Contracts\\Filesystem\\Filesystem::path\(\).#'
             path: src/Bridge/Laravel/Filesystem.php
         -
-            message: '#Class Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities\\InvalidClass not found.#'
-            path: tests/Stubs/ORM/Entities/EntityStub.php
-        -
             message: '#Constant XDEBUG_[A-Z_]+ not found.#'
             path: tests/bootstrap.php
         -
@@ -25,8 +22,12 @@ parameters:
             message: '#Variable property access on \$this\(EoneoPay\\Externals\\ORM\\Entity\).#'
             path: src/ORM/Entity.php
         -
+            message: '#Variable property access on \$this\(EoneoPay\\Externals\\ORM\\SimpleEntity\).#'
+            path: src/ORM/SimpleEntity.php
+        -
             message: '#Variable property access on \$this\(Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities\\EntityStub|TransformerStub\).#'
             path: src/ORM/Traits/HasTransformers.php
         -
-            message: '#Parameter \#3 \$previous of class EoneoPay\\Externals\\HttpClient\\Exceptions\\InvalidApiResponseException constructor expects Throwable\|null, GuzzleHttp\\Exception\\GuzzleException given\.#'
-            path: src/HttpClient/Client.php
+            message: '#Call to protected method setWithSetter\(\) of class Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities\\SimpleEntityStub\.#'
+            path: tests/ORM/SimpleEntityTest.php
+

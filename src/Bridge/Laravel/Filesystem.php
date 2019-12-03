@@ -13,14 +13,14 @@ use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterface
 {
     /**
-     * Contracted filesystem instance
+     * Contracted filesystem instance.
      *
      * @var \Illuminate\Contracts\Filesystem\Filesystem
      */
     private $filesystem;
 
     /**
-     * Create new filesystem instance
+     * Create new filesystem instance.
      *
      * @param \Illuminate\Contracts\Filesystem\Filesystem $contract Contracted filesystem instance
      */
@@ -83,6 +83,19 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     /**
      * {@inheritdoc}
      */
+    public function readStream(string $filename)
+    {
+        try {
+            return $this->filesystem->readStream($filename);
+        } catch (ContractedFileNotFoundException $exception) {
+            // Wrap exception
+            throw new FileNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function remove(string $filename): bool
     {
         return $this->safeWrite('delete', $filename);
@@ -97,6 +110,14 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function writeStream(string $path, $resource, ?array $options = null): bool
+    {
+        return $this->safeWrite('writeStream', $path, $resource, $options ?? []);
+    }
+
+    /**
      * @noinspection PhpDocSignatureInspection Signature matches parameters but phpstorm doesn't understand it
      *
      * Safely perform a writable action
@@ -106,7 +127,7 @@ final class Filesystem implements CloudFilesystemInterface, DiskFilesystemInterf
      *
      * @return bool
      */
-    private function safeWrite(string $action, ... $parameters): bool
+    private function safeWrite(string $action, ...$parameters): bool
     {
         try {
             return (bool)\call_user_func_array([$this->filesystem, $action], $parameters);

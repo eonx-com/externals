@@ -8,7 +8,7 @@ use EoneoPay\Externals\ORM\Interfaces\UserInterface;
 interface AuthInterface
 {
     /**
-     * Get current authenticated user entity
+     * Get current authenticated user entity.
      *
      * @return \EoneoPay\Externals\ORM\Interfaces\UserInterface|null
      */

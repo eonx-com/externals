@@ -15,7 +15,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class ResolveTargetEntityExtensionTest extends TestCase
 {
     /**
-     * Test extension is registered
+     * Test extension is registered.
      *
      * @return void
      */

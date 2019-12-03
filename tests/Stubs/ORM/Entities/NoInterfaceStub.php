@@ -11,12 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 class NoInterfaceStub
 {
     /**
-     * Primary id
+     * Primary id.
      *
      * @var string
      *
      * @ORM\Column(name="id", type="string", length=36)
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      */
     protected $entityId;

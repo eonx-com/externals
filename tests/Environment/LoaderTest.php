@@ -18,7 +18,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class LoaderTest extends TestCase
 {
     /**
-     * Test loader can read env file
+     * Test loader can read env file.
      *
      * @return void
      *
@@ -44,7 +44,7 @@ class LoaderTest extends TestCase
     }
 
     /**
-     * Test load doesn't overwrite existing values but overload does
+     * Test load doesn't overwrite existing values but overload does.
      *
      * @return void
      *
@@ -77,7 +77,7 @@ class LoaderTest extends TestCase
     }
 
     /**
-     * Test loader prefers compiled files over env files
+     * Test loader prefers compiled files over env files.
      *
      * @return void
      *
@@ -104,7 +104,7 @@ class LoaderTest extends TestCase
     }
 
     /**
-     * Test loader throws exception if path is invalid
+     * Test loader throws exception if path is invalid.
      *
      * @return void
      *
@@ -119,7 +119,7 @@ class LoaderTest extends TestCase
     }
 
     /**
-     * Create a file system with env files
+     * Create a file system with env files.
      *
      * @return \EoneoPay\Externals\Bridge\Laravel\Filesystem
      *

@@ -17,7 +17,7 @@ final class ResolveTargetEntityExtension implements Extension
     private $rtel;
 
     /**
-     * Create extension
+     * Create extension.
      *
      * @param \Doctrine\ORM\Tools\ResolveTargetEntityListener $rtel The entity listener for this extension
      */

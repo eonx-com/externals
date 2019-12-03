@@ -14,7 +14,7 @@ final class Container implements ContainerInterface
     private $container;
 
     /**
-     * Create container
+     * Create container.
      *
      * @param \Illuminate\Contracts\Container\Container $container
      */

@@ -15,7 +15,7 @@ class Validator implements ValidatorInterface
     private $inner;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \Symfony\Component\Validator\Validator\ValidatorInterface $inner
      */

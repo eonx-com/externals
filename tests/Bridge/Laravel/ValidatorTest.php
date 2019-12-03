@@ -15,66 +15,33 @@ use Tests\EoneoPay\Externals\TestCase;
 class ValidatorTest extends TestCase
 {
     /**
-     * Test validatedData method return empty array if validation failed
-     *
-     * @return void
-     */
-    public function testValidatedDataWithFailedValidation(): void
-    {
-        $validator = $this->createValidator();
-
-        $validatedData = $validator->validatedData(
-            ['key' => 'value', 'extra-key' => 'extra-key-value'],
-            ['key' => 'required|integer']
-        );
-
-        self::assertSame([], $validatedData);
-        self::assertSame(['key' => ['validation.integer']], $validator->getFailures());
-    }
-
-    /**
-     * Test validatedData method return correct values
-     *
-     * @return void
-     */
-    public function testValidatedDataWithSuccessfulValidation(): void
-    {
-        $validator = $this->createValidator();
-
-        $validatedData = $validator->validatedData(
-            ['key' => 'value', 'extra-key' => 'extra-key-value'],
-            ['key' => 'required']
-        );
-
-        self::assertSame(['key' => 'value'], $validatedData);
-        self::assertSame([], $validator->getFailures());
-    }
-
-    /**
-     * Test error messages work as expected
+     * Test error messages work as expected.
      *
      * @return void
      */
     public function testValidatorWithFailedValidation(): void
     {
-        $validator = $this->createValidator();
+        $instance = $this->createValidator();
+        $result = $instance->validate(['key' => 'value'], ['missing' => 'required']);
 
-        self::assertFalse($validator->validate(['key' => 'value'], ['missing' => 'required']));
-        self::assertSame($validator->getFailures(), ['missing' => ['missing is required']]);
+        self::assertSame(['missing' => ['missing is required']], $result);
     }
 
     /**
-     * Test validator can validate data
+     * Test validator can validate data.
      *
      * @return void
      */
     public function testValidatorWithSuccessfulValidation(): void
     {
-        self::assertTrue($this->createValidator()->validate(['key' => 'value'], ['key' => 'required|string']));
+        $instance = $this->createValidator();
+        $result = $instance->validate(['key' => 'value'], ['key' => 'required|string']);
+
+        self::assertSame([], $result);
     }
 
     /**
-     * Create validation instance
+     * Create validation instance.
      *
      * @return \EoneoPay\Externals\Bridge\Laravel\Validator
      */

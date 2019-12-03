@@ -14,14 +14,14 @@ use Tests\EoneoPay\Externals\TestCases\ValidatorConstraintTestCase;
 class DateLessThanOrEqualValidatorTest extends ValidatorConstraintTestCase
 {
     /**
-     * Test that the validator wraps a LessThanOrEqual validator
+     * Test that the validator wraps a LessThanOrEqual validator.
      *
      * @return void
      */
     public function testValidationPassthrough(): void
     {
         $constraint = new DateLessThanOrEqual([
-            'value' => '2019-07-01T00:00:00Z'
+            'value' => '2019-07-01T00:00:00Z',
         ]);
 
         $context = $this->buildContext($constraint);
@@ -32,6 +32,6 @@ class DateLessThanOrEqualValidatorTest extends ValidatorConstraintTestCase
 
         $validator->validate('2018-04-05T12:34:55Z', $constraint);
 
-        static::assertCount(0, $context->getViolations());
+        self::assertCount(0, $context->getViolations());
     }
 }

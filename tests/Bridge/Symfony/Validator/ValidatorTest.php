@@ -26,7 +26,7 @@ class ValidatorTest extends TestCase
         $expectedCall = [
             'value' => 'value',
             'constraints' => [$constraint],
-            'groups' => ['group']
+            'groups' => ['group'],
         ];
 
         $innerValidator = new ValidatorStub();
@@ -34,8 +34,8 @@ class ValidatorTest extends TestCase
 
         $validator->validate('value', [$constraint], ['group']);
 
-        static::assertCount(1, $innerValidator->getCalls());
-        static::assertSame($expectedCall, $innerValidator->getCalls()[0]);
+        self::assertCount(1, $innerValidator->getCalls());
+        self::assertSame($expectedCall, $innerValidator->getCalls()[0]);
     }
 
     /**

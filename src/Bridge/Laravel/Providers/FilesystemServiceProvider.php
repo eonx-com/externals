@@ -46,10 +46,12 @@ final class FilesystemServiceProvider extends ServiceProvider
         switch ($this->getDefaultDriver()) {
             case $this->getCloudDriver():
                 $this->app->bind(FilesystemInterface::class, CloudFilesystemInterface::class);
+
                 break;
 
             case $this->getDiskDriver():
                 $this->app->bind(FilesystemInterface::class, DiskFilesystemInterface::class);
+
                 break;
 
             default:
@@ -57,12 +59,13 @@ final class FilesystemServiceProvider extends ServiceProvider
                 $this->app->bind(FilesystemInterface::class, function () {
                     return new Filesystem($this->app->make('filesystem')->disk($this->getDefaultDriver()));
                 });
+
                 break;
         }
     }
 
     /**
-     * Determine if a driver is available
+     * Determine if a driver is available.
      *
      * @param string $driver The driver to check
      *
@@ -118,7 +121,7 @@ final class FilesystemServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the filesystem manager
+     * Register the filesystem manager.
      *
      * @return void
      */

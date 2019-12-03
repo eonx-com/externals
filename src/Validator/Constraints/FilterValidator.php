@@ -29,7 +29,6 @@ final class FilterValidator extends ConstraintValidator
          *
          * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
          */
-
         $filter = \constant($constraint->filter);
         $flags = 0;
         foreach ($constraint->flags ?? [] as $flag) {

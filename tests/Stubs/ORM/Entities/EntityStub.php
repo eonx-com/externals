@@ -35,27 +35,27 @@ class EntityStub extends Entity
     use SoftDeletes;
 
     /**
-     * Primary id
+     * Primary id.
      *
      * @var string
      *
      * @ORM\Column(name="id", type="string", length=36)
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      */
     protected $entityId;
 
     /**
-     * Integer test
+     * Integer test.
      *
      * @var int
      *
-     * @ORM\Column(type="integer", nullable=true, options={"unsigned": true})
+     * @ORM\Column(type="integer", nullable=true, options={"unsigned" = true})
      */
     protected $integer;
 
     /**
-     * String test
+     * String test.
      *
      * @var string
      *
@@ -88,26 +88,7 @@ class EntityStub extends Entity
     }
 
     /**
-     * Return an array of annotation/attribute pairs to search for properties in
-     *
-     * Note: Changing this array will cause the test testPropertyAnnotationsContainsInvalidClassAndAttribute() to fail
-     *
-     * @return string[]
-     *
-     * @see \Tests\EoneoPay\Externals\ORM\EntityTest::testPropertyAnnotationsContainsInvalidClassAndAttribute
-     */
-    public function getPropertyAnnotations(): array
-    {
-        /** @noinspection PhpUndefinedClassInspection InvalidClass is intentionally invalid */
-        return [
-            InvalidClass::class => 'name',
-            ORM\Column::class => 'name',
-            ORM\Id::class => 'invalid'
-        ];
-    }
-
-    /**
-     * Get the contents of the entity as an array
+     * Get the contents of the entity as an array.
      *
      * @return mixed[]
      */

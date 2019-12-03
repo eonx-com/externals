@@ -13,7 +13,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class GpgTest extends TestCase
 {
     /**
-     * Test that the supplied string can be signed
+     * Test that the supplied string can be signed.
      *
      * @return void
      */
@@ -26,7 +26,7 @@ class GpgTest extends TestCase
     }
 
     /**
-     * Test an invalid public key throws an exception
+     * Test an invalid public key throws an exception.
      *
      * @return void
      */
@@ -39,7 +39,7 @@ class GpgTest extends TestCase
     }
 
     /**
-     * Get test key for encryption
+     * Get test key for encryption.
      *
      * @return string
      */

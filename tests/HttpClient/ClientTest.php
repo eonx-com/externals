@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\Client;
+use EoneoPay\Externals\HttpClient\ClientOptions;
 use EoneoPay\Externals\HttpClient\ExceptionHandler;
 use EoneoPay\Externals\HttpClient\Exceptions\InvalidApiResponseException;
+use EoneoPay\Externals\HttpClient\Interfaces\ClientOptionsInterface;
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
@@ -22,7 +24,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class ClientTest extends TestCase
 {
     /**
-     * Test handling of a guzzle generic exception
+     * Test handling of a guzzle generic exception.
      *
      * @return void
      *
@@ -33,14 +35,14 @@ class ClientTest extends TestCase
         $this->expectException(InvalidApiResponseException::class);
 
         $client = $this->createInstance(new MockHandler([
-            new TransferException('An error occurred')
+            new TransferException('An error occurred'),
         ]));
 
         $client->request('get', 'test');
     }
 
     /**
-     * Test handling of a guzzle request exception
+     * Test handling of a guzzle request exception.
      *
      * @return void
      *
@@ -55,21 +57,21 @@ class ClientTest extends TestCase
                 'An error occurred',
                 new Request('GET', 'test'),
                 new Response(500, [], 'error')
-            )
+            ),
         ]));
 
         $client->request('get', 'test');
     }
 
     /**
-     * Test handling of request exception without response body
+     * Test handling of request exception without response body.
      *
      * @return void
      */
     public function testHandlingGuzzleRequestExceptionWithoutBody(): void
     {
         $client = $this->createInstance(new MockHandler([
-            new RequestException('An error occurred', new Request('GET', 'test'))
+            new RequestException('An error occurred', new Request('GET', 'test')),
         ]));
 
         try {
@@ -84,7 +86,7 @@ class ClientTest extends TestCase
     }
 
     /**
-     * Test processing a standard request
+     * Test processing a standard request.
      *
      * @return void
      *
@@ -93,7 +95,7 @@ class ClientTest extends TestCase
     public function testRequestProcessing(): void
     {
         $client = $this->createInstance(new MockHandler([
-            new Response(200, [], 'ok')
+            new Response(200, [], 'ok'),
         ]));
 
         $result = $client->request('get', 'test');
@@ -103,7 +105,7 @@ class ClientTest extends TestCase
     }
 
     /**
-     * Test processing a standard request
+     * Test processing a standard request.
      *
      * @return void
      *
@@ -112,24 +114,24 @@ class ClientTest extends TestCase
     public function testRequestSendRequesting(): void
     {
         $client = $this->createInstance(new MockHandler([
-            new Response(200, [], 'ok')
+            new Response(200, [], 'ok'),
         ]));
 
         $result = $client->sendRequest(new Request('post', '/'));
 
         self::assertSame(200, $result->getStatusCode());
-        self::assertSame('ok', $result->getBody()->__toString());
+        self::assertSame('ok', (string)$result->getBody());
     }
 
     /**
-     * Test processing a standard request
+     * Test processing a standard request.
      *
      * @return void
      */
     public function testRequestSendRequestingException(): void
     {
         $client = $this->createInstance(new MockHandler([
-            new RequestException('An error occurred', new Request('GET', 'test'))
+            new RequestException('An error occurred', new Request('GET', 'test')),
         ]));
 
         try {
@@ -144,18 +146,22 @@ class ClientTest extends TestCase
     }
 
     /**
-     * Create client instance
+     * Create client instance.
      *
      * @param \GuzzleHttp\Handler\MockHandler $handler Guzzle mock handler
+     * @param \EoneoPay\Externals\HttpClient\Interfaces\ClientOptionsInterface|null $clientOptions
      *
      * @return \EoneoPay\Externals\HttpClient\Client
      */
-    private function createInstance(MockHandler $handler): Client
-    {
+    private function createInstance(
+        MockHandler $handler,
+        ?ClientOptionsInterface $clientOptions = null
+    ): Client {
         // Create guzzle with mock response
         return new Client(
             new Guzzle(['handler' => $handler]),
-            new ExceptionHandler()
+            new ExceptionHandler(),
+            $clientOptions ?? new ClientOptions()
         );
     }
 }

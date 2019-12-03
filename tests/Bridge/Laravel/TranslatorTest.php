@@ -14,7 +14,7 @@ use Tests\EoneoPay\Externals\TestCase;
 class TranslatorTest extends TestCase
 {
     /**
-     * Test translator handles replacements
+     * Test translator handles replacements.
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class TranslatorTest extends TestCase
     }
 
     /**
-     * Test translator can retrieve messages
+     * Test translator can retrieve messages.
      *
      * @return void
      */
@@ -58,7 +58,7 @@ class TranslatorTest extends TestCase
     }
 
     /**
-     * Test translator string method
+     * Test translator string method.
      *
      * @return void
      */
@@ -67,8 +67,8 @@ class TranslatorTest extends TestCase
         $language = [
             'messages' => [
                 'one' => 'First message',
-                'two' => 'Second message'
-            ]
+                'two' => 'Second message',
+            ],
         ];
 
         $loader = new ArrayLoader();

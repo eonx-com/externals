@@ -9,14 +9,14 @@ use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 final class Translator implements TranslatorInterface
 {
     /**
-     * Contracted translator instance
+     * Contracted translator instance.
      *
      * @var \Illuminate\Contracts\Translation\Translator
      */
     private $translator;
 
     /**
-     * Create new translation instance
+     * Create new translation instance.
      *
      * @param \Illuminate\Contracts\Translation\Translator $contract Contracted translator instance
      */
@@ -30,7 +30,7 @@ final class Translator implements TranslatorInterface
      */
     public function get(string $key, ?array $replace = null, ?string $locale = null)
     {
-        return $this->translator->trans($key, $replace ?? [], $locale);
+        return $this->translator->get($key, $replace ?? [], $locale);
     }
 
     /**
