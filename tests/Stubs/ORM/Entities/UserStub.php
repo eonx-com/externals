@@ -7,4 +7,11 @@ use EoneoPay\Externals\ORM\Interfaces\UserInterface;
 
 class UserStub extends EntityStub implements UserInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueId()
+    {
+        return 1;
+    }
 }
