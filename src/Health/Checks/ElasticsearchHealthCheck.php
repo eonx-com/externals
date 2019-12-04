@@ -34,12 +34,16 @@ class ElasticsearchHealthCheck implements HealthCheckInterface
     public function check(): HealthState
     {
         try {
-            $this->client->getIndices();
+            $health = $this->client->getHealth();
+            $status = \strtolower($health->getStatus());
 
-            return new HealthState(
-                HealthInterface::STATE_HEALTHY,
-                'Communication with Elasticsearch was successful.'
-            );
+            // If the elastic search health is "yellow" or "green", return healthy
+            if ($status === 'green' || $status === 'yellow') {
+                return new HealthState(
+                    HealthInterface::STATE_HEALTHY,
+                    'Communication with Elasticsearch was successful.'
+                );
+            }
         } /** @noinspection BadExceptionsProcessingInspection */ catch (\Exception $exception) {
             // An exception indicates a failure to communicate with Elasticsearch.
         }

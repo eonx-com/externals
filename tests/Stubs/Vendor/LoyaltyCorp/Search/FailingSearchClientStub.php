@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\Stubs\Vendor\LoyaltyCorp\Search;
 
+use LoyaltyCorp\Search\DataTransferObjects\ClusterHealth;
 use LoyaltyCorp\Search\Exceptions\SearchCheckerException;
 use LoyaltyCorp\Search\Exceptions\SearchDeleteException;
 use LoyaltyCorp\Search\Exceptions\SearchUpdateException;
@@ -126,6 +127,18 @@ class FailingSearchClientStub implements ClientInterface
     {
         throw $this->exception
             ?? new SearchCheckerException('An error occurred obtaining a list of aliases', 0);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \LoyaltyCorp\Search\Exceptions\SearchCheckerException
+     * @throws \Exception
+     */
+    public function getHealth(): ClusterHealth
+    {
+        throw $this->exception ??
+            new SearchCheckerException('An error occurred checking the cluster health', 0);
     }
 
     /**
