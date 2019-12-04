@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de91639d04b23ea390632a10c29c92cd",
+    "content-hash": "db0ddfc4989be0d2734e6218494626f7",
     "packages": [
         {
             "name": "eonx-com/utils",
@@ -1469,35 +1469,39 @@
         },
         {
             "name": "eonx-com/search",
-            "version": "v2.1.7",
+            "version": "v2.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eonx-com/search.git",
-                "reference": "82a98f11177deefadbac8818129650e339aebd03"
+                "reference": "6c4990fe6603e45c03f4f87d6cad9f269eb5c3ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eonx-com/search/zipball/82a98f11177deefadbac8818129650e339aebd03",
-                "reference": "82a98f11177deefadbac8818129650e339aebd03",
+                "url": "https://api.github.com/repos/eonx-com/search/zipball/6c4990fe6603e45c03f4f87d6cad9f269eb5c3ff",
+                "reference": "6c4990fe6603e45c03f4f87d6cad9f269eb5c3ff",
                 "shasum": ""
             },
             "require": {
                 "doctrine/orm": "^2.6",
                 "elasticsearch/elasticsearch": "^6.1",
-                "eoneopay/externals": "^1.1",
+                "eonx-com/externals": "^1.0",
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "^6.3",
                 "illuminate/console": "^5.8|^6.0",
                 "php": ">=7.3"
             },
+            "replace": {
+                "loyaltycorp/search": "^2.1"
+            },
             "require-dev": {
-                "eoneopay/standards": "dev-master",
+                "eonx-com/multitenancy": "^1.0@RC",
+                "eonx-com/standards": "^0.2",
+                "eonx-com/utils": "^1.0",
                 "friendsofphp/php-cs-fixer": "^2.15",
                 "guzzlehttp/psr7": "^1.5",
                 "illuminate/container": "^5.8|^6.0",
                 "illuminate/support": "^5.8|^6.0",
                 "loyaltycorp/easy-entity-change": "^0.10.4",
-                "loyaltycorp/multitenancy": "^1.0",
                 "monolog/monolog": "^1.24",
                 "phpmd/phpmd": "^2.6",
                 "phpstan/phpstan": "^0.11",
@@ -1529,7 +1533,7 @@
                 "loyaltycorp",
                 "search"
             ],
-            "time": "2019-11-14T01:28:39+00:00"
+            "time": "2019-12-04T00:38:21+00:00"
         },
         {
             "name": "eonx-com/standards",
