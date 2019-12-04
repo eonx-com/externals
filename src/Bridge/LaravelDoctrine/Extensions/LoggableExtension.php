@@ -9,7 +9,6 @@ use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManagerInterface;
 use EoneoPay\Externals\Auth\Interfaces\AuthInterface;
 use EoneoPay\Externals\Environment\Interfaces\EnvInterface;
-use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Externals\ORM\Subscribers\LoggableEventSubscriber;
 use LaravelDoctrine\Extensions\GedmoExtension;
 
@@ -74,20 +73,12 @@ final class LoggableExtension extends GedmoExtension
                 return 'testing';
             }
 
-            $user = $this->auth->user();
-
-            if ($user instanceof EntityInterface === false) {
+            if ($this->auth->user() === null) {
                 return null;
             }
 
-            /**
-             * Get user id from guard
-             *
-             * @var \EoneoPay\Externals\ORM\Interfaces\EntityInterface $user
-             *
-             * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === chec
-             */
-            $userId = $user->getId();
+            // Get user id from guard
+            $userId = $this->auth->user()->getId();
 
             return \is_int($userId) ? (string)$userId : null;
         };

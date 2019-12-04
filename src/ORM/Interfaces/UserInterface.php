@@ -9,4 +9,10 @@ namespace EoneoPay\Externals\ORM\Interfaces;
  */
 interface UserInterface
 {
+    /**
+     * Get entity id.
+     *
+     * @return int|string|null
+     */
+    public function getId();
 }
