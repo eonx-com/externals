@@ -76,7 +76,7 @@ final class LoggableExtension extends GedmoExtension
 
             $user = $this->auth->user();
 
-            if ($user instanceof EntityInterface === false) {
+            if (($user instanceof EntityInterface) === false) {
                 return null;
             }
 
