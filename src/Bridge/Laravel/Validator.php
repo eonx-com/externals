@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\Bridge\Laravel;
 
 use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
+use EoneoPay\Externals\Bridge\Laravel\Validation\ExtendedUrlRule;
 use EoneoPay\Externals\Bridge\Laravel\Validation\EmptyWithRule;
 use EoneoPay\Externals\Bridge\Laravel\Validation\InstanceOfRule;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
@@ -74,6 +75,7 @@ final class Validator implements ValidatorInterface
         // Add custom rules
         $this->addDependantRule(EmptyWithRule::class);
         $this->addRule(InstanceOfRule::class);
+        $this->addRule(ExtendedUrlRule::class);
 
         return $validator->passes();
     }
