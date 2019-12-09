@@ -8,15 +8,15 @@
   "type": "library",
   "require": {
     "php": ">=7.2",
-    "eoneopay/utils": "^0.2",
     "ext-json": "*",
     "ext-libxml": "*",
     "ext-simplexml": "*",
+    "eonx-com/utils": "^1.0",
     "psr/http-client": "^1.0",
     "zendframework/zend-diactoros": "^2.1"
   },
   "require-dev": {
-    "eoneopay/standards": "dev-master",
+    "eonx-com/standards": "^0.2",
     "eonx-com/search": "^2.1",
     "gedmo/doctrine-extensions": "^2.4",
     "giggsey/libphonenumber-for-php": "^8.10",
@@ -46,7 +46,7 @@
     "vlucas/phpdotenv": "^3.0"
   },
   "replace": {
-    "eoneopay/externals": "^1.1"
+    "eoneopay/externals": "^1.2"
   },
   "autoload": {
     "psr-4": {
@@ -60,7 +60,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "1.1.x-dev"
+      "dev-master": "1.2.x-dev"
     }
   },
   "suggest": {
