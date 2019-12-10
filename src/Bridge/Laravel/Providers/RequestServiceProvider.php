@@ -28,10 +28,26 @@ final class RequestServiceProvider extends ServiceProvider
             // Set proxy list
             HttpRequest::setTrustedProxies(
                 \explode(',', $env->get('TRUSTED_PROXIES') ?? ''),
-                HttpRequest::HEADER_X_FORWARDED_ALL
+                $this->mapTrustedHeader($env->get('TRUSTED_PROXIES_HEADER') ?? '')
             );
 
             return $this->app->make(Request::class);
         });
+    }
+
+    /**
+     * Maps the trusted header string value to integer.
+     *
+     * @param string $value
+     *
+     * @return int
+     */
+    private function mapTrustedHeader(string $value): int
+    {
+        if (\strtolower($value) === 'aws') {
+            return HttpRequest::HEADER_X_FORWARDED_AWS_ELB;
+        }
+
+        return HttpRequest::HEADER_X_FORWARDED_ALL;
     }
 }

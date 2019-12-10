@@ -25,5 +25,7 @@
         <env name="ENV_NULL2" value="(null)"/>
         <env name="ENV_TRUE1" value='"true"'/>
         <env name="ENV_TRUE2" value="(true)"/>
+        <env name="TRUSTED_PROXIES" value="127.0.0.1,REMOTE_ADDR"/>
+        <env name="TRUSTED_PROXIES_HEADER" value="aws"/>
     </php>
 </phpunit>
