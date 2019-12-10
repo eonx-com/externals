@@ -18,6 +18,8 @@ class RequestServiceProviderTest extends TestCase
      * Test provider bind our request interface into container.
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) Static access to HttpRequest required to get proxies.
      */
     public function testRegister(): void
     {
