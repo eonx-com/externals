@@ -44,8 +44,12 @@ final class RequestServiceProvider extends ServiceProvider
      */
     private function mapTrustedHeader(string $value): int
     {
-        if (\strtolower($value) === 'aws') {
-            return HttpRequest::HEADER_X_FORWARDED_AWS_ELB;
+        $constant = \constant(
+            \sprintf('%s::%s', HttpRequest::class, $value)
+        );
+
+        if ($constant !== null) {
+            return $constant;
         }
 
         return HttpRequest::HEADER_X_FORWARDED_ALL;
