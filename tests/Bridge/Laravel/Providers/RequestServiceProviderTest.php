@@ -32,6 +32,7 @@ class RequestServiceProviderTest extends TestCase
         self::assertInstanceOf(RequestInterface::class, $application->get(RequestInterface::class));
 
         // Ensure the trusted proxy headers are set
-        self::assertSame(['127.0.0.1', 'REMOTE_ADDR'], HttpRequest::getTrustedProxies());
+        self::assertSame(['127.0.0.1', '10.0.0.0/8'], HttpRequest::getTrustedProxies());
+        self::assertSame(HttpRequest::HEADER_X_FORWARDED_AWS_ELB, HttpRequest::getTrustedHeaderSet());
     }
 }

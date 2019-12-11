@@ -28,6 +28,7 @@ class RequestTest extends TestCase
         self::assertSame('127.0.0.1', $request->getClientIp());
 
         // Test proxy header is ignored if proxy isn't trusted
+        HttpRequest::setTrustedProxies(['10.0.0.0/24'], HttpRequest::HEADER_X_FORWARDED_ALL);
         $request = new Request(new HttpRequest([], [], [], [], [], [
             'HTTP_X_FORWARDED_FOR' => '192.168.10.10',
             'REMOTE_ADDR' => '127.0.0.1',
@@ -35,7 +36,7 @@ class RequestTest extends TestCase
         self::assertSame('127.0.0.1', $request->getClientIp());
 
         // Test reading from proxy works if proxy is set
-        HttpRequest::setTrustedProxies(['127.0.0.1/24'], HttpRequest::HEADER_X_FORWARDED_ALL);
+        HttpRequest::setTrustedProxies(['127.0.0.0/24'], HttpRequest::HEADER_X_FORWARDED_ALL);
         $request = new Request(new HttpRequest([], [], [], [], [], [
             'HTTP_X_FORWARDED_FOR' => '192.168.10.10',
             'REMOTE_ADDR' => '127.0.0.1',

@@ -52,6 +52,9 @@ final class RequestServiceProvider extends ServiceProvider
             return $constant;
         }
 
+        // @codeCoverageIgnoreStart
+        // Safety fallback, unable to alter environment values in externals to test.
         return HttpRequest::HEADER_X_FORWARDED_ALL;
+        // @codeCoverageIgnoreEnd
     }
 }
