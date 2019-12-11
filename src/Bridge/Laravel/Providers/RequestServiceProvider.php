@@ -44,11 +44,17 @@ final class RequestServiceProvider extends ServiceProvider
      */
     private function mapTrustedHeader(string $value): int
     {
-        $constant = \constant(
-            \sprintf('%s::%s', HttpRequest::class, $value)
-        );
+        $name = \sprintf('%s::%s', HttpRequest::class, $value);
 
-        if ($constant !== null) {
+        // @codeCoverageIgnoreStart
+        // Safety fallback, unable to alter environment values in externals to test.
+        if (\defined($name) === false) {
+            return HttpRequest::HEADER_X_FORWARDED_ALL;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $constant = \constant($name);
+        if (\is_int($constant)) {
             return $constant;
         }
 
