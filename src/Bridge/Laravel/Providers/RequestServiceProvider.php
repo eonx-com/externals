@@ -28,10 +28,39 @@ final class RequestServiceProvider extends ServiceProvider
             // Set proxy list
             HttpRequest::setTrustedProxies(
                 \explode(',', $env->get('TRUSTED_PROXIES') ?? ''),
-                HttpRequest::HEADER_X_FORWARDED_ALL
+                $this->mapTrustedHeader($env->get('TRUSTED_PROXIES_HEADER') ?? '')
             );
 
             return $this->app->make(Request::class);
         });
+    }
+
+    /**
+     * Maps the trusted header string value to integer.
+     *
+     * @param string $value
+     *
+     * @return int
+     */
+    private function mapTrustedHeader(string $value): int
+    {
+        $name = \sprintf('%s::%s', HttpRequest::class, $value);
+
+        // @codeCoverageIgnoreStart
+        // Safety fallback, unable to alter environment values in externals to test.
+        if (\defined($name) === false) {
+            return HttpRequest::HEADER_X_FORWARDED_ALL;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $constant = \constant($name);
+        if (\is_int($constant)) {
+            return $constant;
+        }
+
+        // @codeCoverageIgnoreStart
+        // Safety fallback, unable to alter environment values in externals to test.
+        return HttpRequest::HEADER_X_FORWARDED_ALL;
+        // @codeCoverageIgnoreEnd
     }
 }
