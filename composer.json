@@ -12,6 +12,7 @@
     "ext-libxml": "*",
     "ext-simplexml": "*",
     "eonx-com/utils": "^1.0",
+    "psr/cache": "^1.0",
     "psr/http-client": "^1.0",
     "zendframework/zend-diactoros": "^2.1"
   },
