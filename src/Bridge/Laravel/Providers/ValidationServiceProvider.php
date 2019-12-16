@@ -26,6 +26,8 @@ final class ValidationServiceProvider extends ServiceProvider
                 $app
             );
             $factory->resolver(static function ($translator, $data, $rules, $messages, $customAttributes) {
+                // @codeCoverageIgnoreStart
+                // Hack to return our validator
                 return new IlluminateValidator(
                     $translator,
                     $data,
@@ -33,6 +35,7 @@ final class ValidationServiceProvider extends ServiceProvider
                     $messages,
                     $customAttributes
                 );
+                // @codeCoverageIgnoreEnd
             });
 
             $verifier = $app->bound(PresenceVerifierInterface::class) === true
