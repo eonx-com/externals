@@ -6,8 +6,9 @@ namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 use EoneoPay\Externals\Bridge\Laravel\IlluminateValidator;
 use EoneoPay\Externals\Bridge\Laravel\Validator;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
-use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Contracts\Validation\Factory as FactoryInterface;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Factory;
 
 final class ValidationServiceProvider extends ServiceProvider
 {
@@ -19,22 +20,27 @@ final class ValidationServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Overload validator factory to add our own rules in
-        $this->app->extend(Factory::class, static function (Factory $factory): Factory {
-            $factory->resolver(static function ($translator, $data, $rules, $messages, $customAttributes) {
-                // @codeCoverageIgnoreStart
-                // Hack to return our validator
-                return new IlluminateValidator(
-                    $translator,
-                    $data,
-                    $rules,
-                    $messages,
-                    $customAttributes
-                );
-                // @codeCoverageIgnoreEnd
-            });
+        $this->app->extend(
+            FactoryInterface::class,
+            static function (FactoryInterface $factory): FactoryInterface {
+                if ($factory instanceof Factory === true) {
+                    $factory->resolver(static function ($translator, $data, $rules, $messages, $customAttributes) {
+                        // @codeCoverageIgnoreStart
+                        // Hack to return our validator
+                        return new IlluminateValidator(
+                            $translator,
+                            $data,
+                            $rules,
+                            $messages,
+                            $customAttributes
+                        );
+                        // @codeCoverageIgnoreEnd
+                    });
+                }
 
-            return $factory;
-        });
+                return $factory;
+            }
+        );
 
         $this->app->bind(ValidatorInterface::class, Validator::class);
     }
