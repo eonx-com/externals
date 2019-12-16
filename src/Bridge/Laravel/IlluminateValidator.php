@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\Bridge\Laravel;
 
-use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Rule as RuleContract;
 use Illuminate\Validation\ValidationRuleParser;
 use Illuminate\Validation\Validator as BaseValidator;
-use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -16,38 +14,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class IlluminateValidator extends BaseValidator
 {
     /**
-     * @var CacheItemPoolInterface
-     */
-    private $cache;
-
-    /**
-     * Constructor
+     * Holds a static rule cache used across all validator instances.
      *
-     * @param CacheItemPoolInterface $cache
-     * @param Translator $translator
-     * @param mixed[] $data
-     * @param mixed[] $rules
-     * @param mixed[] $messages
-     * @param mixed[] $customAttributes
+     * @var mixed[]
      */
-    public function __construct(
-        CacheItemPoolInterface $cache,
-        Translator $translator,
-        array $data,
-        array $rules,
-        array $messages = [],
-        array $customAttributes = []
-    ) {
-        parent::__construct(
-            $translator,
-            $data,
-            $rules,
-            $messages,
-            $customAttributes
-        );
-
-        $this->cache = $cache;
-    }
+    protected static $ruleCache = [];
 
     /**
      * Validate a given attribute against a rule.
@@ -55,14 +26,14 @@ class IlluminateValidator extends BaseValidator
      * This method is fully overridden so we can intercept the rule parsing process
      * and resolve it from a cache.
      *
+     * @codeCoverageIgnore The code in this method is a direct copy and paste from Laravel.
+     *
      * @noinspection PhpMissingParentCallCommonInspection
      *
      * @param string $attribute
      * @param string $rule
      *
      * @return void
-     *
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     protected function validateAttribute($attribute, $rule): void
     {
@@ -119,14 +90,14 @@ class IlluminateValidator extends BaseValidator
      * This method is fully overridden so we can intercept the rule parsing process
      * and resolve it from a cache.
      *
+     * @codeCoverageIgnore The code in this method is a direct copy and paste from Laravel.
+     *
      * @noinspection PhpMissingParentCallCommonInspection
      *
      * @param string $attribute
      * @param string|mixed[] $rules
      *
-     * @return array|mixed[]
-     *
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @return mixed[]
      */
     protected function getRule($attribute, $rules): ?array
     {
@@ -137,7 +108,7 @@ class IlluminateValidator extends BaseValidator
         $rules = (array) $rules;
 
         foreach ($this->rules[$attribute] as $rule) {
-            [$rule, $parameters] = $this->getParsedRule($rule);($rule);
+            [$rule, $parameters] = $this->getParsedRule($rule);
 
             if (\in_array($rule, $rules, true) === true) {
                 return [$rule, $parameters];
@@ -153,23 +124,16 @@ class IlluminateValidator extends BaseValidator
      * @param mixed $rule
      *
      * @return mixed[]
-     *
-     * @throws \Psr\Cache\InvalidArgumentException
      */
-    private function getParsedRule($rule): array
+    protected function getParsedRule($rule): array
     {
         $key = $this->getCacheKey($rule);
 
-        $item = $this->cache->getItem($key);
-        if ($item->isHit() === true) {
-            return $item->get();
+        if (\array_key_exists($key, $this::$ruleCache) === false) {
+            $this::$ruleCache[$key] = ValidationRuleParser::parse($rule);
         }
 
-        $parsed = ValidationRuleParser::parse($rule);
-
-        $item->set($parsed);
-
-        return $parsed;
+        return $this::$ruleCache[$key];
     }
 
     /**
@@ -179,7 +143,7 @@ class IlluminateValidator extends BaseValidator
      *
      * @return string
      */
-    private function getCacheKey($rule): string
+    protected function getCacheKey($rule): string
     {
         if (\is_string($rule) === true) {
             return $rule;

@@ -11,7 +11,10 @@ use Illuminate\Contracts\Validation\Factory as IlluminateValidatorContract;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator as IlluminateTranslator;
 use Illuminate\Validation\Factory as IlluminateValidator;
+use Illuminate\Validation\PresenceVerifierInterface;
+use LaravelDoctrine\ORM\Validation\DoctrinePresenceVerifier;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
+use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Validator\PresenceVerifierStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
@@ -42,7 +45,34 @@ class ValidatorServiceProviderTest extends TestCase
         (new ValidationServiceProvider($application))->register();
 
         // Ensure services are bound
-        self::assertInstanceOf(IlluminateTranslator::class, $application->get(IlluminateTranslatorContract::class));
+        self::assertInstanceOf(Validator::class, $application->get(ValidatorInterface::class));
+    }
+
+    /**
+     * Test bind with presence validator.
+     *
+     * @return void
+     */
+    public function testRegisterPresence(): void
+    {
+        $application = new ApplicationStub();
+
+        // Bind illuminate translator to key
+        $application->bind('translator', static function () {
+            return new IlluminateTranslator(new ArrayLoader(), 'en');
+        });
+
+        // Bind illuminate validator
+        $application->bind(IlluminateValidatorContract::class, static function () {
+            return new IlluminateValidator(new IlluminateTranslator(new ArrayLoader(), 'en'));
+        });
+
+        $application->bind(PresenceVerifierInterface::class, PresenceVerifierStub::class);
+
+        // Run registration
+        (new ValidationServiceProvider($application))->register();
+
+        // Ensure services are bound
         self::assertInstanceOf(Validator::class, $application->get(ValidatorInterface::class));
     }
 }
