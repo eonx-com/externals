@@ -169,7 +169,10 @@ class IlluminateValidator extends BaseValidator
                 continue;
             }
 
-            $key[] = \gettype($item); // @codeCoverageIgnore Catchall behaviour for lumen
+            // @codeCoverageIgnoreStart
+            // Catch all behaviour for lumen
+            $key[] = \gettype($item);
+            // @codeCoverageIgnoreEnd
         }
 
         return \implode('|', $key);

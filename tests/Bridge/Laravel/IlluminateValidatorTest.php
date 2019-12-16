@@ -23,7 +23,7 @@ class IlluminateValidatorTest extends TestCase
             'simple' => ['required|string', ['Required|string', []]],
             'array' => [['required', 'string'], ['Required|string', []]],
             'vars' => ['required|max:50', ['Required|max', ['50']]],
-            'obj' => [new RequiredIf('true'), ['Required', []]],
+            'obj' => [[new RequiredIf(true)], ['Required', []]],
         ];
     }
 
