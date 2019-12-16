@@ -8,8 +8,13 @@ use Illuminate\Validation\ValidationRuleParser;
 use Illuminate\Validation\Validator as BaseValidator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+// phpcs:disable
 /**
  * Overridden so that we can cache rule parsing.
+ *
+ * @SuppressWarnings(PHPMD) This file is almost a direct copy from Lumen.
+ *
+ * // phpcs:ignore
  */
 class IlluminateValidator extends BaseValidator
 {
@@ -48,8 +53,8 @@ class IlluminateValidator extends BaseValidator
         // First we will get the correct keys for the given attribute in case the field is nested in
         // an array. Then we determine if the given rule accepts other field names as parameters.
         // If so, we will replace any asterisks found in the parameters with the correct keys.
-        if (($keys = $this->getExplicitKeys($attribute)) &&
-            $this->dependsOnOtherFields($rule)) {
+        $keys = $this->getExplicitKeys($attribute);
+        if (\count($keys) > 0 && $this->dependsOnOtherFields($rule)) {
             $parameters = $this->replaceAsterisksInParameters($parameters, $keys);
         }
 
@@ -58,8 +63,8 @@ class IlluminateValidator extends BaseValidator
         // If the attribute is a file, we will verify that the file upload was actually successful
         // and if it wasn't we will add a failure for the attribute. Files may not successfully
         // upload if they are too large based on PHP's settings so we will bail in this case.
-        if ($value instanceof UploadedFile && ! $value->isValid() &&
-            $this->hasRule($attribute, array_merge($this->fileRules, $this->implicitRules))
+        if ($value instanceof UploadedFile === true && $value->isValid() === true &&
+            $this->hasRule($attribute, \array_merge($this->fileRules, $this->implicitRules)) === true
         ) {
             $this->addFailure($attribute, 'uploaded', []);
 
@@ -79,7 +84,7 @@ class IlluminateValidator extends BaseValidator
 
         $method = "validate{$rule}";
 
-        if ($validatable && ! $this->$method($attribute, $value, $parameters, $this)) {
+        if ($validatable === true && $this->$method($attribute, $value, $parameters, $this) !== true) {
             $this->addFailure($attribute, $rule, $parameters);
         }
     }
@@ -164,9 +169,10 @@ class IlluminateValidator extends BaseValidator
                 continue;
             }
 
-            $key[] = \gettype($item);
+            $key[] = \gettype($item); // @codeCoverageIgnore Catchall behaviour for lumen
         }
 
         return \implode('|', $key);
     }
 }
+// phpcs:enable

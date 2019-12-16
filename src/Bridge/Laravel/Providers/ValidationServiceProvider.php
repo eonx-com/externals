@@ -31,7 +31,7 @@ final class ValidationServiceProvider extends ServiceProvider
                     $data,
                     $rules,
                     $messages,
-                     $customAttributes
+                    $customAttributes
                 );
             });
 

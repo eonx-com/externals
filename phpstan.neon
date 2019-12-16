@@ -30,4 +30,9 @@ parameters:
         -
             message: '#Call to protected method setWithSetter\(\) of class Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities\\SimpleEntityStub\.#'
             path: tests/ORM/SimpleEntityTest.php
-
+        -
+            message: '#Variable method call on \$this\(EoneoPay\\Externals\\Bridge\\Laravel\\IlluminateValidator\)\.#'
+            path: src/Bridge/Laravel/IlluminateValidator.php
+        -
+            message: '#Tests\\EoneoPay\\Externals\\Stubs\\Vendor\\Illuminate\\Validator\\IlluminateValidatorStub::__construct\(\) does not call parent constructor from Illuminate\\Validation\\Validator\.#'
+            path: tests/Stubs/Vendor/Illuminate/Validator/IlluminateValidatorStub.php
