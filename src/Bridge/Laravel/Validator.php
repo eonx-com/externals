@@ -42,8 +42,8 @@ final class Validator implements ValidatorInterface
      */
     public function __construct(Factory $factory, ?PresenceVerifierInterface $presence = null)
     {
-        $this->presence = $presence;
         $this->factory = $factory;
+        $this->presence = $presence;
     }
 
     /**

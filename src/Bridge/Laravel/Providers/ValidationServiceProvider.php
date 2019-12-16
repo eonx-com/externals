@@ -6,10 +6,8 @@ namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 use EoneoPay\Externals\Bridge\Laravel\IlluminateValidator;
 use EoneoPay\Externals\Bridge\Laravel\Validator;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
-use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Validation\Factory;
-use Illuminate\Validation\PresenceVerifierInterface;
 
 final class ValidationServiceProvider extends ServiceProvider
 {
@@ -20,11 +18,8 @@ final class ValidationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(ValidatorInterface::class, static function (Container $app): ValidatorInterface {
-            $factory = new Factory(
-                $app->make('translator'),
-                $app
-            );
+        // Overload validator factory to add our own rules in
+        $this->app->extend(Factory::class, static function (Factory $factory): Factory {
             $factory->resolver(static function ($translator, $data, $rules, $messages, $customAttributes) {
                 // @codeCoverageIgnoreStart
                 // Hack to return our validator
@@ -38,14 +33,9 @@ final class ValidationServiceProvider extends ServiceProvider
                 // @codeCoverageIgnoreEnd
             });
 
-            $verifier = $app->bound(PresenceVerifierInterface::class) === true
-                ? $app->make(PresenceVerifierInterface::class)
-                : null;
-
-            return new Validator(
-                $factory,
-                $verifier
-            );
+            return $factory;
         });
+
+        $this->app->bind(ValidatorInterface::class, Validator::class);
     }
 }
