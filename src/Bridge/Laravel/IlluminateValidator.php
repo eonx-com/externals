@@ -95,8 +95,9 @@ class IlluminateValidator extends BaseValidator
     protected function getParsedRule($rule): array
     {
         $key = $this->getCacheKey($rule);
+        $saneKey = \str_replace(['{', '}', '(', ')', '/', '\\', '@', ':'], '__', $key);
 
-        return $this->cache->get($key, static function () use ($rule) {
+        return $this->cache->get($saneKey, static function () use ($rule) {
             return ValidationRuleParser::parse($rule);
         });
     }
