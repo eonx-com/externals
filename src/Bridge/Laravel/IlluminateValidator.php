@@ -3,27 +3,139 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\Bridge\Laravel;
 
+use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Rule as RuleContract;
 use Illuminate\Validation\ValidationRuleParser;
 use Illuminate\Validation\Validator as BaseValidator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\Cache\CacheInterface;
 
 // phpcs:disable
 /**
  * Overridden so that we can cache rule parsing.
  *
  * @SuppressWarnings(PHPMD) This file is almost a direct copy from Lumen.
- *
- * // phpcs:ignore
  */
 class IlluminateValidator extends BaseValidator
 {
     /**
-     * Holds a static rule cache used across all validator instances.
-     *
-     * @var mixed[]
+     * @var \Symfony\Contracts\Cache\CacheInterface
      */
-    protected static $ruleCache = [];
+    private $cache;
+
+    /**
+     * Create a new Validator instance.
+     *
+     * @param \Symfony\Contracts\Cache\CacheInterface $cache
+     * @param \Illuminate\Contracts\Translation\Translator $translator
+     * @param mixed[] $data
+     * @param mixed[] $rules
+     * @param mixed[] $messages
+     * @param mixed[] $customAttributes
+     */
+    public function __construct(
+        CacheInterface $cache,
+        Translator $translator,
+        array $data,
+        array $rules,
+        array $messages = [],
+        array $customAttributes = []
+    ) {
+        $this->cache = $cache;
+
+        parent::__construct($translator, $data, $rules, $messages, $customAttributes);
+    }
+
+    /**
+     * Returns a cache key for a rule.
+     *
+     * @param string|mixed[] $rule
+     *
+     * @return string
+     */
+    protected function getCacheKey($rule): string
+    {
+        if (\is_string($rule) === true) {
+            return $rule;
+        }
+
+        $key = ['__array'];
+
+        foreach ($rule as $item) {
+            if (\is_string($item) === true) {
+                $key[] = $item;
+
+                continue;
+            }
+
+            if (\is_object($item) === true) {
+                $key[] = \get_class($item);
+
+                continue;
+            }
+
+            // @codeCoverageIgnoreStart
+            // Catch all behaviour for lumen
+            $key[] = \gettype($item);
+            // @codeCoverageIgnoreEnd
+        }
+
+        return \implode('|', $key);
+    }
+
+    /**
+     * Parses a rule.
+     *
+     * @param mixed $rule
+     *
+     * @return mixed[]
+     *
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    protected function getParsedRule($rule): array
+    {
+        $key = $this->getCacheKey($rule);
+
+        return $this->cache->get($key, static function () use ($rule) {
+            return ValidationRuleParser::parse($rule);
+        });
+    }
+
+    /**
+     * Get a rule and its parameters for a given attribute.
+     *
+     * This method is fully overridden so we can intercept the rule parsing process
+     * and resolve it from a cache.
+     *
+     * @codeCoverageIgnore The code in this method is a direct copy and paste from Laravel.
+     *
+     * @noinspection PhpMissingParentCallCommonInspection
+     *
+     * @param string $attribute
+     * @param string|mixed[] $rules
+     *
+     * @return mixed[]
+     *
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    protected function getRule($attribute, $rules): ?array
+    {
+        if (\array_key_exists($attribute, $this->rules) === false) {
+            return null;
+        }
+
+        $rules = (array) $rules;
+
+        foreach ($this->rules[$attribute] as $rule) {
+            [$rule, $parameters] = $this->getParsedRule($rule);
+
+            if (\in_array($rule, $rules, true) === true) {
+                return [$rule, $parameters];
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Validate a given attribute against a rule.
@@ -39,6 +151,8 @@ class IlluminateValidator extends BaseValidator
      * @param string $rule
      *
      * @return void
+     *
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     protected function validateAttribute($attribute, $rule): void
     {
@@ -87,95 +201,6 @@ class IlluminateValidator extends BaseValidator
         if ($validatable === true && $this->$method($attribute, $value, $parameters, $this) !== true) {
             $this->addFailure($attribute, $rule, $parameters);
         }
-    }
-
-    /**
-     * Get a rule and its parameters for a given attribute.
-     *
-     * This method is fully overridden so we can intercept the rule parsing process
-     * and resolve it from a cache.
-     *
-     * @codeCoverageIgnore The code in this method is a direct copy and paste from Laravel.
-     *
-     * @noinspection PhpMissingParentCallCommonInspection
-     *
-     * @param string $attribute
-     * @param string|mixed[] $rules
-     *
-     * @return mixed[]
-     */
-    protected function getRule($attribute, $rules): ?array
-    {
-        if (\array_key_exists($attribute, $this->rules) === false) {
-            return null;
-        }
-
-        $rules = (array) $rules;
-
-        foreach ($this->rules[$attribute] as $rule) {
-            [$rule, $parameters] = $this->getParsedRule($rule);
-
-            if (\in_array($rule, $rules, true) === true) {
-                return [$rule, $parameters];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Parses a rule.
-     *
-     * @param mixed $rule
-     *
-     * @return mixed[]
-     */
-    protected function getParsedRule($rule): array
-    {
-        $key = $this->getCacheKey($rule);
-
-        if (\array_key_exists($key, $this::$ruleCache) === false) {
-            $this::$ruleCache[$key] = ValidationRuleParser::parse($rule);
-        }
-
-        return $this::$ruleCache[$key];
-    }
-
-    /**
-     * Returns a cache key for a rule.
-     *
-     * @param string|mixed[] $rule
-     *
-     * @return string
-     */
-    protected function getCacheKey($rule): string
-    {
-        if (\is_string($rule) === true) {
-            return $rule;
-        }
-
-        $key = [];
-
-        foreach ($rule as $item) {
-            if (\is_string($item) === true) {
-                $key[] = $item;
-
-                continue;
-            }
-
-            if (\is_object($item) === true) {
-                $key[] = \get_class($item);
-
-                continue;
-            }
-
-            // @codeCoverageIgnoreStart
-            // Catch all behaviour for lumen
-            $key[] = \gettype($item);
-            // @codeCoverageIgnoreEnd
-        }
-
-        return \implode('|', $key);
     }
 }
 // phpcs:enable

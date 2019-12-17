@@ -34,5 +34,8 @@ parameters:
             message: '#Variable method call on \$this\(EoneoPay\\Externals\\Bridge\\Laravel\\IlluminateValidator\)\.#'
             path: src/Bridge/Laravel/IlluminateValidator.php
         -
-            message: '#Tests\\EoneoPay\\Externals\\Stubs\\Vendor\\Illuminate\\Validator\\IlluminateValidatorStub::__construct\(\) does not call parent constructor from Illuminate\\Validation\\Validator\.#'
-            path: tests/Stubs/Vendor/Illuminate/Validator/IlluminateValidatorStub.php
+            message: '#PHPDoc tag @throws with type Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
+            path: src/Bridge/Laravel/IlluminateValidator.php
+        -
+            message: '#PHPDoc tag @throws with type Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
+            path: tests/Bridge/Laravel/IlluminateValidatorTest.php
