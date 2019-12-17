@@ -8,13 +8,6 @@ use EoneoPay\Externals\Bridge\Laravel\IlluminateValidator;
 class IlluminateValidatorStub extends IlluminateValidator
 {
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getCacheKey($rule): string
