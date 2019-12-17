@@ -10,7 +10,6 @@ use Illuminate\Contracts\Validation\Factory as FactoryInterface;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 
 final class ValidationServiceProvider extends ServiceProvider
 {
