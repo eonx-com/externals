@@ -9,6 +9,8 @@ use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Validation\Factory as FactoryInterface;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 
 final class ValidationServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,10 @@ final class ValidationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton('validator_cache', static function () {
+            return new ArrayAdapter();
+        });
+
         // Overload validator factory to add our own rules in
         $this->app->extend(
             FactoryInterface::class,
@@ -28,6 +34,7 @@ final class ValidationServiceProvider extends ServiceProvider
                         // @codeCoverageIgnoreStart
                         // Hack to return our validator
                         return new IlluminateValidator(
+                            $this->app->make('validator_cache'),
                             $translator,
                             $data,
                             $rules,
