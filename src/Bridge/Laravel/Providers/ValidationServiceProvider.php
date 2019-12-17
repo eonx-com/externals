@@ -30,17 +30,17 @@ final class ValidationServiceProvider extends ServiceProvider
                 if ($factory instanceof Factory === true) {
                     $factory->resolver(
                         static function ($translator, $data, $rules, $messages, $customAttributes) use ($app) {
-                        // @codeCoverageIgnoreStart
-                        // Hack to return our validator
-                        return new IlluminateValidator(
-                            $app->make('validator_cache'),
-                            $translator,
-                            $data,
-                            $rules,
-                            $messages,
-                            $customAttributes
-                        );
-                        // @codeCoverageIgnoreEnd
+                            // @codeCoverageIgnoreStart
+                            // Hack to return our validator
+                            return new IlluminateValidator(
+                                $app->make('validator_cache'),
+                                $translator,
+                                $data,
+                                $rules,
+                                $messages,
+                                $customAttributes
+                            );
+                            // @codeCoverageIgnoreEnd
                         }
                     );
                 }
