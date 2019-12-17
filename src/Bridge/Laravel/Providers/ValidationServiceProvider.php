@@ -21,16 +21,15 @@ final class ValidationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('validator_cache', static function () {
-            return new ArrayAdapter();
-        });
+        $this->app->singleton('validator_cache', ArrayAdapter::class);
 
         // Overload validator factory to add our own rules in
         $this->app->extend(
             FactoryInterface::class,
             static function (FactoryInterface $factory, Container $app): FactoryInterface {
                 if ($factory instanceof Factory === true) {
-                    $factory->resolver(static function ($translator, $data, $rules, $messages, $customAttributes) use ($app) {
+                    $factory->resolver(
+                        static function ($translator, $data, $rules, $messages, $customAttributes) use ($app) {
                         // @codeCoverageIgnoreStart
                         // Hack to return our validator
                         return new IlluminateValidator(
@@ -42,7 +41,8 @@ final class ValidationServiceProvider extends ServiceProvider
                             $customAttributes
                         );
                         // @codeCoverageIgnoreEnd
-                    });
+                        }
+                    );
                 }
 
                 return $factory;
