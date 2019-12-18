@@ -17,7 +17,7 @@ class HealthServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(HealthInterface::class, static function (Container $app): HealthInterface {
+        $this->app->singleton(HealthInterface::class, static function (Container $app): HealthInterface {
             /**
              * @var mixed[]|iterable|\Traversable $tagged
              */

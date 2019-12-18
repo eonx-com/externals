@@ -23,13 +23,13 @@ class HttpClientServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Define a Guzzle binding so Client can be created
-        $this->app->bind(GuzzleClientInterface::class, GuzzleClient::class);
+        $this->app->singleton(GuzzleClientInterface::class, GuzzleClient::class);
 
-        $this->app->bind(ExceptionHandlerInterface::class, ExceptionHandler::class);
+        $this->app->singleton(ExceptionHandlerInterface::class, ExceptionHandler::class);
 
         // Concrete implementations
-        $this->app->bind(Client::class);
-        $this->app->bind(LoggingClient::class, static function (Container $app) {
+        $this->app->singleton(Client::class);
+        $this->app->singleton(LoggingClient::class, static function (Container $app) {
             return new LoggingClient(
                 $app->get(Client::class),
                 $app->get(LoggerInterface::class)
