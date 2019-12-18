@@ -23,7 +23,7 @@ final class ValidationServiceProvider extends ServiceProvider
         });
 
         // Interface for validating adhoc objects, depends on translator
-        // Validator holds references to current state of a given validator object.
+        // Not a singleton, as Validator holds references to current state of a given validator object.
         $this->app->bind(ValidatorInterface::class, Validator::class);
     }
 }

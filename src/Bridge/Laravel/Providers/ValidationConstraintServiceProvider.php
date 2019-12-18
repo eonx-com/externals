@@ -21,6 +21,7 @@ final class ValidationConstraintServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Not a singleton, as every validator is initialised with context in AbstractDateConstraintValidator.
         $this->app->bind(DateEqualToValidator::class);
         $this->app->bind(DateGreaterThanValidator::class);
         $this->app->bind(DateGreaterThanOrEqualValidator::class);
