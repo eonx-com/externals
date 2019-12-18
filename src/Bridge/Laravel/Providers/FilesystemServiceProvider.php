@@ -25,14 +25,14 @@ final class FilesystemServiceProvider extends ServiceProvider
 
         // Interface for cloud-based filesystem
         if ($this->driverExists('cloud')) {
-            $this->app->bind(CloudFilesystemInterface::class, function () {
+            $this->app->singleton(CloudFilesystemInterface::class, function () {
                 return new Filesystem($this->app->make('filesystem')->disk($this->getCloudDriver()));
             });
         }
 
         // Interface for disk-based filesystem
         if ($this->driverExists('disk')) {
-            $this->app->bind(DiskFilesystemInterface::class, function () {
+            $this->app->singleton(DiskFilesystemInterface::class, function () {
                 return new Filesystem($this->app->make('filesystem')->disk($this->getDiskDriver()));
             });
         }
