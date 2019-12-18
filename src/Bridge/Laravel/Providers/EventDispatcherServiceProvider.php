@@ -16,6 +16,6 @@ final class EventDispatcherServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(PsrEventDispatcherInterface::class, EventDispatcher::class);
+        $this->app->singleton(PsrEventDispatcherInterface::class, EventDispatcher::class);
     }
 }
