@@ -18,11 +18,11 @@ final class TranslatorServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Translator is required for error messages
-        $this->app->bind(ContractedTranslator::class, function () {
+        $this->app->singleton(ContractedTranslator::class, function () {
             return $this->app->make('translator');
         });
 
         // Interface for translation
-        $this->app->bind(TranslatorInterface::class, Translator::class);
+        $this->app->singleton(TranslatorInterface::class, Translator::class);
     }
 }
