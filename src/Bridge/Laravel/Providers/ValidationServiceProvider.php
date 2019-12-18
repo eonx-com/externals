@@ -18,11 +18,12 @@ final class ValidationServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Translator is required for error messages
-        $this->app->bind(Translator::class, function () {
+        $this->app->singleton(Translator::class, function () {
             return $this->app->make('translator');
         });
 
         // Interface for validating adhoc objects, depends on translator
+        // Not a singleton, as Validator holds references to current state of a given validator object.
         $this->app->bind(ValidatorInterface::class, Validator::class);
     }
 }
