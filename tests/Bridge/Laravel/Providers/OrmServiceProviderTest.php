@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
+use Doctrine\ORM\EntityManagerInterface as DoctrineEntityManagerInterface;
 use Doctrine\ORM\Tools\ResolveTargetEntityListener;
 use EoneoPay\Externals\Bridge\Laravel\Providers\OrmServiceProvider;
 use EoneoPay\Externals\ORM\Interfaces\EntityManagerInterface;
@@ -26,9 +27,10 @@ class OrmServiceProviderTest extends ORMTestCase
         $application = new ApplicationStub();
 
         // Bind doctrine entity manager to key
-        $application->singleton('em', function () {
-            return $this->getDoctrineEntityManager();
-        });
+        $application->instance(
+            DoctrineEntityManagerInterface::class,
+            $this->getDoctrineEntityManager()
+        );
 
         // Configure application
         $application->instance('config', new Repository([
@@ -43,7 +45,7 @@ class OrmServiceProviderTest extends ORMTestCase
         (new OrmServiceProvider($application))->register();
 
         // Ensure services are bound
-        self::assertInstanceOf(EntityManagerInterface::class, $application->get('em'));
+        self::assertInstanceOf(EntityManagerInterface::class, $application->get(EntityManagerInterface::class));
 
         // Test resolve target entity listener
         self::assertInstanceOf(
