@@ -4,16 +4,13 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\Logger;
 
 use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
-use Exception;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Logger as MonologLogger;
+use Psr\Log\AbstractLogger;
 use Throwable;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyPublicMethods) Methods are dictated by PSR logger interface
- */
-final class Logger implements LoggerInterface
+final class Logger extends AbstractLogger implements LoggerInterface
 {
     /**
      * Monolog instance.
@@ -38,49 +35,21 @@ final class Logger implements LoggerInterface
         $this->monolog = new MonologLogger($streamName ?? 'Application');
         $this->monolog->pushHandler($handler ?? new SyslogHandler('ErrorLog'));
 
+        // In exceptional circumstances, try a last ditch effort to log to error_log.
+        $this->monolog->setExceptionHandler(static function (Throwable $exception): void {
+            /** @noinspection ForgottenDebugOutputInspection */
+            \error_log(\sprintf(
+                'An error occurred trying to write log messages. (%s - %s)',
+                \get_class($exception),
+                $exception->getMessage()
+            ));
+
+            throw $exception;
+        });
+
         foreach ($processors ?? [] as $processor) {
             $this->monolog->pushProcessor($processor);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function alert($message, ?array $context = null): void
-    {
-        $this->log('alert', $message, $context ?? []);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function critical($message, ?array $context = null): void
-    {
-        $this->log('critical', $message, $context ?? []);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function debug($message, ?array $context = null): void
-    {
-        $this->log('debug', $message, $context ?? []);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function emergency($message, ?array $context = null): void
-    {
-        $this->log('emergency', $message, $context ?? []);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function error($message, ?array $context = null): void
-    {
-        $this->log('error', $message, $context ?? []);
     }
 
     /**
@@ -101,41 +70,20 @@ final class Logger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function info($message, ?array $context = null): void
-    {
-        $this->log('info', $message, $context ?? []);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function log($level, $message, ?array $context = null): void
     {
-        try {
-            $callable = [$this->monolog, $level];
-
-            if (\is_callable($callable) === true) {
-                $callable($message, $context ?? []);
-            }
-        } catch (Exception $exception) {
-            /** @noinspection ForgottenDebugOutputInspection This is only a fallback if logger is unavailable */
-            \error_log($exception->getMessage());
-        }
+        $this->monolog->log($level, $message, $context ?? []);
     }
 
     /**
-     * {@inheritdoc}
+     * Adds a handler to the monolog stack.
+     *
+     * @param \Monolog\Handler\HandlerInterface $handler
+     *
+     * @return void
      */
-    public function notice($message, ?array $context = null): void
+    public function pushHandler(HandlerInterface $handler): void
     {
-        $this->log('notice', $message, $context ?? []);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function warning($message, ?array $context = null): void
-    {
-        $this->log('warning', $message, $context ?? []);
+        $this->monolog->pushHandler($handler);
     }
 }
