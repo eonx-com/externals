@@ -6,6 +6,7 @@ namespace Tests\EoneoPay\Externals\Logger;
 use EoneoPay\Externals\Logger\Logger;
 use Exception;
 use Monolog\Processor\ProcessorInterface;
+use RuntimeException;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Monolog\Handler\LogHandlerStub;
 use Tests\EoneoPay\Externals\TestCase;
 
@@ -14,40 +15,6 @@ use Tests\EoneoPay\Externals\TestCase;
  */
 class LoggerTest extends TestCase
 {
-    /**
-     * Test logger create right logs for all bool methods.
-     *
-     * @return void
-     */
-    public function testBooleanMethods(): void
-    {
-        $handler = new LogHandlerStub();
-        $logger = new Logger(null, $handler);
-        $message = 'my message';
-        $context = ['attr' => 'value'];
-
-        foreach (['alert', 'critical', 'debug', 'emergency', 'error', 'info', 'notice', 'warning'] as $method) {
-            $callable = [$logger, $method];
-
-            if (\is_callable($callable) === false) {
-                self::fail(\sprintf('Unable to call %s on %s', $method, Logger::class));
-
-                continue;
-            }
-
-            $callable($message, $context);
-        }
-
-        foreach ($handler->getLogs() as $log) {
-            self::assertArrayHasKey('message', $log);
-            self::assertArrayHasKey('context', $log);
-            self::assertEquals($message, $log['message']);
-            self::assertEquals($context, $log['context']);
-        }
-
-        $this->addToAssertionCount(1);
-    }
-
     /**
      * Test logger create right log for exception.
      *
@@ -109,14 +76,27 @@ class LoggerTest extends TestCase
     }
 
     /**
-     * Test logger handles Monolog exceptions.
+     * Test logger when an exception occurs inside monolog.
      *
      * @return void
      */
-    public function testLoggerContinuesWhenMonologExceptionThrown(): void
+    public function testErrorLogFallback(): void
     {
-        (new Logger(null, new LogHandlerStub(false)))->error('message');
+        $handler = new LogHandlerStub();
+        $processor = new class() implements ProcessorInterface {
+            /**
+             * {@inheritdoc}
+             */
+            public function __invoke(array $record): array
+            {
+                throw new RuntimeException('Error inside monolog');
+            }
+        };
 
-        $this->addToAssertionCount(1);
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Error inside monolog'); // phpcs:ignore
+
+        $logger = new Logger(null, $handler, [$processor]);
+        $logger->warning('Message');
     }
 }
