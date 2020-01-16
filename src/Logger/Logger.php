@@ -36,7 +36,7 @@ final class Logger extends AbstractLogger implements LoggerInterface
         $this->monolog->pushHandler($handler ?? new SyslogHandler('ErrorLog'));
 
         // In exceptional circumstances, try a last ditch effort to log to error_log.
-        $this->monolog->setExceptionHandler(static function (Throwable $exception, array $record) {
+        $this->monolog->setExceptionHandler(static function (Throwable $exception): void {
             /** @noinspection ForgottenDebugOutputInspection */
             \error_log(\sprintf(
                 'An error occurred trying to write log messages. (%s - %s)',
@@ -72,7 +72,7 @@ final class Logger extends AbstractLogger implements LoggerInterface
      */
     public function log($level, $message, ?array $context = null): void
     {
-        $this->monolog->log($level, $message, $context);
+        $this->monolog->log($level, $message, $context ?? []);
     }
 
     /**

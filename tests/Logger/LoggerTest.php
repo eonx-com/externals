@@ -12,6 +12,8 @@ use Tests\EoneoPay\Externals\TestCase;
 
 /**
  * @covers \EoneoPay\Externals\Logger\Logger
+ *
+ * @SuppressWarnings(PHPMD) Unable to suppress unused formal parameter for __invoke.
  */
 class LoggerTest extends TestCase
 {
