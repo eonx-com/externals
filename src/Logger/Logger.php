@@ -10,9 +10,6 @@ use Monolog\Logger as MonologLogger;
 use Psr\Log\AbstractLogger;
 use Throwable;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyPublicMethods) Methods are dictated by PSR logger interface
- */
 final class Logger extends AbstractLogger implements LoggerInterface
 {
     /**

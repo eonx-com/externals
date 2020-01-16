@@ -16,6 +16,31 @@ use Tests\EoneoPay\Externals\TestCase;
 class LoggerTest extends TestCase
 {
     /**
+     * Test logger when an exception occurs inside monolog.
+     *
+     * @return void
+     */
+    public function testErrorLogFallback(): void
+    {
+        $handler = new LogHandlerStub();
+        $processor = new class() implements ProcessorInterface {
+            /**
+             * {@inheritdoc}
+             */
+            public function __invoke(array $record): array
+            {
+                throw new RuntimeException('Error inside monolog - This is expected.');
+            }
+        };
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Error inside monolog - This is expected.');
+
+        $logger = new Logger(null, $handler, [$processor]);
+        $logger->warning('Message');
+    }
+
+    /**
      * Test logger create right log for exception.
      *
      * @return void
@@ -76,27 +101,21 @@ class LoggerTest extends TestCase
     }
 
     /**
-     * Test logger when an exception occurs inside monolog.
+     * Tests that pushHandler adds a handler to monolog.
      *
      * @return void
      */
-    public function testErrorLogFallback(): void
+    public function testPushHandler(): void
     {
+        $logger = new Logger(null, new LogHandlerStub());
+
         $handler = new LogHandlerStub();
-        $processor = new class() implements ProcessorInterface {
-            /**
-             * {@inheritdoc}
-             */
-            public function __invoke(array $record): array
-            {
-                throw new RuntimeException('Error inside monolog');
-            }
-        };
-
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Error inside monolog'); // phpcs:ignore
-
-        $logger = new Logger(null, $handler, [$processor]);
+        $logger->pushHandler($handler);
         $logger->warning('Message');
+
+        $logs = $handler->getLogs();
+
+        self::assertCount(1, $logs);
+        self::assertSame('Message', $logs[0]['message'] ?? null);
     }
 }
