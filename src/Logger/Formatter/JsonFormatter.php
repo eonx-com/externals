@@ -9,7 +9,11 @@ use Monolog\Formatter\JsonFormatter as BaseJsonFormatter;
 class JsonFormatter extends BaseJsonFormatter
 {
     /**
-     * {@inheritdoc}
+     * Formats a log record.
+     *
+     * @param mixed[] $record A record to format
+     *
+     * @return mixed The formatted record
      */
     public function format(array $record)
     {

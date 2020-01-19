@@ -48,7 +48,9 @@ final class LoggableExtension extends GedmoExtension
     }
 
     /**
-     * {@inheritdoc}
+     * Returns filters.
+     *
+     * @return mixed[]
      */
     public function getFilters(): array
     {

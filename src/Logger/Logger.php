@@ -68,10 +68,22 @@ final class Logger extends AbstractLogger implements LoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Logs with an arbitrary level.
+     *
+     * @param mixed $level
+     * @param string $message
+     * @param mixed[] $context
+     *
+     * @return void
+     *
+     * @throws \Psr\Log\InvalidArgumentException
+     *
+     * phpcs:disable
+     * Unable to add string typehint to $message
      */
     public function log($level, $message, ?array $context = null): void
     {
+        // phpcs:enable
         $this->monolog->log($level, $message, $context ?? []);
     }
 

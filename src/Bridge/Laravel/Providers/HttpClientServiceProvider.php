@@ -29,7 +29,7 @@ class HttpClientServiceProvider extends ServiceProvider
 
         // Concrete implementations
         $this->app->singleton(Client::class);
-        $this->app->singleton(LoggingClient::class, static function (Container $app) {
+        $this->app->singleton(LoggingClient::class, static function (Container $app): LoggingClient {
             return new LoggingClient(
                 $app->get(Client::class),
                 $app->get(LoggerInterface::class)

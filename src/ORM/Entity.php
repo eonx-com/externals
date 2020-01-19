@@ -210,7 +210,9 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Serialises.
+     *
+     * @return mixed[]
      */
     public function jsonSerialize(): array
     {
@@ -229,7 +231,9 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
      */
     public function toJson(): string
     {
-        return \json_encode($this->toArray()) ?: '';
+        $encoded = \json_encode($this->toArray());
+
+        return $encoded === false ? '' : $encoded;
     }
 
     /**

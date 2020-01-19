@@ -87,8 +87,6 @@ class EntityTest extends ORMTestCase
                 MultiChildStub::class,
                 $childRetrieve === null ? 'null' : \get_class($childRetrieve)
             ));
-
-            return;
         }
 
         /**

@@ -39,3 +39,12 @@ parameters:
         -
             message: '#PHPDoc tag @throws with type Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
             path: tests/Bridge/Laravel/IlluminateValidatorTest.php
+        -
+            message: '#but return statement is missing\.#'
+            path: tests/Stubs
+        -
+            message: '#with no value type specified in iterable type#'
+            path: tests/Stubs
+        -
+            message: '#return type has no value type specified in iterable type#'
+            path: tests/Stubs

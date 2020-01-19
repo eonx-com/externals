@@ -27,7 +27,15 @@ class LoggerTest extends TestCase
         $handler = new LogHandlerStub();
         $processor = new class() implements ProcessorInterface {
             /**
-             * {@inheritdoc}
+             * Processes.
+             *
+             * phpcs:disable
+             *
+             * @param mixed[] $record
+             *
+             * @return mixed[]
+             *
+             * phpcs:enable
              */
             public function __invoke(array $record): array
             {
@@ -78,7 +86,11 @@ class LoggerTest extends TestCase
         $handler = new LogHandlerStub();
         $processor = new class() implements ProcessorInterface {
             /**
-             * {@inheritdoc}
+             * Processes.
+             *
+             * @param mixed[] $record
+             *
+             * @return mixed[]
              */
             public function __invoke(array $record): array
             {

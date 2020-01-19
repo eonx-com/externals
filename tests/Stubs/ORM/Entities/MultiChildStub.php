@@ -29,6 +29,9 @@ class MultiChildStub extends Entity
      *     targetEntity="MultiParentStub"
      * )
      *
+     * phpcs:disable
+     * @phpstan-var \Doctrine\Common\Collections\Collection<int, \Tests\EoneoPay\Externals\Stubs\ORM\Entities\MultiParentStub>
+     * phpcs:enable
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $parents;

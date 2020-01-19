@@ -17,6 +17,8 @@ interface ValidatorInterface
      * GroupSequence that will be used to validate. If none is given,
      * "Default" is assumed
      *
+     * @phpstan-return \Symfony\Component\Validator\ConstraintViolationListInterface<\Symfony\Component\Validator\ConstraintViolationInterface>
+     *
      * @param mixed $value The value to validate
      * @param \Symfony\Component\Validator\Constraint[] $constraints The constraint(s) to validate against
      * @param string[]|\Symfony\Component\Validator\Constraints\GroupSequence|null $groups
