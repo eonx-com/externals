@@ -202,8 +202,6 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     /**
      * Method is defined for BC - the ValidatableInterface requires this method.
      *
-     * @phpstan-return class-string
-     *
      * @return string[]
      */
     public function getValidatableProperties(): array
