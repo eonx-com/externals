@@ -25,7 +25,7 @@ class ContainerServiceProviderTest extends TestCase
         $application = new ApplicationStub();
 
         // Bind application container
-        $application->bind(IlluminateContainerContract::class, static function () use ($application) {
+        $application->bind(IlluminateContainerContract::class, static function () use ($application): ApplicationStub {
             return $application;
         });
 

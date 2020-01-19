@@ -38,7 +38,9 @@ final class ResolveTargetEntityExtension implements Extension
     }
 
     /**
-     * {@inheritdoc}
+     * Returns filters.
+     *
+     * @return mixed[]
      */
     public function getFilters(): array
     {

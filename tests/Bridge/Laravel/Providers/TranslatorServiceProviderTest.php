@@ -26,7 +26,7 @@ class TranslatorServiceProviderTest extends TestCase
         $application = new ApplicationStub();
 
         // Bind illuminate translator to key
-        $application->bind('translator', static function () {
+        $application->bind('translator', static function (): IlluminateTranslator {
             return new IlluminateTranslator(new ArrayLoader(), 'en');
         });
 

@@ -29,7 +29,13 @@ final class ValidationServiceProvider extends ServiceProvider
             static function (FactoryInterface $factory, Container $app): FactoryInterface {
                 if ($factory instanceof Factory === true) {
                     $factory->resolver(
-                        static function ($translator, $data, $rules, $messages, $customAttributes) use ($app) {
+                        static function (
+                            $translator,
+                            $data,
+                            $rules,
+                            $messages,
+                            $customAttributes
+                        ) use ($app): IlluminateValidator {
                             // @codeCoverageIgnoreStart
                             // Hack to return our validator
                             return new IlluminateValidator(

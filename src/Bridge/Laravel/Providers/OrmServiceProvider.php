@@ -21,15 +21,18 @@ final class OrmServiceProvider extends ServiceProvider
         $this->app->singleton(EntityManagerInterface::class, EntityManager::class);
 
         // Define a ResolveTargetEntityListener
-        $this->app->singleton(ResolveTargetEntityListener::class, static function (Container $app) {
-            $listener = new ResolveTargetEntityListener();
+        $this->app->singleton(
+            ResolveTargetEntityListener::class,
+            static function (Container $app): ResolveTargetEntityListener {
+                $listener = new ResolveTargetEntityListener();
 
-            $replacements = $app->make('config')->get('doctrine.replacements') ?? [];
-            foreach ($replacements as $abstract => $replacement) {
-                $listener->addResolveTargetEntity($abstract, $replacement, []);
+                $replacements = $app->make('config')->get('doctrine.replacements') ?? [];
+                foreach ($replacements as $abstract => $replacement) {
+                    $listener->addResolveTargetEntity($abstract, $replacement, []);
+                }
+
+                return $listener;
             }
-
-            return $listener;
-        });
+        );
     }
 }

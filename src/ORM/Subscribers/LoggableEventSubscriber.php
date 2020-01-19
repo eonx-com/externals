@@ -49,12 +49,23 @@ final class LoggableEventSubscriber extends BaseLoggableListener
     }
 
     /**
-     * {@inheritdoc}
+     * Get the configuration for specific object class
+     * if cache driver is present it scans it also
+     *
+     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager
+     * @param string $class
+     *
+     * @return mixed[]
      *
      * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache extension isn't loaded
+     *
+     * phpcs:disable
+     * Unable to add parameter typehint due to interface
      */
     public function getConfiguration(ObjectManager $objectManager, $class): array
     {
+        // phpcs:enable
+
         $config = parent::getConfiguration($objectManager, $class);
         $entity = new $class();
 

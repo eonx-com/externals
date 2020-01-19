@@ -94,7 +94,7 @@ class FilesystemServiceProviderTest extends TestCase
     {
         $application = new ApplicationStub();
 
-        $application->bind('config', static function () use ($additional) {
+        $application->bind('config', static function () use ($additional): Config {
             return new Config([
                 'filesystems' => \array_merge([
                     'disk' => 'local',

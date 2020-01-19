@@ -19,6 +19,8 @@ class ParentStub extends EntityStub
      *     targetEntity="ChildStub"
      * )
      *
+     * @phpstan-var \Doctrine\Common\Collections\Collection<int, \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildStub>
+     *
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $children;
@@ -28,6 +30,8 @@ class ParentStub extends EntityStub
      *     mappedBy="parentPersist",
      *     targetEntity="ChildStub"
      * )
+     *
+     * @phpstan-var \Doctrine\Common\Collections\Collection<int, \Tests\EoneoPay\Externals\Stubs\ORM\Entities\ChildStub>
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
      */

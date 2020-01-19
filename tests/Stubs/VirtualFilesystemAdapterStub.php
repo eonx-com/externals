@@ -390,8 +390,7 @@ class VirtualFilesystemAdapterStub extends AbstractAdapter
         // @see: https://github.com/kalessil/phpinspectionsea/blob/master/docs/probable-bugs.md#mkdir-race-condition
         /** @noinspection NotOptimalIfConditionsInspection */
         if (\is_dir($folder) === false &&
-            \mkdir($folder, self::$permissions['dir']['public'], true) === false &&
-            \is_dir($folder) === false
+            \mkdir($folder, self::$permissions['dir']['public'], true) === false
         ) {
             throw new RuntimeException(\sprintf('Unable to create the directory "%s".', $folder));
         }
