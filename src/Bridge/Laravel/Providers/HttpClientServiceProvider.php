@@ -5,6 +5,7 @@ namespace EoneoPay\Externals\Bridge\Laravel\Providers;
 
 use EoneoPay\Externals\HttpClient\Client;
 use EoneoPay\Externals\HttpClient\ExceptionHandler;
+use EoneoPay\Externals\HttpClient\Interfaces\ClientInterface;
 use EoneoPay\Externals\HttpClient\Interfaces\ExceptionHandlerInterface;
 use EoneoPay\Externals\HttpClient\LoggingClient;
 use EoneoPay\Externals\Logger\Interfaces\LoggerInterface;
@@ -28,10 +29,10 @@ class HttpClientServiceProvider extends ServiceProvider
         $this->app->singleton(ExceptionHandlerInterface::class, ExceptionHandler::class);
 
         // Concrete implementations
-        $this->app->singleton(Client::class);
-        $this->app->singleton(LoggingClient::class, static function (Container $app) {
+        $this->app->singleton(ClientInterface::class, Client::class);
+        $this->app->singleton(LoggingClient::class, static function (Container $app): LoggingClient {
             return new LoggingClient(
-                $app->get(Client::class),
+                $app->get(ClientInterface::class),
                 $app->get(LoggerInterface::class)
             );
         });
