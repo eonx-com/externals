@@ -9,7 +9,6 @@ use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManagerInterface;
 use EoneoPay\Externals\Auth\Interfaces\AuthInterface;
 use EoneoPay\Externals\Environment\Interfaces\EnvInterface;
-use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
 use EoneoPay\Externals\ORM\Interfaces\UserInterface;
 use EoneoPay\Externals\ORM\Subscribers\LoggableEventSubscriber;
 use LaravelDoctrine\Extensions\GedmoExtension;
