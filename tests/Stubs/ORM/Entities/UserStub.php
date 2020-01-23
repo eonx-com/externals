@@ -12,6 +12,6 @@ class UserStub extends EntityStub implements UserInterface
      */
     public function getUniqueId()
     {
-        return 1;
+        return $this->getId();
     }
 }

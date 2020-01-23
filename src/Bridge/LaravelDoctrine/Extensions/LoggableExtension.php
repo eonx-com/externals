@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use EoneoPay\Externals\Auth\Interfaces\AuthInterface;
 use EoneoPay\Externals\Environment\Interfaces\EnvInterface;
 use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\ORM\Interfaces\UserInterface;
 use EoneoPay\Externals\ORM\Subscribers\LoggableEventSubscriber;
 use LaravelDoctrine\Extensions\GedmoExtension;
 
@@ -78,12 +79,12 @@ final class LoggableExtension extends GedmoExtension
 
             $user = $this->auth->user();
 
-            if (($user instanceof EntityInterface) === false) {
+            if (($user instanceof UserInterface) === false) {
                 return null;
             }
 
             // Get user id from guard
-            $userId = $user->getId();
+            $userId = $user->getUniqueId();
 
             return \is_int($userId) ? (string)$userId : null;
         };

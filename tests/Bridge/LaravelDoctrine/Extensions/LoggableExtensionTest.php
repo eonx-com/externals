@@ -103,7 +103,7 @@ class LoggableExtensionTest extends TestCase
 
         $usernameResolver = $this->getLoggableUsernameResolver($entity, 'local');
 
-        self::assertSame($entity->getId(), $usernameResolver());
+        self::assertSame($entity->getUniqueId(), $usernameResolver());
     }
 
     /**
