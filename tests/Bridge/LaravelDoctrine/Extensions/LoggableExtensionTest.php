@@ -6,11 +6,11 @@ namespace Tests\EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions;
 use Closure;
 use EoneoPay\Externals\Bridge\LaravelDoctrine\Extensions\LoggableExtension;
 use EoneoPay\Externals\Environment\Env;
-use EoneoPay\Externals\ORM\Interfaces\EntityInterface;
+use EoneoPay\Externals\ORM\Interfaces\UserInterface;
 use EoneoPay\Externals\ORM\Subscribers\LoggableEventSubscriber;
 use ReflectionClass;
 use Tests\EoneoPay\Externals\Stubs\Auth\AuthStub;
-use Tests\EoneoPay\Externals\Stubs\ORM\Entities\EntityStub;
+use Tests\EoneoPay\Externals\Stubs\ORM\Entities\UserStub;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\Common\EventManagerStub;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Doctrine\ORM\EntityManagerStub;
 use Tests\EoneoPay\Externals\TestCase;
@@ -99,18 +99,18 @@ class LoggableExtensionTest extends TestCase
      */
     public function testUsernameResolverWithUser(): void
     {
-        $entity = new EntityStub();
+        $entity = new UserStub();
 
         $usernameResolver = $this->getLoggableUsernameResolver($entity, 'local');
 
-        self::assertSame($entity->getId(), $usernameResolver());
+        self::assertSame($entity->getUniqueId(), $usernameResolver());
     }
 
     /**
      * Get LoggableExtension usernameResolver closure for given API key.
      *
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $entity Entity to return when calling auth->user()
-     * @param string|null $environment Enviroment to use
+     * @param \EoneoPay\Externals\ORM\Interfaces\UserInterface|null $entity Entity to return when calling auth->user()
+     * @param string|null $environment Environment to use
      * @param bool|null $console Whether this is in console or not
      *
      * @return \Closure
@@ -118,7 +118,7 @@ class LoggableExtensionTest extends TestCase
      * @throws \ReflectionException
      */
     protected function getLoggableUsernameResolver(
-        ?EntityInterface $entity = null,
+        ?UserInterface $entity = null,
         ?string $environment = null,
         ?bool $console = null
     ): Closure {
