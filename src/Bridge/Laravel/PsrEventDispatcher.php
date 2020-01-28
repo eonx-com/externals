@@ -29,5 +29,7 @@ class PsrEventDispatcher implements EventDispatcherInterface
     public function dispatch(object $event)
     {
         $this->dispatcher->dispatch($event);
+
+        return $event;
     }
 }

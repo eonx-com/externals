@@ -8,6 +8,9 @@ use stdClass;
 use Tests\EoneoPay\Externals\Stubs\Bridge\Laravel\EventDispatcherStub;
 use Tests\EoneoPay\Externals\TestCase;
 
+/**
+ * @covers \EoneoPay\Externals\Bridge\Laravel\PsrEventDispatcher
+ */
 class PsrEventDispatcherTest extends TestCase
 {
     /**
