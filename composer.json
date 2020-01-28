@@ -12,12 +12,14 @@
     "ext-libxml": "*",
     "ext-simplexml": "*",
     "eonx-com/utils": "^1.0",
+    "psr/event-dispatcher": "^1.0",
     "psr/http-client": "^1.0",
     "zendframework/zend-diactoros": "^2.1"
   },
   "require-dev": {
     "eonx-com/search": "^2.1",
     "eonx-com/standards": "^0.2",
+    "eonx-com/test-utils": "^0.0.3",
     "gedmo/doctrine-extensions": "^2.4",
     "giggsey/libphonenumber-for-php": "^8.10",
     "guzzlehttp/guzzle": "^6.0.0",
