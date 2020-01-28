@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9156340f1750c050fd3b7e339558c78b",
+    "content-hash": "676e6c8e3877db3e4c7b65f383563afd",
     "packages": [
         {
             "name": "eonx-com/utils",
@@ -72,6 +72,52 @@
                 "utilities"
             ],
             "time": "2020-01-13T23:21:08+00:00"
+        },
+        {
+            "name": "psr/event-dispatcher",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/event-dispatcher.git",
+                "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/event-dispatcher/zipball/dbefd12671e8a14ec7f180cab83036ed26714bb0",
+                "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\EventDispatcher\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Standard interfaces for event handling.",
+            "keywords": [
+                "events",
+                "psr",
+                "psr-14"
+            ],
+            "time": "2019-01-08T18:20:26+00:00"
         },
         {
             "name": "psr/http-client",
@@ -1617,6 +1663,55 @@
             "time": "2019-12-05T03:38:07+00:00"
         },
         {
+            "name": "eonx-com/test-utils",
+            "version": "v0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eonx-com/test-utils.git",
+                "reference": "8234332937075783ccef33c074d329d7abf27b45"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eonx-com/test-utils/zipball/8234332937075783ccef33c074d329d7abf27b45",
+                "reference": "8234332937075783ccef33c074d329d7abf27b45",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-simplexml": "*",
+                "php": "^7.3",
+                "phpunit/phpunit": "^8.4"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.7",
+                "eonx-com/apiformats": "^1.0",
+                "eonx-com/requesthandlers": "^1.2",
+                "eonx-com/search": "^2.0",
+                "eonx-com/standards": "^0.2.2",
+                "phpmd/phpmd": "^2.7",
+                "phpstan/phpstan": "^0.12.3",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12",
+                "sebastian/phpcpd": "^4.1",
+                "squizlabs/php_codesniffer": "^3.5",
+                "symfony/http-foundation": "^4.2",
+                "symfony/validator": "4.3.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Eonx\\TestUtils\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A collection of PHP test utils, assertions stubs and test cases",
+            "time": "2020-01-09T22:19:46+00:00"
+        },
+        {
             "name": "gedmo/doctrine-extensions",
             "version": "v2.4.39",
             "source": {
@@ -2053,6 +2148,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
+            "abandoned": true,
             "time": "2018-07-31T13:22:33+00:00"
         },
         {
@@ -2103,6 +2199,7 @@
                 "Guzzle",
                 "stream"
             ],
+            "abandoned": true,
             "time": "2014-10-12T19:18:40+00:00"
         },
         {

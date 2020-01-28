@@ -5,9 +5,11 @@ namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 
 use EoneoPay\Externals\Bridge\Laravel\EventDispatcher;
 use EoneoPay\Externals\Bridge\Laravel\Providers\EventDispatcherServiceProvider;
+use EoneoPay\Externals\Bridge\Laravel\PsrEventDispatcher;
 use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
 use Illuminate\Events\Dispatcher as IlluminateDispatcher;
+use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
 use Tests\EoneoPay\Externals\TestCase;
 
@@ -40,6 +42,10 @@ class EventDispatcherServiceProviderTest extends TestCase
         self::assertInstanceOf(
             EventDispatcher::class,
             $application->get(EventDispatcherInterface::class)
+        );
+        self::assertInstanceOf(
+            PsrEventDispatcher::class,
+            $application->get(PsrEventDispatcherInterface::class)
         );
     }
 }
