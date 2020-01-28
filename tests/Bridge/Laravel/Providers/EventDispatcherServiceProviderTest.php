@@ -7,45 +7,49 @@ use EoneoPay\Externals\Bridge\Laravel\EventDispatcher;
 use EoneoPay\Externals\Bridge\Laravel\Providers\EventDispatcherServiceProvider;
 use EoneoPay\Externals\Bridge\Laravel\PsrEventDispatcher;
 use EoneoPay\Externals\EventDispatcher\Interfaces\EventDispatcherInterface;
+use Eonx\TestUtils\Stubs\Vendor\Illuminate\Container\ContainerStub;
+use Eonx\TestUtils\TestCases\Unit\LaravelServiceProviderTestCase;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
 use Illuminate\Events\Dispatcher as IlluminateDispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
-use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
-use Tests\EoneoPay\Externals\TestCase;
 
 /**
  * @covers \EoneoPay\Externals\Bridge\Laravel\Providers\EventDispatcherServiceProvider
  */
-class EventDispatcherServiceProviderTest extends TestCase
+class EventDispatcherServiceProviderTest extends LaravelServiceProviderTestCase
 {
     /**
-     * Test provider register container.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function testRegister(): void
+    protected function getBindings(): array
     {
-        $application = new ApplicationStub();
+        return [
+            EventDispatcherInterface::class => EventDispatcher::class,
+            PsrEventDispatcherInterface::class => PsrEventDispatcher::class
+        ];
+    }
 
-        // Bind illuminate dispatcher
-        $application->bind(
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContainer(): ContainerStub
+    {
+        $container = parent::getContainer();
+        $container->bind(
             IlluminateDispatcherContract::class,
-            static function () use ($application): IlluminateDispatcher {
-                return new IlluminateDispatcher($application);
+            static function () use ($container): IlluminateDispatcher {
+                return new IlluminateDispatcher($container);
             }
         );
 
-        // Run registration
-        (new EventDispatcherServiceProvider($application))->register();
+        return $container;
+    }
 
-        // Ensure services are bound
-        self::assertInstanceOf(
-            EventDispatcher::class,
-            $application->get(EventDispatcherInterface::class)
-        );
-        self::assertInstanceOf(
-            PsrEventDispatcher::class,
-            $application->get(PsrEventDispatcherInterface::class)
-        );
+    /**
+     * {@inheritdoc}
+     */
+    protected function getServiceProvider(): string
+    {
+        return EventDispatcherServiceProvider::class;
     }
 }

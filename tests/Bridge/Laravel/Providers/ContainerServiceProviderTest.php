@@ -6,33 +6,41 @@ namespace Tests\EoneoPay\Externals\Bridge\Laravel\Providers;
 use EoneoPay\Externals\Bridge\Laravel\Container;
 use EoneoPay\Externals\Bridge\Laravel\Providers\ContainerServiceProvider;
 use EoneoPay\Externals\Container\Interfaces\ContainerInterface;
+use Eonx\TestUtils\Stubs\Vendor\Illuminate\Container\ContainerStub;
+use Eonx\TestUtils\TestCases\Unit\LaravelServiceProviderTestCase;
 use Illuminate\Contracts\Container\Container as IlluminateContainerContract;
-use Tests\EoneoPay\Externals\Stubs\Vendor\Illuminate\Contracts\Foundation\ApplicationStub;
-use Tests\EoneoPay\Externals\TestCase;
 
 /**
  * @covers \EoneoPay\Externals\Bridge\Laravel\Providers\ContainerServiceProvider
  */
-class ContainerServiceProviderTest extends TestCase
+class ContainerServiceProviderTest extends LaravelServiceProviderTestCase
 {
     /**
-     * Test provider register container.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function testRegister(): void
+    protected function getBindings(): array
     {
-        $application = new ApplicationStub();
+        return [
+            ContainerInterface::class => Container::class
+        ];
+    }
 
-        // Bind application container
-        $application->bind(IlluminateContainerContract::class, static function () use ($application): ApplicationStub {
-            return $application;
-        });
+    /**
+     * {@inheritdoc}
+     */
+    protected function getServiceProvider(): string
+    {
+        return ContainerServiceProvider::class;
+    }
 
-        // Run registration
-        (new ContainerServiceProvider($application))->register();
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContainer(): ContainerStub
+    {
+        $container = parent::getContainer();
+        $container->instance(IlluminateContainerContract::class, $container);
 
-        // Ensure services are bound
-        self::assertInstanceOf(Container::class, $application->get(ContainerInterface::class));
+        return $container;
     }
 }
