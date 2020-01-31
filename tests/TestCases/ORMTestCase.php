@@ -61,7 +61,7 @@ abstract class ORMTestCase extends TestCase
     private static $paths = [
         // Paths to your entities folder and stubs folder
         __DIR__ . '/../Stubs/ORM/Entities',
-        __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity'
+        __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity',
     ];
 
     /**
