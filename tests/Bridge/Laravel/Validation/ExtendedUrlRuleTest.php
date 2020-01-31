@@ -96,7 +96,7 @@ final class ExtendedUrlRuleTest extends TestCase
     /**
      * Provides invalid urls.
      *
-     * @return array
+     * @return mixed[]
      */
     public function provideInvalidUrls(): array
     {
@@ -157,7 +157,7 @@ final class ExtendedUrlRuleTest extends TestCase
     {
         $loader = new ArrayLoader();
         $loader->addMessages('en', 'validation', ['extended_url' => 'The :attribute format is invalid.']);
-        $validator = new Validator(new Factory($translator = new Translator($loader, 'en')));
+        $validator = new Validator(new Factory(new Translator($loader, 'en')));
 
         $actualResult = $validator->validate(['url' => $invalidUrl], ['url' => 'extended_url']);
 

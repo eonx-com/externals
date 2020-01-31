@@ -38,6 +38,7 @@ final class ExtendedUrlRule implements ValidationRuleInterface
      * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     *
      * @noinspection PhpUnusedParameterInspection
      */
     public function getRule(): Closure

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\Bridge\Laravel;
 
 use EoneoPay\Externals\Bridge\Laravel\Interfaces\ValidationRuleInterface;
-use EoneoPay\Externals\Bridge\Laravel\Validation\ExtendedUrlRule;
 use EoneoPay\Externals\Bridge\Laravel\Validation\EmptyWithRule;
+use EoneoPay\Externals\Bridge\Laravel\Validation\ExtendedUrlRule;
 use EoneoPay\Externals\Bridge\Laravel\Validation\InstanceOfRule;
 use EoneoPay\Externals\Validator\Interfaces\ValidatorInterface;
 use Illuminate\Contracts\Validation\Factory;
