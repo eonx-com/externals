@@ -19,7 +19,7 @@ final class ExtendedUrlRuleTest extends TestCase
      *
      * @return mixed[]
      */
-    public function provideValidUrls(): iterable
+    public function provideValidUrls(): array
     {
         return [
             ['//example.com'],
