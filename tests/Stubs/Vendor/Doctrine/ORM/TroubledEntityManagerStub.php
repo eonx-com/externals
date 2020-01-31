@@ -15,7 +15,7 @@ class TroubledEntityManagerStub extends EntityManagerStub
      *
      * @throws \Exception
      */
-    public function getRepository($className)
+    public function getConnection()
     {
         throw new Exception('I have issues.');
     }

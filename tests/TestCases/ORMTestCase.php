@@ -61,8 +61,7 @@ abstract class ORMTestCase extends TestCase
     private static $paths = [
         // Paths to your entities folder and stubs folder
         __DIR__ . '/../Stubs/ORM/Entities',
-        __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity',
-        __DIR__ . '/../../src/Health/Checks/DatabaseHealthCheck/Entities'
+        __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity'
     ];
 
     /**
@@ -169,10 +168,6 @@ abstract class ORMTestCase extends TestCase
         // register annotation driver for our application Entity fully qualified namespace
         $driverChain->addDriver($annotationDriver, 'Tests\\EoneoPay\\Externals\\Stubs\\ORM\\Entities');
         $driverChain->addDriver($annotationDriver, 'Gedmo\\Loggable\\Entity');
-        $driverChain->addDriver(
-            $annotationDriver,
-            'EoneoPay\\Externals\\Health\\Checks\\DatabaseHealthCheck\\Entities'
-        );
 
         // General ORM configuration
         $config = new Configuration();

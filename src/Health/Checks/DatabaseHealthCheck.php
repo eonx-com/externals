@@ -5,7 +5,6 @@ namespace EoneoPay\Externals\Health\Checks;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EoneoPay\Externals\DataTransferObjects\Health\HealthState;
-use EoneoPay\Externals\Health\Checks\DatabaseHealthCheck\Entities\Health;
 use EoneoPay\Externals\Health\Interfaces\HealthCheckInterface;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 use Exception;
@@ -49,7 +48,7 @@ class DatabaseHealthCheck implements HealthCheckInterface
         $state = HealthInterface::STATE_HEALTHY;
 
         try {
-            $this->entityManager->getRepository(Health::class)->find(0);
+            $this->entityManager->getConnection()->executeQuery('SELECT true');
         } /** @noinspection BadExceptionsProcessingInspection */ catch (Exception $exception) {
             // If exception is thrown database is not readable, ignore this and set the state to degraded
             $state = HealthInterface::STATE_DEGRADED;
