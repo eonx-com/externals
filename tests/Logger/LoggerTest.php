@@ -6,46 +6,48 @@ namespace Tests\EoneoPay\Externals\Logger;
 use EoneoPay\Externals\Logger\Logger;
 use Exception;
 use Monolog\Processor\ProcessorInterface;
+use RuntimeException;
 use Tests\EoneoPay\Externals\Stubs\Vendor\Monolog\Handler\LogHandlerStub;
 use Tests\EoneoPay\Externals\TestCase;
 
 /**
  * @covers \EoneoPay\Externals\Logger\Logger
+ *
+ * @SuppressWarnings(PHPMD) Unable to suppress unused formal parameter for __invoke.
  */
 class LoggerTest extends TestCase
 {
     /**
-     * Test logger create right logs for all bool methods.
+     * Test logger when an exception occurs inside monolog.
      *
      * @return void
      */
-    public function testBooleanMethods(): void
+    public function testErrorLogFallback(): void
     {
         $handler = new LogHandlerStub();
-        $logger = new Logger(null, $handler);
-        $message = 'my message';
-        $context = ['attr' => 'value'];
-
-        foreach (['alert', 'critical', 'debug', 'emergency', 'error', 'info', 'notice', 'warning'] as $method) {
-            $callable = [$logger, $method];
-
-            if (\is_callable($callable) === false) {
-                self::fail(\sprintf('Unable to call %s on %s', $method, Logger::class));
-
-                continue;
+        $processor = new class() implements ProcessorInterface {
+            /**
+             * Processes.
+             *
+             * phpcs:disable
+             *
+             * @param mixed[] $record
+             *
+             * @return mixed[]
+             *
+             * phpcs:enable
+             */
+            public function __invoke(array $record): array
+            {
+                throw new RuntimeException('Error inside monolog - This is expected.');
             }
+        };
 
-            $callable($message, $context);
-        }
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Error inside monolog - This is expected.');
 
-        foreach ($handler->getLogs() as $log) {
-            self::assertArrayHasKey('message', $log);
-            self::assertArrayHasKey('context', $log);
-            self::assertEquals($message, $log['message']);
-            self::assertEquals($context, $log['context']);
-        }
-
-        $this->addToAssertionCount(1);
+        $logger = new Logger(null, $handler, [$processor]);
+        $logger->warning('Message');
     }
 
     /**
@@ -84,7 +86,11 @@ class LoggerTest extends TestCase
         $handler = new LogHandlerStub();
         $processor = new class() implements ProcessorInterface {
             /**
-             * {@inheritdoc}
+             * Processes.
+             *
+             * @param mixed[] $record
+             *
+             * @return mixed[]
              */
             public function __invoke(array $record): array
             {
@@ -109,14 +115,21 @@ class LoggerTest extends TestCase
     }
 
     /**
-     * Test logger handles Monolog exceptions.
+     * Tests that pushHandler adds a handler to monolog.
      *
      * @return void
      */
-    public function testLoggerContinuesWhenMonologExceptionThrown(): void
+    public function testPushHandler(): void
     {
-        (new Logger(null, new LogHandlerStub(false)))->error('message');
+        $logger = new Logger(null, new LogHandlerStub());
 
-        $this->addToAssertionCount(1);
+        $handler = new LogHandlerStub();
+        $logger->pushHandler($handler);
+        $logger->warning('Message');
+
+        $logs = $handler->getLogs();
+
+        self::assertCount(1, $logs);
+        self::assertSame('Message', $logs[0]['message'] ?? null);
     }
 }

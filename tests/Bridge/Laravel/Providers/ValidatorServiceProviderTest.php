@@ -30,14 +30,20 @@ class ValidatorServiceProviderTest extends TestCase
         $application = new ApplicationStub();
 
         // Bind illuminate translator to key
-        $application->bind('translator', static function () {
-            return new IlluminateTranslator(new ArrayLoader(), 'en');
-        });
+        $application->bind(
+            'translator',
+            static function (): IlluminateTranslator {
+                return new IlluminateTranslator(new ArrayLoader(), 'en');
+            }
+        );
 
         // Bind illuminate validator
-        $application->bind(IlluminateValidatorContract::class, static function () {
-            return new IlluminateValidator(new IlluminateTranslator(new ArrayLoader(), 'en'));
-        });
+        $application->bind(
+            IlluminateValidatorContract::class,
+            static function (): IlluminateValidator {
+                return new IlluminateValidator(new IlluminateTranslator(new ArrayLoader(), 'en'));
+            }
+        );
 
         // Run registration
         (new ValidationServiceProvider($application))->register();
@@ -56,12 +62,12 @@ class ValidatorServiceProviderTest extends TestCase
         $application = new ApplicationStub();
 
         // Bind illuminate translator to key
-        $application->bind('translator', static function () {
+        $application->bind('translator', static function (): IlluminateTranslator {
             return new IlluminateTranslator(new ArrayLoader(), 'en');
         });
 
         // Bind illuminate validator
-        $application->bind(IlluminateValidatorContract::class, static function () {
+        $application->bind(IlluminateValidatorContract::class, static function (): IlluminateValidator {
             return new IlluminateValidator(new IlluminateTranslator(new ArrayLoader(), 'en'));
         });
 

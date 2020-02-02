@@ -13,6 +13,8 @@ use Illuminate\Contracts\Foundation\Application;
  * @SuppressWarnings(PHPMD.ExcessivePublicCount) This class is implemented from a Laravel interface
  * @SuppressWarnings(PHPMD.TooManyMethods) This class is implemented from a Laravel interface
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) This class is implemented from a Laravel interface
+ *
+ * @implements \ArrayAccess<mixed, mixed>
  */
 class ApplicationStub implements Application, ArrayAccess
 {

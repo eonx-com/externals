@@ -71,7 +71,10 @@ final class ValidateEventSubscriber implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $eventArgs): void
     {
         $this->callValidator($eventArgs);
+        // @codeCoverageIgnoreStart
+        // Because code coverage is mutable.
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * Call validator on an object.

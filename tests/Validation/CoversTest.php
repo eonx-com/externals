@@ -23,7 +23,11 @@ class CoversTest extends TestCase
     public function testAllTestsContainCoversAnnotation(): void
     {
         // Get all test files in the tests directory
-        $path = \realpath(\dirname(__DIR__)) ?: \dirname(__DIR__);
+        $path = \realpath(\dirname(__DIR__));
+        if ($path === false) {
+            $path = \dirname(__DIR__);
+        }
+
         $filenames = $this->getTestFilenames($path);
 
         // Group all failures together
@@ -69,7 +73,7 @@ class CoversTest extends TestCase
     private function getTestFilenames(string $path): array
     {
         // Filter stubs
-        $filter = static function (SplFileInfo $file) {
+        $filter = static function (SplFileInfo $file): bool {
             return \mb_strpos($file->getPathname(), '/tests/Stubs') === false;
         };
 

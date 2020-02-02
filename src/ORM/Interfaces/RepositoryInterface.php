@@ -17,9 +17,16 @@ interface RepositoryInterface extends ObjectRepository
     public function count(?array $criteria = null): int;
 
     /**
-     * {@inheritdoc}
+     * Finds a single object by a set of criteria.
      *
+     * @param mixed[] $criteria The criteria.
      * @param string[]|null $orderBy Optional order to sort by before returning
+     *
+     * @return object|null The object.
+     *
+     * phpcs:disable
+     * Unable to add return typehint due to interface
      */
     public function findOneBy(array $criteria, ?array $orderBy = null);
+    // phpcs:enable
 }

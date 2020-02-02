@@ -25,14 +25,14 @@ final class FilesystemServiceProvider extends ServiceProvider
 
         // Interface for cloud-based filesystem
         if ($this->driverExists('cloud')) {
-            $this->app->singleton(CloudFilesystemInterface::class, function () {
+            $this->app->singleton(CloudFilesystemInterface::class, function (): Filesystem {
                 return new Filesystem($this->app->make('filesystem')->disk($this->getCloudDriver()));
             });
         }
 
         // Interface for disk-based filesystem
         if ($this->driverExists('disk')) {
-            $this->app->singleton(DiskFilesystemInterface::class, function () {
+            $this->app->singleton(DiskFilesystemInterface::class, function (): Filesystem {
                 return new Filesystem($this->app->make('filesystem')->disk($this->getDiskDriver()));
             });
         }
@@ -56,7 +56,7 @@ final class FilesystemServiceProvider extends ServiceProvider
 
             default:
                 // Load custom driver
-                $this->app->bind(FilesystemInterface::class, function () {
+                $this->app->bind(FilesystemInterface::class, function (): Filesystem {
                     return new Filesystem($this->app->make('filesystem')->disk($this->getDefaultDriver()));
                 });
 
@@ -127,7 +127,7 @@ final class FilesystemServiceProvider extends ServiceProvider
      */
     private function registerManager(): void
     {
-        $this->app->singleton('filesystem', function () {
+        $this->app->singleton('filesystem', function (): FilesystemManager {
             return new FilesystemManager($this->app);
         });
     }

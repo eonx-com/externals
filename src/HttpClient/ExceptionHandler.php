@@ -55,8 +55,8 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         }
 
         if ($response === null) {
-            $stringBody = \json_encode(['exception' => $exception->getMessage()]) ?: '';
-            $body = stream_for($stringBody);
+            $stringBody = \json_encode(['exception' => $exception->getMessage()]);
+            $body = stream_for($stringBody === false ? '' : $stringBody);
 
             $response = new PsrResponse(500, [], $body);
         }

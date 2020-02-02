@@ -22,6 +22,8 @@ interface ValidatableInterface extends EntityInterface
     /**
      * Get validation failed exception class.
      *
+     * @phpstan-return class-string
+     *
      * @return string
      */
     public function getValidationFailedException(): string;
