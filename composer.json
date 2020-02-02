@@ -25,6 +25,7 @@
     "guzzlehttp/guzzle": "^6.0.0",
     "illuminate/auth": "^6.0",
     "illuminate/http": "^6.0",
+    "illuminate/redis": "^6.0",
     "illuminate/validation": "^6.0",
     "indigophp/doctrine-annotation-autoload": "^0.1.0",
     "laravel-doctrine/extensions": "^1.0",
