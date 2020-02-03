@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use EoneoPay\Externals\DataTransferObjects\Health\HealthState;
 use EoneoPay\Externals\Health\Interfaces\HealthCheckInterface;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
-use Exception;
 
 final class DatabaseHealthCheck implements HealthCheckInterface
 {
