@@ -8,7 +8,7 @@ use EoneoPay\Externals\Health\Interfaces\HealthCheckInterface;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 use LoyaltyCorp\Search\Interfaces\ClientInterface;
 
-class ElasticsearchHealthCheck implements HealthCheckInterface
+final class ElasticsearchHealthCheck implements HealthCheckInterface
 {
     /**
      * The search client instance.
