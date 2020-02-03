@@ -8,7 +8,7 @@ use EoneoPay\Externals\Health\Interfaces\HealthCheckInterface;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 use Illuminate\Contracts\Redis\Factory;
 
-class RedisHealthCheck implements HealthCheckInterface
+final class RedisHealthCheck implements HealthCheckInterface
 {
     /**
      * @var \Illuminate\Contracts\Redis\Factory

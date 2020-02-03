@@ -10,7 +10,7 @@ use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 use Exception;
 use Illuminate\Contracts\Bus\Dispatcher;
 
-class QueueHealthCheck implements HealthCheckInterface
+final class QueueHealthCheck implements HealthCheckInterface
 {
     /**
      * The degraded state message.

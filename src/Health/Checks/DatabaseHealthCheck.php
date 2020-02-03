@@ -9,7 +9,7 @@ use EoneoPay\Externals\Health\Interfaces\HealthCheckInterface;
 use EoneoPay\Externals\Health\Interfaces\HealthInterface;
 use Exception;
 
-class DatabaseHealthCheck implements HealthCheckInterface
+final class DatabaseHealthCheck implements HealthCheckInterface
 {
     /**
      * The degraded state message.
