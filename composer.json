@@ -17,6 +17,7 @@
     "zendframework/zend-diactoros": "^2.1"
   },
   "require-dev": {
+    "eonx-com/auditing": "^1.0",
     "eonx-com/search": "^2.1",
     "eonx-com/standards": "^0.2",
     "eonx-com/test-utils": "^0.0.5",
