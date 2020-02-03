@@ -25,7 +25,7 @@ class ClientConnectivityHealthCheckTest extends UnitTestCase
         $client = new ClientStub();
         $instance = new ClientConnectivityHealthCheck(
             $client,
-            '\health',
+            '/health',
             'EoneoPay'
         );
         $expected = new HealthState(
@@ -50,7 +50,7 @@ class ClientConnectivityHealthCheckTest extends UnitTestCase
         $client = new FailingClientStub();
         $instance = new ClientConnectivityHealthCheck(
             $client,
-            '\health',
+            '/health',
             'EoneoPay'
         );
         $expected = new HealthState(

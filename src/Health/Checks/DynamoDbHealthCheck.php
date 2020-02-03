@@ -53,7 +53,7 @@ final class DynamoDbHealthCheck implements HealthCheckInterface
 
             $state = HealthInterface::STATE_HEALTHY;
         } /** @noinspection BadExceptionsProcessingInspection */ catch (Exception $exception) {
-            // If an exception occurs during dispatching, queue isnt available.
+            // If an exception occurs, database is not available.
         }
 
         return new HealthState(
