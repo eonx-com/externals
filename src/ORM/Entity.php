@@ -27,64 +27,11 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Serialize entity as an array.
+     *
+     * @return mixed[]
      */
-    public function fill(array $data): void
-    {
-        // Loop through data and set values, set will automatically skip invalid or
-        // non-fillable properties.
-        foreach ($data as $property => $value) {
-            $resolved = $this->resolveProperty($property);
-            if ($resolved === null) {
-                // No property exists.
-
-                continue;
-            }
-
-            $method = \sprintf('set%s', \ucfirst($resolved));
-            $callable = [$this, $method];
-
-            if (\is_callable($callable) === false) {
-                // @codeCoverageIgnoreStart
-                // The callable isnt callable. This wont happen - this entity
-                // implements __call which means is_callable will always return
-                // true.
-                continue;
-                // @codeCoverageIgnoreEnd
-            }
-
-            try {
-                $callable($value);
-            } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidMethodCallException $exception) {
-                // Using __call means we might throw an InvalidMethodCallException when
-                // the property is guarded, but the BC behaviour for fill()
-                // is to ignore and skip the property in $data.
-            }
-        }
-    }
-
-    /**
-     * Resolve property without case sensitivity or special characters, resolves property such as
-     * addressStreet to addressstreet, address_street or ADDRESSSTREET.
-     *
-     * Method copied/overridden and suppressed to keep it private. Protected methods
-     * will be usable from entities but this method should remain private.
-     *
-     * @noinspection SenselessMethodDuplicationInspection PhpMissingParentCallCommonInspection
-     *
-     * @param string $property The property to resolve
-     *
-     * @return string|null
-     */
-    private function resolveProperty(string $property): ?string
-    {
-        // All properties will be camel case within the object
-        $property = \lcfirst($property);
-
-        return \property_exists($this, $property)
-            ? $property :
-            (new Arr())->search($this->getObjectProperties(), $property);
-    }
+    abstract public function toArray(): array;
 
     /**
      * {@inheritdoc}
@@ -127,35 +74,33 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * Determine if a property is fillable.
-     *
-     * @param string $property
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    private function isFillable(string $property): bool
+    public function fill(array $data): void
     {
-        // Get fillable and guarded arrays
-        $fillable = $this->getFillableProperties();
-        $guarded = $this->getGuardedProperties();
+        // Loop through data and set values, set will automatically skip invalid or
+        // non-fillable properties.
+        foreach ($data as $property => $value) {
+            $method = \sprintf('set%s', \ucfirst($property));
+            $callable = [$this, $method];
 
-        // Resolve mappings
-        $resolved = $this->resolveProperty($property);
+            if (\is_callable($callable) === false) {
+                // @codeCoverageIgnoreStart
+                // The callable isnt callable. This wont happen - this entity
+                // implements __call which means is_callable will always return
+                // true.
+                continue;
+                // @codeCoverageIgnoreEnd
+            }
 
-        // Get array helper instance
-        $arr = new Arr();
-
-        /**
-         * To be fillable:
-         *  - The property must exist
-         *  - The model must not be guarded and
-         *  - The property must not be guarded and
-         *  - The model or property must be fillable.
-         */
-        return $resolved !== null &&
-            \in_array('*', $this->getGuardedProperties(), true) === false &&
-            $arr->search($guarded, $resolved) === null &&
-            (\in_array('*', $this->getFillableProperties(), true) || $arr->search($fillable, $resolved) !== null);
+            try {
+                $callable($value);
+            } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidMethodCallException $exception) {
+                // Using __call means we might throw an InvalidMethodCallException when
+                // the property is guarded, but the BC behaviour for fill()
+                // is to ignore and skip the property in $data.
+            }
+        }
     }
 
     /**
@@ -164,39 +109,6 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     public function getFillableProperties(): array
     {
         return $this->invokeEntityMethod('getFillable', null, ['*']);
-    }
-
-    /**
-     * Resolve a method on the entity which may or may not exist.
-     *
-     * @param string $method The name of the method to invoke if it exists
-     * @param mixed[]|null $args
-     * @param mixed[]|null $default The default to return if the method doesn't exist
-     *
-     * @return mixed[]
-     */
-    private function invokeEntityMethod(string $method, ?array $args = null, ?array $default = null): array
-    {
-        $callable = [$this, $method];
-
-        // If method is missing, not callable or doesn't return an array, use default
-        if (\method_exists($this, $method) === false ||
-            \is_callable($callable) === false ||
-            \is_array($callable()) === false) {
-            return $default ?? [];
-        }
-
-        return $callable(...$args ?? []);
-    }
-
-    /**
-     * Get a list of attributes or keys which can't be filled, by default nothing is guarded.
-     *
-     * @return string[]
-     */
-    private function getGuardedProperties(): array
-    {
-        return $this->invokeEntityMethod('getGuarded');
     }
 
     /**
@@ -218,13 +130,6 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     {
         return $this->toArray();
     }
-
-    /**
-     * Serialize entity as an array.
-     *
-     * @return mixed[]
-     */
-    abstract public function toArray(): array;
 
     /**
      * {@inheritdoc}
@@ -309,55 +214,6 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
     }
 
     /**
-     * Get property value via getter.
-     *
-     * @param string $property The property to get
-     *
-     * @return mixed
-     */
-    protected function callPropertyGetter(string $property)
-    {
-        $getter = [$this, \sprintf('get%s', \ucfirst($property))];
-
-        return \is_callable($getter) === true ? $getter() : null;
-    }
-
-    /**
-     * Handle reverse association.
-     *
-     * @param string $association
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $existing The existing parent
-     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $new The new parent relationship
-     *
-     * @return void
-     */
-    private function handleReverseAssociation(
-        string $association,
-        ?EntityInterface $existing = null,
-        ?EntityInterface $new = null
-    ): void {
-        // Determine collection methods
-        $getter = \sprintf('get%s', \ucfirst($association));
-        $existingCollection = [$existing, $getter];
-        $newCollection = [$new, $getter];
-
-        // If there is a existing parent, remove
-        if (($existing instanceof EntityInterface) === true &&
-            $existing !== $this &&
-            \is_callable($existingCollection) === true &&
-            $existingCollection()->contains($this) === true) {
-            $existingCollection()->removeElement($this);
-        }
-
-        // Add to new parent if applicable
-        if (($new instanceof EntityInterface) === true &&
-            \is_callable($newCollection) === true &&
-            $newCollection()->contains($this) === false) {
-            $newCollection()->add($this);
-        }
-    }
-
-    /**
      * Associate an entity in a bidirectional way on a N-N relation.
      *
      * @param string $attribute The attribute on the first entity for the many to many association
@@ -378,6 +234,20 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Get property value via getter.
+     *
+     * @param string $property The property to get
+     *
+     * @return mixed
+     */
+    protected function callPropertyGetter(string $property)
+    {
+        $getter = [$this, \sprintf('get%s', \ucfirst($property))];
+
+        return \is_callable($getter) === true ? $getter() : null;
     }
 
     /**
@@ -416,5 +286,128 @@ abstract class Entity extends SimpleEntity implements MagicEntityInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Get a list of attributes or keys which can't be filled, by default nothing is guarded.
+     *
+     * @return string[]
+     */
+    private function getGuardedProperties(): array
+    {
+        return $this->invokeEntityMethod('getGuarded');
+    }
+
+    /**
+     * Handle reverse association.
+     *
+     * @param string $association
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $existing The existing parent
+     * @param \EoneoPay\Externals\ORM\Interfaces\EntityInterface|null $new The new parent relationship
+     *
+     * @return void
+     */
+    private function handleReverseAssociation(
+        string $association,
+        ?EntityInterface $existing = null,
+        ?EntityInterface $new = null
+    ): void {
+        // Determine collection methods
+        $getter = \sprintf('get%s', \ucfirst($association));
+        $existingCollection = [$existing, $getter];
+        $newCollection = [$new, $getter];
+
+        // If there is a existing parent, remove
+        if (($existing instanceof EntityInterface) === true &&
+            $existing !== $this &&
+            \is_callable($existingCollection) === true &&
+            $existingCollection()->contains($this) === true) {
+            $existingCollection()->removeElement($this);
+        }
+
+        // Add to new parent if applicable
+        if (($new instanceof EntityInterface) === true &&
+            \is_callable($newCollection) === true &&
+            $newCollection()->contains($this) === false) {
+            $newCollection()->add($this);
+        }
+    }
+
+    /**
+     * Resolve a method on the entity which may or may not exist.
+     *
+     * @param string $method The name of the method to invoke if it exists
+     * @param mixed[]|null $args
+     * @param mixed[]|null $default The default to return if the method doesn't exist
+     *
+     * @return mixed[]
+     */
+    private function invokeEntityMethod(string $method, ?array $args = null, ?array $default = null): array
+    {
+        $callable = [$this, $method];
+
+        // If method is missing, not callable or doesn't return an array, use default
+        if (\method_exists($this, $method) === false ||
+            \is_callable($callable) === false ||
+            \is_array($callable()) === false) {
+            return $default ?? [];
+        }
+
+        return $callable(...$args ?? []);
+    }
+
+    /**
+     * Determine if a property is fillable.
+     *
+     * @param string $property
+     *
+     * @return bool
+     */
+    private function isFillable(string $property): bool
+    {
+        // Get fillable and guarded arrays
+        $fillable = $this->getFillableProperties();
+        $guarded = $this->getGuardedProperties();
+
+        // Resolve mappings
+        $resolved = $this->resolveProperty($property);
+
+        // Get array helper instance
+        $arr = new Arr();
+
+        /**
+         * To be fillable:
+         *  - The property must exist
+         *  - The model must not be guarded and
+         *  - The property must not be guarded and
+         *  - The model or property must be fillable.
+         */
+        return $resolved !== null &&
+            \in_array('*', $this->getGuardedProperties(), true) === false &&
+            $arr->search($guarded, $resolved) === null &&
+            (\in_array('*', $this->getFillableProperties(), true) || $arr->search($fillable, $resolved) !== null);
+    }
+
+    /**
+     * Resolve property without case sensitivity or special characters, resolves property such as
+     * addressStreet to addressstreet, address_street or ADDRESSSTREET.
+     *
+     * Method copied/overridden and suppressed to keep it private. Protected methods
+     * will be usable from entities but this method should remain private.
+     *
+     * @noinspection SenselessMethodDuplicationInspection PhpMissingParentCallCommonInspection
+     *
+     * @param string $property The property to resolve
+     *
+     * @return string|null
+     */
+    private function resolveProperty(string $property): ?string
+    {
+        // All properties will be camel case within the object
+        $property = \lcfirst($property);
+
+        return \property_exists($this, $property)
+            ? $property :
+            (new Arr())->search($this->getObjectProperties(), $property);
     }
 }

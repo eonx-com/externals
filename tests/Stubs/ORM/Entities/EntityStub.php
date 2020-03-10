@@ -88,6 +88,24 @@ class EntityStub extends Entity
     }
 
     /**
+     * Setter which sets value on another property.
+     * This setter is part of a test which checks if setters can be called
+     * without needing to have a corresponding property on the entity.
+     * In this example $nonExistent does not need to be a property in this class,
+     * but the setter would still be called when we do a new EntityStub(['nonExistent' => 'value'])
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function setNonExistent(string $value): self
+    {
+        $this->string = $value;
+
+        return $this;
+    }
+
+    /**
      * Get the contents of the entity as an array.
      *
      * @return mixed[]
