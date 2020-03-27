@@ -11,7 +11,7 @@
     "ext-json": "*",
     "ext-libxml": "*",
     "ext-simplexml": "*",
-    "eonx-com/utils": "^1.0",
+    "eonx-com/utils": "^1.0 || ^2.0",
     "laminas/laminas-diactoros": "^2.1",
     "psr/event-dispatcher": "^1.0",
     "psr/http-client": "^1.0"
