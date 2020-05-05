@@ -86,7 +86,8 @@ class LoggingClientTest extends TestCase
             'uri' => '/test'
         ];
         $expectedFormattedPrefix = '/^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] /';
-        $expectedFormattedRequest = 'Application.INFO: HTTP Request Sent {"options":{"0":"HEADER_ONLY","Key":"Val"},"request":"GET /test HTTP/1.1\r\nHost: \r\n\r\n","uri":"/test"} []
+        $expectedFormattedRequest = 'Application.INFO: HTTP Request Sent {"options":{"0":"HEADER_ONLY","Key":"Val"},'.
+        '"request":"GET /test HTTP/1.1\r\nHost: \r\n\r\n","uri":"/test"} []
 ';
 
         $instance = $this->createInstance($handler, $logger);
@@ -100,7 +101,7 @@ class LoggingClientTest extends TestCase
         self::assertSame('HTTP Request Sent', $logs[0]['message']);
         self::assertSame($expectedRequestContext, $logs[0]['context']);
         self::assertRegExp($expectedFormattedPrefix, $logs[0]['formatted']);
-        self::assertSame($expectedFormattedRequest, substr($logs[0]['formatted'], 22));
+        self::assertSame($expectedFormattedRequest, \substr($logs[0]['formatted'], 22));
 
         self::assertSame('HTTP Response Received', $logs[1]['message']);
         self::assertSame('/test', $logs[1]['context']['uri']);
@@ -127,11 +128,15 @@ class LoggingClientTest extends TestCase
                     'AuthorizatioN' => 'REDACTED:01b307acba4f54f55aafc33bb06bbbf6ca803e9a'
                 ],
             ],
-            'request' => "GET /test HTTP/1.1\r\nHost: \r\nAuthorizatioN: REDACTED:01b307acba4f54f55aafc33bb06bbbf6ca803e9a\r\n\r\n",
+            'request' => "GET /test HTTP/1.1\r\nHost: \r\n".
+                "AuthorizatioN: REDACTED:01b307acba4f54f55aafc33bb06bbbf6ca803e9a\r\n\r\n",
             'uri' => '/test'
         ];
         $expectedFormattedPrefix = '/^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] /';
-        $expectedFormattedRequest = 'Application.INFO: HTTP Request Sent {"options":{"headers":{"AuthorizatioN":"REDACTED:01b307acba4f54f55aafc33bb06bbbf6ca803e9a"}},"request":"GET /test HTTP/1.1\r\nHost: \r\nAuthorizatioN: REDACTED:01b307acba4f54f55aafc33bb06bbbf6ca803e9a\r\n\r\n","uri":"/test"} []
+        $expectedFormattedRequest = 'Application.INFO: HTTP Request Sent '.
+        '{"options":{"headers":{"AuthorizatioN":"REDACTED:01b307acba4f54f55aafc33bb06bbbf6ca803e9a"}},'.
+        '"request":"GET /test HTTP/1.1\r\nHost: \r\n'.
+        'AuthorizatioN: REDACTED:01b307acba4f54f55aafc33bb06bbbf6ca803e9a\r\n\r\n","uri":"/test"} []
 ';
 
         $instance = $this->createInstance($handler, $logger);
@@ -145,7 +150,7 @@ class LoggingClientTest extends TestCase
         self::assertSame('HTTP Request Sent', $logs[0]['message']);
         self::assertSame($expectedRequestContext, $logs[0]['context']);
         self::assertRegExp($expectedFormattedPrefix, $logs[0]['formatted']);
-        self::assertSame($expectedFormattedRequest, substr($logs[0]['formatted'], 22));
+        self::assertSame($expectedFormattedRequest, \substr($logs[0]['formatted'], 22));
 
         self::assertSame('HTTP Response Received', $logs[1]['message']);
         self::assertSame('/test', $logs[1]['context']['uri']);

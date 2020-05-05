@@ -143,10 +143,10 @@ final class LoggingClient implements ClientInterface
      */
     private function logRequest(RequestInterface $request, ?array $options = null): void
     {
-        if (array_key_exists('headers', $options ?? [])) {
+        if (\array_key_exists('headers', $options ?? [])) {
             foreach ($options['headers'] as $key => $value) {
                 if (\strtolower($key) === 'authorization') {
-                    $options['headers'][$key] = \sprintf('REDACTED:%s', sha1($value));
+                    $options['headers'][$key] = \sprintf('REDACTED:%s', \sha1($value));
                 }
             }
         }
