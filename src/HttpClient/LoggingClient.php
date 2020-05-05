@@ -143,9 +143,24 @@ final class LoggingClient implements ClientInterface
      */
     private function logRequest(RequestInterface $request, ?array $options = null): void
     {
+        if (\array_key_exists('headers', $options ?? [])) {
+            foreach ($options['headers'] as $key => $value) {
+                if (\strtolower($key) === 'authorization') {
+                    $options['headers'][$key] = \sprintf('REDACTED:%s', \sha1($value));
+                }
+            }
+        }
+        $loggableRequest = new Request(
+            $request->getMethod(),
+            $request->getUri(),
+            $options['headers'] ?? [],
+            $request->getBody(),
+            $request->getProtocolVersion()
+        );
+
         $this->logger->info('HTTP Request Sent', [
             'options' => $options ?? [],
-            'request' => str($request),
+            'request' => str($loggableRequest),
             'uri' => (string)$request->getUri(),
         ]);
     }
