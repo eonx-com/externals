@@ -22,12 +22,21 @@ class InvalidApiResponseExceptionTest extends TestCase
     public function testExceptionGetters(): void
     {
         $request = new Request('GET', '/');
-        $response = new Response(new PsrResponse());
+        $response = new Response(new PsrResponse(400, [], '{"error": "message"}'));
         $exception = new InvalidApiResponseException($request, $response);
 
         self::assertSame(1100, $exception->getErrorCode());
         self::assertSame(0, $exception->getErrorSubCode());
         self::assertSame($response, $exception->getResponse());
         self::assertSame($request, $exception->getRequest());
+        self::assertSame(
+            <<<'EOF'
+Request resulted in a `400 Bad Request` response: 
+{"error": "message"}
+
+EOF
+            ,
+            $exception->getMessage()
+        );
     }
 }
