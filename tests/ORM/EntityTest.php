@@ -313,6 +313,24 @@ class EntityTest extends ORMTestCase
     }
 
     /**
+     * Tests that setters for non existent properties can be accessed.
+     * This is part of a test which checks if setters can be called
+     * without needing to have a corresponding property on the entity.
+     * In this example $nonExistent does not need to be a property in entity class,
+     * but the setter would still be called when we do a new EntityStub(['nonExistent' => 'value'])
+     *
+     * @return void
+     */
+    public function testSettingNonExistentPropertyWithASetter(): void
+    {
+        $entity = new EntityStub([
+            'nonExistent' => 'something'
+        ]);
+
+        self::assertSame('something', $entity->getString());
+    }
+
+    /**
      * Test getting entity data as an array.
      *
      * @return void

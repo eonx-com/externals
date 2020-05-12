@@ -11,12 +11,13 @@
     "ext-json": "*",
     "ext-libxml": "*",
     "ext-simplexml": "*",
-    "eonx-com/utils": "^1.0",
+    "eonx-com/utils": "^1.0 || ^2.0",
+    "laminas/laminas-diactoros": "^2.1",
     "psr/event-dispatcher": "^1.0",
-    "psr/http-client": "^1.0",
-    "zendframework/zend-diactoros": "^2.1"
+    "psr/http-client": "^1.0"
   },
   "require-dev": {
+    "eonx-com/auditing": "^1.0",
     "eonx-com/search": "^2.1",
     "eonx-com/standards": "^0.2",
     "eonx-com/test-utils": "^0.0.5",
@@ -25,6 +26,7 @@
     "guzzlehttp/guzzle": "^6.0.0",
     "illuminate/auth": "^6.0",
     "illuminate/http": "^6.0",
+    "illuminate/redis": "^6.0",
     "illuminate/validation": "^6.0",
     "indigophp/doctrine-annotation-autoload": "^0.1.0",
     "laravel-doctrine/extensions": "^1.0",

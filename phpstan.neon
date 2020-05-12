@@ -10,7 +10,7 @@ parameters:
             message: '#Constant XDEBUG_[A-Z_]+ not found.#'
             path: tests/bootstrap.php
         -
-            message: '/Parameter #1 \$function of function call_user_func_array expects callable\(\): mixed, array\([A-Z][\w\\]+|mixed, string\) given./'
+            message: '/Parameter #1 \$function of function call_user_func_array expects callable\(\): mixed, array\((.*), string\) given./'
             path: src/Bridge/Laravel/Filesystem.php
         -
             message: '/Parameter #1 \$function of function call_user_func_array expects callable\(\): mixed, array\(Illuminate\\Container\\Container, string\) given./'
