@@ -36,7 +36,18 @@ final class InvalidApiResponseException extends RuntimeException implements
         ResponseInterface $response,
         ?Throwable $previous = null
     ) {
-        parent::__construct('', null, 0, $previous);
+        /*
+         * Because previous exception (Guzzle ClientException) truncates the response,
+         * we add a full response message to our exception.
+         */
+        $message = \sprintf(
+            "Request resulted in a `%s %s` response: \n%s\n",
+            $response->getStatusCode(),
+            $response->getReasonPhrase(),
+            $response->getContent()
+        );
+
+        parent::__construct($message, null, 0, $previous);
 
         $this->request = $request;
         $this->response = $response;
