@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EoneoPay\Externals\HttpClient;
 
 use EoneoPay\Externals\HttpClient\Interfaces\ResponseInterface;
+use Laminas\Diactoros\MessageTrait;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
-use Zend\Diactoros\MessageTrait;
 
 final class Response implements ResponseInterface
 {
