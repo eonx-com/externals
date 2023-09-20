@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\ORM\Interfaces;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 interface RepositoryInterface extends ObjectRepository
 {
