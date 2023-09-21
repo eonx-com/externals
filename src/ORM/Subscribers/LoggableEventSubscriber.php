@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\Externals\ORM\Subscribers;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\Column;
 use EoneoPay\Externals\ORM\Interfaces\MagicEntityInterface;
 use EoneoPay\Utils\AnnotationReader;
@@ -52,7 +52,7 @@ final class LoggableEventSubscriber extends BaseLoggableListener
      * Get the configuration for specific object class
      * if cache driver is present it scans it also
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager
+     * @param \Doctrine\Persistence\ObjectManager $objectManager
      * @param string $class
      *
      * @return mixed[]
